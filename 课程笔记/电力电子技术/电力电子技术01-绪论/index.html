@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    
+    <title>电力电子技术01-绪论 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,电力电子技术" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="《电力电子技术(第五版)》学习笔记 本节内容对应书中第一章 绪论；对应页码p1-p9 什么是电力电子技术">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电力电子技术01-绪论">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="《电力电子技术(第五版)》学习笔记 本节内容对应书中第一章 绪论；对应页码p1-p9 什么是电力电子技术">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/1_电子技术的分类.gif">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/2_四种电力变换.png">
+<meta property="article:published_time" content="2023-05-14T07:34:51.000Z">
+<meta property="article:modified_time" content="2023-05-15T06:10:05.679Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="电力电子技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/1_电子技术的分类.gif">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world-1/">公式测试</a></li>  <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/电力电子技术/电力电子技术01-绪论" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/">电力电子技术</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/" rel="tag">电力电子技术</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">
+            <time datetime="2023-05-14T07:34:51.000Z" itemprop="datePublished">2023-05-14</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/raw/writing/source/_posts/课程笔记/电力电子技术/电力电子技术01-绪论.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/edit/writing/source/_posts/课程笔记/电力电子技术/电力电子技术01-绪论.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/commits/writing/source/_posts/课程笔记/电力电子技术/电力电子技术01-绪论.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电力电子技术01-绪论
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF"><span class="toc-number">1.</span> <span class="toc-text">什么是电力电子技术</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF%E4%B8%8E%E7%9B%B8%E5%85%B3%E5%AD%A6%E7%A7%91%E7%9A%84%E5%85%B3%E7%B3%BB%E5%9C%B0%E4%BD%8D"><span class="toc-number">2.</span> <span class="toc-text">电力电子技术与相关学科的关系、地位</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E7%94%B5%E5%AD%90%E5%AD%A6%E4%BF%A1%E6%81%AF%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.1.</span> <span class="toc-text">与电子学（信息电子技术）的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E7%94%B5%E5%8A%9B%E5%AD%A6%E7%94%B5%E6%B0%94%E5%B7%A5%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.2.</span> <span class="toc-text">与电力学（电气工程）的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8E%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E8%87%AA%E5%8A%A8%E5%8C%96%E6%8A%80%E6%9C%AF%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.3.</span> <span class="toc-text">与控制理论（自动化技术）的关系</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF%E7%9A%84%E5%8F%91%E5%B1%95%E5%8F%B2"><span class="toc-number">3.</span> <span class="toc-text">电力电子技术的发展史</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B2%E5%89%8D%E6%9C%9F"><span class="toc-number">3.1.</span> <span class="toc-text">史前期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%B6%E9%97%B8%E7%AE%A1%E6%97%B6%E6%9C%9F"><span class="toc-number">3.2.</span> <span class="toc-text">晶闸管时期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E5%9E%8B%E5%99%A8%E4%BB%B6%E6%97%B6%E6%9C%9F"><span class="toc-number">3.3.</span> <span class="toc-text">复合型器件时期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">电力电子技术的应用</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>《电力电子技术(第五版)》学习笔记<br />
+本节内容对应书中<code>第一章 绪论</code>；对应页码p1-p9</p>
+<h2 id="什么是电力电子技术">什么是电力电子技术</h2>
+<span id="more"></span>
+<center>
+<img src="1_电子技术的分类.gif"/><span
+class="caption">电子技术的分类</span>
+</center>
+<p>电力电子技术是使用器件对电能进行变换和控制的技术。电力电子技术使用的器件是电力半导体器件，主要用于电力变换，而信息电子技术主要用于信息处理，这是二者的主要区别。<br />
+电力电子技术可分为器件制造技术与变流技术。其中器件制造技术，即制造晶闸管、电力晶体管、IGBT等电力电子器件的技术是电力电子技术的基础，其理论基础是半导体物理。变流技术包括使用电力电子器件构成电力变换电路、电力装置、电力电子系统，以及对电力电子系统进行控制的技术，变流技术是电力电子技术的核心，其理论基础为电路理论。</p>
+电力变换可分为四大类：<br />
+
+<center>
+<img src="2_四种电力变换.png"/><span class="caption">四种电力变换</span>
+</center>
+<ol type="1">
+<li>交流变直流（AC-DC）——整流</li>
+<li>直流变交流（DC-AC）——逆变</li>
+<li>直流变直流（DC-DC）——斩波</li>
+<li>交流变交流（AC-AC）——变频（交流电力控制，可以是电压、频率、相数的变换）</li>
+</ol>
+<h2
+id="电力电子技术与相关学科的关系地位">电力电子技术与相关学科的关系、地位</h2>
+<h3 id="与电子学信息电子技术的关系">与电子学（信息电子技术）的关系</h3>
+<ul>
+<li>都分为器件和电路应用两大分支</li>
+<li>器件制造技术的理论基础均基于半导体理论；材料、工艺基本相同，采用微电子技术</li>
+<li>电路应用的分析方法、分析软件基本相同</li>
+<li>信息电子器件工作在开关、放大状态；电力电子器件工作在开关状态</li>
+</ul>
+<h3 id="与电力学电气工程的关系">与电力学（电气工程）的关系</h3>
+<ul>
+<li>电力电子技术广泛用于电气工程中</li>
+<li>应用场景：高压直流输电、静止无功补偿、电力机车牵引、交直流电力传动、电解、励磁、电加热、高性能交直流电源</li>
+<li>电力电子技术是电气工程学科最活跃的一个分支</li>
+</ul>
+<h3 id="与控制理论自动化技术的关系">与控制理论（自动化技术）的关系</h3>
+<ul>
+<li>控制理论广泛用于电力电子系统中</li>
+<li>电力电子技术是弱电控制强电的技术，是弱电和强电的接口的有力纽带</li>
+<li>电力电子装置是自动化技术的基础元件和重要支撑技术</li>
+</ul>
+<p>电力电子技术和运动控制一起，和计算机技术共同成为未来科学技术的两大支柱。<br />
+若把计算机比作人的大脑，电力电子技术就可以比作人的消化系统与循环系统，可以实现能量的转换（电网或其他电源提供的“粗电”转化为易于消化利用的“精电”）。电力电子技术和运动控制还可以比作人的肌肉和四肢，可以使人运动和从事劳动，以实现大脑指令的执行。<br />
+电力电子技术作为20世纪后半叶诞生和发展的一门崭新的技术，21世纪仍将以迅猛的速度发展。</p>
+<h2 id="电力电子技术的发展史">电力电子技术的发展史</h2>
+<h3 id="史前期">史前期</h3>
+<ul>
+<li>1904年，电子管诞生，能在真空中对电子流进行控制，并应用于通信和无线电，从而开启了电子技术应用于电力领域的先河。</li>
+<li>水银整流器流行于二十世纪30到50年代，它将水银封于管内，利用对其蒸汽的点弧可对大电流进行控制，在晶闸管未问世的时代广泛用于电化学工业、电气铁道直流变电、轧钢用直流电动机的传动以及直流输电。</li>
+<li>交流变直流的方法除水银整流器外，还有电动机—直流发电机组，即变流机组。</li>
+<li>1947年，贝尔实验室发明晶体管。</li>
+</ul>
+<h3 id="晶闸管时期">晶闸管时期</h3>
+<ul>
+<li>1957年，<strong>晶闸管</strong>问世，取代水银整流器与旋转变流机组，广泛应用于电化学工业、铁道电气机车、钢铁工业（轧钢用电气传动、感应加热等）、电力工业（直流输电、无功补偿等）。</li>
+<li>晶闸管是<strong>半控型器件</strong>（通过对门极的控制使其导通而不能关断），电路控制方式为<strong>相位控制</strong>，晶闸管关断需要依靠电网电压等外部条件实现，有一定的局限性。</li>
+<li>20世纪70年代，全控型器件迅速发展。包括<strong>门极可关断晶闸管（GTO）、电力双极型晶体管（BJT）、电力场效应晶体管（Power-MOSFET）</strong>等。全控型器件可以通过对门极的控制既可对其开通又可对其关断，且开关速度高于晶闸管。</li>
+<li>全控型器件的控制方式为<strong>脉冲宽度调制（PWM）方式</strong>，又称<strong>斩波控制</strong>。</li>
+</ul>
+<h3 id="复合型器件时期">复合型器件时期</h3>
+<ul>
+<li>80年代后期以<strong>绝缘栅极双极型晶体管（IGBT）</strong>为代表的复合型器件异军突起，IGBT是全控型器件，是MOSFET和BJT的复合体，IGBT兼具MOSFET驱动功率小、开关速度快的优点与BJT通态压降小、载流能力大、可承受电压高的优点。</li>
+<li><strong>MOS控制晶闸管（MCT）</strong>和<strong>集成门极换流晶闸管（IGCT）</strong>是MOSFET和GTO的复合体，同样综合了两种器件的优点。</li>
+<li><strong>电力电子集成电路（PIC）</strong>将驱动、控制、保护电路和电力电子器件集成到了一起。PIC结构紧凑、体积小，这给应用带来了很大的方便。
+除以PIC为代表的单片集成技术，电力电子集成技术还包括混合集成与系统集成。</li>
+<li>软开关技术应运而生，<strong>零电压开关（ZVS）</strong>和<strong>零电流开关（ZCS）</strong>是软开关的基本形式。软开关可以有效降低开关损耗，进而提高开关频率与电力电子装置的功率密度。</li>
+</ul>
+<h2 id="电力电子技术的应用">电力电子技术的应用</h2>
+<ol type="1">
+<li>一般工业：各类交直流电动机（轧钢机、数控机床、矿山牵引、大型鼓风机）、电机软起动装置、电化学工业整流电源（电解铝、电解食盐水、电镀装置）、冶金工业（感应加热电源、淬火电源、直流电弧炉电源）</li>
+<li>交通运输：电气化铁道、电动汽车、飞机、船舶、电梯。</li>
+<li>电力系统：直流输电、柔性交流输电、无功补偿和谐波抑制、电能质量控制。</li>
+<li>电源：程控交换机、大型计算机、各类信息技术装置的电源。不间断电源（UPS）。</li>
+<li>家用电器：节能灯、变频空调等。</li>
+<li>其他：航天领域、太阳能发电与风力发电缓冲储能装置、抽水储能发电站、超导储能、特种电源。</li>
+</ol>
+<p>电力电子技术研究的是<strong>电源技术</strong>——电力电子装置提供给负载的是各种不同的直流电源、恒频交流电源以及变频交流电源<br />
+电力电子技术是<strong>节能技术</strong>——在大型风机、水泵采用变频调速方面，在使用量十分庞大的照明电源等方面，电力电子技术的节能效果十分显著</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">运动控制系统02-晶闸管整流器——直流电动机系统</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

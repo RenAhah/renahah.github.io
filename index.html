@@ -2,7 +2,22 @@
 <html lang=zh>
 <head>
     <meta charset="utf-8">
-        
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
     
     <title>RenAhahWiki</title>
     
@@ -36,7 +51,6 @@
     
 <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
 
-
     
 <link rel="stylesheet" href="/css/style.css">
 
@@ -67,7 +81,7 @@
     
 <meta name="generator" content="Hexo 5.4.2"></head>
 
-<body>
+<body class="">
     <div id="container">
         <header id="header">
     <div id="header-main" class="header-inner">
@@ -89,7 +103,15 @@
                     <a class="main-nav-link" href="/about">关于</a>
                 
             </nav>
-            
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
             <div id="search-form-wrap">
 
     <form class="search-form">
@@ -155,6 +177,7 @@
             </tr>
         </table>
     </div>
+
 </header>
 
         <div class="outer">
@@ -197,7 +220,7 @@
                             &nbsp;
                             电力电子技术
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -282,6 +305,113 @@
 </aside>
             
             <section id="main">
+        <article id="post-课程笔记/电力电子技术/电力电子技术02-电力电子器件" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/">电力电子技术</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/" rel="tag">电力电子技术</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">
+            <time datetime="2023-05-21T07:36:56.000Z" itemprop="datePublished">2023-05-21</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/raw/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/edit/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/commits/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><p>《电力电子技术(第五版)》学习笔记<br />
+本节内容对应书中<code>第二章 绪论</code>；对应页码p10-p42</p>
+<h2 id="电力电子器件概述">电力电子器件概述</h2>
+<h3 id="电力电子器件的一般特征">电力电子器件的一般特征</h3>
+<ul>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/#more">查看更多</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+
+
+
+
+    
         <article id="post-课程笔记/运动控制系统/运动控制系统04-稳态调速性能指标和开环直流调速系统" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -379,6 +509,9 @@
         </footer>
     </div>
 </article>
+
+<!-- twikoo评论系统 -->
+
 
 
 
@@ -484,6 +617,9 @@
     </div>
 </article>
 
+<!-- twikoo评论系统 -->
+
+
 
 
 
@@ -565,6 +701,9 @@
         </footer>
     </div>
 </article>
+
+<!-- twikoo评论系统 -->
+
 
 
 
@@ -670,6 +809,9 @@
     </div>
 </article>
 
+<!-- twikoo评论系统 -->
+
+
 
 
 
@@ -763,6 +905,9 @@
         </footer>
     </div>
 </article>
+
+<!-- twikoo评论系统 -->
+
 
 
 
@@ -868,6 +1013,9 @@
     </div>
 </article>
 
+<!-- twikoo评论系统 -->
+
+
 
 
 
@@ -962,6 +1110,9 @@ ohhhhhhhhhhhhhhhhhhh!<br />
     </div>
 </article>
 
+<!-- twikoo评论系统 -->
+
+
 
 
 
@@ -1041,6 +1192,9 @@ ohhhhhhhhhhhhhhhhhhh!<br />
         </footer>
     </div>
 </article>
+
+<!-- twikoo评论系统 -->
+
 
 
 

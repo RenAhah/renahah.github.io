@@ -2,7 +2,22 @@
 <html lang=zh>
 <head>
     <meta charset="utf-8">
-        
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
     
     <title>About | RenAhahWiki</title>
     
@@ -17,8 +32,8 @@
 <meta property="og:site_name" content="RenAhahWiki">
 <meta property="og:description" content="关于我   一个普通而平凡的人。虽努力，但也不完全努力；虽顺利，但也不怎么顺利；虽失败，但也不彻底失败；虽然生命的起源与世界为何存在至今仍是未解之谜，但怎么说得证明自己存在的价值，为这个世界留下点什么。   虽是电气&#x2F;自动化专业学生，但一直以来都对计算机感兴趣，看了下目前的个人博客，除了生活类内容外，绝大多数技术性分享都是计算机软件相关内容，最多涉及到单片机硬件，涉及其他学科的个人博客较少，涉">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-18T00:10:44.265Z">
-<meta property="article:modified_time" content="2023-05-18T00:10:44.265Z">
+<meta property="article:published_time" content="2023-05-21T08:38:27.654Z">
+<meta property="article:modified_time" content="2023-05-21T08:38:27.654Z">
 <meta property="article:author" content="RenAhah">
 <meta name="twitter:card" content="summary">
     
@@ -37,7 +52,6 @@
 
     
 <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
-
 
     
 <link rel="stylesheet" href="/css/style.css">
@@ -69,7 +83,7 @@
     
 <meta name="generator" content="Hexo 5.4.2"></head>
 
-<body>
+<body class="">
     <div id="container">
         <header id="header">
     <div id="header-main" class="header-inner">
@@ -91,7 +105,15 @@
                     <a class="main-nav-link" href="/about">关于</a>
                 
             </nav>
-            
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
             <div id="search-form-wrap">
 
     <form class="search-form">
@@ -157,6 +179,7 @@
             </tr>
         </table>
     </div>
+
 </header>
 
         <div class="outer">
@@ -199,7 +222,7 @@
                             &nbsp;
                             电力电子技术
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -307,15 +330,14 @@
         
             <h4 id="关于我">关于我</h4>
 <p>  一个普通而平凡的人。虽努力，但也不完全努力；虽顺利，但也不怎么顺利；虽失败，但也不彻底失败；虽然生命的起源与世界为何存在至今仍是未解之谜，但怎么说得证明自己存在的价值，为这个世界留下点什么。<br />
-  虽是电气/自动化专业学生，但一直以来都对计算机感兴趣，看了下目前的个人博客，除了生活类内容外，绝大多数技术性分享都是计算机软件相关内容，最多涉及到单片机硬件，涉及其他学科的个人博客较少，涉及电气工程——电机控制方向的个人博客更是相当稀少（特指个人建立网站发布，不包括在CSDN、博客园等大型平台上发布的博客）。<del>我的个人博客将弥补国内在这方面的空白。</del>我就随便写一写而已。<br />
+  虽是电气/自动化专业学生，但一直以来都对计算机感兴趣，看了下目前的个人博客，除了生活类内容外，绝大多数技术性分享都是计算机软件相关内容，最多涉及到单片机硬件，涉及其他学科的个人博客较少，涉及电气工程——电机控制方向的个人博客更是相当稀少（特指个人建立网站发布，不包括在CSDN、博客园等大型平台上发布的博客）。<del>我的个人博客将弥补国内在这方面的空白。</del>我就随便写一写，整理资料罢了。<br />
   音乐方面主要听电子音乐；<del>想自学乐理及Fl
 Stdio做曲，但是懒得学</del><br />
   书籍方面主要看科幻小说，网文也看；<del>想自己写科幻小说或者网文，但是懒得写</del><br />
   游戏方面主要玩我的世界(Minecraft)以及类似的沙盒游戏(Starbound,terraria,Minetest等)；<del>想编程开发类似的沙盒游戏或者做Minecraft模组，但是懒得编</del><br />
   除此之外还玩玩音乐游戏，天赋不够水平一般，主要是听歌打节奏，毕竟音游曲与电子音乐有较大的重合度。<br />
   电影电视剧不怎么看，因为感觉信息密度太低，看书可以自由控制阅读节奏，脑补出的场景效果更好。<br />
-  个人非常不喜欢把看视频作为学习某门课程知识的方式（除非是动手操作类的视频），对于理论知识的学习，对我个人而言其效率排序为<strong>文章≥PPT&gt;书籍&gt;视频</strong>。看视频学知识实在是太低效了，可能看半天也看不到重点；书籍的内容全面，但是内容过多，其中很多都是废话；上课用的PPT就很好，内容全是干货，当然有时会过于精炼，导致有的点get不到；而文章，我认为是学习知识的最好载体，基于PPT和书籍以及自己的心得体会整理而成的笔记，可以兼顾到书籍和PPT的优点，看文章的学习效率，可以说是视频的十倍不止。这或许是大家写博客的一个重要原因。<br />
-  我搭建这个博客，另一个原因是把它作为一个线上笔记本使用，估计也不会有别的人看，即使有也极少，更多的是给自己看的。</p>
+  个人非常不喜欢把看视频作为学习某门课程知识的方式（除非是动手操作类的视频），对于理论知识的学习，对我个人而言其效率排序为<strong>文章≥PPT&gt;书籍&gt;视频</strong>。看视频学知识实在是太低效了，可能看半天也看不到重点；书籍的内容全面，但是内容过多，其中很多都是废话；上课用的PPT就很好，内容全是干货，当然有时会过于精炼，导致有的点get不到；而文章，我认为是学习知识的最好载体，基于PPT和书籍以及自己的心得体会整理而成的笔记，可以兼顾到书籍和PPT的优点，看文章的学习效率，可以说是视频的十倍不止。这或许是大家写博客的一个重要原因。</p>
 <h4 id="哪里有我">哪里有我</h4>
 <ul>
 <li>网易云音乐<a
@@ -349,6 +371,21 @@ target="_blank" rel="noopener" href="https://open.spotify.com/user/31c6xeo3jtilj
         </footer>
     </div>
 </article>
+
+<!-- twikoo评论系统 -->
+
+<div id="tcomment"></div>
+<script src="https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://renahah.zeabur.app', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/imaegoo/twikoo/blob/main/src/js/utils/i18n/index.js
+})
+</script>
+
 
 
     

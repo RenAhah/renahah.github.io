@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电力电子技术02-电力电子器件 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,电力电子技术" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="《电力电子技术(第五版)》学习笔记 本节内容对应书中第二章 绪论；对应页码p10-p42 电力电子器件概述 电力电子器件的一般特征  处理电功率的大小，即承受电压和电流的能力远大于信息电子器件； 一般工作在开关状态； 需要由信息电子电路来控制； 自身功耗远大于信息电子器件，一般要安装散热器。  电力电子器件损耗包括通态损耗、断态损耗与开关损耗，其中开关损耗包括开通损耗和关断损耗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电力电子技术02-电力电子器件">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="《电力电子技术(第五版)》学习笔记 本节内容对应书中第二章 绪论；对应页码p10-p42 电力电子器件概述 电力电子器件的一般特征  处理电功率的大小，即承受电压和电流的能力远大于信息电子器件； 一般工作在开关状态； 需要由信息电子电路来控制； 自身功耗远大于信息电子器件，一般要安装散热器。  电力电子器件损耗包括通态损耗、断态损耗与开关损耗，其中开关损耗包括开通损耗和关断损耗">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/1_电力二极管.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/2_电力二极管伏安特性.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/3_电力二极管关断过程.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/4_电力二极管开通过程.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/5_晶闸管.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/6_晶闸管的双晶体管模型及其工作原理.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/7_晶闸管静态特性.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/8_晶闸管开通与关断过程.png">
+<meta property="article:published_time" content="2023-05-21T07:36:56.000Z">
+<meta property="article:modified_time" content="2023-05-22T14:29:32.072Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="电力电子技术">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/1_电力二极管.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world-1/">公式测试</a></li>  <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/电力电子技术/电力电子技术02-电力电子器件" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/">电力电子技术</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/" rel="tag">电力电子技术</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">
+            <time datetime="2023-05-21T07:36:56.000Z" itemprop="datePublished">2023-05-21</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/raw/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/edit/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/RenAhah/Wiki-site/commits/writing/source/_posts/课程笔记/电力电子技术/电力电子技术02-电力电子器件.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电力电子技术02-电力电子器件
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">电力电子器件概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6%E7%9A%84%E4%B8%80%E8%88%AC%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.</span> <span class="toc-text">电力电子器件的一般特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.2.</span> <span class="toc-text">电力电子器件的分类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E6%8E%A7%E5%99%A8%E4%BB%B6%E7%94%B5%E5%8A%9B%E4%BA%8C%E6%9E%81%E7%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">不可控器件——电力二极管</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E4%BA%8C%E6%9E%81%E7%AE%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="toc-number">2.1.</span> <span class="toc-text">电力二极管的基本特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%89%B9%E6%80%A7%E4%BC%8F%E5%AE%89%E7%89%B9%E6%80%A7"><span class="toc-number">2.1.1.</span> <span class="toc-text">静态特性（伏安特性）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%89%B9%E6%80%A7%E5%BC%80%E5%85%B3%E7%89%B9%E6%80%A7"><span class="toc-number">2.1.2.</span> <span class="toc-text">动态特性（开关特性）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E4%BA%8C%E6%9E%81%E7%AE%A1%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">电力二极管的主要参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E4%BA%8C%E6%9E%81%E7%AE%A1%E7%9A%84%E4%B8%BB%E8%A6%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.3.</span> <span class="toc-text">电力二极管的主要类型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%8A%E6%8E%A7%E5%9E%8B%E5%99%A8%E4%BB%B6%E6%99%B6%E9%97%B8%E7%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">半控型器件——晶闸管</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%B6%E9%97%B8%E7%AE%A1%E7%9A%84%E7%BB%93%E6%9E%84%E4%B8%8E%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">晶闸管的结构与工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%B6%E9%97%B8%E7%AE%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%89%B9%E6%80%A7"><span class="toc-number">3.2.</span> <span class="toc-text">晶闸管的基本特性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E7%89%B9%E6%80%A7"><span class="toc-number">3.2.1.</span> <span class="toc-text">静态特性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%AD%A3%E5%90%91%E7%89%B9%E6%80%A7%E7%AC%AC%E4%B8%80%E8%B1%A1%E9%99%90"><span class="toc-number">3.2.1.1.</span> <span class="toc-text">正向特性（第一象限）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E7%89%B9%E6%80%A7%E7%AC%AC%E4%B8%89%E8%B1%A1%E9%99%90"><span class="toc-number">3.2.1.2.</span> <span class="toc-text">反向特性（第三象限）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E7%89%B9%E6%80%A7"><span class="toc-number">3.2.2.</span> <span class="toc-text">动态特性</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%BC%80%E9%80%9A%E8%BF%87%E7%A8%8B"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">开通过程</span></a></li></ol></li></ol></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>《电力电子技术(第五版)》学习笔记<br />
+本节内容对应书中<code>第二章 绪论</code>；对应页码p10-p42</p>
+<h2 id="电力电子器件概述">电力电子器件概述</h2>
+<h3 id="电力电子器件的一般特征">电力电子器件的一般特征</h3>
+<ul>
+<li>处理电功率的大小，即承受电压和电流的能力远大于信息电子器件；</li>
+<li>一般工作在开关状态；</li>
+<li>需要由信息电子电路来控制；</li>
+<li>自身功耗远大于信息电子器件，一般要安装散热器。</li>
+</ul>
+<p>电力电子器件损耗包括通态损耗、断态损耗与开关损耗，其中开关损耗包括开通损耗和关断损耗。<br />
+电力电子器件的主要损耗为通态损耗，器件开关频率较高时，开关损耗成为主要损耗。</p>
+<h3 id="电力电子器件的分类">电力电子器件的分类</h3>
+<p>按照被信号控制的程度分类：</p>
+<ul>
+<li>半控型器件——通过控制信号可控制通，不能控制关——<strong>晶闸管(Thyristor)</strong>及其大部分派生器件<br />
+</li>
+<li>全控型器件——通过控制信号既可控制通又可控制关，又称自关断器件——<strong>绝缘栅极双极型晶体管（IGBT）、电力场效应晶体管（Power-MOSFET）</strong></li>
+<li>不可控器件——不能用控制信号来控制其通断,
+不需要驱动电路——<strong>电力二极管(Power Diode)</strong></li>
+</ul>
+<p>按照驱动电路信号的性质，可分为<strong>电流驱动型</strong>和<strong>电压驱动型</strong>（场效应器件）。<br />
+按照驱动电路信号的波形，可分为<strong>脉冲触发型</strong>和<strong>电平控制型</strong>。<br />
+按照器件内部电子和空穴两种载流子参与导电的情况，可分为单极型器件、双极型器件、复合型器件。</p>
+<h2 id="不可控器件电力二极管">不可控器件——电力二极管</h2>
+电力二极管工作原理与信息电子电路中的二极管一致，皆以半导体PN结为基础。<br />
+电力二级管于20世纪50年代初开始应用，至今在中、高频整流和逆变场合，仍然不可替代。其主要封装有螺栓型和平板型两种。<br />
+
+<center>
+<img src="1_电力二极管.png"/ width=350><span class="caption">图1
+电力二极管<br />a) 外形 b) 基本结构 c) 电气符号</span>
+</center>
+<h3 id="电力二极管的基本特性">电力二极管的基本特性</h3>
+<h4 id="静态特性伏安特性">静态特性（伏安特性）</h4>
+<center>
+<img src="2_电力二极管伏安特性.png"/ width=250><span class="caption">图2
+电力二极管伏安特性</span>
+</center>
+<p>电力二极管承受电压大于一定值（门槛电压<span
+class="math inline">\(U_{TO}\)</span>）时，正向电流开始明显增加，处于稳定导通状态（正向偏置）。<br />
+电力二极管承受反向电压时，只有少子引起的微小而数值恒定的反向漏电流，处于截至状态（反向偏置）。</p>
+<h4 id="动态特性开关特性">动态特性（开关特性）</h4>
+<center>
+<img src="3_电力二极管关断过程.png"/ width=300><span class="caption">图3
+电力二极管关断过程</span>
+</center>
+外加电压突然由正向变为反向时，电力二极管不能立即关断，需要经一短暂时间重获反向阻断能力，进入截至状态。<br />
+在关断前有较大反向电流,伴有明显反向电压过冲<span
+class="math inline">\(U_{RP}\)</span>。<br />
+反向恢复时间<span class="math inline">\(t_{rr}\)</span>——<span
+class="math inline">\(t_{rr} = t_d + t_f\)</span>。其中<span
+class="math inline">\(t_d\)</span>为延迟时间，<span
+class="math inline">\(t_f\)</span>为电流下降时间。<br />
+恢复系数<span class="math inline">\({S_r} = \frac{t_f}
+{t_d}\)</span>，<span
+class="math inline">\(S_r\)</span>越大则恢复特性越软，反向电流下降时间相对越长，在同样的外电路条件下造成的反向电压<span
+class="math inline">\(U_{RP}\)</span>过冲较小。
+<center>
+<img src="4_电力二极管开通过程.png"/ width=200><span class="caption">图4
+电力二极管开通过程</span>
+</center>
+<p>正向压降先出现一个过冲<span
+class="math inline">\(U_{FP}\)</span>，经过一段时间才趋于接近稳态压降的某个值。<br />
+正向恢复时间为<span
+class="math inline">\(t_{fr}\)</span>。电流上升率越大，<span
+class="math inline">\(U_{FP}\)</span>越高。</p>
+<h3 id="电力二极管的主要参数">电力二极管的主要参数</h3>
+<ol type="1">
+<li>正向平均电流<span class="math inline">\({I_{F(AV)}
+}\)</span>——在指定的管壳温度<span
+class="math inline">\(T_c\)</span>和散热条件下，其允许流过的最大工频正弦半波电流的平均值。按照电流的发热效应来定义，使用时应按有效值相等的原则来选取电流定额，并应留有一定的裕量。</li>
+<li>正向压降<span
+class="math inline">\(U_F\)</span>——指定温度下，流过某一指定的稳态正向电流时对应的正向压降。</li>
+<li>反向重复峰值电压<span
+class="math inline">\(U_{RRM}\)</span>——能重复施加的反向最高峰值电压。使用时，应留有两倍裕量（反向最高峰值电压的两倍）。</li>
+<li>最高工作结温<span
+class="math inline">\(T_{JM}\)</span>——在PN结不致损坏的前提下所能承受的最高平均温度，通常在125~175℃范围之内。（结温<span
+class="math inline">\(T_J\)</span>指PN结的平均温度）</li>
+<li>关断过程反向恢复时间<span
+class="math inline">\(t_{rr}\)</span>——<span
+class="math inline">\(t_{rr} = t_d + t_f\)</span>。其中<span
+class="math inline">\(t_d\)</span>为延迟时间，<span
+class="math inline">\(t_f\)</span>为电流下降时间。</li>
+<li>浪涌电流<span
+class="math inline">\(I_{FSM}\)</span>——指能承受最大的连续一个或几个工频周期的过电流。</li>
+</ol>
+<h3 id="电力二极管的主要类型">电力二极管的主要类型</h3>
+<ol type="1">
+<li>普通二极管(General Purpose Diode)又称整流二极管(Rectifier
+Diode)，多用于开关频率不高（1kHz以下）的整流电路中，反向恢复时间较长，正向电流定额和反向电压定额可以达到很高。</li>
+<li>快恢复二极管(Fast Recovery
+Diode——FRD)简称快速二极管，反向恢复过程很短，正向压降很低。分快速恢复和超快速恢复两个等级。</li>
+<li>肖特基二极管(Schottky Barrier
+Diode——SBD)反向恢复时间很短（10~40ns），正向恢复无明显的电压过冲。
+反向耐压较低时其正向压降也很小，明显低于快恢复二极管。其开关损耗和正向导通损耗都比快速二极管还小，效率高。其缺点在于：当所能承受的反向耐压提高时其正向压降也会变高以至于不满足要求，因此多用于200V以下的低压场合；反向漏电流较大且对温度敏感，因此反向稳态损耗不能忽略，需严格限制其工作温度。</li>
+</ol>
+<h2 id="半控型器件晶闸管">半控型器件——晶闸管</h2>
+<h3 id="晶闸管的结构与工作原理">晶闸管的结构与工作原理</h3>
+晶体闸流管(Thyristor)，简称晶闸管，又称可控硅整流器(Silicon Controlled
+Rectifier——SCR)，简称可控硅。<br />
+其主要封装有螺栓型和平板型两种。有三个连接端，分别为阳极A、阴极K、门级G（控制端）。
+<center>
+<img src="5_晶闸管.png"/ width=500><span class="caption">图5
+晶闸管<br />a) 外形 b) 基本结构 c) 电气符号</span>
+</center>
+晶闸管可以看作由<span class="math inline">\(P_1 N_1 P_2\)</span>和<span
+class="math inline">\(N_1 P_2 N_2\)</span>构成的两个晶体管<span
+class="math inline">\(V_1\)</span>、<span
+class="math inline">\(V_2\)</span>组合而成。<br />
+若外电路向门级注入驱动电流<span
+class="math inline">\(I_G\)</span>，则<span
+class="math inline">\(I_G\)</span>流入晶体管<span
+class="math inline">\(V_2\)</span>的基极，产生集电极电流<span
+class="math inline">\(I_{c2}\)</span>，它构成晶体管<span
+class="math inline">\(V_1\)</span>的基极电流，放大成集电极电流<span
+class="math inline">\(I_{c1}\)</span>，又进一步增大<span
+class="math inline">\(V_2\)</span>的基极电流，如此形成<strong>强烈的正反馈</strong>使<span
+class="math inline">\(V_1\)</span>和<span
+class="math inline">\(V_2\)</span>进入完全饱和状态，即晶闸管导通。<br />
+此时若撤掉门极电流<span
+class="math inline">\(I_G\)</span>，晶闸管内部由于强烈的正反馈仍能维持导通状态。除非去掉阳极所加的正向电压，或者阳极施加反压，或者设法使流过晶闸管的电流降低到接近于零的某一数值以下，晶闸管才能关断。<br />
+因此晶闸管的驱动方式为触发驱动，晶闸管是半控型器件。
+<center>
+<img src="6_晶闸管的双晶体管模型及其工作原理.png"/ width=500><span
+class="caption">图6 晶闸管的双晶体管模型及其工作原理</span>
+</center>
+<p>晶闸管<strong>导通条件</strong>：晶闸管阳极与阴极间加有正向电压，且在门极施加触发电流<br />
+晶闸管<strong>关断条件</strong>：晶闸管的正向电流小于维持电流，或在晶闸管上加反向电压</p>
+<p><strong>注释：有关晶体管相关知识可参考这篇文章<a
+target="_blank" rel="noopener" href="https://mkdocs.wiki-power.com/基本元器件-晶体三级管/">基本元器件 -
+晶体三级管(来自Power's Wiki)</a></strong></p>
+<h3 id="晶闸管的基本特性">晶闸管的基本特性</h3>
+<h4 id="静态特性">静态特性</h4>
+<center>
+<img src="7_晶闸管静态特性.png"/ width=350><span class="caption">图7
+晶闸管静态特性</span>
+</center>
+<h5 id="正向特性第一象限">正向特性（第一象限）</h5>
+<ul>
+<li><span class="math inline">\(I_G =
+0\)</span>时，器件两端加正向电压，有很小的正向漏电流，晶闸管处于正向阻断状态。</li>
+<li>正向电压超过正向转折电压<span
+class="math inline">\(U_{bo}\)</span>时，漏电流急剧增大，器件开通。</li>
+<li>门极电流<span
+class="math inline">\(I_G\)</span>越大，正向转折电压<span
+class="math inline">\(U_{bo}\)</span>越小。</li>
+<li>晶闸管正向导通的管压降很小，1V左右。</li>
+<li>导通期间若门极电流为零且阳极电流降低至维持电流<span
+class="math inline">\(I_H\)</span>以下，晶闸管回到正向阻断状态。</li>
+</ul>
+<h5 id="反向特性第三象限">反向特性（第三象限）</h5>
+<ul>
+<li>阻断状态时，有极小的反向漏电流。</li>
+<li>反向击穿后，反向漏电流急剧增大，可能导致晶闸管发热损坏。</li>
+</ul>
+<h4 id="动态特性">动态特性</h4>
+<center>
+<img src="8_晶闸管开通与关断过程.png"/ width=400><span
+class="caption">图8 晶闸管开通与关断过程</span>
+</center>
+<h5 id="开通过程">开通过程</h5>
+<ul>
+<li>延迟时间<span
+class="math inline">\(t_d\)</span>(0.5~1.5μs)——从门极电流阶跃时刻开始，到阳极电流上升至稳态值10%的时间——随门极电流的增大而减小</li>
+<li>上升时间<span
+class="math inline">\(t_r\)</span>(0.5~3μs)——阳极电流从10%上升至90%所需的时间——反应晶闸管本身特性，受到外电路电感严重影响</li>
+<li>开通时间<span
+class="math inline">\(t_{gt}=t_d+t_r\)</span>——提高阳极电压可以增大晶体管<span
+class="math inline">\(V_2\)</span>的电流增益<span
+class="math inline">\(\alpha_2\)</span>，使正反馈过程加速，缩短开通时间</li>
+</ul>
+<p><code>To Be Countinued未完待续......</code></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+<div id="tcomment"></div>
+<script src="https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://renahah.zeabur.app', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/imaegoo/twikoo/blob/main/src/js/utils/i18n/index.js
+})
+</script>
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">运动控制系统04-稳态调速性能指标和开环直流调速系统</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

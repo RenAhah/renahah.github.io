@@ -2,7 +2,22 @@
 <html lang=zh>
 <head>
     <meta charset="utf-8">
-        
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
     
     <title>标签: 运动控制系统 | RenAhahWiki</title>
     
@@ -36,7 +51,6 @@
     
 <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
 
-
     
 <link rel="stylesheet" href="/css/style.css">
 
@@ -67,7 +81,7 @@
     
 <meta name="generator" content="Hexo 5.4.2"></head>
 
-<body>
+<body class="">
     <div id="container">
         <header id="header">
     <div id="header-main" class="header-inner">
@@ -89,7 +103,15 @@
                     <a class="main-nav-link" href="/about">关于</a>
                 
             </nav>
-            
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
             <div id="search-form-wrap">
 
     <form class="search-form">
@@ -155,6 +177,7 @@
             </tr>
         </table>
     </div>
+
 </header>
 
         <div class="outer">
@@ -197,7 +220,7 @@
                             &nbsp;
                             电力电子技术
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">

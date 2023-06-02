@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>参赛经历——2020年TI杯辽宁省大学生电子设计竞赛 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="竞赛,单片机,OPENMV" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="前言 2020年10月10日至10月13日，我与人组队参加了TI杯辽宁省大学生电子设计竞赛，所选题目为G题——非接触物体尺寸形态测量。在这次竞赛中我主要负责程序相关工作，其中涉及到STM32单片机、OPENMV图像识别模块、激光测距模块、串口屏上位机开发等诸多方面的知识，积累了相当多的经验。经过一个月的前期准备与四天三夜的刻苦奋斗，最终取得了省二等奖的优异成绩。 整理这个笔记，也是对竞赛做一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="参赛经历——2020年TI杯辽宁省大学生电子设计竞赛">
+<meta property="og:url" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="前言 2020年10月10日至10月13日，我与人组队参加了TI杯辽宁省大学生电子设计竞赛，所选题目为G题——非接触物体尺寸形态测量。在这次竞赛中我主要负责程序相关工作，其中涉及到STM32单片机、OPENMV图像识别模块、激光测距模块、串口屏上位机开发等诸多方面的知识，积累了相当多的经验。经过一个月的前期准备与四天三夜的刻苦奋斗，最终取得了省二等奖的优异成绩。 整理这个笔记，也是对竞赛做一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/1_题目要求.PNG">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/2_稳压电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/3_电路接线图.png">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/4_STM32程序总流程图.png">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/5_OPENMV程序总流程图.png">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/7_相似三角形法测量图形尺寸.png">
+<meta property="og:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/6_串口屏主界面.png">
+<meta property="article:published_time" content="2023-05-29T08:58:00.000Z">
+<meta property="article:modified_time" content="2023-06-02T23:11:34.393Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="竞赛">
+<meta property="article:tag" content="单片机">
+<meta property="article:tag" content="OPENMV">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/1_题目要求.PNG">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file active"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-日记/参赛经历——2020年TI杯辽宁省大学生电子设计竞赛" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%97%A5%E8%AE%B0/">日记</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/OPENMV/" rel="tag">OPENMV</a>, <a class="tag-link-link" href="/tags/%E5%8D%95%E7%89%87%E6%9C%BA/" rel="tag">单片机</a>, <a class="tag-link-link" href="/tags/%E7%AB%9E%E8%B5%9B/" rel="tag">竞赛</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">
+            <time datetime="2023-05-29T08:58:00.000Z" itemprop="datePublished">2023-05-29</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            参赛经历——2020年TI杯辽宁省大学生电子设计竞赛
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E8%A6%81%E6%B1%82"><span class="toc-number">2.</span> <span class="toc-text">题目要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E4%B8%8E%E8%BD%AF%E4%BB%B6%E5%87%86%E5%A4%87"><span class="toc-number">3.</span> <span class="toc-text">硬件与软件准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#stm32%E5%8D%95%E7%89%87%E6%9C%BA"><span class="toc-number">3.1.</span> <span class="toc-text">STM32单片机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openmv%E8%A7%86%E8%A7%89%E6%A8%A1%E5%9D%97"><span class="toc-number">3.2.</span> <span class="toc-text">OPENMV视觉模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usart-hmi%E4%B8%B2%E5%8F%A3%E5%B1%8F"><span class="toc-number">3.3.</span> <span class="toc-text">USART HMI串口屏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BF%80%E5%85%89%E6%B5%8B%E8%B7%9D%E6%A8%A1%E5%9D%97"><span class="toc-number">3.4.</span> <span class="toc-text">激光测距模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E4%BA%91%E5%8F%B0"><span class="toc-number">3.5.</span> <span class="toc-text">二维云台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%9C%82%E9%B8%A3%E5%99%A8led%E6%8C%87%E7%A4%BA%E7%81%AF"><span class="toc-number">3.6.</span> <span class="toc-text">蜂鸣器&#x2F;LED指示灯</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.</span> <span class="toc-text">硬件设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%B3%E5%8E%8B%E7%94%B5%E8%B7%AF"><span class="toc-number">4.1.</span> <span class="toc-text">稳压电路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E8%B7%AF%E6%8E%A5%E7%BA%BF%E5%9B%BE"><span class="toc-number">4.2.</span> <span class="toc-text">电路接线图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#stm32f103zet6%E4%B8%8E%E5%85%B6%E4%BB%96%E5%99%A8%E4%BB%B6%E7%9A%84%E8%BF%9E%E6%8E%A5"><span class="toc-number">4.3.</span> <span class="toc-text">STM32F103ZET6与其他器件的连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="toc-number">5.</span> <span class="toc-text">软件设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#stm32%E7%A8%8B%E5%BA%8F%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-number">5.1.</span> <span class="toc-text">STM32程序总流程图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openmv%E8%A7%86%E8%A7%89%E6%A8%A1%E5%9D%97-1"><span class="toc-number">5.2.</span> <span class="toc-text">OPENMV视觉模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#openmv%E7%A8%8B%E5%BA%8F%E6%80%BB%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-number">5.2.1.</span> <span class="toc-text">OPENMV程序总流程图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9D%9E%E6%8E%A5%E8%A7%A6%E5%BC%8F%E7%89%A9%E4%BD%93%E5%B0%BA%E5%AF%B8%E6%B5%8B%E9%87%8F%E5%8E%9F%E7%90%86"><span class="toc-number">5.2.2.</span> <span class="toc-text">非接触式物体尺寸测量原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#usart-hmi%E4%B8%B2%E5%8F%A3%E5%B1%8F-1"><span class="toc-number">5.3.</span> <span class="toc-text">USART HMI串口屏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BF%80%E5%85%89%E6%B5%8B%E8%B7%9D%E6%A8%A1%E5%9D%97-1"><span class="toc-number">5.4.</span> <span class="toc-text">激光测距模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E7%BB%B4%E4%BA%91%E5%8F%B0-1"><span class="toc-number">5.5.</span> <span class="toc-text">二维云台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%BB%AD%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">后续与总结</span></a></li></ol>
+                </div>
+            
+        
+        
+            <h2 id="前言">前言</h2>
+<p>2020年10月10日至10月13日，我与人组队参加了TI杯辽宁省大学生电子设计竞赛，所选题目为G题——非接触物体尺寸形态测量。在这次竞赛中我主要负责程序相关工作，其中涉及到STM32单片机、OPENMV图像识别模块、激光测距模块、串口屏上位机开发等诸多方面的知识，积累了相当多的经验。经过一个月的前期准备与四天三夜的刻苦奋斗，最终取得了省二等奖的优异成绩。<br />
+整理这个笔记，也是对竞赛做一个全面回顾，总结竞赛过程中遇到的困难与解决问题的方法，列举相关参考资料，为今后的读研与工作提供一些参考。
+<span id="more"></span></p>
+<h2 id="题目要求">题目要求</h2>
+设计并制作一个非接触式物体形状和尺寸自动测量装置，测量被测目标的<strong>形状</strong>、
+<strong>尺寸</strong>、
+测量头中心点与被测目标之间的<strong>距离</strong>等参数，并用激光束指示出被测目标的中心位置。<br />
+
+<center>
+<img src="1_题目要求.PNG" width=500/><span class="caption">图1
+题目要求</span>
+</center>
+<h2 id="硬件与软件准备">硬件与软件准备</h2>
+<h3 id="stm32单片机">STM32单片机</h3>
+<p>STM32是高性能，低成本，低功耗的嵌入式微控制器。本次竞赛采用的STM32F103ZET6型号单片机，作为整个测量系统的控制中心使用，实现程序的整体流程控制，对二维云台的舵机PWM控制，以及与OPENMV图像识别模块、激光测距模块、串口屏的信息交换处理。<br />
+所用IDE为Keil μVision V5.21.1.0<br />
+STM32的学习资料可以在此下载 <a
+target="_blank" rel="noopener" href="http://www.openedv.com/docs/index.html">正点原子资料下载中心</a></p>
+<h3 id="openmv视觉模块">OPENMV视觉模块</h3>
+<p>OpenMV是一款低价，可扩展的机器视觉模块。本次竞赛采用OPENMV2-M3摄像头，该模块采用STM32F427VG微处理器与OV7725感光元件。可以通过编写简单的Python语言脚本，实现数据采集和图像处理。在本次竞赛中用于识别区域内色块，进行相应处理实现形状识别功能。<br />
+OPENMV参考资料： <a
+target="_blank" rel="noopener" href="https://book.openmv.cc/">OPENMV中文入门教程</a> <a
+target="_blank" rel="noopener" href="https://docs.singtown.com/micropython/zh/latest/openmvcam/openmvcam/quickref.html#">OpenMV
+Cam快速参考</a><br />
+使用与之配套的OPENMV IDE进行程序开发。</p>
+<h3 id="usart-hmi串口屏">USART HMI串口屏</h3>
+<p>USART
+HMI串口屏是一款编程简单，易于调试的可触摸显示模块。可以通过图形化软件快速制作显示界面。在本次竞赛中用于显示测距与形状识别结果信息，同时为形状识别提供测量启动按键。本次竞赛使用中景园2.8寸TFT
+LCD串口屏。<br />
+USART HMI参考资料： <a
+target="_blank" rel="noopener" href="http://wiki2.tjc1688.com/start/index.html">USART
+HMI入门教程</a><br />
+使用与之配套的USART HMI IDE进行程序开发。</p>
+<h3 id="激光测距模块">激光测距模块</h3>
+<p>本次竞赛采用摩天MyAntenn-L1型号激光测距模块。与超声波测距模块相比，激光测距模块可以更为灵敏，精确度高，且可以满足用激光束指示出被测目标的中心位置之要求。</p>
+<h3 id="二维云台">二维云台</h3>
+<p>二维云台有两个自由度，通过控制两个舵机的角度即可实现任意对任意方向的瞄准。本次竞赛将OPENMV视觉模块与激光测距模块安装在二维云台上，通过回传的图像确定下一时刻舵机的移动方向，做一个简单的闭环控制，最后使激光测距模块指向待测图形的中心。</p>
+<h3 id="蜂鸣器led指示灯">蜂鸣器/LED指示灯</h3>
+<p>作为单片机启动，串口屏按键以及测量结束的提示信号。</p>
+<h2 id="硬件设计">硬件设计</h2>
+<h3 id="稳压电路">稳压电路</h3>
+采用LM2596S-ADJ来实现12V到6.5V（云台供电）的稳压和5V的稳压。LM2596S-ADJ是德州仪器（TI）生产的3A电流输出降压开关型集成稳压芯片，它内含固定频率振荡器（150KHZ）和基准稳压器（1.23v），并具有完善的保护电路、电流限制、热关断电路等功能，使它的性能很稳定。利用该器件只需极少的外围器件便可构成高效稳压电路。所以，LM2596S-ADJ稳压芯片十分适合系统的稳压电路设计。
+<center>
+<img src="2_稳压电路.png" width=700/><span class="caption">图2
+稳压电路</span>
+</center>
+<h3 id="电路接线图">电路接线图</h3>
+<center>
+<img src="3_电路接线图.png" width=600/><span class="caption">图3
+电路接线图</span>
+</center>
+<h3
+id="stm32f103zet6与其他器件的连接">STM32F103ZET6与其他器件的连接</h3>
+<ul>
+<li>串口屏—USART1—PA9(TX),PA10(RX)</li>
+<li>激光测距模块—USART2—PA2(TX),PA3(RX)</li>
+<li>OPENMV视觉模块—USART3—PB10(TX),PB11(RX)</li>
+<li>舵机PWM—TIM3—PA6(CH1),PA7(CH2)</li>
+<li>蜂鸣器与指示灯—PE14,PE15</li>
+</ul>
+<h2 id="软件设计">软件设计</h2>
+<h3 id="stm32程序总流程图">STM32程序总流程图</h3>
+<center>
+<img src="4_STM32程序总流程图.png" width=400/><span class="caption">图4
+STM32程序总流程图</span>
+</center>
+<h3 id="openmv视觉模块-1">OPENMV视觉模块</h3>
+<h4 id="openmv程序总流程图">OPENMV程序总流程图</h4>
+<center>
+<img src="5_OPENMV程序总流程图.png" width=400/><span class="caption">图5
+OPENMV程序总流程图</span>
+</center>
+<p>OPENMV程序总流程图如上图所示，测量分为“普通测量”与“追踪测量”两种。<br />
+普通测量模式下，激光测距模块已事先对准待测图形中心，可以直接调用OPENMV内置库函数识别特定色块，读取色块的各项信息，以此可以判断出待测图形的形状。将图形形状等信息以串口信号形式发送至单片机，结合单片机接收到的来自激光测距模块的距离信息。即可根据相似三角形原理计算出图形的尺寸（正方形或三角形的边长、圆的直径）。<br />
+追踪测量模式下，激光测距模块未对准待测图形中心，如果摄像头没有观察到待测图形色块，则向单片机发送“移动”信号，控制舵机按照设定好的方式来回运动（从左到右，从上到下，覆盖可能找到色块的所有方向）；摄像头观察到色块后，向单片机发送“对准”信号，通过一个简单的闭环控制使激光测距模块对准色块中心（设定值为摄像头视野中心坐标，实际值为色块在摄像头视野中的坐标，被控量为两个舵机的PWM值）。完成对准后所执行程序同普通测量模式。</p>
+<h4 id="非接触式物体尺寸测量原理">非接触式物体尺寸测量原理</h4>
+<center>
+<img src="7_相似三角形法测量图形尺寸.png" width=600/><span
+class="caption">图6 相似三角形法测量图形尺寸</span>
+</center>
+<p>本次竞赛的物体尺寸测量基于相似三角形原理，公式如下所示： <span
+class="math display">\[\frac{L} {x} = \frac{ {L&#39;} } {f}\]</span>
+首先进行一次测试以求出摄像头焦距<span
+class="math inline">\(f\)</span>，可以将某已知边长<span
+class="math inline">\(L\)</span>的物体放置在摄像头前已知距离<span
+class="math inline">\(x\)</span>的位置，使用测试程序测量像素点的长度<span
+class="math inline">\(L&#39;\)</span>，便可用上式求出摄像头焦距<span
+class="math inline">\(f\)</span>，该值为固定值，一旦确定便不会改变。<br />
+普通测量或追踪测量模式下，通过来自激光测距模块的距离<span
+class="math inline">\(x\)</span>，与来自OpenMV摄像头模块的像素点长度<span
+class="math inline">\(L’\)</span>，以及固定的摄像头焦距<span
+class="math inline">\(f\)</span>，便可以求出待测物体的长度<span
+class="math inline">\(L\)</span>。</p>
+<h3 id="usart-hmi串口屏-1">USART HMI串口屏</h3>
+<center>
+<img src="6_串口屏主界面.png" width=300/><span class="caption">图7
+串口屏主界面</span>
+</center>
+<p>串口屏使用USART
+HMI配套IDE进行图形界面的编辑与程序烧录。本次竞赛所用串口屏主界面如上图所示。按下“普通测量”或“追踪测量”键后，串口屏将向STM32单片机发送不同的串口信号。STM32接到信号后向OPENMV视觉模块发送串口信号，蜂鸣器鸣响提示，OPENMV根据不同的信号按照图5所示程序流程进行测量。<br />
+<del>至于立体测量，竞赛时间有限没做出来。</del></p>
+<h3 id="激光测距模块-1">激光测距模块</h3>
+<p>STM32单片机与激光测距模块的通信通过单片机的串口USART2实现，设置波特率为38400。<br />
+根据摩天MyAntenn-L1型号激光测距模块参考手册，结合实际情况使用快速测距模式。<br />
+在STM32主函数写下代码<code>printf("iFACM");</code>便可启用快速测距模式。<br />
+注意这里需要<strong>对printf函数进行重定义</strong>，重定义代码位于usart.c文件下，具体如下：<br />
+(这里将原有例程中的USART1改成了USART2。这样才能用printf通过USART2发送字符串信号。)
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">if</span> 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">pragma</span> import(__use_no_semihosting)             </span></span><br><span class="line"><span class="comment">//标准库需要的支持函数                 </span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">FILE</span> </span></span><br><span class="line"><span class="class">&#123;</span> </span><br><span class="line">	<span class="type">int</span> handle; </span><br><span class="line"></span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line">FILE __stdout;       </span><br><span class="line"><span class="comment">//定义_sys_exit()以避免使用半主机模式    </span></span><br><span class="line">_sys_exit(<span class="type">int</span> x) </span><br><span class="line">&#123; </span><br><span class="line">	x = x; </span><br><span class="line">&#125; </span><br><span class="line"><span class="comment">//重定义fputc函数 </span></span><br><span class="line"><span class="type">int</span> <span class="title function_">fputc</span><span class="params">(<span class="type">int</span> ch, FILE *f)</span></span><br><span class="line">&#123;      </span><br><span class="line">	<span class="keyword">while</span>((USART2-&gt;SR&amp;<span class="number">0X40</span>)==<span class="number">0</span>);<span class="comment">//循环发送,直到发送完毕   </span></span><br><span class="line">    USART2-&gt;DR = (u8) ch;      </span><br><span class="line">	<span class="keyword">return</span> ch;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> </span></span><br></pre></td></tr></table></figure></p>
+<p>USART2串口中断函数如下所示，通常串口接收到的数据以0x0d,0x0c结尾。<br />
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">USART2_IRQHandler</span><span class="params">(<span class="type">void</span>)</span>                	<span class="comment">//串口2中断服务程序</span></span><br><span class="line">&#123;</span><br><span class="line">	u8 Res;</span><br><span class="line">    <span class="keyword">if</span>(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)  <span class="comment">//接收中断</span></span><br><span class="line">    &#123;</span><br><span class="line">        Res = USART_ReceiveData(USART2);	<span class="comment">//读取接收到的数据</span></span><br><span class="line">		<span class="keyword">if</span>(Res!=<span class="number">0x0d</span>&amp;&amp;Res!=<span class="number">0x0a</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			USART_RX_BUF2[USART_RX_STA2] = Res ;<span class="comment">//USART_RX_BUF2</span></span><br><span class="line">			USART_RX_STA2++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			USART_RX_STA2 = <span class="number">0</span>;</span><br><span class="line">			Distance_cal();</span><br><span class="line">		&#125;				</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 激光测距模块距离处理函数如下： <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">Distance_cal</span><span class="params">(<span class="type">void</span>)</span><span class="comment">//数据处理</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(USART_RX_BUF2[<span class="number">0</span>]==<span class="string">&#x27;D&#x27;</span>&amp;&amp;USART_RX_BUF2[<span class="number">3</span>]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		dis=(USART_RX_BUF2[<span class="number">2</span>]<span class="number">-48</span>)*<span class="number">1000</span>+(USART_RX_BUF2[<span class="number">4</span>]<span class="number">-48</span>)*<span class="number">100</span>+(USART_RX_BUF2[<span class="number">5</span>]<span class="number">-48</span>)*<span class="number">10</span>+(USART_RX_BUF2[<span class="number">6</span>]<span class="number">-48</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span>(USART_RX_BUF2[<span class="number">0</span>]==<span class="string">&#x27;D&#x27;</span>&amp;&amp;USART_RX_BUF2[<span class="number">4</span>]==<span class="string">&#x27;.&#x27;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		dis=(USART_RX_BUF2[<span class="number">2</span>]<span class="number">-48</span>)*<span class="number">10000</span>+(USART_RX_BUF2[<span class="number">3</span>]<span class="number">-48</span>)*<span class="number">1000</span>+(USART_RX_BUF2[<span class="number">5</span>]<span class="number">-48</span>)*<span class="number">100</span>+(USART_RX_BUF2[<span class="number">6</span>]<span class="number">-48</span>)*<span class="number">10</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+在快速测距模式下，数据格式为D=1.234m或D=12.34m。
+注意串口输出的数字为'0'到'9'的ASCII码，需要减去'0'的ASCII码，即48。</p>
+<h3 id="二维云台-1">二维云台</h3>
+<p>二维云台的两个舵机采用PWM控制，分别使用定时器TIM3的CH1与CH2通道。<br />
+TIM1为20ms的定时器中断，根据外部状态每隔20ms对舵机PWM值进行更新。</p>
+<h2 id="后续与总结">后续与总结</h2>
+<p><code>To Be Countinued未完待续......</code></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+<div id="tcomment"></div>
+<script src="https://cdn.staticfile.org/twikoo/1.6.16/twikoo.all.min.js"></script>
+<script>
+twikoo.init({
+  envId: 'https://renahah.zeabur.app', // 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  el: '#tcomment', // 容器元素
+  // region: 'ap-guangzhou', // 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+  // lang: 'zh-CN', // 用于手动设定评论区语言，支持的语言列表 https://github.com/imaegoo/twikoo/blob/main/src/js/utils/i18n/index.js
+})
+</script>
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">自制网易云音乐淘歌软件</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

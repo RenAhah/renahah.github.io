@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>乐理笔记02-简谱 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="乐理,音乐" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 39-59节 简谱 调号 见乐理笔记01-基础知识 拍号 拍号的表示方式为\(\frac X Y\)，读作YX拍，意思是以Y分音符的时长为一拍，每小节有X拍。 最常见的拍号是44拍，即以4分音符的时长为一拍，每小节有4拍。此外可以见到的拍号有42拍、43拍、83拍、86拍，其他拍号极其罕见。 拍号的强">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乐理笔记02-简谱">
+<meta property="og:url" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 39-59节 简谱 调号 见乐理笔记01-基础知识 拍号 拍号的表示方式为\(\frac X Y\)，读作YX拍，意思是以Y分音符的时长为一拍，每小节有X拍。 最常见的拍号是44拍，即以4分音符的时长为一拍，每小节有4拍。此外可以见到的拍号有42拍、43拍、83拍、86拍，其他拍号极其罕见。 拍号的强">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/附点四分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/附点八分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/八分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/附点十六分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/十六分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/附点三十二分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/三十二分音符.gif">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/延音线1.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/连线1.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/横线1.png">
+<meta property="article:published_time" content="2023-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-30T07:09:52.078Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="乐理">
+<meta property="article:tag" content="音乐">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/附点四分音符.gif">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file active"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-音乐/乐理/乐理笔记02-简谱" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a>, <a class="tag-link-link" href="/tags/%E9%9F%B3%E4%B9%90/" rel="tag">音乐</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">
+            <time datetime="2023-06-23T16:00:00.000Z" itemprop="datePublished">2023-06-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            乐理笔记02-简谱
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E8%B0%B1"><span class="toc-number">1.</span> <span class="toc-text">简谱</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%8F%B7"><span class="toc-number">1.1.</span> <span class="toc-text">调号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%8D%E5%8F%B7"><span class="toc-number">1.2.</span> <span class="toc-text">拍号</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8B%8D%E5%8F%B7%E7%9A%84%E5%BC%BA%E5%BC%B1%E5%85%B3%E7%B3%BB"><span class="toc-number">1.2.1.</span> <span class="toc-text">拍号的强弱关系</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E6%8B%8D%E5%AD%90"><span class="toc-number">1.2.2.</span> <span class="toc-text">单拍子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%8D%E6%8B%8D%E5%AD%90"><span class="toc-number">1.2.3.</span> <span class="toc-text">复拍子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E6%8B%8D%E5%AD%90"><span class="toc-number">1.2.4.</span> <span class="toc-text">混合拍子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E6%8B%8D%E5%AD%90"><span class="toc-number">1.2.5.</span> <span class="toc-text">一拍子</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%A3%E6%8B%8D%E5%AD%90"><span class="toc-number">1.2.6.</span> <span class="toc-text">散拍子</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%85%E7%BB%AA%E4%B8%8E%E9%80%9F%E5%BA%A6"><span class="toc-number">1.3.</span> <span class="toc-text">情绪与速度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E7%AC%A6"><span class="toc-number">1.4.</span> <span class="toc-text">音符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E8%8A%82"><span class="toc-number">1.5.</span> <span class="toc-text">小节</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B0%8F%E8%8A%82%E5%BA%8F%E5%8F%B7"><span class="toc-number">1.5.1.</span> <span class="toc-text">小节序号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%B1%E8%B5%B7%E5%B0%8F%E8%8A%82"><span class="toc-number">1.5.2.</span> <span class="toc-text">弱起小节</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%88%E6%AD%A2%E7%BA%BF"><span class="toc-number">1.6.</span> <span class="toc-text">终止线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E9%9F%B3%E7%BA%BF"><span class="toc-number">1.7.</span> <span class="toc-text">延音线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E7%BA%BF"><span class="toc-number">1.8.</span> <span class="toc-text">连线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%91%E6%AD%A2%E7%AC%A6"><span class="toc-number">1.9.</span> <span class="toc-text">休止符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E7%AC%A6%E4%B8%8B%E6%96%B9%E6%A8%AA%E7%BA%BF"><span class="toc-number">1.10.</span> <span class="toc-text">音符下方横线</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>个人乐理自学笔记<br />
+本节内容参考自<code>三分钟音乐社 《零基础学音乐·自学乐理第二季》 39-59节</code></p>
+<h2 id="简谱">简谱</h2>
+<h3 id="调号">调号</h3>
+<p>见<code>乐理笔记01-基础知识</code></p>
+<h3 id="拍号">拍号</h3>
+<p>拍号的表示方式为<span class="math inline">\(\frac X
+Y\)</span>，读作YX拍，意思是以Y分音符的时长为一拍，每小节有X拍。<br />
+最常见的拍号是44拍，即以4分音符的时长为一拍，每小节有4拍。此外可以见到的拍号有42拍、43拍、83拍、86拍，其他拍号极其罕见。</p>
+<h4 id="拍号的强弱关系">拍号的强弱关系</h4>
+<p>无论什么拍号，每小节第一拍均为强拍，且每小节只有这一个强拍。<br />
+强拍的音量不一定响，弱拍的音量不一定弱。<br />
+旋律中的长音符，稳定音，通常处于强拍；短音符，不稳定音，通常处于弱拍。<br />
+和声通常要在强拍进行变化，弱拍进行保持。<br />
+不同的强弱关系还影响旋律的动机，织体的写法，配器的选择，速度的选择等等。</p>
+<h4 id="单拍子">单拍子</h4>
+<p>每小节只有一个强拍，并且存在弱拍。<br />
+42拍——动次；43拍——动次次；83拍——动次次。</p>
+<h4 id="复拍子">复拍子</h4>
+<p>由相同的单拍子组合而成。<br />
+44拍——动次打次；86拍——动次次打次次。<br />
+44拍由两个42拍组合而成，由多个拍号组合而成的拍号，每小节第一个拍子之外的强拍均要变成次强拍。因此这里的第二个42拍的强拍变成了次强拍，其强度弱于强拍。86拍同理，第二个83拍的强拍也变成了次强拍。</p>
+<h4 id="混合拍子">混合拍子</h4>
+<p>由不同的单拍子组合而成。<br />
+45拍——动次打次次（或动次次打次）。<br />
+45拍的组合顺序有两种：“42拍+43拍”或“43拍+42拍”，因此次强拍的位置有两种可能。</p>
+<h4 id="一拍子">一拍子</h4>
+<p>每小节只有一拍，且这一拍是强拍。即拍号的分子是1被称为一拍子。<br />
+同理，拍号分子为X被称为X拍子。如43拍、83拍可称为三拍子。</p>
+<h4 id="散拍子">散拍子</h4>
+<p>符号为“艹”。散拍子没有固定小节线，没有固定拍数，没有固定强弱关系，一般用于戏曲音乐中。</p>
+<h3 id="情绪与速度">情绪与速度</h3>
+情绪即演奏(唱)时的情绪，常见的情绪有欢快地、愉悦地、柔和地、抒情地、激昂地、悲伤地等。<br />
+速度即演奏速度，包括具体的速度和抽象的速度两种。<br />
+具体的速度指的是BPM(Beats Per
+Minute)，即每分钟有多少拍。如BPM为120时可表示为“每分钟120拍”或“𝅘𝅥=120”或“120
+BPM”。<br />
+抽象的速度是词语式的表达，是一个大致范围，有上下浮动的空间。如BPM在60以下称为慢速，60到120称为中速，120到180称为快速，180以上称为急速。<br />
+
+<center>
+<span class="caption">表1 抽象的速度</span>
+</center>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">意大利文</th>
+<th style="text-align: center;">中文</th>
+<th style="text-align: center;">BPM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Grave</td>
+<td style="text-align: center;">庄板</td>
+<td style="text-align: center;">约40</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Largo</td>
+<td style="text-align: center;">广板</td>
+<td style="text-align: center;">约46</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Lento</td>
+<td style="text-align: center;">慢板</td>
+<td style="text-align: center;">约52</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Adagio</td>
+<td style="text-align: center;">柔板</td>
+<td style="text-align: center;">约56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Larghetto</td>
+<td style="text-align: center;">小广板</td>
+<td style="text-align: center;">约60</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Andante</td>
+<td style="text-align: center;">行板</td>
+<td style="text-align: center;">约66</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Andantino</td>
+<td style="text-align: center;">小行板</td>
+<td style="text-align: center;">约69</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Moderato</td>
+<td style="text-align: center;">中板</td>
+<td style="text-align: center;">约88</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Allegretto</td>
+<td style="text-align: center;">小快板</td>
+<td style="text-align: center;">约108</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Allegro</td>
+<td style="text-align: center;">快板</td>
+<td style="text-align: center;">约132</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Presto</td>
+<td style="text-align: center;">急板</td>
+<td style="text-align: center;">约184</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Prestissimo</td>
+<td style="text-align: center;">最急板</td>
+<td style="text-align: center;">约208</td>
+</tr>
+</tbody>
+</table>
+<h3 id="音符">音符</h3>
+<p>音符时长取决于拍号的分母。以44拍为例，44拍以四分音符的时长为1拍。那么对应二分音符的时长是2拍，全音符时长为4拍。<br />
+附点音符时长为原音符的1.5倍。<br />
+复附点音符，两个附点的时长为原音符的1.75倍，三个附点的时长为原音符的1.875倍，以此类推。</p>
+<center>
+<span class="caption">表2 音符及其时长(以44拍为例)</span>
+</center>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 26%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">名称</th>
+<th style="text-align: center;">记法</th>
+<th style="text-align: center;">时长</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">全音符</td>
+<td style="text-align: center;"><span
+class="math inline">\(1---\)</span></td>
+<td style="text-align: center;">四拍</td>
+<td style="text-align: center;">█ █ █ █</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">附点二分音符</td>
+<td style="text-align: center;"><span
+class="math inline">\(1--\)</span></td>
+<td style="text-align: center;">三拍</td>
+<td style="text-align: center;">█ █ █ </td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">二分音符</td>
+<td style="text-align: center;"><span
+class="math inline">\(1-\)</span></td>
+<td style="text-align: center;">二拍</td>
+<td style="text-align: center;">█ █  </td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">附点四分音符</td>
+<td style="text-align: center;"><img src="附点四分音符.gif"/></td>
+<td style="text-align: center;">一点五拍</td>
+<td style="text-align: center;">█ ▌  </td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">四分音符</td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: center;">一拍</td>
+<td style="text-align: center;">█   </td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">附点八分音符</td>
+<td style="text-align: center;"><img src="附点八分音符.gif"/></td>
+<td style="text-align: center;">四分之三拍</td>
+<td style="text-align: center;">▌▎  </td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">八分音符</td>
+<td style="text-align: center;"><img src="八分音符.gif"/></td>
+<td style="text-align: center;">半拍</td>
+<td style="text-align: center;">▌   </td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">附点十六分音符</td>
+<td style="text-align: center;"><img src="附点十六分音符.gif"/></td>
+<td style="text-align: center;">八分之三拍</td>
+<td style="text-align: center;">▎▏  </td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">十六分音符</td>
+<td style="text-align: center;"><img src="十六分音符.gif"/></td>
+<td style="text-align: center;">四分之一拍</td>
+<td style="text-align: center;">▎   </td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">附点三十二分音符</td>
+<td style="text-align: center;"><img src="附点三十二分音符.gif"/></td>
+<td style="text-align: center;">十六分之三拍</td>
+<td style="text-align: center;">▏|  </td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">三十二分音符</td>
+<td style="text-align: center;"><img src="三十二分音符.gif"/></td>
+<td style="text-align: center;">八分之一拍</td>
+<td style="text-align: center;">▏   </td>
+</tr>
+</tbody>
+</table>
+<h3 id="小节">小节</h3>
+<p>小节使用小节线“|”隔开，小节的时长取决于拍号。以44拍为例，四分音符为一拍，每小节四拍，那么每个小节的时长为四个四分音符的长度，即一个全音符长度。</p>
+<h4 id="小节序号">小节序号</h4>
+<p>用来标明是第几个小节，最主要的作用是方便查找。小节序号通常标在小节线的正上方或稍微偏右。</p>
+<h4 id="弱起小节">弱起小节</h4>
+<p>不从强拍开始的不完整的小节，常用在乐曲开头。<br />
+小节序号从第一个完整小节开始计算，因此弱起小节不是乐曲的第一个小节。</p>
+<h3 id="终止线">终止线</h3>
+<p>终止线为“𝄂”，意味着乐谱的终止。</p>
+<h3 id="延音线">延音线</h3>
+<p>延音线可以用于表示一个时长无法通过音符或附点音符表示的音。亦用于某个音跨越小节线的情况。<br />
+如要表示一个时长为1.25拍的音，可以用延音线表示为<img style="display:inline-block;height:40px" src="延音线1.png"/>，即四分音符与十六分音符的组合，加起来的时长为1.25拍。这里只有第一个音符发出声音，第二个音符不重新发音，仅为前面的音补充时长。<br />
+延音线的两个音必须为同一个音。</p>
+<h3 id="连线">连线</h3>
+<p>乐谱中需要连贯演奏(唱)的地方使用连线进行连接，某一个字对应几个音时也会使用连线连接。<br />
+连线的画法与延音线相同，但通常情况下会连几个不同的音。<br />
+举一个例子<img style="display:inline-block;height:40px" src="连线1.png"/>。这里最外侧从第一个音连至最后一个音的线为连线。内侧连接同一个音的线为延音线。</p>
+<h3 id="休止符">休止符</h3>
+<p>表示停顿，符号为0，停顿时长与音符时长的表示方法类似。</p>
+<h3 id="音符下方横线">音符下方横线</h3>
+<p>通常情况下将处于同一拍的音符下方的横线连接起来，方便计算拍数。如<img style="display:inline-block;height:30px" src="横线1.png"/>，这里连起来的部分的拍数之和都是一拍。<br />
+断开的部分不存在停顿，横线的断开与小节线的分割均不表示停顿，都需要连续演奏。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://space.bilibili.com/7762500/channel/series">三分钟音乐社</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    乐理笔记03-节奏
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">乐理笔记01-基础知识</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>乐理笔记07-和弦 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="乐理,音乐" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 143-161节 和弦 和弦 三个音或者三个以上的音构成的集体称为和弦。在特定风格或条件下，有些和弦会规律性地省略自己内部的一些音，导致这些和弦看上去只有1或2个音。 和声 和声指不同的和弦组合、连接、运用方式、细节处理等。强调不同和弦连接而形成的整体。 三和弦 三个音，按照三度叠置的关系形成的和弦称为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乐理笔记07-和弦">
+<meta property="og:url" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 143-161节 和弦 和弦 三个音或者三个以上的音构成的集体称为和弦。在特定风格或条件下，有些和弦会规律性地省略自己内部的一些音，导致这些和弦看上去只有1或2个音。 和声 和声指不同的和弦组合、连接、运用方式、细节处理等。强调不同和弦连接而形成的整体。 三和弦 三个音，按照三度叠置的关系形成的和弦称为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/1_三和弦转位.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/2_七和弦转位.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/3_织体.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/4_九十一十三和弦.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/5_加音和弦.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/6_挂留和弦.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/7_功能级数.png">
+<meta property="article:published_time" content="2023-07-23T23:02:57.000Z">
+<meta property="article:modified_time" content="2023-07-30T09:37:21.693Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="乐理">
+<meta property="article:tag" content="音乐">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/1_三和弦转位.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file active"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-音乐/乐理/乐理笔记07-和弦" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a>, <a class="tag-link-link" href="/tags/%E9%9F%B3%E4%B9%90/" rel="tag">音乐</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">
+            <time datetime="2023-07-23T23:02:57.000Z" itemprop="datePublished">2023-07-24</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            乐理笔记07-和弦
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8C%E5%BC%A6"><span class="toc-number">1.</span> <span class="toc-text">和弦</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%BC%A6-1"><span class="toc-number">1.1.</span> <span class="toc-text">和弦</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%A3%B0"><span class="toc-number">1.2.</span> <span class="toc-text">和声</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%92%8C%E5%BC%A6"><span class="toc-number">1.3.</span> <span class="toc-text">三和弦</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%A7%E4%B8%89%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%B0%8F%E4%B8%89%E5%92%8C%E5%BC%A6"><span class="toc-number">1.3.1.</span> <span class="toc-text">大三和弦与小三和弦</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E4%B8%89%E5%92%8C%E5%BC%A6%E4%B8%8E%E5%87%8F%E4%B8%89%E5%92%8C%E5%BC%A6"><span class="toc-number">1.3.2.</span> <span class="toc-text">增三和弦与减三和弦</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%92%8C%E5%BC%A6%E7%9A%84%E8%BD%AC%E4%BD%8D"><span class="toc-number">1.3.3.</span> <span class="toc-text">三和弦的转位</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83%E5%92%8C%E5%BC%A6"><span class="toc-number">1.4.</span> <span class="toc-text">七和弦</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%83%E5%92%8C%E5%BC%A6%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text">七和弦的命名规则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E4%B8%83%E5%92%8C%E5%BC%A6%E5%8F%8A%E5%85%B6%E7%AE%80%E7%A7%B0"><span class="toc-number">1.4.2.</span> <span class="toc-text">常用七和弦及其简称</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%83%E5%92%8C%E5%BC%A6%E7%9A%84%E8%BD%AC%E4%BD%8D"><span class="toc-number">1.4.3.</span> <span class="toc-text">七和弦的转位</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%BF%E4%B9%89%E7%9A%84%E5%92%8C%E5%BC%A6%E5%8E%9F%E4%BD%8D%E4%B8%8E%E8%BD%AC%E4%BD%8D%E8%BD%AC%E4%BD%8D%E7%9A%84%E6%84%8F%E4%B9%89"><span class="toc-number">1.5.</span> <span class="toc-text">广义的和弦原位与转位、转位的意义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%BC%A6%E7%9A%84%E7%BB%87%E4%BD%93"><span class="toc-number">1.6.</span> <span class="toc-text">和弦的织体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%BC%A6%E5%9B%BA%E5%AE%9A%E6%A0%87%E8%AE%B0%E6%B3%95"><span class="toc-number">1.7.</span> <span class="toc-text">和弦固定标记法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%92%8C%E5%BC%A6%E7%9A%84%E6%A0%87%E8%AE%B0"><span class="toc-number">1.7.1.</span> <span class="toc-text">三和弦的标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%83%E5%92%8C%E5%BC%A6%E7%9A%84%E6%A0%87%E8%AE%B0"><span class="toc-number">1.7.2.</span> <span class="toc-text">七和弦的标记</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%9C%E6%9D%A0%E5%92%8C%E5%BC%A6"><span class="toc-number">1.7.3.</span> <span class="toc-text">斜杠和弦</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%9D%E9%9F%B3%E5%8D%81%E4%B8%80%E9%9F%B3%E5%8D%81%E4%B8%89%E9%9F%B3"><span class="toc-number">1.7.4.</span> <span class="toc-text">九音、十一音、十三音</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A0%E9%9F%B3%E5%92%8C%E5%BC%A6"><span class="toc-number">1.7.5.</span> <span class="toc-text">加音和弦</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8C%82%E7%95%99%E5%92%8C%E5%BC%A6"><span class="toc-number">1.7.6.</span> <span class="toc-text">挂留和弦</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9C%81%E7%95%A5%E9%9F%B3%E5%92%8C%E5%BC%A6"><span class="toc-number">1.7.7.</span> <span class="toc-text">省略音和弦</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%BC%A6%E5%8A%9F%E8%83%BD%E4%B8%8E%E7%BA%A7%E6%95%B0%E6%A0%87%E8%AE%B0%E6%B3%95"><span class="toc-number">1.8.</span> <span class="toc-text">和弦功能与级数标记法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%92%8C%E5%A3%B0%E6%A8%A1%E6%9D%BF"><span class="toc-number">1.9.</span> <span class="toc-text">和声模板</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>个人乐理自学笔记<br />
+本节内容参考自<code>三分钟音乐社 《零基础学音乐·自学乐理第二季》 143-161节</code></p>
+<h2 id="和弦">和弦</h2>
+<h3 id="和弦-1">和弦</h3>
+<p>三个音或者三个以上的音构成的集体称为和弦。在特定风格或条件下，有些和弦会规律性地省略自己内部的一些音，导致这些和弦看上去只有1或2个音。</p>
+<h3 id="和声">和声</h3>
+<p>和声指不同的和弦组合、连接、运用方式、细节处理等。强调不同和弦连接而形成的整体。</p>
+<h3 id="三和弦">三和弦</h3>
+<p>三个音，按照三度叠置的关系形成的和弦称为三和弦。三个音由低到高分别为根音、三音与五音。根音到三音，三音到五音的音程皆为三度。</p>
+<h4 id="大三和弦与小三和弦">大三和弦与小三和弦</h4>
+<p>根音到三音是大三度，三音到五音是小三度，称为大三和弦（大+小）。听起来通常感觉明亮、温馨。<br />
+根音到三音是小三度，三音到五音是大三度，称为小三和弦（小+大）。听起来通常感觉暗淡、忧伤。<br />
+大三和弦与小三和弦的根音到五音是纯五度，是协和音程，听起来顺耳。</p>
+<h4 id="增三和弦与减三和弦">增三和弦与减三和弦</h4>
+<p>根音到三音是大三度，三音到五音是大三度，称为增三和弦（大+大）。<br />
+根音到三音是小三度，三音到五音是小三度，称为减三和弦（小+小）。<br />
+增三和弦与减三和弦的根音到五音是增五度/减五度，是不协和音程，听起来紧张、压抑。<br />
+增三和弦是需要扩张的紧张、压抑，后面通常接大六度；减三和弦是需要收缩的紧张、压抑，后面通常接纯四度或大三度；</p>
+<h4 id="三和弦的转位">三和弦的转位</h4>
+<p>三和弦的第一转位，指将原位的根音提高八度，三音与五音保持不变。所得和弦低音（三音）与根音的距离是六度，故又称为六和弦。<br />
+三和弦的第二转位，指将原位的根音与三音提高八度，五音保持不变。所得和弦低音（五音）与根音的距离是四度，低音（五音）与三音的距离是六度，故又称为四六和弦。<br />
+注意转位后音高最低的音（低音）不是根音。<br />
+如图为大三和弦的转位，小三和弦、增三和弦、减三和弦同理，其转位后的名称前缀与原位三和弦的前缀相同。
+<img src="1_三和弦转位.png"/></p>
+<h3 id="七和弦">七和弦</h3>
+<p>四个音，按照三度叠置的关系形成的和弦称为七和弦。四个音由低到高分别为根音、三音、五音、七音。根音到三音，三音到五音，五音到七音的音程皆为三度。</p>
+<h4 id="七和弦的命名规则">七和弦的命名规则</h4>
+<p>七和弦名字前有两个前缀，第一个前缀与其根音、三音、五音形成的三和弦前缀相同，第二个前缀与其根音与七音形成的音程前缀相同。<br />
+如C4、E4、G4、B4构成的七和弦，其根三五音为CEG，是大三和弦；根音与七音是大七度。分别取两者的前缀，得到七和弦的名称为“大大七和弦”（有两个“大”的情况通常会省略一个，称其为“大七和弦”）。<br />
+如B4、D5、F5、A5构成的七和弦，其根三五音是减三和弦；根音与七音是小七度。分别取两者的前缀，得到七和弦的名称为“减小七和弦”。</p>
+<h4 id="常用七和弦及其简称">常用七和弦及其简称</h4>
+<p>常用的七和弦一共有7种，如下表所示：</p>
+<center>
+<span class="caption">表1 常用七和弦及其简称</span>
+</center>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">全称</th>
+<th style="text-align: center;">简称/别称</th>
+<th style="text-align: center;">举例</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">大大七和弦</td>
+<td style="text-align: center;">大七和弦</td>
+<td style="text-align: center;">C4、E4、G4、B4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">大小七和弦</td>
+<td style="text-align: center;">属七和弦</td>
+<td style="text-align: center;">G4、B4、D5、F5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">小大七和弦</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">D4、F4、A4、C5♯</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">小小七和弦</td>
+<td style="text-align: center;">小七和弦</td>
+<td style="text-align: center;">E4、G4、B4、D5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">减小七和弦</td>
+<td style="text-align: center;">半减七和弦<br/>小七降五和弦</td>
+<td style="text-align: center;">B3、D4、F4、A4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">减减七和弦</td>
+<td style="text-align: center;">减七和弦</td>
+<td style="text-align: center;">B3、D4、F4、A4♭</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">增大七和弦</td>
+<td style="text-align: center;">半增七和弦<br/>大七升五和弦</td>
+<td style="text-align: center;">F4、A4、C5♯、E5</td>
+</tr>
+</tbody>
+</table>
+<p>这里减小七和弦又称“半减七和弦”，指的是相较于“减减七和弦”，减小七和弦只有一个减。半增七和弦同理。<br />
+这里减小七和弦又称“小七降五和弦”，是指将小七和弦的五音降低一个半音，就可以得到减小七和弦。增大七和弦同理，可以将大七和弦的五音升一个半音来得到，故可称为“大七升五和弦”。</p>
+<h4 id="七和弦的转位">七和弦的转位</h4>
+<p>七和弦的转位根据低音与七音、根音的度数来命名。<br />
+七和弦的第一转位，指将原位的根音提高八度，三音、五音、七音保持不变。所得和弦低音（三音）与七音的距离是五度，低音与根音的距离是六度，故又称为五六和弦。<br />
+七和弦的第二转位，指将原位的根音与三音提高八度，五音、七音保持不变。所得和弦低音（五音）与七音的距离是三度，低音与根音的距离是四度，故又称为三四和弦。<br />
+七和弦的第三转位，指将原位的根音、三音、五音提高八度，七音保持不变。所得和弦低音（七音）与根音的距离是二度，故又称为二和弦。<br />
+如图为大七和弦的转位，与三和弦类似，七和弦的转位后的名称前缀与原位七和弦的前缀相同。
+<img src="2_七和弦转位.png"/></p>
+<h3
+id="广义的和弦原位与转位转位的意义">广义的和弦原位与转位、转位的意义</h3>
+<p>判断和弦的两条标准：①和弦的构成音；②低音。<br />
+如大三和弦的构成音为CEG，低音为C。只要满足这两个条件构成的和弦就是大三和弦。<strong>与构成音的数量、所处的组无关</strong>。C3E4G5、C4E4G4E5G5等都是大三和弦。<br />
+只要和弦的根音不是低音，转位构成音仍是原位的构成音，则都是（广义的）该和弦的转位。不局限于提高或降低八度。如大三和弦原位C4E4G4，可以转位为E4G4C6(C/E)、G3C4E5(C/G)等。</p>
+<p>转位的意义：①使声部进行流畅；②构建低音线条。</p>
+<h3 id="和弦的织体">和弦的织体</h3>
+<p>织体(texture)是一个抽象的概念，用于描述乐曲的状态、形态、造型、形式、神态、质感等，可以用来形容声部关系、节奏、和声、附调、配器等的相互关系。<br />
+和弦的织体表示和弦在纵横两个方向上的具体形态。常见的和弦织体有柱式织体、分解织体、混合织体等。<br />
+<img src="3_织体.png"/>
+柱式织体：<audio controls="controls"><source src="1_柱式织体.mp3" type="audio/mp3"></source></audio><br />
+分解织体：<audio controls="controls"><source src="1_分解织体.mp3" type="audio/mp3"></source></audio><br />
+混合织体：<audio controls="controls"><source src="1_混合织体.mp3" type="audio/mp3"></source></audio></p>
+<h3 id="和弦固定标记法">和弦固定标记法</h3>
+<h4 id="三和弦的标记">三和弦的标记</h4>
+<center>
+<span class="caption">表2 常用三和弦及其标记</span>
+</center>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">全称</th>
+<th style="text-align: center;">标记</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">大三和弦</td>
+<td
+style="text-align: center;">XMajor(Xmajor)<br/>XMaj(Xmaj)<br/>XM<br/><span
+style="color:red">X</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">小三和弦</td>
+<td style="text-align: center;">Xminor<br/>Xmin<br/>Xm<br/>X-</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">增三和弦</td>
+<td style="text-align: center;">Xaugmented<br/>Xaug<br/>X+</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">减三和弦</td>
+<td style="text-align: center;">Xdiminished<br/>Xdim<br/>X°</td>
+</tr>
+</tbody>
+</table>
+<h4 id="七和弦的标记">七和弦的标记</h4>
+<center>
+<span class="caption">表3 常用七和弦及其标记</span>
+</center>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">全称</th>
+<th style="text-align: center;">简称/别称</th>
+<th style="text-align: center;">标记</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">大大七和弦</td>
+<td style="text-align: center;">大七和弦</td>
+<td
+style="text-align: center;">XMajor7(Xmajor7)<br/>XMaj7(Xmaj7)<br/>XM7<br/>XΔ7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">大小七和弦</td>
+<td style="text-align: center;">属七和弦</td>
+<td style="text-align: center;">Xdominant7<br/>Xdom7<br/><span
+style="color:red">X7</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">小大七和弦</td>
+<td style="text-align: center;"></td>
+<td
+style="text-align: center;">XminorMajor7<br/>XminMaj7<br/>XmMaj7<br/>XmM7<br/>X-M7<br/>X-Δ7</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">小小七和弦</td>
+<td style="text-align: center;">小七和弦</td>
+<td style="text-align: center;">Xminor7<br/>Xmin7<br/>Xm7<br/>X-7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">减小七和弦</td>
+<td style="text-align: center;">半减七和弦<br/>小七降五和弦</td>
+<td
+style="text-align: center;">Xdim(m7)<br/>X°(m7)<br/>Xhalf-dim7<br/>XØ7<br/>Xm7(♭5)<br/>Xm7-5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">减减七和弦</td>
+<td style="text-align: center;">减七和弦</td>
+<td style="text-align: center;">Xdiminished7<br/>Xdim7<br/>X°7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">增大七和弦</td>
+<td style="text-align: center;">半增七和弦<br/>大七升五和弦</td>
+<td
+style="text-align: center;">Xaug(maj7)<br/>X+(maj7)<br/>X+Δ7<br/>XM7+5<br/>XM7♯5<br/>XΔ7+5<br/>XΔ7♯5</td>
+</tr>
+</tbody>
+</table>
+<p>注意这里“减”前缀的标记不是“-”，而是“°”，“小”前缀的标记是“-”，这里容易产生混淆。</p>
+<h4 id="斜杠和弦">斜杠和弦</h4>
+<p>斜杠和弦（又称slash和弦、分数和弦、分割和弦）可以用于表示含有转位的和弦。其表示方法为“X/Y”，其中X为原位和弦标记，Y为低音。<br />
+如“C/G”表示的就是低音为G的C大三和弦（四六和弦），是三和弦的第二转位，根音与三音皆提高八度。<br />
+再如“F♯Δ7/C♯”表示低音为C♯的F♯大七和弦（大三四和弦），是大七和弦的第二转位，根音与三音皆提高八度。<br />
+再如“Bm7-5/A”表示低音为A的B减小七和弦（减小二和弦），是减小七和弦的第三转位，根音、三音、五音皆提高八度。</p>
+<p>斜杠和弦亦可用于再原和弦基础上加一个不在此和弦内的音。<br />
+如“Fm/G”中Fm为F小三和弦（构成音F、A♭、C），G表示以G为低音。该斜杠和弦表示同时奏G、F、A♭、C四个音（如G3、F4、A4♭、C5）。</p>
+<h4 id="九音十一音十三音">九音、十一音、十三音</h4>
+<p>九和弦有五个音，在七和弦的基础上增加一个九音；十一和弦有六个音，在九和弦的基础上增加一个十一音；十三和弦有七个音，在九和弦的基础上增加一个十三音。九和弦、十一和弦、十三和弦举例如下图所示：
+<img src="4_九十一十三和弦.png"/>
+九和弦、十一和弦、十三和弦的标记遵循以下规则：<br />
+①若标记中的9（或11、13）没有升降号，则该和弦根音与九音（或十一音、十三音）的音程为大九度（或纯十一度、大十三度）。<br />
+如Fm7(11)表示的小七和弦由F、A♭、C、E♭构成，要求根音与十一音的音程为纯十一度，则十一音应为B♭。<br />
+②在实际乐谱中，并不要求根音与九音（或十一音、十三音）的音程必须为大九度（或纯十一度、大十三度）。只要求和弦构成音正确。<br />
+如D7(11)表示大小七和弦加一个与根音距离为纯十一度的十一音，其构成音为“D、F♯、A、C、G”。在实际乐谱中，这五个音可以是D4、F4♯、A4、C5、G5，也可以是D4、G4、F4♯、A4、C5（将G5移动到G4），虽然此时根音与十一音的音程是四度，但是其构成音仍是D7(11)的构成音，因此仍可用D7(11)表示。<strong>依据为“判断和弦的两条标准”。</strong><br />
+③标记直接后接9、11、13时，需要包含其下方所有三度叠加音。<br />
+如CM11的构成音为“C、E、G、B、D、F”，这里既有十一音，也有九音和七音。<br />
+如果想表示七和弦加十一音，则应记为CM7(11)，11要外加一个括号，其构成音为“C、E、G、B、F”。<br />
+如果想表示七和弦加九音与十三音，则应记为CM7(9,13)，9与13外加一个括号，其构成音为“C、E、G、B、D、A”。<br />
+如果想表示三和弦加一个十一音，则应记为Cadd11，其构成音为“C、E、G、F”。
+④和弦构成音过多时，一般优先省略五音。（去掉五音对听觉的影响最小）<br />
+⑤标记中的9、11、13可以加升降号。如Fm7(♯11)表示小七和弦加音程为增十一度的十一音，即构成音为“F、A♭、C、E♭、B”。<br />
+“♭5 ♯5 ♭9 9 ♯9 11 ♯11 ♭13
+13”统称为延伸音(Tension音)，这些音的加入，会增加和弦的不稳定性，增加和弦的张力。<br />
+注意这里没有♭11与♯13，因为大小七和弦（属七和弦）的♭11音等同于其3音，♯13音等同于其7音，这使得♭11与♯13变得没有意义。<br />
+⑥大小七和弦可以使用⑤中的所有Tension音，其他结构的七和弦只能使用其中的一部分。</p>
+<h4 id="加音和弦">加音和弦</h4>
+<p>加音和弦格式为XaddY，表示在原X和弦基础上加上一个Y音。在这里Y可以为9、11、13，此时加音与根音距离为大九度、纯十一度、大十三度。<br />
+如Cadd9表示在C大三和弦基础上加一个大九度音，其构成音有“C、E、G、D”。
+<img src="5_加音和弦.png"/>
+在实际乐谱中，并不要求根音与九音的音程必为九度。如上图所示，Cadd9可以为“C4、D4、E4、G4”，此时根音与九音的音程是二度。因此Xadd9也可记作Xadd2（不常用记法）。<br />
+同理Xadd11亦可记作Xadd4。由于其所加的纯十一度音容易产生不协和的冲突而导致三音模糊，因此该加音和弦很少使用。<br />
+Xadd13亦可记作Xadd6（常用记法），指在X和弦基础上加大十三度音（大六度音）。Xadd6又可进一步简记为X6，称为六和弦，。而三和弦的第一转位也称为六和弦，因此六和弦又两种意义，需要结合具体的构成音加以区分。<br />
+Xadd6add9指在X和弦基础上加大六度与大九度音，可进一步简记为X69，称为六九和弦。</p>
+<p>同样的构成音及低音可能有不同的和弦名字，如Fadd6的构成音为F、A、C、D，低音为F，而这也是Dm7/F的构成音及低音。但两者的侧重点不一样，在不同的音乐语境下有不同的含义。Fadd6侧重于F大三和弦，在此基础上加入大六度音；Dm7/F侧重于D小七和弦，在此基础上进行第一转位得到低音为F的五六和弦。</p>
+<h4 id="挂留和弦">挂留和弦</h4>
+<p>挂留和弦(Suspended和弦、sus和弦)来源于“延留音”或“延留音和弦”。即前一个和弦的某个音X的时值被延长，继续保持在下一个和弦中，导致下一个和弦的音Y被挤掉，推迟了音Y开始发音的时间（也有可能音Y不再发音）。
+<img src="6_挂留和弦.png"/>
+挂留和弦的举例如上图所示，这里C大三和弦中原本的E4音（三音）被前面的G属七和弦的F4（纯四度音）代替，而E4则推迟半拍才发出。纯四度音挤压掉三音，因此该和弦亦可称为Csus4。<br />
+“挂留和弦”最常见的有两种形式，纯四度音挤压掉三音称为sus4，大二度音挤压掉三音称为sus2。（sus和弦中没有三音）<br />
+如Csus4的构成音是CFG，就是将三音E替换为纯四度音F；Csus2的构成音是CDG，就是将三音E替换为大二度音D。</p>
+<h4 id="省略音和弦">省略音和弦</h4>
+<p>省略音和弦(omit和弦、no和弦)指省略某个和弦的音。如Fm7omit5（或Fm7no5）指省略Fm7和弦（构成音F、A♭、C、E♭）的五音C，得到和弦构成音F、A♭、E♭。<br />
+Comit3（或Cno3）指省略C大三和弦的三音E，得到和弦构成音C、G。省略了三音的和弦，模糊了和弦的明暗色彩感。由于该和弦只由根音与五音构成，因此又可简记为C5，称为五和弦。<br />
+五和弦也可称作power
+chord（强力和弦、重力和弦），常出现在朋克、摇滚、金属等风格中。</p>
+<h3 id="和弦功能与级数标记法">和弦功能与级数标记法</h3>
+<p><img src="7_功能级数.png"/>
+对音符与和弦的功能与级数标记法如上图所示，其中音符的级数标记法指的是将大调中的七个音依次标罗马数字I到VII。并将七个音依次命名为主音、上主音、中音、下属音、属音、下中音、导音。<br />
+将这七个音做为根音，向上叠加两个三度得如上图所示的三和弦（需要使用大调内的音），可以发现这里的根音I、IV、V形成的是大三和弦，分别记为I（主和弦）、IV（下属和弦）、V（属和弦）；根音II、III、VI形成的是小三和弦，分别记为ii（二级和弦）、iii（三级和弦）、vi（六级和弦）；根音VII形成的是减三和弦，记为vii°（导和弦）。<strong>上述规律适用于所有的大调。</strong></p>
+<p>和弦同样可以使用阿拉伯数字标记，如上图所示。</p>
+<p>功能标记法源自西方功能和声体系理论，使用三种功能记号对和弦进行标记，分别为T（主功能、Tonica）、D（属功能、Dominant）、S（下属功能、Subdominant）。在和声中主功能代表“稳定”，属功能与下属功能代表“紧张”。音乐里和声的底层逻辑，就是从“稳定”到“紧张”再到“稳定”再到“紧张”......通过循环保持音乐的推进。显然主和弦、下属和弦、属和弦分别可以记为T、S、D。其余和弦的标记取决于其体现的功能，如二级和弦具有下属功能，可标记为Sii；三级和弦既有一部分属功能，又有一部分主功能，因此标记为DTiii。全部标记可见上图。<br />
+属七和弦原意为“调式中的五级属功能七和弦”，如C大调中的G7便是这种含义下的属七和弦。而这个和弦恰恰是大小七和弦，因此最终泛指“大小七和弦”。</p>
+<p>七和弦的级数标记法为级数右下角标7，如C大调的G属七和弦(G7)可标记为<span
+class="math inline">\(V_7\)</span>。<br />
+转位和弦通过级数右侧数字体现和弦结构。如C大调C大三和弦第一转位(C/E)可标记为<span
+class="math inline">\(I_6\)</span>，三和弦第一转位又称为六和弦，这里右下角的6体现该和弦根音与三音的距离是六度。再如C大调E小三和弦第二转位(Em/B)可标记为<span
+class="math inline">\({iii}_4^6\)</span>，三和弦第二转位又称为四六和弦，这里右下角的4与右上角6体现该和弦低音与根音的距离是四度，低音与三音的距离是六度。</p>
+<h3 id="和声模板">和声模板</h3>
+<p>和声模板指一些常见的和弦走向套路，如4536251、15634125、6415、1645等。<br />
+使用和声模板需要注意以下几点：</p>
+<ul>
+<li>几乎所有模板都通过首调方式提示某个音的和弦，可以先使用C调进行创作，然后根据实际需要移调。如1645对应C大调C-Am-F-G。</li>
+<li>所有模板均采用44拍，且每个和弦占据一个小节，收尾的和弦可以长一点，尽量把整体补成4个或8个小节。如4536251对应C大调F-G-Em-Am-Dm-G-C，前面六个和弦各占一个小节，最后一个C和弦占两个小节。</li>
+<li>不局限于原位三和弦，可以尝试七、九、转位、add、sus等和弦。</li>
+<li>织体上可以多做变化。</li>
+<li>有些模板中的数字可能强调的是低音进行，而不是某级和弦。如17654325这里的7通常指的是“低音为7的属和弦”而非七级和弦。</li>
+<li>多看谱，多分析，扩充自己的模板库。</li>
+</ul>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://space.bilibili.com/7762500/channel/series">三分钟音乐社</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">乐理笔记06-音程</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

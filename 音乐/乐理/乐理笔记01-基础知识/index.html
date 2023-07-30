@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>乐理笔记01-基础知识 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="乐理,音乐" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 1-38节 基础知识 乐音与噪音 乐音：音高（频率）固定，振动规则的音。钢琴等乐器发出的是乐音，听起来悦耳、柔和。 噪音：振动不规则，音高也不明显的音。风声、雨声、机器轰鸣声是噪音，大多数打击乐器（鼓、镲、沙锤等）发出的是噪音，听起来刺耳。 音的物理性质 音高：指音调的高低。由音的频率决定，频率是发音体在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乐理笔记01-基础知识">
+<meta property="og:url" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="个人乐理自学笔记 本节内容参考自三分钟音乐社 《零基础学音乐·自学乐理第二季》 1-38节 基础知识 乐音与噪音 乐音：音高（频率）固定，振动规则的音。钢琴等乐器发出的是乐音，听起来悦耳、柔和。 噪音：振动不规则，音高也不明显的音。风声、雨声、机器轰鸣声是噪音，大多数打击乐器（鼓、镲、沙锤等）发出的是噪音，听起来刺耳。 音的物理性质 音高：指音调的高低。由音的频率决定，频率是发音体在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1_普通钢琴键+音名.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/2_普通钢琴键+升降.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/3_完整钢琴键.png">
+<meta property="og:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/低音点.gif">
+<meta property="article:published_time" content="2023-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-30T07:09:58.738Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="乐理">
+<meta property="article:tag" content="音乐">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/1_普通钢琴键+音名.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-音乐/乐理/乐理笔记01-基础知识" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/">乐理</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a>, <a class="tag-link-link" href="/tags/%E9%9F%B3%E4%B9%90/" rel="tag">音乐</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">
+            <time datetime="2023-06-22T16:00:00.000Z" itemprop="datePublished">2023-06-23</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            乐理笔记01-基础知识
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%90%E9%9F%B3%E4%B8%8E%E5%99%AA%E9%9F%B3"><span class="toc-number">1.1.</span> <span class="toc-text">乐音与噪音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E7%9A%84%E7%89%A9%E7%90%86%E6%80%A7%E8%B4%A8"><span class="toc-number">1.2.</span> <span class="toc-text">音的物理性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%94%B1%E5%90%8D"><span class="toc-number">1.3.</span> <span class="toc-text">唱名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E5%90%8D"><span class="toc-number">1.4.</span> <span class="toc-text">音名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%92%A2%E7%90%B4%E9%94%AE%E4%B8%8E%E9%9F%B3%E5%90%8D"><span class="toc-number">1.4.1.</span> <span class="toc-text">钢琴键与音名</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%8F%B7"><span class="toc-number">1.5.</span> <span class="toc-text">调号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A6%96%E8%B0%83%E4%B8%8E%E5%9B%BA%E5%AE%9A%E8%B0%83"><span class="toc-number">1.6.</span> <span class="toc-text">首调与固定调</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%8A%E9%9F%B3%E4%B8%8E%E5%85%A8%E9%9F%B3"><span class="toc-number">1.7.</span> <span class="toc-text">半音与全音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%87%E9%99%8D%E5%8F%B7"><span class="toc-number">1.8.</span> <span class="toc-text">升降号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E7%9A%84%E5%88%86%E7%BB%84"><span class="toc-number">1.9.</span> <span class="toc-text">音的分组</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9C%8D%E5%B0%94%E8%B5%AB%E5%A7%86%E5%85%B9%E9%9F%B3%E8%B0%83%E8%AE%B0%E5%8F%B7%E6%B3%95"><span class="toc-number">1.9.1.</span> <span class="toc-text">霍尔赫姆兹音调记号法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%91%E5%AD%A6%E9%9F%B3%E8%B0%83%E8%AE%B0%E5%8F%B7%E6%B3%95"><span class="toc-number">1.9.2.</span> <span class="toc-text">科学音调记号法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AD%E5%A4%AEc%E4%B8%8E%E6%A0%87%E5%87%86%E9%9F%B3"><span class="toc-number">1.10.</span> <span class="toc-text">中央C与标准音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E5%9F%9F"><span class="toc-number">1.11.</span> <span class="toc-text">音域</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E9%9F%B3%E7%82%B9%E4%B8%8E%E4%BD%8E%E9%9F%B3%E7%82%B9"><span class="toc-number">1.12.</span> <span class="toc-text">高音点与低音点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%AF%E5%85%AB%E5%BA%A6"><span class="toc-number">1.13.</span> <span class="toc-text">纯八度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E5%BC%8F"><span class="toc-number">1.14.</span> <span class="toc-text">调式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%98%B6"><span class="toc-number">1.15.</span> <span class="toc-text">音阶</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>个人乐理自学笔记<br />
+本节内容参考自<code>三分钟音乐社 《零基础学音乐·自学乐理第二季》 1-38节</code></p>
+<h2 id="基础知识">基础知识</h2>
+<h3 id="乐音与噪音">乐音与噪音</h3>
+<p>乐音：音高（频率）固定，振动规则的音。钢琴等乐器发出的是乐音，听起来悦耳、柔和。<br />
+噪音：振动不规则，音高也不明显的音。风声、雨声、机器轰鸣声是噪音，大多数打击乐器（鼓、镲、沙锤等）发出的是噪音，听起来刺耳。</p>
+<h3 id="音的物理性质">音的物理性质</h3>
+<p>音高：指音调的高低。由音的频率决定，频率是发音体在单位时间内的振动次数。<br />
+音值：指音的持续时间。<br />
+音强：指音的响度。由发音体的振幅大小决定。<br />
+音色：指不同声音表现在波形方面的与众不同的特性。音色与发音体的材料、结构等有关。</p>
+<h3 id="唱名">唱名</h3>
+<p>用来唱的名字，也就是do,re,mi,fa,sol,la,si。在简谱上对应1,2,3,4,5,6,7。</p>
+<h3 id="音名">音名</h3>
+<p>即声音的名字，声音是物体振动产生的，不同的声音会有不同的振动频率，而同一个声音的振动频率是固定的。因此同一个音名的频率不会改变，永远对应同一个音。</p>
+<h4 id="钢琴键与音名">钢琴键与音名</h4>
+钢琴一共有88个键<del>（因此钢琴有时被戏称为88k音游）</del>。按键的分布有周期性的规律，可以划分为若干组，取出其中一组如下图所示，一共有12个键，包括7个白键和5个黑键。7个白键的音名就分别为C,D,E,F,G,A,B。
+<center>
+<img src="1_普通钢琴键+音名.png" width=300/><span class="caption">图1
+钢琴键与音名</span>
+</center>
+<h3 id="调号">调号</h3>
+<p>唱名对应的音名不是固定的，同一个唱名不一定对应同一个音名。唱名与音名的对应关系取决于<strong>调号</strong>。<br />
+调号的格式为“唱名=音名”，简谱采用首调唱名法，如1=C表示的是C大调，即唱名do对应音名C，以此类推唱名re,mi,fa,sol,la,si分别对应音名D,E,F,G,A,B。而1=D则表示是D大调，此时唱名do对应音名D。</p>
+<h3 id="首调与固定调">首调与固定调</h3>
+<p>首调唱名法：将大调中的主音唱为do，如C大调中将C唱为do，D大调中就将D唱为do。简谱通常使用首调。<br />
+固定调唱名法：在任何调式中，都将C4（中央C）唱为do，其他音以此类推。五线谱通常使用固定调。</p>
+<h3 id="半音与全音">半音与全音</h3>
+<p>观察图1所示的一组钢琴键，不难发现C到D、D到E、F到G、G到A、A到B间都有黑键，而E到F间与B到C间没有黑键。也就是说E到F与B到C是直接相邻的，便可以称E到F、B到C间的音高距离为一个<strong>半音</strong>。<br />
+半音指的是相邻的两个音间的距离，而全音距离是半音的两倍。C到D、D到E、F到G、G到A、A到B间的音高距离为一个<strong>全音</strong>。<br />
+C到♯C、♯C到D的距离是一个半音。</p>
+<h3 id="升降号">升降号</h3>
+♯为升号，表示升一个半音；♭为降号，表示降一个半音。<br />
+𝄪为重升号，表示升一个全音；𝄫为重降号，表示降一个全音。
+<center>
+<img src="2_普通钢琴键+升降.png" width=300/><span class="caption">图2
+钢琴键与带升降号音名</span>
+</center>
+<p>加上升降符号后的一组钢琴键如上图所示，可以发现同一个键可以用不同的音名表示出来，而实际上这些音是同一个音，只是写法不同，这些对应同一个音的不同音名被称作<strong>等音</strong>。至于使用哪个音名，这取决于所处的音乐语境。</p>
+<h3 id="音的分组">音的分组</h3>
+对完整的88键钢琴进行分组，共分为9组，如下图所示：
+<center>
+<img src="3_完整钢琴键.png"/><span class="caption">图3
+钢琴键的分组</span>
+</center>
+<h4 id="霍尔赫姆兹音调记号法">霍尔赫姆兹音调记号法</h4>
+<p>命名分大字组、小字组、大字N组与小字N组。<br />
+大字组/大字N组的音名大写，小字组/小字N组的音名小写；<br />
+大字N组音名右下角写N，小子N组音名右上角写N。</p>
+<h4 id="科学音调记号法">科学音调记号法</h4>
+<p>将9个组从左至右命名为0到8。直接记为“大写音名+数字”的形式。<br />
+例如小字一组的C可以按霍法记为<span
+class="math inline">\(c^1\)</span>，也可按科法记为C4。</p>
+<h3 id="中央c与标准音">中央C与标准音</h3>
+<p>小字一组的C（即C4）被称作<strong>中央C</strong>。<br />
+小字一组的A（即A4）被称作<strong>标准音</strong>，其频率确定为440Hz。</p>
+<h3 id="音域">音域</h3>
+<p>乐器能够发出的声音范围，对于钢琴来说是<span
+class="math inline">\(A_2\)</span>到<span
+class="math inline">\(c^5\)</span>。<br />
+人声的音域通常情况下为<span class="math inline">\(g\)</span>到<span
+class="math inline">\(d^2\)</span>，正好覆盖小字一组，因此对于简谱中的“1=C”，其中的C对应钢琴中小字一组的C（中央C）。</p>
+<h3 id="高音点与低音点">高音点与低音点</h3>
+<p>1=C时，以小字一组为基准，小字一组的CDEFGAB对应简谱1234567。小字二组对应简谱加一个高音点，即<span
+class="math inline">\(\dot 1\dot 2\dot 3\dot 4\dot 5\dot 6\dot
+7\)</span>，小字三组对应简谱则加两个高音点，以此类推。大字组对应简谱加一个低音点，即<img style="display:inline-block" src="低音点.gif"/>，大字一组对应简谱则加两个低音点，以此类推。</p>
+<h3 id="纯八度">纯八度</h3>
+<p>纯八度是音程的一种，指相邻音组中相同音名的两个音之间的音高距离。纯八度的两个音（如C3与C4），其频率比正好为1:2。当两个音的振动频率比接近简单整数时，两个音听起来会很相近，很协和，感觉像同一个音。</p>
+<h3 id="调式">调式</h3>
+<p>若干高低不同的乐音，围绕某一有稳定感的中心音，按一定的音程关系组织在一起，成为一个有机的体系，称为调式。<br />
+调式有很多种，包括大调式、小调式、中古调式、五声调式等。<br />
+自然大调是大调式的一种，当七个音按照“全全半全全全半”的规则排列时，构成的是自然大调。<br />
+简谱中“1=C”表示的是C大调，CDEFGAB间的音高距离符合“全全半全全全半”的规则，是自然大调的一种。此外有D大调、E大调等。</p>
+<h3 id="音阶">音阶</h3>
+<p>将调式中的所有音，以主音开始到主音结束，由低到高或由高到低以阶梯状排列起来，被称作音阶。<br />
+如C大调的音阶就可以表示为“CDEFGABC”，这里最后面的C比最前面的C高了一个八度。此外“CBAGFEDC”、“CDEFGABCBAGFEDC”、“CBAGFEDCDEFGAB”也可称作C大调的音阶。</p>
+<center>
+<span class="caption">表1 自然大调音阶一览表 </span>
+</center>
+<table>
+<tr>
+<td>
+1=C
+</td>
+<td>
+C
+</td>
+<td>
+D
+</td>
+<td>
+E
+</td>
+<td>
+F
+</td>
+<td>
+G
+</td>
+<td>
+A
+</td>
+<td>
+B
+</td>
+<td>
+C
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♯C(第一个黑键)
+</td>
+<td>
+♯C
+</td>
+<td>
+♯D
+</td>
+<td>
+♯E
+</td>
+<td>
+♯F
+</td>
+<td>
+♯G
+</td>
+<td>
+♯A
+</td>
+<td>
+♯B
+</td>
+<td>
+♯C
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♭D(第一个黑键)
+</td>
+<td>
+♭D
+</td>
+<td>
+♭E
+</td>
+<td>
+F
+</td>
+<td>
+♭G
+</td>
+<td>
+♭A
+</td>
+<td>
+♭B
+</td>
+<td>
+C
+</td>
+<td>
+♭D
+</td>
+</tr>
+<tr>
+<td>
+1=D
+</td>
+<td>
+D
+</td>
+<td>
+E
+</td>
+<td>
+♯F
+</td>
+<td>
+G
+</td>
+<td>
+A
+</td>
+<td>
+B
+</td>
+<td>
+♯C
+</td>
+<td>
+D
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♭E(第二个黑键)
+</td>
+<td>
+♭E
+</td>
+<td>
+F
+</td>
+<td>
+G
+</td>
+<td>
+♭A
+</td>
+<td>
+♭B
+</td>
+<td>
+C
+</td>
+<td>
+D
+</td>
+<td>
+♭E
+</td>
+</tr>
+<tr>
+<td>
+1=E
+</td>
+<td>
+E
+</td>
+<td>
+♯F
+</td>
+<td>
+♯G
+</td>
+<td>
+A
+</td>
+<td>
+B
+</td>
+<td>
+♯C
+</td>
+<td>
+♯D
+</td>
+<td>
+E
+</td>
+</tr>
+<tr>
+<td>
+1=F
+</td>
+<td>
+F
+</td>
+<td>
+G
+</td>
+<td>
+A
+</td>
+<td>
+♭B
+</td>
+<td>
+C
+</td>
+<td>
+D
+</td>
+<td>
+E
+</td>
+<td>
+F
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♯F(第三个黑键)
+</td>
+<td>
+♯F
+</td>
+<td>
+♯G
+</td>
+<td>
+♯A
+</td>
+<td>
+B
+</td>
+<td>
+♯C
+</td>
+<td>
+♯D
+</td>
+<td>
+♯E
+</td>
+<td>
+♯F
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♭G(第三个黑键)
+</td>
+<td>
+♭G
+</td>
+<td>
+♭A
+</td>
+<td>
+♭B
+</td>
+<td>
+♭C
+</td>
+<td>
+♭D
+</td>
+<td>
+♭E
+</td>
+<td>
+F
+</td>
+<td>
+♭G
+</td>
+</tr>
+<tr>
+<td>
+1=G
+</td>
+<td>
+G
+</td>
+<td>
+A
+</td>
+<td>
+B
+</td>
+<td>
+C
+</td>
+<td>
+D
+</td>
+<td>
+E
+</td>
+<td>
+♯F
+</td>
+<td>
+G
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♭A(第四个黑键)
+</td>
+<td>
+♭A
+</td>
+<td>
+♭B
+</td>
+<td>
+C
+</td>
+<td>
+♭D
+</td>
+<td>
+♭E
+</td>
+<td>
+F
+</td>
+<td>
+G
+</td>
+<td>
+♭A
+</td>
+</tr>
+<tr>
+<td>
+1=A
+</td>
+<td>
+A
+</td>
+<td>
+B
+</td>
+<td>
+♯C
+</td>
+<td>
+D
+</td>
+<td>
+E
+</td>
+<td>
+♯F
+</td>
+<td>
+♯G
+</td>
+<td>
+A
+</td>
+</tr>
+<tr bgcolor="black" color="white">
+<td>
+1=♭B(第五个黑键)
+</td>
+<td>
+♭B
+</td>
+<td>
+C
+</td>
+<td>
+D
+</td>
+<td>
+♭E
+</td>
+<td>
+F
+</td>
+<td>
+G
+</td>
+<td>
+A
+</td>
+<td>
+♭B
+</td>
+</tr>
+<tr>
+<td>
+1=B(第七个白键)
+</td>
+<td>
+B
+</td>
+<td>
+♯C
+</td>
+<td>
+♯D
+</td>
+<td>
+E
+</td>
+<td>
+♯F
+</td>
+<td>
+♯G
+</td>
+<td>
+♯A
+</td>
+<td>
+B
+</td>
+</tr>
+<tr>
+<td>
+1=♭C(第七个白键)
+</td>
+<td>
+♭C
+</td>
+<td>
+♭D
+</td>
+<td>
+♭E
+</td>
+<td>
+♭F
+</td>
+<td>
+♭G
+</td>
+<td>
+♭A
+</td>
+<td>
+♭B
+</td>
+<td>
+♭C
+</td>
+</tr>
+</table>
+<p>自然大调的所有音阶如上表所示，一共有十五个大调，对应十二个音。其中第一个黑键上的“1=♯C”与“1=♭D”、第一个黑键上的“1=♯F”与“1=♭G”、第七个白键上的“1=B”与“1=♭C”是等音调，调式中的所有音完全相同，只是音名不同。<br />
+为了方便起见，大调中的音名最好不要含有重升重降符号，第二个黑键上的“1=♯D”、第四个黑键上的“1=♯G”、第五个黑键上的“1=♯A”其大调内音名含有重升符号，不符合方便的原则，因此没有列在上表中。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://space.bilibili.com/7762500/channel/series">三分钟音乐社</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    乐理笔记02-简谱
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">作曲研究-序言</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

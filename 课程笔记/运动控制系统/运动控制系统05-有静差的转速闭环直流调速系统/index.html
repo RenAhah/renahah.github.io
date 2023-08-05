@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>运动控制系统05-有静差的转速闭环直流调速系统 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,运动控制系统" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记 本节内容对应书中第三章 转速闭环控制的直流调速系统 第一节 有静差的转速闭环直流调速系统；对应页码p28-p38 比例控制转速闭环直流调速系统的结构与静特性 转速开环控制系统对负载扰动没有任何抑制作用。因此要引入负反馈，构成转速闭环的控制系统。   图1 比例控制转速闭环直流调速系统原理框图  比例控制的转速闭环直流调速">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运动控制系统05-有静差的转速闭环直流调速系统">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记 本节内容对应书中第三章 转速闭环控制的直流调速系统 第一节 有静差的转速闭环直流调速系统；对应页码p28-p38 比例控制转速闭环直流调速系统的结构与静特性 转速开环控制系统对负载扰动没有任何抑制作用。因此要引入负反馈，构成转速闭环的控制系统。   图1 比例控制转速闭环直流调速系统原理框图  比例控制的转速闭环直流调速">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/1_比例控制转速闭环直流调速系统原理框图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/2_比例控制转速闭环直流调速系统稳态结构框图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/3_闭环系统静特性和开环系统机械特性的关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/4_他励直流电动机在额定励磁下的等效电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/5_额定励磁下直流电动机的动态结构框图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/6_直流电动机动态结构框图的变换.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/7_转速反馈控制直流调速系统的动态结构框图.png">
+<meta property="article:published_time" content="2023-08-03T03:34:10.000Z">
+<meta property="article:modified_time" content="2023-08-05T07:35:25.918Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="运动控制系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/1_比例控制转速闭环直流调速系统原理框图.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">Hexo使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/运动控制系统/运动控制系统05-有静差的转速闭环直流调速系统" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/">运动控制系统</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>, <a class="tag-link-link" href="/tags/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/" rel="tag">运动控制系统</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">
+            <time datetime="2023-08-03T03:34:10.000Z" itemprop="datePublished">2023-08-03</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            运动控制系统05-有静差的转速闭环直流调速系统
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E4%BE%8B%E6%8E%A7%E5%88%B6%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84%E4%B8%8E%E9%9D%99%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">比例控制转速闭环直流调速系统的结构与静特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E7%8E%AF%E7%B3%BB%E7%BB%9F%E6%9C%BA%E6%A2%B0%E7%89%B9%E6%80%A7%E5%92%8C%E6%AF%94%E4%BE%8B%E9%97%AD%E7%8E%AF%E7%B3%BB%E7%BB%9F%E9%9D%99%E7%89%B9%E6%80%A7%E7%9A%84%E5%AF%B9%E6%AF%94%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">开环系统机械特性和比例闭环系统静特性的对比分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8F%8D%E9%A6%88%E6%8E%A7%E5%88%B6%E8%A7%84%E5%BE%8B"><span class="toc-number">3.</span> <span class="toc-text">闭环直流调速系统的反馈控制规律</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AF%94%E4%BE%8B%E6%8E%A7%E5%88%B6%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">4.</span> <span class="toc-text">比例控制转速闭环系统的稳定性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E9%80%9F%E5%8F%8D%E9%A6%88%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8A%A8%E6%80%81%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">转速反馈控制直流调速系统的动态数学模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AF%94%E4%BE%8B%E6%8E%A7%E5%88%B6%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8A%A8%E6%80%81%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="toc-number">4.2.</span> <span class="toc-text">比例控制闭环直流调速系统的动态稳定性</span></a></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记<br />
+本节内容对应书中<code>第三章 转速闭环控制的直流调速系统</code>
+<code>第一节 有静差的转速闭环直流调速系统</code>；对应页码p28-p38</p>
+<h2
+id="比例控制转速闭环直流调速系统的结构与静特性">比例控制转速闭环直流调速系统的结构与静特性</h2>
+转速开环控制系统对负载扰动没有任何抑制作用。因此要引入负反馈，构成转速闭环的控制系统。<br />
+
+<center>
+<img src="1_比例控制转速闭环直流调速系统原理框图.png" width=450/><span
+class="caption">图1 比例控制转速闭环直流调速系统原理框图</span>
+</center>
+比例控制的转速闭环直流调速系统原理框图如上图所示。相较于开环系统，闭环系统增加了比例放大器A与测速发电机TG。<br />
+图中<span class="math inline">\(U_n^*\)</span>为给定电压，<span
+class="math inline">\(U_n\)</span>为反馈电压，其大小与被测转速成正比。给定电压与反馈电压做差得到转速偏差电压<span
+class="math inline">\(\Delta
+{U_n}\)</span>。转速偏差电压经过比例放大器A放大后得到控制电压<span
+class="math inline">\(U_c\)</span>，控制电压是实际加到电力电子变换器UPE（相控整流器或PWM变换器）的电压值。系统其余部分与开环系统相同。<br />
+比例控制转速闭环直流调速系统各个环节关系式（忽略非线性因素、忽略控制器电源与电位器内阻）：<br />
+电压比较环节：<span class="math inline">\(\Delta {U_n} = U_n^* -
+{U_n}\)</span><br />
+比例放大器：<span class="math inline">\({U_c} = {K_p}\Delta
+{U_n}\)</span>（<span
+class="math inline">\(K_p\)</span>为比例系数）<br />
+测速反馈环节：<span class="math inline">\({U_n} = \alpha
+n\)</span>（<span
+class="math inline">\(\alpha\)</span>为转速反馈系数，单位V·min/r）<br />
+电力电子变换器：<span class="math inline">\({U_{d0}} =
+{K_s}{U_c}\)</span><br />
+直流电动机：<span class="math inline">\(n = \frac{ { {U_{d0} } - {I_d}R}
+} {C_e}\)</span><br />
+根据上述关系式，可以得到系统稳态结构框图如下所示：
+<center>
+<img src="2_比例控制转速闭环直流调速系统稳态结构框图.png" width=450/><span
+class="caption">图2 比例控制转速闭环直流调速系统稳态结构框图</span>
+</center>
+<p>将给定量<span class="math inline">\(U_n^*\)</span>与扰动量<span
+class="math inline">\(-{I_d}R\)</span>看作两个独立的输入量，求其单独作用时的输入输出关系式，再将二者结果叠加得到闭环调速系统静特性方程式：<br />
+<span class="math display">\[n = \frac{ { {K_p} {K_s}U_n^* - {I_d}R} } {
+{ {C_e} (1 + {K_p} {K_s}\alpha /{C_e} ) } } = \frac{ { {K_p} {K_s}U_n^*}
+} { { {C_e} (1 + K) } } - \frac{ {R{I_d} } } { { {C_e} (1 + K) }
+}\]</span> 这里取闭环系统的开环放大系数<span class="math inline">\(K =
+\frac{ { {K_p} {K_s}\alpha } } {C_e}\)</span>。</p>
+<h2
+id="开环系统机械特性和比例闭环系统静特性的对比分析">开环系统机械特性和比例闭环系统静特性的对比分析</h2>
+<p>开环系统机械特性： <span class="math inline">\(n = \frac{ { {U_{d0} }
+- {I_d}R} } { { {C_e} } } = \frac{ { {K_p} {K_s}U_n^*} } { { {C_e} } } -
+\frac{ {R{I_d} } } { { {C_e} } } = {n_{0op} } - \Delta {n_{op}
+}\)</span><br />
+其中<span
+class="math inline">\(n_{0op}\)</span>为开环系统的理想空载转速，<span
+class="math inline">\(\Delta n_{op}\)</span>为开环系统的稳态速降。<br />
+比例闭环系统静特性： <span class="math inline">\(n = \frac{ { {K_p}
+{K_s}U_n^*} } { { {C_e} (1 + K) } } - \frac{ {R{I_d} } } { { {C_e} (1 +
+K) } } = {n_{0cl} } - \Delta {n_{cl} }\)</span><br />
+其中<span
+class="math inline">\(n_{0cl}\)</span>为闭环系统理想空载转速，<span
+class="math inline">\(\Delta n_{cl}\)</span>为闭环系统的稳态速降。</p>
+<p>当<span class="math inline">\(K\)</span>值较大时，<span
+class="math inline">\(\Delta n_{cl}\)</span>比<span
+class="math inline">\(\Delta n_{op}\)</span>小得多，二者关系为：<span
+class="math inline">\(\Delta {n_{cl} } = \frac{ {\Delta {n_{op} } } } {
+{1 + K} }\)</span>。<br />
+由此可知，闭环系统静特性比开环系统机械特性要硬的多。</p>
+<p>闭环系统静差率<span class="math inline">\({s_{cl} } = \frac{ {\Delta
+{n_{cl} } } } { { {n_{0cl} } } }\)</span>；开环系统静差率<span
+class="math inline">\({s_{op} } = \frac{ {\Delta {n_{op} } } } { {
+{n_{0op} } } }\)</span>。<br />
+当<span class="math inline">\({n_{0op} } = {n_{0cl}
+}\)</span>时，有<span class="math inline">\({s_{cl} } = \frac{ { {s_{op}
+} } } {1 + K}\)</span>。<br />
+由此可知，理想空载转速一致时，闭环系统静差率比开环系统小得多。</p>
+闭环系统调速范围<span class="math inline">\({D_{cl} } = \frac{ { {n_N}s}
+} { {\Delta {n_{cl} } (1 - s) } }\)</span>；开环系统调速范围<span
+class="math inline">\({D_{op} } = \frac{ { {n_N}s} } { {\Delta {n_{op} }
+(1 - s) } }\)</span>。<br />
+若两者最高转速都为<span
+class="math inline">\(n_N\)</span>，最低速静差率都为<span
+class="math inline">\(s\)</span>，则有<span
+class="math inline">\({D_{cl} } = (1 + K){D_{op} }\)</span>。<br />
+由此可知，系统要求静差率一定时，闭环系统可以有更大的调速范围。
+<center>
+<img src="3_闭环系统静特性和开环系统机械特性的关系.png" width=450/><span
+class="caption">图3 闭环系统静特性和开环系统机械特性的关系</span>
+</center>
+<p>闭环系统静特性和开环系统机械特性如上图所示。<br />
+在开环状态下，提高负载，负载电流<span
+class="math inline">\(I_d\)</span>增大，转速会有明显的下降，如图中从A点到A'点。<br />
+转速闭环状态下，转速下降时，测速反馈电压<span
+class="math inline">\(U_n\)</span>会相应的减小，使得给定电压与反馈电压差值<span
+class="math inline">\(\Delta U_n\)</span>变大，进而使控制电压<span
+class="math inline">\(U_c\)</span>与整流器输出电压<span
+class="math inline">\(U_{d0}\)</span>成比例变大，最终使转速<span
+class="math inline">\(n\)</span>有所回升，显著降低稳态速降，如图中从A点到B点。<br />
+也就是说，在闭环系统中，每增加（或减少）一点负载，就相应地提高（或降低）一点电枢电压，使电动机在新的机械特性下工作。比例控制直流调速系统能够减少稳态速降的实质在于它的<strong>自动调节作用</strong>，在于它能随着负载的变化而相应地改变电枢电压，以补偿电枢回路电阻压降的变化。</p>
+<h2
+id="闭环直流调速系统的反馈控制规律">闭环直流调速系统的反馈控制规律</h2>
+<ul>
+<li>只有比例放大器的反馈控制系统，其被调量仍是有静差的。静差率<span
+class="math inline">\(\Delta {n_{cl} } = \frac{ {R{I_d} } } { { {C_e}(1
++ K)}
+}\)</span>，无论K为多少，静差率都不为零，过大的K值会使系统不稳定。</li>
+<li>反馈控制系统的作用是：抵抗扰动，服从给定
+。它能够有效地抑制一切被包含在负反馈环内前向通道上的扰动作用，但对给定信号的任何变化都是唯命是从。</li>
+<li>系统的精度依赖于给定和反馈检测的精度。反馈控制系统无法鉴别是给定信号的正常调节还是外界的电压波动。反馈通道上有一个测速反馈系数，它同样存在着因扰动而发生的波动，由于它不是在被反馈环包围的前向通道上，因此也不能被抑制。</li>
+</ul>
+<h2 id="比例控制转速闭环系统的稳定性">比例控制转速闭环系统的稳定性</h2>
+<h3
+id="转速反馈控制直流调速系统的动态数学模型">转速反馈控制直流调速系统的动态数学模型</h3>
+<p>比例放大器传递函数：<span class="math inline">\({W_a}(s) = \frac{ {
+{U_c} (s) } } { {\Delta {U_n}(s)} } = {K_p}\)</span><br />
+电力电子变换器传递函数：<span class="math inline">\({W_s}(s) \approx
+\frac{ { {K_s} } } { { {T_s}s + 1} }\)</span><br />
+注：参考<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/" title="运动控制系统02-晶闸管整流器——直流电动机系统">运动控制系统02-晶闸管整流器——直流电动机系统</a>与<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/" title="运动控制系统03-PWM变换器——电动机系统">运动控制系统03-PWM变换器——电动机系统</a>，相控整流器或PWM变换器的近似传递函数相同，只是不同场合下<span
+class="math inline">\(K_s\)</span>与<span
+class="math inline">\(T_s\)</span>的数值不同。<br />
+测速反馈环节传递函数：<span class="math inline">\({W_{fn} }(s) = \frac
+{U_n(s)} {n(s)} = \alpha\)</span></p>
+直流电动机动态数学模型：<br />
+注：参考<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/" title="运动控制系统01-绪论">运动控制系统01-绪论</a>与<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/" title="运动控制系统02-晶闸管整流器——直流电动机系统">运动控制系统02-晶闸管整流器——直流电动机系统</a><br />
+
+<center>
+<img src="4_他励直流电动机在额定励磁下的等效电路.png" width=350/><span
+class="caption">图4 他励直流电动机在额定励磁下的等效电路</span>
+</center>
+<p>(1)电压方程（假设主电路电流连续）<br />
+<span class="math display">\[{U_{d0} } = R{I_d} + L\frac{ {d{I_d} } } {
+{dt} } + E\]</span> (2)转矩方程<br />
+额定励磁下的电磁转矩：<span class="math inline">\({T_e} = {C_m}
+{I_d}\)</span><br />
+额定励磁下的感应电动势：<span class="math inline">\(E =
+{C_e}n\)</span><br />
+电动机轴上的动力学方程（忽略粘性摩擦及弹性转矩）：<span
+class="math inline">\({T_e} - {T_L} = \frac{ {G{D^2} } } { {375} }\frac{
+{dn} } { {dt} }\)</span><br />
+其中，<br />
+<span
+class="math inline">\(T_L\)</span>——包括电动机空载转矩在内的负载转矩(N·m)<br />
+<span
+class="math inline">\({GD}^2\)</span>——电力拖动装置折算到电动机轴上的飞轮惯量(N·㎡)<br />
+<span class="math inline">\({C_m} = \frac{ {30} } {\pi }
+{C_e}\)</span>——电动机额定励磁下的转矩系数(N·m/A)</p>
+<p>上述式子可整理为： <span class="math display">\[{U_{d0} } - E =
+R({I_d} + {T_l}\frac{ {d{I_d} } } {dt})\]</span> <span
+class="math display">\[{I_d} - {I_{dL} } = \frac{ { {T_m} } } {R}\frac{
+{dE} } { {dt} }\]</span> 其中，<br />
+<span class="math inline">\({T_l} =
+\frac{L}{R}\)</span>——电枢回路电磁时间常数(s)<br />
+<span class="math inline">\({T_m} = \frac{ {G{D^2}R} }{ {375{C_e}{C_m} }
+}\)</span>——电力拖动系统机电时间常数(s)<br />
+<span class="math inline">\({I_{dL} } =
+\frac{T_L}{C_m}\)</span>——负载电流(A)</p>
+在零初始条件下，取拉氏变换，得电压与电流间的传递函数为<br />
+<span class="math display">\[\frac{ { {I_d}(s)} }{ { {U_{d0} }(s) -
+E(s)} } = \frac{ {\frac{1}{R} } }{ { {T_1}s + 1} }\]</span>
+电流与电动势间的传递函数为<br />
+<span class="math display">\[\frac{ {E(s)} }{ { {I_d}(s) - {I_{dL} }(s)}
+} = \frac{R}{ { {T_m}s} }\]</span> 通过上述两个式子与公式<span
+class="math inline">\(E =
+{C_e}n\)</span>，可得额定励磁下直流电动机的动态结构框图如下图所示：
+<center>
+<img src="5_额定励磁下直流电动机的动态结构框图.png" width=450/><span
+class="caption">图5 额定励磁下直流电动机的动态结构框图</span>
+</center>
+由上图可知，直流电动机有两个输入量，一个是施加在电枢上的理想空载电压<span
+class="math inline">\(U_{d0}\)</span>（控制输入量），另一个是负载电流<span
+class="math inline">\(I_{dL}\)</span>（扰动输入量）。如果不需要在结构图中显现出电流，可将扰动量的综合点移前，再进行等效变换，如下图所示：
+<center>
+<img src="6_直流电动机动态结构框图的变换.png" width=350/><span
+class="caption">图6 直流电动机动态结构框图的变换 </span>
+</center>
+由上图可知，额定励磁直流电动机可以等效为一个二阶线性环节。<span
+class="math inline">\(T_m\)</span>和<span
+class="math inline">\(T_l\)</span>时间常数分别表示机电惯性和电磁惯性。完整的转速反馈控制直流调速系统如下图所示：<br />
+
+<center>
+<img src="7_转速反馈控制直流调速系统的动态结构框图.png" width=450/><span
+class="caption">图7 转速反馈控制直流调速系统的动态结构框图 </span>
+</center>
+<h3
+id="比例控制闭环直流调速系统的动态稳定性">比例控制闭环直流调速系统的动态稳定性</h3>
+<p>转速反馈控制的直流调速系统的开环传递函数：<br />
+<span class="math display">\[W(s) = \frac{ { {U_n}(s)} }{ {\Delta
+{U_n}(s)} } = \frac{K}{ {({T_s}s + 1)({T_m}{T_l}{s^2} + {T_m}s + 1)}
+}\]</span> 其中<span class="math inline">\(K = {K_p}{K_s}\alpha
+/{C_e}\)</span><br />
+转速反馈控制的直流调速系统的闭环传递函数：<br />
+<span class="math display">\[{W_{cl} }(s) = \frac{ {n(s)} }{ {U_n^*(s)}
+} = \frac{ {\frac{ { {K_p}{K_s}/{C_e} } } { {({T_s}s +
+1)({T_m}{T_l}{s^2} + {T_m}s + 1)} } } }{ {1 + \frac{ { {K_p}{K_s}\alpha
+/{C_e} } }{ {({T_s}s + 1)({T_m}{T_l}{s^2} + {T_m}s + 1)} } } } = \frac{
+{ {K_p}{K_s}/{C_e} } }{ {({T_s}s + 1)({T_m}{T_l}{s^2} + {T_m}s + 1) + K}
+}\]</span> <span class="math display">\[= \frac{ {\frac{ { {K_p}{K_s} }
+}{ { {C_e}(1 + K)} } } }{ {\frac{ { {T_m}{T_l}{T_s} } }{ {1 + K} }{s^3}
++ \frac{ { {T_m}({T_l} + {T_s})} }{ {1 + K} }{s^2} + \frac{ { {T_m} +
+{T_s} } }{ {1 + K} }s + 1} }\]</span>
+由上式可知，比例控制闭环系统的特征方程为<span
+class="math inline">\(\frac{ { {T_m}{T_l}{T_s} } }{ {1 + K} }{s^3} +
+\frac{ { {T_m}({T_l} + {T_s})} }{ {1 + K} }{s^2} + \frac{ { {T_m} +
+{T_s} } }{ {1 + K} }s + 1 = 0\)</span><br />
+对于三阶系统<span class="math inline">\({a_0}{s^3} + {a_1}{s^2} + {a_2}s
++ {a_3} = 0\)</span>，其劳斯判据判断系统稳定的充分必要条件是<span
+class="math inline">\(a_0&gt;0\)</span>,<span
+class="math inline">\(a_1&gt;0\)</span>,<span
+class="math inline">\(a_2&gt;0\)</span>,<span
+class="math inline">\(a_3&gt;0\)</span>,<span
+class="math inline">\({a_1}{a_2}-{a_0}{a_3}&gt;0\)</span><br />
+这里特征方程各项系数均大于0符合要求，故其系统稳定条件为<span
+class="math inline">\(\frac{ { {T_m}({T_l} + {T_s})} }{ {1 + K} } \cdot
+\frac{ { {T_m} + {T_s} } }{ {1 + K} } - \frac{ { {T_m}{T_l}{T_s} } }{ {1
++ K} } &gt; 0\)</span><br />
+整理后得<span class="math inline">\(K &lt; \frac{T_m}{T_s} +
+\frac{T_m}{T_l} + \frac{T_s}{T_l}\)</span><br />
+取系统的临界放大系数<span class="math inline">\(K_{cr} = \frac{T_m}{T_s}
++ \frac{T_m}{T_l} + \frac{T_s}{T_l}\)</span>，则当<span
+class="math inline">\(K \geqslant
+K_{cr}\)</span>时，系统将不稳定。<br />
+通常情况下，K值越大意味着系统的稳态误差越小，稳态性能越好，而上述计算却说明K值增大会降低系统的动态性能，K值过大甚至会使系统不稳定。由此可见，比例控制闭环系统的动态稳定性和稳态性能的要求是矛盾的。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">乐理笔记07-和弦</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>运动控制系统10-转速、电流双闭环控制直流调速系统的设计 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,运动控制系统" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记 本节内容对应书中第四章 转速、电流双闭环控制的直流调速系统 第三节 转速、电流双闭环控制直流调速系统的设计；对应页码p61-p91 控制系统的动态性能指标 在控制系统中设置调节器是为了改善系统的静、动态性能。 控制系统的动态性能指标包括对给定输入信号的跟随性能指标和对扰动输入信号的抗扰性能指标。 跟随性能指标 通常以输出量的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="运动控制系统10-转速、电流双闭环控制直流调速系统的设计">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记 本节内容对应书中第四章 转速、电流双闭环控制的直流调速系统 第三节 转速、电流双闭环控制直流调速系统的设计；对应页码p61-p91 控制系统的动态性能指标 在控制系统中设置调节器是为了改善系统的静、动态性能。 控制系统的动态性能指标包括对给定输入信号的跟随性能指标和对扰动输入信号的抗扰性能指标。 跟随性能指标 通常以输出量的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/1%20跟随性能指标.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/2%20抗扰性能指标.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/3%20典型控制系统伯德图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/4%20典型Ⅰ型系统.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/5%20电流环典型Ⅰ型系统电压扰动下动态结构.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/6%20典型Ⅱ型系统.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/6%20转速环典型Ⅱ型系统负载扰动下动态结构.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/7%20高频段小惯性环节的近似处理.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/8%20低频段大惯性环节的近似处理.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/9%20双闭环调速系统动态结构图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/10%20含配合滤波与反馈滤波的PI电流调节器.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/11%20输入滤波与含配合滤波与反馈滤波的PI电流调节器串联.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/12%20含配合滤波与反馈滤波的PI转速调节器.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/13%20ASR饱和时转速换按Ⅱ型系统设计的调速系统起动过程.png">
+<meta property="article:published_time" content="2023-08-10T00:22:49.000Z">
+<meta property="article:modified_time" content="2023-08-15T05:36:33.764Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="运动控制系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/1%20跟随性能指标.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管静磁场仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/运动控制系统/运动控制系统10-转速、电流双闭环控制直流调速系统的设计" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/">运动控制系统</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>, <a class="tag-link-link" href="/tags/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/" rel="tag">运动控制系统</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">
+            <time datetime="2023-08-10T00:22:49.000Z" itemprop="datePublished">2023-08-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            运动控制系统10-转速、电流双闭环控制直流调速系统的设计
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%8A%A8%E6%80%81%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">控制系统的动态性能指标</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9F%E9%9A%8F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.1.</span> <span class="toc-text">跟随性能指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%97%E6%89%B0%E9%9A%8F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">1.2.</span> <span class="toc-text">抗扰随性能指标</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%91%E5%9F%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E4%BC%AF%E5%BE%B7%E5%9B%BE"><span class="toc-number">1.3.</span> <span class="toc-text">频域性能指标和伯德图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E8%8A%82%E5%99%A8%E7%9A%84%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">调节器的工程设计方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.1.</span> <span class="toc-text">典型系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E2%85%B0%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.2.</span> <span class="toc-text">典型Ⅰ型系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%9F%E9%9A%8F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">2.2.1.</span> <span class="toc-text">动态跟随性能指标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%8A%97%E6%89%B0%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="toc-number">2.2.2.</span> <span class="toc-text">动态抗扰性能指标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B8%E5%9E%8B%E2%85%B1%E5%9E%8B%E7%B3%BB%E7%BB%9F"><span class="toc-number">2.3.</span> <span class="toc-text">典型Ⅱ型系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E8%B7%9F%E9%9A%8F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87-1"><span class="toc-number">2.3.1.</span> <span class="toc-text">动态跟随性能指标</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%A8%E6%80%81%E6%8A%97%E6%89%B0%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87-1"><span class="toc-number">2.3.2.</span> <span class="toc-text">动态抗扰性能指标</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B7%A5%E7%A8%8B%E8%BF%91%E4%BC%BC%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">控制对象的工程近似处理方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E9%A2%91%E6%AE%B5%E5%B0%8F%E6%83%AF%E6%80%A7%E7%8E%AF%E8%8A%82%E7%9A%84%E8%BF%91%E4%BC%BC%E5%A4%84%E7%90%86"><span class="toc-number">3.1.</span> <span class="toc-text">高频段小惯性环节的近似处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E9%98%B6%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%8D%E9%98%B6%E8%BF%91%E4%BC%BC%E5%A4%84%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">高阶系统的降阶近似处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8E%E9%A2%91%E6%AE%B5%E5%A4%A7%E6%83%AF%E6%80%A7%E7%8E%AF%E8%8A%82%E7%9A%84%E8%BF%91%E4%BC%BC%E5%A4%84%E7%90%86"><span class="toc-number">3.3.</span> <span class="toc-text">低频段大惯性环节的近似处理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E5%B7%A5%E7%A8%8B%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95%E8%AE%BE%E8%AE%A1%E8%BD%AC%E9%80%9F%E7%94%B5%E6%B5%81%E5%8F%8D%E9%A6%88%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%B0%83%E8%8A%82%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">按工程设计方法设计转速、电流反馈控制直流调速系统的调节器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%B5%81%E8%B0%83%E8%8A%82%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.1.</span> <span class="toc-text">电流调节器的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E6%97%B6%E9%97%B4%E5%B8%B8%E6%95%B0"><span class="toc-number">4.1.1.</span> <span class="toc-text">确定时间常数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E7%94%B5%E6%B5%81%E8%B0%83%E8%8A%82%E5%99%A8%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.2.</span> <span class="toc-text">选择电流调节器结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E7%94%B5%E6%B5%81%E8%B0%83%E8%8A%82%E5%99%A8%E5%8F%82%E6%95%B0"><span class="toc-number">4.1.3.</span> <span class="toc-text">计算电流调节器参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E8%BF%91%E4%BC%BC%E6%9D%A1%E4%BB%B6"><span class="toc-number">4.1.4.</span> <span class="toc-text">校验近似条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E8%B0%83%E8%8A%82%E5%99%A8%E7%94%B5%E9%98%BB%E4%B8%8E%E7%94%B5%E5%AE%B9"><span class="toc-number">4.1.5.</span> <span class="toc-text">计算调节器电阻与电容</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E9%80%9F%E8%B0%83%E8%8A%82%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">4.2.</span> <span class="toc-text">转速调节器的设计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A%E6%97%B6%E9%97%B4%E5%B8%B8%E6%95%B0-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">确定时间常数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E8%BD%AC%E9%80%9F%E8%B0%83%E8%8A%82%E5%99%A8%E7%BB%93%E6%9E%84"><span class="toc-number">4.2.2.</span> <span class="toc-text">选择转速调节器结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E8%BD%AC%E9%80%9F%E8%B0%83%E8%8A%82%E5%99%A8%E5%8F%82%E6%95%B0"><span class="toc-number">4.2.3.</span> <span class="toc-text">计算转速调节器参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E8%BF%91%E4%BC%BC%E6%9D%A1%E4%BB%B6-1"><span class="toc-number">4.2.4.</span> <span class="toc-text">校验近似条件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E8%B0%83%E8%8A%82%E5%99%A8%E7%94%B5%E9%98%BB%E4%B8%8E%E7%94%B5%E5%AE%B9-1"><span class="toc-number">4.2.5.</span> <span class="toc-text">计算调节器电阻与电容</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%A1%E6%A0%B8%E8%BD%AC%E9%80%9F%E8%B6%85%E8%B0%83%E9%87%8F"><span class="toc-number">4.2.6.</span> <span class="toc-text">校核转速超调量</span></a></li></ol></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>《电力拖动自动控制系统——运动控制系统(第五版)》学习笔记<br />
+本节内容对应书中<code>第四章 转速、电流双闭环控制的直流调速系统</code>
+<code>第三节 转速、电流双闭环控制直流调速系统的设计</code>；对应页码p61-p91</p>
+<h2 id="控制系统的动态性能指标">控制系统的动态性能指标</h2>
+<p>在控制系统中设置调节器是为了改善系统的静、动态性能。<br />
+控制系统的动态性能指标包括对给定输入信号的跟随性能指标和对扰动输入信号的抗扰性能指标。</p>
+<h3 id="跟随性能指标">跟随性能指标</h3>
+通常以输出量的初始值为零，给定信号阶跃变化下的过渡过程作为典型的跟随过程。此跟随过程的输出量动态响应称作阶跃响应。
+<center>
+<img src="1 跟随性能指标.png" width=400/><span class="caption">图1
+跟随性能指标</span>
+</center>
+<p>常用的阶跃响应跟随性能指标有上升时间<span
+class="math inline">\(t_r\)</span>、超调量<span
+class="math inline">\(\sigma\)</span>、峰值时间<span
+class="math inline">\(t_p\)</span>和调节时间<span
+class="math inline">\(t_s\)</span>，如上图所示。</p>
+<h3 id="抗扰随性能指标">抗扰随性能指标</h3>
+在调速系统中主要扰动来源于负载扰动和电网电压波动。<br />
+当调速系统在稳定运行中，突加一个使输出量降低（或上升）的扰动量<span
+class="math inline">\(F\)</span>之后，输出量由降低（或上升）到恢复到稳态值的过渡过程就是一个抗扰过程。<br />
+
+<center>
+<img src="2 抗扰性能指标.png" width=400/><span class="caption">图2
+抗扰性能指标</span>
+</center>
+<p>常用的抗扰性能指标有动态降落<span class="math inline">\(\Delta
+C_{max}\)</span>和恢复时间<span
+class="math inline">\(t_v\)</span>，如上图所示。<br />
+动态降落<span class="math inline">\(\Delta
+C_{max}\)</span>一般用它所占输出量原稳态值<span
+class="math inline">\(C_{\infty 1}\)</span>的百分数(<span
+class="math inline">\(\Delta C_{max}/C_{\infty 1} \times
+100\%\)</span>)来表示。<span class="math inline">\(C_{\infty
+2}\)</span>为扰动后的新稳态值，(<span class="math inline">\(C_{\infty 1}
+- C_{\infty 2}\)</span>)为扰动作用的稳态误差（静差），<span
+class="math inline">\(C_b\)</span>为输出量基准值，视情况决定。</p>
+<h3 id="频域性能指标和伯德图">频域性能指标和伯德图</h3>
+<center>
+<img src="3 典型控制系统伯德图.png" width=400/><span class="caption">图3
+典型控制系统伯德图</span>
+</center>
+<p>典型控制系统伯德图如上图所示，反映系统性能的伯德图特征有下列四个方面：</p>
+<ol type="1">
+<li>中频段以‐20dB/dec的斜率穿越零分贝线，而且这一斜率占有足够的频带宽度，则系统的<strong>稳定性</strong>好。</li>
+<li>截止频率（或称剪切频率）<span class="math inline">\(\omega
+_c\)</span>越高，则系统的<strong>快速性</strong>越好。</li>
+<li>低频段的斜率陡、增益高，表示系统的<strong>稳态精度</strong>好（即静差率小、调速范围宽）。</li>
+<li>高频段衰减得越快，即高频特性负分贝值越低，说明系统<strong>抗高频噪声干扰的能力</strong>越强。</li>
+</ol>
+<h2 id="调节器的工程设计方法">调节器的工程设计方法</h2>
+<h3 id="典型系统">典型系统</h3>
+<p>控制系统开环传递函数可表示为： <span class="math display">\[W(s) =
+\frac{ {K\prod\limits_{i = 1}^m {({\tau _i}s + 1)} } }{ {
+{s^r}\prod\limits_{j = 1}^n {({T_j}s + 1)} } }\]</span> 分母中的<span
+class="math inline">\(s^r\)</span>项表示该系统在<span
+class="math inline">\(s=0\)</span>处有<span
+class="math inline">\(r\)</span>重极点，或者说系统有<span
+class="math inline">\(r\)</span>个积分环节，称作<span
+class="math inline">\(r\)</span>型系统。<br />
+为了使系统对阶跃给定无稳态误差，不能使用0型系统(r=0)，至少是Ⅰ型系统(r=1)；当给定是斜坡输入时，则要求是Ⅱ型系统(r=2)才能实现稳态无差。<br />
+由于Ⅲ型(r=3)和Ⅲ型以上的系统很难稳定，而0型系统的稳态精度低。因此常把Ⅰ型和Ⅱ型系统作为系统设计的目标。</p>
+<h3 id="典型ⅰ型系统">典型Ⅰ型系统</h3>
+典型Ⅰ型系统的开环传递函数为<span
+class="math inline">\(W(s)=\frac{K}{s(Ts+1)}\)</span>，其中<span
+class="math inline">\(T\)</span>为系统的惯性时间常数，<span
+class="math inline">\(K\)</span>为系统的开环增益。典型Ⅰ型系统的闭环系统结构图与开环对数频率特性如下图所示：
+<center>
+<img src="4 典型Ⅰ型系统.png" width=400/><span class="caption">图4
+典型Ⅰ型系统<br/>(a)闭环系统结构图 (b)开环对数频率特性</span>
+</center>
+<p>对数幅频特性的中频段以-20dB/dec的斜率穿越零分贝线，只要参数的选择能保证足够的中频带宽度，系统就一定是稳定的。<br />
+只包含开环增益<span class="math inline">\(K\)</span>和时间常数<span
+class="math inline">\(T\)</span>两个参数，时间常数<span
+class="math inline">\(T\)</span>往往是控制对象本身固有的，唯一可变的只有开环增益<span
+class="math inline">\(K\)</span> 。设计时，需要按照性能指标选择参数<span
+class="math inline">\(K\)</span>的大小。</p>
+<p>为使对数幅频特性的中频段以-20dB/dec的斜率穿越零分贝线，满足稳定裕度的要求。选择参数时需保证<span
+class="math inline">\(\omega _c &lt; \frac{1}{T}\)</span>。进而使得<span
+class="math inline">\(\omega _c T&lt; 1\)</span>，<span
+class="math inline">\(arctan\omega _c T&lt;45^\circ\)</span><br />
+相角稳定裕度<span class="math inline">\(\gamma = 180^\circ -90^\circ
+-arctan\omega _c T=90^\circ -arctan\omega _c
+T&gt;45^\circ\)</span><br />
+由对数坐标函数关系<span class="math inline">\(20lgK=20(lg \omega _c
+-lg1)=20lg \omega _c\)</span>可知<span class="math inline">\(K=\omega _c
+(\omega _c &lt;\frac {1}{T})\)</span>，<span
+class="math inline">\(KT&lt;1\)</span><br />
+<span class="math inline">\(K\)</span>值越大，截止频率<span
+class="math inline">\(\omega
+_c\)</span>也越大，系统响应越快，但相角稳定裕度会越小。也就是说快速性与稳定性间存在矛盾。在选择参数<span
+class="math inline">\(K\)</span>时，须在快速性与稳定性之间取折中。</p>
+<h4 id="动态跟随性能指标">动态跟随性能指标</h4>
+<p>典型Ⅰ型系统的闭环传递函数： <span class="math display">\[W_{cl}(s) =
+\frac{W(s)}{1 + W(s)} = \frac{ {\frac{K}{ {s(Ts + 1)} } } }{ {1 +
+\frac{K}{ {s(Ts + 1)} } } } = \frac{ {\frac{K}{T} } }{ { {s^2} +
+\frac{1}{T}s + \frac{K}{T} } } = \frac{ {\omega _n^2} }{ { {s^2} + 2\xi
+{\omega _n}s + \omega _n^2} }\]</span> 其中自然震荡角频率<span
+class="math inline">\({\omega _n} = \sqrt {\frac{K}{T}
+}\)</span>，阻尼比<span class="math inline">\(\xi=\frac{1}{2}\sqrt
+{\frac{1}{KT} }\)</span><br />
+<span
+class="math inline">\(0&lt;\xi&lt;1\)</span>时，欠阻尼，系统震荡；<span
+class="math inline">\(\xi&gt;1\)</span>时，过阻尼，系统单调；<span
+class="math inline">\(\xi=1\)</span>时为临界阻尼。<br />
+通常把系统设计成欠阻尼状态，又由<span
+class="math inline">\(KT&lt;1\)</span>得<span
+class="math inline">\(\xi&gt;0.5\)</span>，因此通常取<span
+class="math inline">\(0.5&lt;\xi&lt;1\)</span>。</p>
+超调量<span class="math inline">\(\sigma = {e^{ - (\xi \pi /\sqrt {1 -
+{\xi ^2} } )} } \times 100\%\)</span><br />
+上升时间<span class="math inline">\(t_r = \frac{2\xi T}{\sqrt {1 - {\xi
+^2} } }(\pi - \arccos \xi )\)</span><br />
+峰值时间<span class="math inline">\(t_p = \frac{\pi }{ {\omega _n}\sqrt
+{1 - {\xi ^2} } }\)</span><br />
+调节时间<span class="math inline">\(t_s \approx \frac{3}{ {\xi {\omega
+_n} } } = 6T\)</span>（<span
+class="math inline">\(\xi&lt;0.9\)</span>、误差带<span
+class="math inline">\(\pm 5\%\)</span>的情况下近似估算）<br />
+截止频率<span class="math inline">\(\omega _c = {\omega _n}{[\sqrt
+{4{\xi ^4} + 1} - 2{\xi ^2}]^{\frac{1}{2} }
+}\)</span>（精确计算，不使用伯德图近似估算）<br />
+相角稳定裕度<span class="math inline">\(\gamma = \arctan \frac{2\xi}{ {
+{[\sqrt {4{\xi ^4} + 1} - 2{\xi ^2}]}^{\frac{1}{2} } } }\)</span><br />
+根据上列各式，求出<span
+class="math inline">\(0.5&lt;\xi&lt;1\)</span>时典型Ⅰ型系统各项动态跟随指标和频域指标与参数<span
+class="math inline">\(KT\)</span>的关系如下表所示：
+<center>
+<span class="caption">表1
+典型Ⅰ型系统各项动态跟随指标和频域指标与参数<span
+class="math inline">\(KT\)</span>的关系</span>
+</center>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">参数关系<span
+class="math inline">\(KT\)</span></th>
+<th style="text-align: center;">阻尼比<span
+class="math inline">\(\xi\)</span></th>
+<th style="text-align: center;">超调量<span
+class="math inline">\(\sigma\)</span></th>
+<th style="text-align: center;">上升时间<span
+class="math inline">\(t_r\)</span></th>
+<th style="text-align: center;">峰值时间<span
+class="math inline">\(t_p\)</span></th>
+<th style="text-align: center;">相角稳定裕度<span
+class="math inline">\(\gamma\)</span></th>
+<th style="text-align: center;">截止频率<span
+class="math inline">\(\omega _c\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.25</td>
+<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">0%</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">76.3°</td>
+<td style="text-align: center;">0.243/T</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">0.8</td>
+<td style="text-align: center;">1.5%</td>
+<td style="text-align: center;">6.6T</td>
+<td style="text-align: center;">8.3T</td>
+<td style="text-align: center;">69.9°</td>
+<td style="text-align: center;">0.367/T</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0.50</td>
+<td style="text-align: center;">0.707</td>
+<td style="text-align: center;">4.3%</td>
+<td style="text-align: center;">4.7T</td>
+<td style="text-align: center;">6.2T</td>
+<td style="text-align: center;">65.5°</td>
+<td style="text-align: center;">0.455/T</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0.69</td>
+<td style="text-align: center;">0.6</td>
+<td style="text-align: center;">9.5%</td>
+<td style="text-align: center;">3.3T</td>
+<td style="text-align: center;">4.7T</td>
+<td style="text-align: center;">59.2°</td>
+<td style="text-align: center;">0.596/T</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1.0</td>
+<td style="text-align: center;">0.5</td>
+<td style="text-align: center;">16.3%</td>
+<td style="text-align: center;">2.4T</td>
+<td style="text-align: center;">3.6T</td>
+<td style="text-align: center;">51.8°</td>
+<td style="text-align: center;">0.786/T</td>
+</tr>
+</tbody>
+</table>
+<p>可以观察到系统的时间常数T已知时，随着K的增大，系统的快速性提高，但稳定性变差。<br />
+要求动态响应快时可取<span class="math inline">\(\xi = 0.5 \sim
+0.6\)</span>，并选较大的K；要求超调小时可取<span
+class="math inline">\(\xi = 0.8 \sim
+1.0\)</span>，并选较小的K；要求无超调时可取<span
+class="math inline">\(\xi = 1.0\)</span>。<br />
+无特殊要求时，取<span class="math inline">\(\xi = 0.707\)</span>，<span
+class="math inline">\(KT=0.5\)</span>，这一参数又称为“二阶最佳整定参数”，它兼顾了快速性与稳定性。</p>
+<h4 id="动态抗扰性能指标">动态抗扰性能指标</h4>
+影响到参数K的选择的第二个因素是它和抗扰性能指标之间的关系，典型Ⅰ型系统已经规定了系统的结构，分析它的抗扰性能指标的关键因素是扰动作用点，某种定量的抗扰性能指标只适用于一种特定的扰动作用点。<br />
+这里以电流环扰动作用为例分析典型Ⅰ型系统的抗电网电压波动性能。
+<center>
+<img src="5 电流环典型Ⅰ型系统电压扰动下动态结构.png" width=400/><span
+class="caption">图5
+电流环典型Ⅰ型系统电压扰动下动态结构<br/>(a)动态结构图
+(b)等效结构图</span>
+</center>
+其中<span class="math inline">\(T_1=T_s\)</span>，<span
+class="math inline">\(T_2=T_l\)</span>，<span
+class="math inline">\(K_2=\beta /R\)</span>，再取<span
+class="math inline">\(K_1=K_pK_s/\tau\)</span>，<span
+class="math inline">\(\tau=T_2\)</span>（<span
+class="math inline">\(T_2&gt;T_1\)</span>）<br />
+讨论抗扰性能时，令输入变量<span
+class="math inline">\(R(s)=0\)</span>，输出变量写成<span
+class="math inline">\(\Delta C\)</span>。<br />
+令<span
+class="math inline">\(m=\frac{T_1}{T_2}&lt;1\)</span>为小时间常数与大时间常数的比值，分别分析<span
+class="math inline">\(m=\frac{1}{5},\frac{1}{10},\frac{1}{20},\frac{1}{30}\)</span>时的最大动态降落<span
+class="math inline">\(\Delta C_{max}\)</span>、最大动态降落对应时间<span
+class="math inline">\(t_m\)</span>与恢复时间<span
+class="math inline">\(t_v\)</span>。<br />
+<em>具体分析过程参见教材p68-p69，这里不再赘述，下面放出结论</em><br />
+
+<center>
+<span class="caption">表2 典型Ⅰ型系统动态抗扰指标和频域指标与参数<span
+class="math inline">\(m\)</span>的关系</span>
+</center>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span
+class="math inline">\(m\)</span></th>
+<th style="text-align: center;">最大动态降落<span
+class="math inline">\(\frac{\Delta C_{max} }{C_b} \times
+100\%\)</span></th>
+<th style="text-align: center;">最大动态降落时间<span
+class="math inline">\(\frac{t_m}{T_2}\)</span></th>
+<th style="text-align: center;">恢复时间<span
+class="math inline">\(\frac{t_v}{T_2}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{5}\)</span></td>
+<td style="text-align: center;">27.78%</td>
+<td style="text-align: center;">0.566</td>
+<td style="text-align: center;">2.209</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{10}\)</span></td>
+<td style="text-align: center;">16.58%</td>
+<td style="text-align: center;">0.336</td>
+<td style="text-align: center;">1.478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{20}\)</span></td>
+<td style="text-align: center;">9.27%</td>
+<td style="text-align: center;">0.19</td>
+<td style="text-align: center;">0.741</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span
+class="math inline">\(\frac{1}{30}\)</span></td>
+<td style="text-align: center;">6.45%</td>
+<td style="text-align: center;">0.134</td>
+<td style="text-align: center;">1.104</td>
+</tr>
+</tbody>
+</table>
+<p>当控制对象的两个<strong>时间常数相距越大</strong>（m值越小），动态降落越小。<br />
+恢复时间的变化不是单调的，<span
+class="math inline">\(m=\frac{1}{20}\)</span>时恢复时间最短。</p>
+<h3 id="典型ⅱ型系统">典型Ⅱ型系统</h3>
+典型Ⅱ型系统的开环传递函数为<span class="math inline">\(W(s) =
+\frac{K(\tau s + 1)}{ {s^2}(Ts + 1)}\)</span>。<br />
+其中<span class="math inline">\(T\)</span>
+为系统的惯性时间常数，分子上的比例微分环节<span
+class="math inline">\((\tau s +
+1)\)</span>用以保证系统稳定，待定参数为<span
+class="math inline">\(K\)</span>和<span
+class="math inline">\(\tau\)</span>。
+<center>
+<img src="6 典型Ⅱ型系统.png" width=600/><span class="caption">图6
+典型Ⅱ型系统<br/>(a)闭环系统结构图 (b)开环对数频率特性</span>
+</center>
+<p>典型Ⅱ型系统的闭环系统结构图与开环对数频率特性如上图所示。与典型Ⅰ型系统一样，中频段以-20dB/dec的斜率穿越零分贝线。要求<span
+class="math inline">\(\frac{1}{\tau}&lt;\omega
+_c&lt;\frac{1}{T}\)</span>，或者<span
+class="math inline">\(\tau&gt;T\)</span>。<br />
+相角稳定裕度<span class="math inline">\(\gamma = 180^\circ - 180^\circ +
+arctan\omega _c\tau - arctan\omega _c T = arctan\omega _c\tau -
+arctan\omega _c T\)</span><br />
+由相角稳定裕度可知<span class="math inline">\(\tau\)</span>比<span
+class="math inline">\(T\)</span>大得越多，系统的稳定裕度越大。<br />
+由对数坐标函数关系<span class="math inline">\(20lgK=40(lg\omega _1 -
+lg1) + 20(lg\omega _c - lg1)=20lg\omega _1 \omega _c\)</span>可知<span
+class="math inline">\(K=\omega _1 \omega _c\)</span>。<br />
+改变<span
+class="math inline">\(K\)</span>相当于使开环对数幅频特性上下平移，从而改变截止频率<span
+class="math inline">\(\omega
+_c\)</span>，此特性与闭环系统的快速性有关。</p>
+<p>定义中频宽（斜率为-20dB/dec的中频段宽度）<span
+class="math inline">\(h=\frac{\tau}{T}=\frac{\omega _2}{\omega
+_1}\)</span>，中频宽的状况对控制系统的动态品质起着决定性的作用。<br />
+由于<span class="math inline">\(T\)</span>值一定，改变<span
+class="math inline">\(\tau\)</span>就相当于改变了中频宽<span
+class="math inline">\(h\)</span>，在此基础上改变<span
+class="math inline">\(K\)</span>相当于改变<span
+class="math inline">\(\omega _c\)</span>。因此选择频域参数<span
+class="math inline">\(h\)</span>和<span class="math inline">\(\omega
+_c\)</span>，相当于选择参数<span
+class="math inline">\(\tau\)</span>和<span
+class="math inline">\(K\)</span>。</p>
+<p>采用“振荡指标法”中的闭环幅频特性峰值最小准则，可以找到<span
+class="math inline">\(h\)</span>和<span class="math inline">\(\omega
+_c\)</span>两个参数之间的一种最佳配合。<br />
+这一准则表明对于一定的<span
+class="math inline">\(h\)</span>值，只有一个确定的<span
+class="math inline">\(\omega _c\)</span>或<span
+class="math inline">\(K\)</span>可以得到最小的闭环幅频特性峰值<span
+class="math inline">\(M_{rmin}\)</span>。<br />
+取<span class="math inline">\(\omega _c=\frac{\omega _1+\omega
+_2}{2}\)</span>时，有<span
+class="math inline">\(M_{rmin}=\frac{h+1}{h-1}\)</span>。<br />
+<span class="math inline">\(h\)</span>值越大，<span
+class="math inline">\(M_{rmin}\)</span>越小，超调量便会随之减小，但是<span
+class="math inline">\(\omega
+_c\)</span>也会减小，这会使系统的快速性变弱。<br />
+<span class="math inline">\(h\)</span>通常在3~10间选择。确定<span
+class="math inline">\(h\)</span>值后，可以推算出<span
+class="math inline">\(\tau = hT\)</span>，<span
+class="math inline">\(K=\frac{h+1}{2h^2 T^2}\)</span>。<br />
+<em>具体推算过程见教材p70-p71</em></p>
+<h4 id="动态跟随性能指标-1">动态跟随性能指标</h4>
+<p>以<span class="math inline">\(T\)</span>为时间基准，当<span
+class="math inline">\(h\)</span>取3~10的不同值时，求其对应单位阶跃响应函数，计算出<span
+class="math inline">\(\tau\)</span>、<span
+class="math inline">\(t_r/T\)</span>、<span
+class="math inline">\(t_s/T\)</span>和震荡次数<span
+class="math inline">\(k\)</span>。<br />
+<em>具体计算过程与计算结果见教材p71-p72，这里不再赘述，下面放出结论</em><br />
+动态跟随性能分析结论：<br />
+调节时间<span class="math inline">\(t_s\)</span>随<span
+class="math inline">\(h\)</span>的变化不单调，当<span
+class="math inline">\(h=5\)</span>时，调节时间最短。<br />
+<span class="math inline">\(h\)</span>值越小，上升时间<span
+class="math inline">\(t_s\)</span>越快；<span
+class="math inline">\(h\)</span>值越大，超调量<span
+class="math inline">\(\tau\)</span>越小。<br />
+综合考虑，可以取<span
+class="math inline">\(h=5\)</span>，其动态跟随性能比较适中。</p>
+<h4 id="动态抗扰性能指标-1">动态抗扰性能指标</h4>
+这里以转速环扰动作用为例分析典型Ⅱ型系统的抗负载波动性能。
+<center>
+<img src="6 转速环典型Ⅱ型系统负载扰动下动态结构.png" width=400/><span
+class="caption">图6
+转速环典型Ⅱ型系统负载扰动下动态结构<br/>(a)动态结构图
+(b)等效结构图</span>
+</center>
+<p>取<span class="math inline">\(K_1=K_p K_d/\tau _1\)</span>，<span
+class="math inline">\(\tau _1=hT\)</span>，<span
+class="math inline">\(K_2=\frac{R\alpha}{T_m C_e}\)</span>，<span
+class="math inline">\(K=K_1
+K_2\)</span>，按照闭环幅频特性峰值最小准则确定参数关系。<br />
+令输入变量<span class="math inline">\(R(s)=0\)</span>，输出变量写成<span
+class="math inline">\(\Delta C\)</span>，阶跃扰动<span
+class="math inline">\(F(s)=\frac{F}{s}\)</span>，输出变量写成<span
+class="math inline">\(\Delta C\)</span>。<br />
+计算出不同<span
+class="math inline">\(h\)</span>值对应的动态抗扰过程曲线<span
+class="math inline">\(\Delta C(t)\)</span>，进而求最大动态降落<span
+class="math inline">\(\Delta C_{max}\)</span>、最大动态降落对应时间<span
+class="math inline">\(t_m\)</span>与恢复时间<span
+class="math inline">\(t_v\)</span>。<br />
+<em>具体分析过程与计算结果参见教材p72-p73，这里不再赘述，下面放出结论</em><br />
+动态抗扰性能分析结论：<br />
+<span class="math inline">\(h\)</span>值越小，最大动态降落<span
+class="math inline">\(\Delta
+C_{max}\)</span>越小，最大动态降落对应时间<span
+class="math inline">\(t_m\)</span>越短，说明抗扰性能越好。<br />
+恢复时间<span class="math inline">\(t_v\)</span>随<span
+class="math inline">\(h\)</span>的变化不单调，当<span
+class="math inline">\(h&lt;5\)</span>时，由于震荡次数增加，恢复时间<span
+class="math inline">\(t_v\)</span>变长。<br />
+综合考虑，可以取<span
+class="math inline">\(h=5\)</span>，其动态抗扰性能比较适中。</p>
+<h2 id="控制对象的工程近似处理方法">控制对象的工程近似处理方法</h2>
+<h3 id="高频段小惯性环节的近似处理">高频段小惯性环节的近似处理</h3>
+当高频段有多个小时间常数<span
+class="math inline">\(T_1,T_2,T_3,\ldots\)</span>的小惯性环节时，可以等效地用一个小时间常数<span
+class="math inline">\(T\)</span>的惯性环节来代替。<br />
+其等效时间常数为<span
+class="math inline">\(T=T_1+T_2+T_3+\ldots\)</span>。<br />
+
+<center>
+<img src="7 高频段小惯性环节的近似处理.png" width=350/><span class="caption">图7
+高频段小惯性环节的近似处理
+</center>
+<p>两个高频小惯性环节的近似条件：<span class="math inline">\({\omega _c}
+\leqslant \frac{1}{ {3\sqrt { {T_1}{T_2} } } }\)</span><br />
+三个高频小惯性环节的近似条件：<span class="math inline">\({\omega _c}
+\leqslant \frac{1}{3}\frac{1}{ {\sqrt { {T_1}{T_2} + {T_2}{T_3} +
+{T_3}{T_1} } } }\)</span></p>
+<h3 id="高阶系统的降阶近似处理">高阶系统的降阶近似处理</h3>
+<p>如三阶稳定系统<span
+class="math inline">\(W(s)=\frac{K}{as^3+bs^2+cs+1}\)</span>（<span
+class="math inline">\(a,b,c\)</span>均为正数且<span
+class="math inline">\(bc&gt;a\)</span>）<br />
+在一定条件下可以忽略高次项近似为<span class="math inline">\(W(s)\approx
+\frac{K}{cs+1}\)</span><br />
+近似条件：<span class="math inline">\(\omega _c \leqslant \frac{1}{3}
+min(\sqrt{\frac{1}{b} },\sqrt{\frac{c}{a} })\)</span></p>
+<h3 id="低频段大惯性环节的近似处理">低频段大惯性环节的近似处理</h3>
+当系统中存在一个时间常数特别大的惯性环节时<span
+class="math inline">\(\frac{1}{Ts+1}\)</span>，可以近似地将它看成是积分环节<span
+class="math inline">\(\frac{1}{Ts}\)</span><br />
+近似条件：<span class="math inline">\(\omega _c \geqslant
+\frac{3}{T}\)</span>
+<center>
+<img src="8 低频段大惯性环节的近似处理.png" width=350/><span class="caption">图8
+低频段大惯性环节的近似处理
+</center>
+<p>这种近似处理仅适用于分析动态性能，考虑稳态精度时仍要使用原来的传递函数<span
+class="math inline">\(W(s)\)</span>。</p>
+<h2
+id="按工程设计方法设计转速电流反馈控制直流调速系统的调节器">按工程设计方法设计转速、电流反馈控制直流调速系统的调节器</h2>
+<p>设计原则为“先内环后外环”。<br />
+先从电流环开始，进行必要的变换与近似处理，根据电流环控制要求确定矫正成Ⅰ型系统还是Ⅱ型系统，根据控制对象确定电流调节器类型，按动态性能指标确定电流调节器的参数。电流环设计完成后，将电流环等效为转速环的一个环节，再用同样的方法设计转速环。</p>
+<h3 id="电流调节器的设计">电流调节器的设计</h3>
+<center>
+<img src="9 双闭环调速系统动态结构图.png" width=500/><span class="caption">图9
+双闭环调速系统动态结构图
+</center>
+<h4 id="确定时间常数">确定时间常数</h4>
+<p>Ⅰ型系统与Ⅱ型系统所需要确定的时间常数相同。<br />
+①电力电子变换器滞后时间常数<span
+class="math inline">\(T_s\)</span>：对于PWM变换器，其滞后时间常数为其开关频率的倒数，如开关频率为8kHz的PWM变换器的<span
+class="math inline">\(T_s=0.000125s\)</span>；对于晶闸管整流器，其滞后时间常数为其最大失控时间的一半。<br />
+②电流滤波时间常数<span
+class="math inline">\(T_{oi}\)</span>：为消除纹波应有<span
+class="math inline">\(\frac{1}{T_{oi}} = (\frac{1}{5}\sim\frac{1}{10})
+\frac{1}{T_{s}}\)</span>。<br />
+③电流环小时间常数之和<span class="math inline">\(T_{\sum
+i}=T_s+T_{oi}\)</span>（按小时间常数近似处理）。</p>
+<h4 id="选择电流调节器结构">选择电流调节器结构</h4>
+<p>首先根据实际控制需求确定使用Ⅰ型系统还是Ⅱ型系统。</p>
+<p>如果要选用Ⅰ型系统，需检查对电源电压的抗扰性能，求<span
+class="math inline">\(\frac{T_l}{T_{\sum i} }\)</span>的值。这里<span
+class="math inline">\(\frac{T_l}{T_{\sum i}
+}=\frac{T_2}{T_1}=\frac{1}{m}\)</span>可以求出<span
+class="math inline">\(m\)</span>值，查看表2判断动态抗扰性能是否符合要求。</p>
+<p>典型Ⅰ型系统把双惯性环节的电流环控制对象近似等效成只有较小时间常数<span
+class="math inline">\(2T_{\sum
+i}\)</span>的一阶惯性环节，加快了电流的跟随作用。使用典型Ⅰ型系统的前提是超前环节恰好对消掉了控制对象的大惯性环节，如果电动机参数测量不准，大惯性环节未被准确对消，就会影响电流环的动态性能。<br />
+<em>具体分析过程与计算结果参见教材p78-p80，这里不再赘述</em></p>
+<p>如果要选用Ⅱ型系统，典型Ⅱ型系统超调量大，不能很好满足电流环对跟随性能指标的要求。可以在电流给定后加入低通滤波能有效降低超调量，解决这一问题。但响应速度会变慢，调节时间与上升时间变长。<br />
+低通滤波是一个惯性环节，其时间常数为<span
+class="math inline">\(T_{in}\)</span>。经过实验分析，可知当<span
+class="math inline">\(T_{in}=4T_{\sum
+i}\)</span>时，超调量得到了有效的降低且调节时间最短。因此一般选择低通滤波时间常数<span
+class="math inline">\(T_{in}=4T_{\sum
+i}\)</span>，再判断在此条件下是否符合要求。<br />
+<em>具体分析过程与计算结果参见教材p81-p84，这里不再赘述</em></p>
+<h4 id="计算电流调节器参数">计算电流调节器参数</h4>
+<p>对于Ⅰ型系统：<br />
+电流调节器设计为PI调节器，其传递函数<span
+class="math inline">\(W_{ACR}(s)=\frac{K_i(\tau _i s+1)}{\tau _i
+s}\)</span><br />
+校正为Ⅰ型系统传递函数<span class="math inline">\(W_{opi}(s)=\frac{K_i
+\beta K_s /R}{\tau_i s(T_{\sum i}s+1)}=\frac{K_I}{s(T_{\sum
+i}s+1)}\)</span><br />
+电流调节器超前时间常数<span
+class="math inline">\(\tau_i=T_l\)</span><br />
+（这里<span class="math inline">\(T_l \gg T_{\sum
+i}\)</span>，用调节器的零点对消掉控制对象的大时间常数极点，以便矫正成Ⅰ型系统）<br />
+电流环开环增益<span class="math inline">\(K_I=\frac{0.5}{T_{\sum i}
+}\)</span>（取<span class="math inline">\(K_I T_{\sum
+i}=0.5\)</span>时）<br />
+电流调节器比例系数<span class="math inline">\(K_i=\frac{K_I \tau_i
+R}{K_s \beta}\)</span></p>
+<p>对于Ⅱ型系统： 电流调节器设计为PI调节器，传递函数同上。<br />
+校正为Ⅱ型系统传递函数<span class="math inline">\(W_{opi}(s)=\frac{K_i
+\beta K_s(\tau_i s+1)}{\tau_i R T_l s^2(T_{\sum i}s+1)}=\frac{K_I(\tau_i
+s+1)}{s^2(T_{\sum i}s+1)}\)</span><br />
+（这里的大惯性环节<span class="math inline">\(\frac{1}{T_l
+s+1}\)</span>满足近似条件<span class="math inline">\(\omega_{cli}
+\geqslant \frac{3}{T_l}\)</span>被近似为积分环节）<br />
+电流调节器超前时间常数<span class="math inline">\(\tau_i=hT_{\sum
+i}\)</span><br />
+电流调节器比例系数<span
+class="math inline">\(K_i=\frac{h+1}{2h}\frac{RT_l}{K_s \beta T_{\sum
+i}}\)</span></p>
+<h4 id="校验近似条件">校验近似条件</h4>
+<p>Ⅰ型系统取电流环截止频率<span
+class="math inline">\(\omega_{ci}=K_I\)</span><br />
+Ⅱ型系统取电流环截止频率<span class="math inline">\(\omega_{ci} \approx
+\frac{1}{4T_{\sum i} }\)</span></p>
+<p>Ⅰ型系统与Ⅱ型系统都要校验的近似条件：<br />
+①PWM变换器传递函数近似条件<span
+class="math inline">\(\frac{1}{3T_s}&gt;\omega_{ci}\)</span><br />
+②忽略反电动势变化对电流环动态影响条件<span
+class="math inline">\(3\sqrt{\frac{1}{T_m T_l}
+}&lt;\omega_{ci}\)</span><br />
+③电流环小时间常数近似处理条件<span
+class="math inline">\(\frac{1}{3}\sqrt{\frac{1}{T_s T_{oi} }
+}&gt;\omega_{ci}\)</span></p>
+<p>Ⅱ型系统还需要校验的近似条件：<br />
+④大惯性环节近似处理条件<span class="math inline">\(\frac{3}{T_l}
+\leqslant \omega_{cli}\)</span></p>
+<h4 id="计算调节器电阻与电容">计算调节器电阻与电容</h4>
+Ⅰ型系统电路参数：<br />
+
+<center>
+<img src="10 含配合滤波与反馈滤波的PI电流调节器.png" width=400/><span class="caption">图10
+含配合滤波与反馈滤波的PI电流调节器
+</center>
+<p>含配合滤波与反馈滤波的PI电流调节器如上图所示，<span
+class="math inline">\(U_i^*\)</span>为电流给定电压，<span
+class="math inline">\(-\beta
+I_d\)</span>为电流负反馈电压，调节器输出量<span
+class="math inline">\(U_c\)</span>为电力电子变换器控制电压。<br />
+<span
+class="math inline">\(R_0\)</span>需要按照运算放大器实际情况自己给定。<br />
+<span class="math inline">\(R_i=K_i R_0\)</span><br />
+<span class="math inline">\(C_i=\frac{\tau_i}{R_i}\)</span><br />
+<span class="math inline">\(C_{oi}=\frac{4T_{oi} }{R_0}\)</span></p>
+Ⅱ型系统电路参数：<br />
+
+<center>
+<img src="11 输入滤波与含配合滤波与反馈滤波的PI电流调节器串联.png" width=500/><span class="caption">图11
+输入滤波与含配合滤波与反馈滤波的PI电流调节器串联
+</center>
+<p>Ⅱ型系统需要在原PI调节器前加入输入滤波，如上图所示。<br />
+<span class="math inline">\(R_0\)</span>与<span
+class="math inline">\(R_{i\_i}\)</span>需要根据实际情况自己给定。<br />
+<span class="math inline">\(R_i\)</span>、<span
+class="math inline">\(C_i\)</span>、<span
+class="math inline">\(C_{oi}\)</span>运算公式与Ⅰ型系统电路相同。<br />
+<span class="math inline">\(C_{i\_i}=\frac{4T_{\sum i} }{R_{i\_i}
+}\)</span></p>
+<h3 id="转速调节器的设计">转速调节器的设计</h3>
+<h4 id="确定时间常数-1">确定时间常数</h4>
+<p>分析转速环时，电流环被等效为一阶惯性环节，其时间常数为<span
+class="math inline">\(2T_{\sum i}\)</span>。<br />
+转速滤波时间常数<span
+class="math inline">\(T_{on}\)</span>根据测速发电机纹波情况选取，可以取<span
+class="math inline">\(T_{on}=0.01s\)</span>。<br />
+转速环小时间常数<span class="math inline">\(T_{\sum
+n}\)</span>按小时间常数近似处理，取<span class="math inline">\(T_{\sum
+n}=2T_{\sum i}+T_{on}\)</span>。</p>
+<h4 id="选择转速调节器结构">选择转速调节器结构</h4>
+<p>为了实现转速无静差，在负载扰动作用点前需有一个积分环节，包含在转速调节器中，由于在扰动作用点后已经有了一个积分环节，因此转速环开环传递函数应有两个积分环节。转速调节器需设计为典型Ⅱ型系统，这样的系统同时也能满足动态抗扰性能好的要求。<br />
+转速调节器也设计为PI调节器，其传递函数为<span
+class="math inline">\(W_{ASR}(s)=\frac{K_n(\tau_n s+1)}{\tau_n
+s}\)</span>。<br />
+调速系统开环传递函数<span class="math inline">\(W_n(s)=\frac{K_n \alpha
+R(\tau_n s+1)}{\tau_n \beta C_e T_m s^2(T_{\sum n}s+1)}=\frac{K_N(\tau_n
+s+1)}{s^2(T_{\sum n}s+1)}\)</span></p>
+<h4 id="计算转速调节器参数">计算转速调节器参数</h4>
+<p>转速调节器超前时间常数<span class="math inline">\(\tau_n=hT_{\sum
+n}\)</span><br />
+转速环开环增益<span class="math inline">\(K_N=\frac{h+1}{2h^2 T_{\sum
+n}^2}\)</span><br />
+转速调节器比例系数<span class="math inline">\(K_n=\frac{(h+1)\beta C_e
+T_m}{2h\alpha R T_{\sum n} }\)</span></p>
+<h4 id="校验近似条件-1">校验近似条件</h4>
+<p>转速环截止频率<span
+class="math inline">\(\omega_{cn}=\frac{K_N}{\omega_1}\)</span><br />
+电流环传递函数简化条件<span
+class="math inline">\(\frac{1}{3}\sqrt{\frac{K_I}{T_{\sum i} }
+}&gt;\omega_{cn}\)</span><br />
+转速换小时间常数近似处理条件<span
+class="math inline">\(\frac{1}{3}\sqrt{\frac{K_I}{T_{on} }
+}&gt;\omega_{cn}\)</span></p>
+<h4 id="计算调节器电阻与电容-1">计算调节器电阻与电容</h4>
+<center>
+<img src="12 含配合滤波与反馈滤波的PI转速调节器.png" width=400/><span class="caption">图12
+含配合滤波与反馈滤波的PI转速调节器
+</center>
+<p>含配合滤波与反馈滤波的PI转速调节器如上图所示，<span
+class="math inline">\(U_n^*\)</span>为转速给定电压，<span
+class="math inline">\(-\alpha
+n\)</span>为转速负反馈电压，调节器输出量<span
+class="math inline">\(U_i^*\)</span>为电流调节器给定电压。<br />
+<span
+class="math inline">\(R_0\)</span>需要按照运算放大器实际情况自己给定。<br />
+<span class="math inline">\(R_n=K_n R_0\)</span><br />
+<span class="math inline">\(C_n=\frac{\tau_n}{R_n}\)</span><br />
+<span class="math inline">\(C_{on}=\frac{4T_{on} }{R_0}\)</span></p>
+<h4 id="校核转速超调量">校核转速超调量</h4>
+突加阶跃给定时，ASR饱和，不符合线性系统的前提，在饱和限幅的非线性控制作用下，超调量会大大降低，需要按照ASR退饱和的情况重新计算超调量。<br />
+
+<center>
+<img src="13 ASR饱和时转速换按Ⅱ型系统设计的调速系统起动过程.png" width=400/><span class="caption">图13
+ASR饱和时转速换按Ⅱ型系统设计的调速系统起动过程
+</center>
+<p>上图<span
+class="math inline">\(t_2\)</span>时刻，当转速超过给定值之后，转速调节器ASR由饱和限幅状态进入线性调节状态，此时的转速环由开环进入闭环控制，迫使电流由最大值<span
+class="math inline">\(I_{dm}\)</span>降到负载电流<span
+class="math inline">\(I_{dl}\)</span>。ASR开始退饱和时，由于电动机电流<span
+class="math inline">\(I_d\)</span>仍大于负载电流<span
+class="math inline">\(I_{dl}\)</span>，电动机继续加速，直到<span
+class="math inline">\(I_d &lt;
+I_{dl}\)</span>时转速才降低。这不是按线性系统规律的超调，而是经历了饱和非线性区域之后的超调，因此称作“退饱和超调”。<br />
+ASR退饱和超调量计算公式为： <span class="math display">\[\sigma_n =
+(\frac{\Delta {C_{max} } }{C_b})\frac{\Delta
+n_b}{n^*}=2(\frac{\Delta{C_{max} } }{C_b})(\lambda-z)\frac{\Delta{n_N}
+}{n^*}\frac{T_{\sum n} }{T_m}\]</span>
+<em>具体公式推导参见教材p87-p90，这里不再赘述</em><br />
+式中<span class="math inline">\(\frac{\Delta {C_{max} }
+}{C_b}\)</span>为动态降落，可以根据<span
+class="math inline">\(h\)</span>值查教材P73表4-5得知，<span
+class="math inline">\(h=5\)</span>时<span
+class="math inline">\(\frac{\Delta {C_{max} }
+}{C_b}=81.2\%\)</span>。<br />
+<span
+class="math inline">\(\lambda\)</span>为电动机允许的过载倍数，有<span
+class="math inline">\(I_{dm}=\lambda I_{dN}\)</span>。<br />
+<span class="math inline">\(z\)</span>为负载系数，有<span
+class="math inline">\(I_{dL}=z I_{dN}\)</span>。<br />
+<span
+class="math inline">\(\Delta{n_N}\)</span>为调速系统开环机械特性的额定稳态速降，<span
+class="math inline">\(\Delta{n_N}=\frac{I_{dN} R}{C_e}\)</span>。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Maxwell教程01-螺线管静磁场仿真
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

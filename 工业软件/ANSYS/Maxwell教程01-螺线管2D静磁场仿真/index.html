@@ -19,29 +19,33 @@
     } 
     </script>
     
-    <title>Maxwell教程01-螺线管静磁场仿真 | RenAhahWiki</title>
+    <title>Maxwell教程01-螺线管2D静磁场仿真 | RenAhahWiki</title>
     
     
         <meta name="keywords" content="Maxwell" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="基于B站视频手把手教你Maxwell-【案例B201】螺线管静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 背景介绍 建模 打开软件，点击Desktop菜单里的Maxwell图标，点击Maxwell 2D。点完之后才会出现仿真界面。 点击菜单栏Maxwell 2D-&gt;Solutio">
+    <meta name="description" content="基于B站视频手把手教你Maxwell-【案例B201】螺线管静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 背景介绍  图1 通电螺线管  通电螺线管由中间的铁芯与周围的线圈组成，在线圈中通入电压或电流后，线圈周围就会产生磁场。产生的磁场方向可以通过右手螺旋定则（安培定则）确定。 本">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Maxwell教程01-螺线管静磁场仿真">
-<meta property="og:url" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/index.html">
+<meta property="og:title" content="Maxwell教程01-螺线管2D静磁场仿真">
+<meta property="og:url" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="基于B站视频手把手教你Maxwell-【案例B201】螺线管静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 背景介绍 建模 打开软件，点击Desktop菜单里的Maxwell图标，点击Maxwell 2D。点完之后才会出现仿真界面。 点击菜单栏Maxwell 2D-&gt;Solutio">
+<meta property="og:description" content="基于B站视频手把手教你Maxwell-【案例B201】螺线管静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 背景介绍  图1 通电螺线管  通电螺线管由中间的铁芯与周围的线圈组成，在线圈中通入电压或电流后，线圈周围就会产生磁场。产生的磁场方向可以通过右手螺旋定则（安培定则）确定。 本">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20迭代结果.png">
-<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/2%20磁场分布.png">
-<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/3%20磁通密度.png">
-<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/4%20磁通密度（矢量）.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/0%20通电螺线管.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/0%20螺线管简化.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20迭代结果.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/2%20磁场分布.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/3%20磁通密度.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/4%20磁通密度（矢量）.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/5%20磁通密度（特定点数值）.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/6%20磁通密度曲线.png">
 <meta property="article:published_time" content="2023-08-13T13:56:52.000Z">
-<meta property="article:modified_time" content="2023-08-15T03:23:45.384Z">
+<meta property="article:modified_time" content="2023-08-19T00:22:34.316Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="Maxwell">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20迭代结果.png">
+<meta name="twitter:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/0%20通电螺线管.png">
     
 
     
@@ -219,7 +223,7 @@
                             &nbsp;
                             Maxwell
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管静磁场仿真</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -348,7 +352,7 @@
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main"><article id="post-工业软件/ANSYS/Maxwell教程01-螺线管静磁场仿真" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-工业软件/ANSYS/Maxwell教程01-螺线管2D静磁场仿真" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -370,7 +374,7 @@
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A1%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">
             <time datetime="2023-08-13T13:56:52.000Z" itemprop="datePublished">2023-08-13</time>
         </a>
     </div>
@@ -386,7 +390,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Maxwell教程01-螺线管静磁场仿真
+            Maxwell教程01-螺线管2D静磁场仿真
         </h1>
     
 
@@ -399,7 +403,7 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1"><span class="toc-number">2.</span> <span class="toc-text">建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">材料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BF%80%E5%8A%B1"><span class="toc-number">4.</span> <span class="toc-text">激励</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C"><span class="toc-number">5.</span> <span class="toc-text">边界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3"><span class="toc-number">6.</span> <span class="toc-text">求解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">7.</span> <span class="toc-text">观察实验结果</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%8C%E6%99%AF%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1"><span class="toc-number">2.</span> <span class="toc-text">建模</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">材料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BF%80%E5%8A%B1"><span class="toc-number">4.</span> <span class="toc-text">激励</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C"><span class="toc-number">5.</span> <span class="toc-text">边界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC"><span class="toc-number">6.</span> <span class="toc-text">网格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3"><span class="toc-number">7.</span> <span class="toc-text">求解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%82%E5%AF%9F%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">8.</span> <span class="toc-text">观察实验结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E6%89%A9%E5%B1%95%E7%9A%84%E5%86%85%E5%AE%B9"><span class="toc-number">9.</span> <span class="toc-text">待扩展的内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">10.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
@@ -409,6 +413,17 @@ target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qd4y1x7ag
 target="_blank" rel="noopener" href="https://space.bilibili.com/647209101">搞仿真的晴博</a>。<br />
 <em>为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记</em></p>
 <h2 id="背景介绍">背景介绍</h2>
+<center>
+<img src="0 通电螺线管.png" width=200/><span class="caption">图1
+通电螺线管</span>
+</center>
+通电螺线管由中间的铁芯与周围的线圈组成，在线圈中通入电压或电流后，线圈周围就会产生磁场。产生的磁场方向可以通过右手螺旋定则（安培定则）确定。<br />
+本次仿真在二维平面中进行，对螺线管的结构进行了二维简化，将其简化为经过螺线管在经过其对称轴的平面上的截面的右半部分。该截面沿对称轴旋转一周(360°)，就能得到原来的三维螺线管。
+<center>
+<img src="0 螺线管简化.png" width=200/><span class="caption">图2
+螺线管简化</span>
+</center>
+<p>本次仿真实验将建立螺线管静磁场二维模型，分析所得磁场分布与磁通密度数据，验证其是否符合理论预期。</p>
 <h2 id="建模">建模</h2>
 <p>打开软件，点击Desktop菜单里的Maxwell图标，点击Maxwell
 2D。点完之后才会出现仿真界面。<br />
@@ -436,6 +451,7 @@ Manager窗口Excitation-&gt;Current1看到这个电流。</p>
 Mode-&gt;Edge将选取模式改为边界，选中空气域的三个边（Z轴是对称轴，可以不给边界）。右键Assign
 Boundary-&gt;Balloon，确认后就可在Project
 Manager窗口Boundries-&gt;Balloon1看到这个气球边。</p>
+<h2 id="网格">网格</h2>
 <p>网格使用默认的自适应网格，不需要去设置。</p>
 <h2 id="求解">求解</h2>
 <p>右键Project Manager中的Analysis-&gt;Add Solution
@@ -459,7 +475,7 @@ simulation on server: Local Machine.”<br />
 在Project Manager窗口Results-&gt;Solution
 Data可以看到每次迭代的数据，还可以将View模式改为Plot观看其中任意两项数据关系的折线图。
 <center>
-<img src="1 迭代结果.png" width=400/><span class="caption">图1
+<img src="1 迭代结果.png" width=400/><span class="caption">图3
 迭代结果</span>
 </center>
 <p>某一次的迭代结果如上图所示，其中Delta
@@ -471,18 +487,51 @@ Converged Passes值设置为1，这使得迭代需要再此基础上再进行一
 再看磁场分布，将线圈、螺线管、空气域都选中，右键Fields-&gt;A-&gt;Flux_lines便可查看磁场，如果只想看一半（X轴正方向），可以将Full
 Model关闭。<br />
 接下来看磁通密度，选中线圈、螺线管、空气域后右键Fields-&gt;B-&gt;Mag_B。
+接下来看磁通矢量，选中线圈、螺线管、空气域后右键Fields-&gt;B-&gt;B_Vector。
 <center>
-<img src="2 磁场分布.png" width=300/><span class="caption">图2
+<img src="2 磁场分布.png" width=300/><span class="caption">图4
 磁场分布</span>
 </center>
 <center>
-<img src="3 磁通密度.png" width=500/><span class="caption">图3
+<img src="3 磁通密度.png" width=500/><span class="caption">图5
 磁通密度</span>
 </center>
 <center>
-<img src="4 磁通密度（矢量）.png" width=500/><span class="caption">图4
+<img src="4 磁通密度（矢量）.png" width=500/><span class="caption">图6
 磁通密度（矢量）</span>
 </center>
+<p>实验结果图像的显示效果可以在Project Manager窗口Field
+Overlays-&gt;J(或A，或B)-&gt;右键Modify Attributes进行修改。</p>
+观察特定点的数值，可以右键仿真区域Fields-&gt;Marker-&gt;Add
+Marker，弹出Measure
+Data窗口。菜单栏Draw-&gt;Measure（褐色正方体）下拉菜单选择为Position。<br />
+这样就可以选择几个点观察仿真数据了，Measure
+Data窗口会显示坐标信息，也可以在这个窗口里修改坐标。右上角会显示一个表格，包含所选点位的坐标与物理量数值。
+<center>
+<img src="5 磁通密度（特定点数值）.png" width=500/><span
+class="caption">图7 磁通密度（特定点数值）</span>
+</center>
+观察某条线上的数值，点击菜单栏Draw-&gt;Draw
+Line（直线）绘制一条直线，弹出的窗口点Yes。画好线段后，可以双击CreateLine修改端点坐标。
+在Project Manager窗口Create Fields Report-&gt;Rectangular
+Plot。弹出的窗口Context-&gt;Geometry选择Polyline1，X轴坐标保持默认Distance（距离），Y轴坐标选择Mag_B（磁通密度）。点击New
+Report就可生成随线段路径上的点的位置变化的磁通密度曲线，如下图所示。
+<center>
+<img src="6 磁通密度曲线.png" width=500/><span class="caption">图8
+磁通密度曲线</span>
+</center>
+<h2 id="待扩展的内容">待扩展的内容</h2>
+<p>线圈电感计算、线圈受力计算、螺线管磁场均匀度计算、参数化设计。<br />
+后面的视频会加以补充。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qd4y1x7ag">手把手教你Maxwell-【案例B201】螺线管静磁场仿真</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/145415643">大物学习笔记（十八）——自感、互感与磁场的能量</a></li>
+</ul>
+</blockquote>
 
             </div>
         
@@ -497,6 +546,15 @@ Model关闭。<br />
 
     
 <nav id="article-nav">
+    
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Maxwell教程02-螺线管3D静磁场仿真
+                
+            </div>
+        </a>
     
     
         <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/" id="article-nav-older" class="article-nav-link-wrap">

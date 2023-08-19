@@ -19,25 +19,29 @@
     } 
     </script>
     
-    <title>作曲研究-序言 | RenAhahWiki</title>
+    <title>Maxwell教程02-螺线管3D静磁场仿真 | RenAhahWiki</title>
     
     
-        <meta name="keywords" content="乐理,音乐" />
+        <meta name="keywords" content="Maxwell" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="前言 个人的音乐制作研究笔记，包括乐理笔记与Fl Studio作曲笔记。参考了网上的一些公开的视频、文档等资源，将其整理为笔记形式方便查看。我就做了一个整理工作，至于参考的部分其版权自然属于原作者。 出于兴趣爱好整理该笔记，肯定不严谨，若有问题敬请指正。 软件准备  Fl Studio——专业的音乐制作软件，又称宿主软件(DAW) LMMS——开源且免费的音乐制作软件 MuseSc">
+    <meta name="description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 建模 直接建三维模型 在上期视频的工程基础上，Project Manager窗口工程文件右键Insert-&gt;Insert Maxwell 3D Design新建一个三维模">
 <meta property="og:type" content="article">
-<meta property="og:title" content="作曲研究-序言">
-<meta property="og:url" content="https://renahah.github.io/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/index.html">
+<meta property="og:title" content="Maxwell教程02-螺线管3D静磁场仿真">
+<meta property="og:url" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="前言 个人的音乐制作研究笔记，包括乐理笔记与Fl Studio作曲笔记。参考了网上的一些公开的视频、文档等资源，将其整理为笔记形式方便查看。我就做了一个整理工作，至于参考的部分其版权自然属于原作者。 出于兴趣爱好整理该笔记，肯定不严谨，若有问题敬请指正。 软件准备  Fl Studio——专业的音乐制作软件，又称宿主软件(DAW) LMMS——开源且免费的音乐制作软件 MuseSc">
+<meta property="og:description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 建模 直接建三维模型 在上期视频的工程基础上，Project Manager窗口工程文件右键Insert-&gt;Insert Maxwell 3D Design新建一个三维模">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-18T13:29:43.637Z">
-<meta property="article:modified_time" content="2023-07-30T09:45:49.195Z">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20线圈电流.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/2%20磁通密度.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/3%20磁通矢量.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/4%20磁通密度曲线.png">
+<meta property="article:published_time" content="2023-08-16T06:36:18.000Z">
+<meta property="article:modified_time" content="2023-08-19T04:56:42.884Z">
 <meta property="article:author" content="RenAhah">
-<meta property="article:tag" content="乐理">
-<meta property="article:tag" content="音乐">
+<meta property="article:tag" content="Maxwell">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20线圈电流.png">
     
 
     
@@ -202,20 +206,20 @@
         
         
          <ul class="unstyled" id="tree" > 
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             工业软件
                         </a>
                          <ul class="unstyled" id="tree" > 
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             Maxwell
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -256,9 +260,9 @@
                      </ul> 
                     </li> 
                     
-                    <li class="directory open">
+                    <li class="directory">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder-open"></i>
+                            <i class="fa fa-folder"></i>
                             &nbsp;
                             音乐
                         </a>
@@ -271,7 +275,7 @@
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
                     </li> 
-                     <li class="file active"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
                     </li> 
                      <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
     </div>
@@ -344,7 +348,7 @@
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main"><article id="post-音乐/作曲研究-序言" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-工业软件/ANSYS/Maxwell教程02-螺线管3D静磁场仿真" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -354,20 +358,20 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/%E9%9F%B3%E4%B9%90/">音乐</a>
+        <a class="article-category-link" href="/categories/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/">工业软件</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/Maxwell/">Maxwell</a>
     </div>
 
                         
     <div class="article-tag">
         <i class="fa fa-tag"></i>
-        <a class="tag-link-link" href="/tags/%E4%B9%90%E7%90%86/" rel="tag">乐理</a>, <a class="tag-link-link" href="/tags/%E9%9F%B3%E4%B9%90/" rel="tag">音乐</a>
+        <a class="tag-link-link" href="/tags/Maxwell/" rel="tag">Maxwell</a>
     </div>
 
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">
-            <time datetime="2023-06-18T13:29:43.637Z" itemprop="datePublished">2023-06-18</time>
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">
+            <time datetime="2023-08-16T06:36:18.000Z" itemprop="datePublished">2023-08-16</time>
         </a>
     </div>
 
@@ -382,7 +386,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            作曲研究-序言
+            Maxwell教程02-螺线管3D静磁场仿真
         </h1>
     
 
@@ -395,54 +399,104 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%87%86%E5%A4%87"><span class="toc-number">1.1.</span> <span class="toc-text">软件准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E4%BB%B6%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">硬件准备</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">2.</span> <span class="toc-text">目录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B0"><span class="toc-number">2.1.</span> <span class="toc-text">乐理笔记</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fl-studio%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B0"><span class="toc-number">2.2.</span> <span class="toc-text">Fl Studio作曲笔记</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E6%A8%A1"><span class="toc-number">1.</span> <span class="toc-text">建模</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E5%BB%BA%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">直接建三维模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%BA%8C%E7%BB%B4%E6%A8%A1%E5%9E%8B%E5%9F%BA%E7%A1%80%E4%B8%8A%E5%BB%BA%E4%B8%89%E7%BB%B4%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">在二维模型基础上建三维模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">材料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BF%80%E5%8A%B1"><span class="toc-number">3.</span> <span class="toc-text">激励</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C"><span class="toc-number">4.</span> <span class="toc-text">边界</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E6%A0%BC"><span class="toc-number">5.</span> <span class="toc-text">网格</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E8%A7%A3"><span class="toc-number">6.</span> <span class="toc-text">求解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E5%A4%84%E7%90%86"><span class="toc-number">7.</span> <span class="toc-text">后处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
         
-            <h2 id="前言">前言</h2>
-<p>个人的音乐制作研究笔记，包括<strong>乐理笔记</strong>与<strong>Fl
-Studio作曲笔记</strong>。参考了网上的一些公开的视频、文档等资源，将其整理为笔记形式方便查看。我就做了一个整理工作，至于参考的部分其版权自然属于原作者。<br />
-出于兴趣爱好整理该笔记，肯定不严谨，若有问题敬请指正。</p>
-<h3 id="软件准备">软件准备</h3>
-<ul>
-<li>Fl Studio——专业的音乐制作软件，又称宿主软件(DAW)</li>
-<li>LMMS——开源且免费的音乐制作软件</li>
-<li>MuseScore——免费乐谱制作软件</li>
-<li>番茄简谱——免费简谱制作软件</li>
-</ul>
-<h3 id="硬件准备">硬件准备</h3>
-<ul>
-<li>电脑——能用就行</li>
-<li>耳机——听个响就行</li>
-<li>麦克风——如果需要录制声音的话</li>
-</ul>
-<h2 id="目录">目录</h2>
-<h3 id="乐理笔记">乐理笔记</h3>
-<p>内容参考自<code>三分钟音乐社 《零基础学音乐·自学乐理第二季》</code><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="乐理笔记01-基础知识">乐理笔记01-基础知识</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/" title="乐理笔记02-简谱">乐理笔记02-简谱</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/" title="乐理笔记03-节奏">乐理笔记03-节奏</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/" title="乐理笔记04-乐谱记号">乐理笔记04-乐谱记号</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/" title="乐理笔记05-五线谱">乐理笔记05-五线谱</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/" title="乐理笔记06-音程">乐理笔记06-音程</a><br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/" title="乐理笔记07-和弦">乐理笔记07-和弦</a><br />
-乐理笔记08-调式（敬请期待）</p>
-<h3 id="fl-studio作曲笔记">Fl Studio作曲笔记</h3>
-<p>敬请期待</p>
-<p><code>To Be Countinued未完待续......</code></p>
+            <p>基于B站视频<a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UK411X75L">手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真</a>整理的学习笔记，视频原作者为<a
+target="_blank" rel="noopener" href="https://space.bilibili.com/647209101">搞仿真的晴博</a>。<br />
+<em>为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记</em></p>
+<h2 id="建模">建模</h2>
+<h3 id="直接建三维模型">直接建三维模型</h3>
+<p>在上期视频的工程基础上，Project
+Manager窗口工程文件右键Insert-&gt;Insert Maxwell 3D
+Design新建一个三维模型。<br />
+点击Draw菜单栏中的圆柱体图标，画一个线圈的内径（线圈内径10mm，外径12mm，高20mm），第一次点击点击确定圆心，第二次点击确定半径，第三次点击确定圆柱高。双击CreateCylinder进入属性界面，Radius设置为10，Height设置为20。<br />
+Number of
+Segments指的是多边形边数，这里设置为36，也就是将圆柱体近似为正三十六棱柱体。使用棱柱<u>是为了保持模型的对称性</u>，计算电场不要将圆柱近似为棱柱，计算磁场等物理量建议将圆柱近似为棱柱。</p>
+<p>再以相同方法画一个圆柱（线圈外径），Radius设置为12，Number of
+Segments也设置为36。<br />
+选中两个圆柱体，做减法操作。右键Edit-&gt;Boolean-&gt;Subtract，弹出窗口界面中左侧Blank
+Parts是减数（大的），右侧Tool
+Parts是被减数（小的）。这里需要调换一下，让Cylinder2做Blank
+Parts，Cylinder1做Tool Parts。</p>
+<p>接下来画电枢铁芯（半径8mm，长度30mm），点击Draw菜单栏中的圆柱体图标下面的棱柱体，画出一个棱柱，弹出的Number
+of Segments设置为24。属性Center Position设置为“0 ,0 ,-5”，Start
+Position设置为“8 ,0 ,-5”，Height设置为30。</p>
+<p>画一个空气域，点击Draw菜单栏中的Create
+Region（红色边框空心正方体）图标，这次设置Percentage
+Offset值为200，表示在已经画出来的几何模型基础上扩大200%的区域内建立空气域。</p>
+<h3 id="在二维模型基础上建三维模型">在二维模型基础上建三维模型</h3>
+<p>Project
+Manager窗口右键上期视频建立的二维工程“Maxwell2DDesign1”点击Create 3D
+Design。弹出“Sweep Around Z Axis”窗口，旋转角度Angle of
+Sweep保持为360度，Number of
+Segments设置为36，就能得到相同的三维模型。</p>
+<p>需要修改一下空气域，100改成200。<br />
+同理，三维模型取一个截面后也可以转化为二维模型。</p>
+<h2 id="材料">材料</h2>
+<p>和上期视频操作一致。线圈命名为Coil，材料为Copper；铁芯命名为Core，材料为steel_1008。</p>
+<h2 id="激励">激励</h2>
+<p>给线圈加一个电流，有两种情况。<br />
+第一种情况是闭合线圈，做一个截面，在截面上给电流。点击线圈，右键Edit-&gt;Surface-&gt;Section，弹出窗口选择YZ或XZ平面。（视频中选择了YZ平面）<br />
+这里产生了两个截面，需要去掉一个，选中截面右键Edit-&gt;Boolean-&gt;Separate
+Bodies将其一分为二，然后删掉两个截面中的一个。（视频中删除了Y轴负半轴上的截面）<br />
+选取Coil右键Assign
+Excitation-&gt;Current，选择电流为1000A，Type选择Standard（绞线圈）。这里点击Swap
+Direction可以调换电流方向。<br />
+可以在Project Manager窗口Excitation-&gt;Current1看到这个电流。</p>
+<p>第二种情况是非闭合的...</p>
+<h2 id="边界">边界</h2>
+<p>空气域<u>最外侧使用默认的纽曼条件，使用默认的H平行边界</u>，不需要去设置。</p>
+<h2 id="网格">网格</h2>
+<p>为使仿真结果更为准确，需要自己设置网格。<br />
+选中线圈，右键Assign Mesh Operation-&gt;Inside Selection-&gt;Length
+Based，弹出窗口设定尺寸为2mm。<br />
+再选中铁芯，右键Assign Mesh Operation-&gt;Inside Selection-&gt;Length
+Based，弹出窗口设定尺寸为5mm，再右键Assign Mesh Operation-&gt;On
+Selection-&gt;Length Based，弹出窗口设定尺寸为2mm。</p>
+<h2 id="求解">求解</h2>
+<p>右键Project Manager中的Analysis-&gt;Add Solution
+Setup，进入求解设置界面，使用默认设置即可，直接确认。<br />
+收敛误差Percent Error默认为1%，如果要做精细计算，可以修改为0.1%。<br />
+点击菜单栏Maxwell 2D-&gt;Analyze All开始求解。</p>
+<h2 id="后处理">后处理</h2>
+和上期视频一样，按照“<strong>先源量后场量、先定性再定量</strong>”的原则观察实验数据。<br />
+先看线圈电流，选中线圈后右键Fields-&gt;J-&gt;J_Vector查看电流矢量。如下图所示：
+<center>
+<img src="1 线圈电流.png" width=400/><span class="caption">图1
+线圈电流</span>
+</center>
+观察到其电流方向正确，大小正常，说明线圈电流没有问题。<br />
+嵌入一个截面，点击Draw菜单栏中的Draw
+Rectangle（矩形）图标，弹出的窗口点Yes。将Draw菜单栏中Grid（网格）下面的下拉菜单选为YZ，这样就能在YOZ平面上画矩形，画好矩形后修改其属性使截面的位置更合适。（这里设置Position为0,30,-20，YSize为-60，XSize为60）<br />
+接下来看截面上的磁通密度，选中截面后右键Fields-&gt;B-&gt;Mag_B。<br />
+接下来看截面上的磁通矢量，选中截面后右键Fields-&gt;B-&gt;B_Vector。
+<center>
+<img src="2 磁通密度.png" width=400/><span class="caption">图2
+磁通密度</span>
+</center>
+<center>
+<img src="3 磁通矢量.png" width=400/><span class="caption">图3
+磁通矢量</span>
+</center>
+接下来看穿过螺线管的某个路径的磁力大小变化。点击菜单栏Draw-&gt;Draw
+Line（直线）绘制一条z轴上的线段。点击CreateLine可以修改点的坐标。（这里设置Point1为0,0,30，Point2为0,0,-10）<br />
+在Project Manager窗口Create Fields Report-&gt;Rectangular
+Plot。弹出的窗口Context-&gt;Geometry选择Polyline1，X轴坐标保持默认Distance（距离），Y轴坐标选择Mag_B（磁通密度）。点击New
+Report就可生成随线段路径上的点的位置变化的磁通密度曲线，如下图所示。
+<center>
+<img src="4 磁通密度曲线.png" width=500/><span class="caption">图4
+磁通密度曲线</span>
+</center>
+<p>曲线图可以导出，右键Export即可，可以保存为图片，也可以保存为图表(csv)格式。</p>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
 <li><a
-target="_blank" rel="noopener" href="https://space.bilibili.com/7762500/channel/series">三分钟音乐社</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/column/musictheory">从零开始学音乐
-by-光能丰</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.flstudiochina.com/curriculum.html">FL
-Studio学院</a></li>
-<li><a target="_blank" rel="noopener" href="https://lmms.io/">LMMS</a></li>
-<li><a target="_blank" rel="noopener" href="https://musescore.org/zh-hans">Musescore作谱</a></li>
-<li><a target="_blank" rel="noopener" href="http://www.jianpu99.net/">番茄简谱</a></li>
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UK411X75L">手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真</a></li>
 </ul>
 </blockquote>
 
@@ -460,19 +514,10 @@ Studio学院</a></li>
     
 <nav id="article-nav">
     
-        <a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    乐理笔记01-基础知识
-                
-            </div>
-        </a>
     
-    
-        <a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/" id="article-nav-older" class="article-nav-link-wrap">
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">
             <strong class="article-nav-caption">下一篇</strong>
-            <div class="article-nav-title">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</div>
+            <div class="article-nav-title">Maxwell教程01-螺线管2D静磁场仿真</div>
         </a>
     
 </nav>

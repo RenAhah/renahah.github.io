@@ -25,19 +25,19 @@
         <meta name="keywords" content="Maxwell" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 建模 直接建三维模型 在上期视频的工程基础上，Project Manager窗口工程文件右键Insert-&gt;Insert Maxwell 3D Design新建一个三维模">
+    <meta name="description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 我使用的软件版本为2023R1，与原视频软件版本2022R1不同，也有个人操作问题，会使实验结果与原视频不同，一切以原视频为准。 建模 直接建三维模型 在上期视频的工程基础上，P">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Maxwell教程02-螺线管3D静磁场仿真">
 <meta property="og:url" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 建模 直接建三维模型 在上期视频的工程基础上，Project Manager窗口工程文件右键Insert-&gt;Insert Maxwell 3D Design新建一个三维模">
+<meta property="og:description" content="基于B站视频手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真整理的学习笔记，视频原作者为搞仿真的晴博。 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 我使用的软件版本为2023R1，与原视频软件版本2022R1不同，也有个人操作问题，会使实验结果与原视频不同，一切以原视频为准。 建模 直接建三维模型 在上期视频的工程基础上，P">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/1%20线圈电流.png">
 <meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/2%20磁通密度.png">
 <meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/3%20磁通矢量.png">
 <meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/4%20磁通密度曲线.png">
 <meta property="article:published_time" content="2023-08-16T06:36:18.000Z">
-<meta property="article:modified_time" content="2023-08-19T04:56:42.884Z">
+<meta property="article:modified_time" content="2023-08-23T06:02:49.583Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="Maxwell">
 <meta name="twitter:card" content="summary">
@@ -219,7 +219,7 @@
                             &nbsp;
                             Maxwell
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -407,7 +407,8 @@
             <p>基于B站视频<a
 target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UK411X75L">手把手教你Maxwell-【案例B202】螺线管3D静磁场仿真</a>整理的学习笔记，视频原作者为<a
 target="_blank" rel="noopener" href="https://space.bilibili.com/647209101">搞仿真的晴博</a>。<br />
-<em>为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记</em></p>
+<em>为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记</em><br />
+<em>我使用的软件版本为2023R1，与原视频软件版本2022R1不同，也有个人操作问题，会使实验结果与原视频不同，一切以原视频为准。</em></p>
 <h2 id="建模">建模</h2>
 <h3 id="直接建三维模型">直接建三维模型</h3>
 <p>在上期视频的工程基础上，Project
@@ -439,15 +440,13 @@ Segments设置为36，就能得到相同的三维模型。</p>
 <h2 id="材料">材料</h2>
 <p>和上期视频操作一致。线圈命名为Coil，材料为Copper；铁芯命名为Core，材料为steel_1008。</p>
 <h2 id="激励">激励</h2>
-<p>给线圈加一个电流，有两种情况。<br />
-第一种情况是闭合线圈，做一个截面，在截面上给电流。点击线圈，右键Edit-&gt;Surface-&gt;Section，弹出窗口选择YZ或XZ平面。（视频中选择了YZ平面）<br />
+<p>给线圈加一个电流。可以做一个截面，在截面上给电流。点击线圈，右键Edit-&gt;Surface-&gt;Section，弹出窗口选择YZ或XZ平面。（视频中选择了YZ平面）<br />
 这里产生了两个截面，需要去掉一个，选中截面右键Edit-&gt;Boolean-&gt;Separate
 Bodies将其一分为二，然后删掉两个截面中的一个。（视频中删除了Y轴负半轴上的截面）<br />
 选取Coil右键Assign
 Excitation-&gt;Current，选择电流为1000A，Type选择Standard（绞线圈）。这里点击Swap
 Direction可以调换电流方向。<br />
 可以在Project Manager窗口Excitation-&gt;Current1看到这个电流。</p>
-<p>第二种情况是非闭合的...</p>
 <h2 id="边界">边界</h2>
 <p>空气域<u>最外侧使用默认的纽曼条件，使用默认的H平行边界</u>，不需要去设置。</p>
 <h2 id="网格">网格</h2>
@@ -513,6 +512,15 @@ target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1UK411X75L
 
     
 <nav id="article-nav">
+    
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Maxwell教程03-永磁体电磁力仿真
+                
+            </div>
+        </a>
     
     
         <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">

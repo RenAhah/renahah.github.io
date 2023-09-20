@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>直流电机 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="为初步了解直流电机的基本结构与工作原理所整理的学习笔记。 个人知识、能力水平有限，部分内容尚未完全吃透理解，这类内容会有下划线标记。 序言 直流电机指能实现直流电能和机械能互相转换的电机。当它作电动机运行时是直流电动机(Direct Current Motor)，将电能转换为机械能；作发电机运行时是直流发电机(Direct Current Generator)，将机械能转换为电能。 直">
+<meta property="og:type" content="article">
+<meta property="og:title" content="直流电机">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="为初步了解直流电机的基本结构与工作原理所整理的学习笔记。 个人知识、能力水平有限，部分内容尚未完全吃透理解，这类内容会有下划线标记。 序言 直流电机指能实现直流电能和机械能互相转换的电机。当它作电动机运行时是直流电动机(Direct Current Motor)，将电能转换为机械能；作发电机运行时是直流发电机(Direct Current Generator)，将机械能转换为电能。 直">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/1%20直流电机的四种励磁方式.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/2%20直流电机模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/3%20气隙磁场分布与电动势波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/4%20直流电机电枢绕组元件.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/5%20电枢绕组元件在槽内的放置.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/6%20单叠与单波绕组元件的连接情况.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/7%20单叠绕组连接关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/8%20单叠绕组展开图与电路连接图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/9%20单波绕组连接关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/10%20单波绕组展开图与电路连接图.png">
+<meta property="article:published_time" content="2023-09-01T13:19:25.000Z">
+<meta property="article:modified_time" content="2023-09-14T12:12:00.473Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/1%20直流电机的四种励磁方式.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/电机/直流电机" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/">电机</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98/" rel="tag">课题</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">
+            <time datetime="2023-09-01T13:19:25.000Z" itemprop="datePublished">2023-09-01</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            直流电机
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">序言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%BB%93%E6%9E%84%E5%8F%8A%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">直流电机结构及工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9A%84%E9%A2%9D%E5%AE%9A%E5%80%BC"><span class="toc-number">3.</span> <span class="toc-text">直流电机的额定值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9A%84%E7%94%B5%E6%9E%A2%E7%BB%95%E7%BB%84"><span class="toc-number">4.</span> <span class="toc-text">直流电机的电枢绕组</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%8F%A0%E7%BB%95%E7%BB%84"><span class="toc-number">4.1.</span> <span class="toc-text">单叠绕组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E6%B3%A2%E7%BB%95%E7%BB%84"><span class="toc-number">4.2.</span> <span class="toc-text">单波绕组</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9A%84%E7%A3%81%E5%9C%BA"><span class="toc-number">5.</span> <span class="toc-text">直流电机的磁场</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.</span> <span class="toc-text">直流电机的数学模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>为初步了解直流电机的基本结构与工作原理所整理的学习笔记。<br />
+个人知识、能力水平有限，部分内容尚未完全吃透理解，这类内容会有下划线标记。</p>
+<h2 id="序言">序言</h2>
+直流电机指能实现直流电能和机械能互相转换的电机。当它作电动机运行时是直流电动机(Direct
+Current Motor)，将电能转换为机械能；作发电机运行时是直流发电机(Direct
+Current Generator)，将机械能转换为电能。<br />
+直流电机按照其有无电刷可分为有刷直流与无刷直流两种，其中无刷直流电机在某些场合下可视作交流电机，本篇文章介绍的是<strong>有刷直流电机</strong>。<br />
+有刷直流电动机可分为永磁直流电动机和电磁直流电动机两种。<br />
+永磁直流电动机的主磁极为永磁体，通过改变所通入直流电的供电极性来改变旋转方向。按照永磁体材料的不同可分为稀土永磁、铁氧体永磁、铝镍钴永磁等若干种。<br />
+电磁直流电动机的主磁极由铁芯和励磁绕组构成。按照励磁绕组与转子绕组连接方式的不同，可分为串励、并励、他励、复励四种励磁方式。本篇文章将以<strong>他励直流电动机</strong>为例，简要分析直流电机的数学模型。
+<center>
+<img src="1 直流电机的四种励磁方式.png" width=600/><span
+class="caption">图1 直流电机的四种励磁方式<br />(a)他励 (b)并励 (c)串励
+(d)复励</span>
+</center>
+<p><em>注：励磁指的是向电动机或者发电机提供工作磁场的装置。</em></p>
+<h2 id="直流电机结构及工作原理">直流电机结构及工作原理</h2>
+有刷直流电机由定子与转子组成。定子是固定的，其中包括主磁极、换向极、电刷、机座；转子又可称为电枢，其中包括电枢铁芯、电枢绕组、换向器等。<br />
+
+<center>
+<img src="2 直流电机模型.png" width=300/><span class="caption">图2
+直流电机模型</span>
+</center>
+一个简单的直流电机模型如上图所示，图中N与S为固定的主磁极，其间有一个绕固定轴旋转的铁质圆柱体（电枢铁芯，图中未画出），铁芯与磁极间的空隙被称作气隙，铁芯表面有导体abcd，导体abcd构成一个单匝线圈。线圈首尾与一对弧形铜片（换向片）相连，换向片与电枢铁芯一同旋转，换向片与铁芯绝缘，两个换向片相互绝缘。图中A与B是电刷，电刷的空间位置是固定的，电刷使电枢与外电路相通。<br />
+拖动电枢以恒定速度<span
+class="math inline">\(n\)</span>旋转时，上述模型构成发电机，其导体内感应电动势为<span
+class="math inline">\(e = {B_\delta}lv \propto
+{B_\delta}\)</span>。其方向由右手定则确定。<br />
+其中<span
+class="math inline">\(B_\delta\)</span>为导体所处位置气隙磁通密度，单位<span
+class="math inline">\(Wb/m^2\)</span>；<span
+class="math inline">\(l\)</span>为导体有效长度（切割磁力线的长度，单位为m）；<span
+class="math inline">\(v\)</span>为导体切割磁力线线速度，<span
+class="math inline">\(v=\frac{2\pi Rn}{60}\)</span>。<br />
+电机<span class="math inline">\(l\)</span>值不变，转速<span
+class="math inline">\(n\)</span>恒定时，可以认为导体电动势与气隙磁密成正比，也就时说导体内感应电动势随时间变化规律与气隙磁场沿气隙的分布规律相同。<br />
+有刷直流电机中线圈导体中的感应电动势是交变的，通过换向器机械整流方式将交流调整为直流。换向片跟随线圈旋转，电刷是固定的，这使得线圈每旋转180°，与电刷接触的换向片就变化一次，而线圈导体也是每旋转180°改变电动势方向。这使得两个电刷的极性保持不变，输出到负载的电流方向不会变化，电动势为脉动的直流电动势。<br />
+实际电机上电枢会均匀分布多个线圈，按照一定规律组成电枢绕组，这样可以大大减小电动势的脉动，使输出电动势接近于恒定值。
+<center>
+<img src="3 气隙磁场分布与电动势波形.png" width=600/><span
+class="caption">图3
+气隙磁场分布与电动势波形<br />(a)气隙磁场分布曲线与导体电动势波形
+(b)换向后单线圈电动势波形 (c)多线圈绕组电动势波形</span>
+</center>
+<p>直流电动机工作原理与直流发电机类似。区别在于将电刷A与B接入直流电源，使得线圈导体上产生交变的电流<span
+class="math inline">\(i\)</span>，进而产生电磁力<span
+class="math inline">\(f=B_\delta
+li\)</span>。受力方向由左手定则确定。<br />
+与直流发电机类似，所产生的电磁转矩使单方向的，增加线圈导体数量可以减小转矩脉动。</p>
+<h2 id="直流电机的额定值">直流电机的额定值</h2>
+<p>直流电机的额定值有额定电压<span
+class="math inline">\(U_N\)</span>、额定电流<span
+class="math inline">\(I_N\)</span>、额定励磁电压<span
+class="math inline">\(U_{fN}\)</span>、额定励磁电流<span
+class="math inline">\(I_{fN}\)</span>、额定转速<span
+class="math inline">\(n\)</span>(r/min)、额定转矩<span
+class="math inline">\(T_N\)</span>(N·m)和额定功率<span
+class="math inline">\(P_N\)</span>。<br />
+发电机额定功率<span class="math inline">\(P_N=U_N
+I_N\)</span>（输出电功率），电动机额定功率<span
+class="math inline">\(P_N=U_N I_N
+\eta_N\)</span>（转轴上输出机械功率，<span
+class="math inline">\(\eta_N\)</span>为额定效率）。</p>
+<h2 id="直流电机的电枢绕组">直流电机的电枢绕组</h2>
+电枢绕组按连接方式可分为叠绕组与波绕组。简单的例子如下图所示：
+<center>
+<img src="4 直流电机电枢绕组元件.png" width=400/><span
+class="caption">图4 直流电机电枢绕组元件<br />(a)单匝叠绕组
+(b)两匝叠绕组 (c)单匝波绕组 (d)两匝波绕组</span>
+</center>
+元件边：每个元件的两个切割磁力线，产生感应电动势的有效边。分为上元件边（槽上层）与下元件边（槽下层）。<br />
+端接：元件边在电枢铁芯两端的部分，起到连接作用，分为前端接（与换向片相连）与后端接。<br />
+虚槽：某个实槽的上层或下层所放的元件数<span
+class="math inline">\(u\)</span>为这个槽对应的虚槽数，电枢绕组虚槽数<span
+class="math inline">\(Z_i=uZ\)</span>。分析电枢绕组空间分布是看的是虚槽，按虚槽编号。
+<center>
+<img src="5 电枢绕组元件在槽内的放置.png" width=600/><span
+class="caption">图5 电枢绕组元件在槽内的放置</span>
+</center>
+左图为电枢绕组元件在槽内的放置，右图是以<span
+class="math inline">\(u=2\)</span>为例的槽内元件布置图，可以观察到元件数(S)=换向片数(K)=虚槽数(<span
+class="math inline">\(Z_i\)</span>)。
+<center>
+<img src="6 单叠与单波绕组元件的连接情况.png" width=600/><span
+class="caption">图6 单叠与单波绕组元件的连接情况</span>
+</center>
+<p>第一节距<span
+class="math inline">\(y_1\)</span>：同一元件两个元件边的距离。图中单叠绕组第一节距为4。<br />
+第二节距<span
+class="math inline">\(y_2\)</span>：连至同一换向片的两个元件边的距离。即某个元件下元件边经换向器到下一个元件上元件边的距离。<br />
+合成节距<span
+class="math inline">\(y\)</span>：两个相串联元件对应边的距离。有<span
+class="math inline">\(y=y_1+y_2\)</span>。<br />
+换向器节距<span
+class="math inline">\(y_k\)</span>：元件两个边所连接的换向器的距离。其值与合成节距相等，有<span
+class="math inline">\(y=y_k\)</span>。<br />
+极对数<span
+class="math inline">\(p\)</span>：主磁极的对数（N极或S极的数量），级数（N极与S极的数量）为<span
+class="math inline">\(2p\)</span>。<br />
+极距<span
+class="math inline">\(\tau\)</span>：每个主磁极在电枢表面占据的距离（相邻两主极间的距离）。<span
+class="math inline">\(\tau=\frac{Z_i}{2p}=\frac{\pi
+D_i}{2p}\)</span>，<span
+class="math inline">\(D_a\)</span>为电枢外径。<br />
+整距：为使元件感应电动势最大，<span
+class="math inline">\(y_1\)</span>应尽可能凑为整数（接近或等于极距）。有<span
+class="math inline">\(y_1=\frac{Z_i}{2p} \mp \varepsilon =
+N\)</span>。这里<span
+class="math inline">\(\varepsilon\)</span>为小于1的分数，使<span
+class="math inline">\(y_1\)</span>凑为整数。<span
+class="math inline">\(y_1=\tau\)</span>为整距元件，<span
+class="math inline">\(y_1&lt;\tau\)</span>为短距元件，<span
+class="math inline">\(y_1&gt;\tau\)</span>为长距元件。其中短距元件应用更广泛，其绕组端连线较短，节约材料。<br />
+并联支路对数<span
+class="math inline">\(a\)</span>：绕组电路图中与负载正极（或负极）连接的支路的对数，并联支路数为<span
+class="math inline">\(2a\)</span>。</p>
+<h3 id="单叠绕组">单叠绕组</h3>
+叠绕组：任意两个串联元件后一个叠在前一个上面的绕组。规定<span
+class="math inline">\(y_k&gt;0\)</span>为右行绕组，<span
+class="math inline">\(y_k&lt;0\)</span>为左行绕组。<br />
+单叠右行绕组有<span
+class="math inline">\(y=y_k=1\)</span>，单叠左行绕组有<span
+class="math inline">\(y=y_k=-1\)</span>。<br />
+注：复叠绕组（m叠绕组）有<span
+class="math inline">\(y=y_k=m\)</span>。<br />
+以级数<span class="math inline">\(2p=4\)</span>，虚槽数<span
+class="math inline">\(Z_i=16\)</span>的单叠右行整距绕组为例：<br />
+第一节距<span
+class="math inline">\(y_1=\frac{Z_i}{2p}=4\)</span>，合成节距<span
+class="math inline">\(y=y_k=1\)</span>，第二节距<span
+class="math inline">\(y_2=y-y_1=-3\)</span>。<br />
+画出绕组连接关系如下图：
+<center>
+<img src="7 单叠绕组连接关系.png" width=300/><span class="caption">图7
+单叠绕组连接关系</span>
+</center>
+<center>
+<img src="8 单叠绕组展开图与电路连接图.png" width=600/><span
+class="caption">图8 单叠绕组展开图与电路连接图</span>
+</center>
+<p>由图可知单叠绕组的并联支路数2a=2p。（m叠绕组的并联支路数为2mp）</p>
+<h3 id="单波绕组">单波绕组</h3>
+波绕组：从某一换向片出发，连接完p个元件后回到出发换向片的相邻换向片上（绕行一周），以此类推继续连接直至回到第一个换向片形成闭合回路。连接后的形状如同波浪。<br />
+换向器节距<span class="math inline">\(y_k\)</span>应满足关系<span
+class="math inline">\(y=y_k=\frac{K\mp 1}{p}=\frac{Z_i \mp
+1}{p}=y_1+y_2=N\)</span>。其中正负号取负号时绕行一周后回到出发点左侧，称为左行绕组，同理取正号时为右行绕组。<br />
+以级数<span class="math inline">\(2p=4\)</span>，虚槽数<span
+class="math inline">\(Z_i=15\)</span>的单波左行短距绕组为例：<br />
+第一节距<span class="math inline">\(y_1=\frac{Z_i}{2p} - \varepsilon
+=\frac{15}{4} - \frac{3}{4}=3\)</span>，合成节距<span
+class="math inline">\(y=y_k=\frac{K-1}{p}=7\)</span>，第二节距<span
+class="math inline">\(y_2=y-y_1=4\)</span>。<br />
+画出绕组连接关系如下图：
+<center>
+<img src="9 单波绕组连接关系.png" width=300/><span class="caption">图9
+单波绕组连接关系</span>
+</center>
+<center>
+<img src="10 单波绕组展开图与电路连接图.png" width=600/><span
+class="caption">图10 单波绕组展开图与电路连接图</span>
+</center>
+<p>由图可知单波绕组把所有处于相同极性下的元件都串联起来构成一条支路，其并联支路数2a=2。（m波绕组的并联支路数为2m）</p>
+<p>综上可知，直流电机电枢绕组是无头无尾的闭合绕组，直流电机电枢绕组至少有2条并联支路。<br />
+<u>电刷放置的一般原则是确保空载时通过正、负电刷引出的电动势最大，或者说，被电刷短路的元件中的电动势为零。对于端接对称的元件，电刷也就放置在主极轴线下的换向片上。</u></p>
+<h2 id="直流电机的磁场">直流电机的磁场</h2>
+<h2 id="直流电机的数学模型">直流电机的数学模型</h2>
+<p><code>To Be Countinued未完待续......</code></p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/30730957">[1]
+辜承林，陈乔夫，熊永前．电机学（第四版）[M]．武汉：华中科技大学出版社，2018．</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.tup.com.cn/booksCenter/book_04452307.html">[2]
+李发海，王岩．电机与拖动基础（第4版）[M]．北京：清华大学出版社，2012．</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cmpedu.com/books/book/2063329.htm">[3]
+阮毅,杨影,陈伯时. 电力拖动自动控制系统——运动控制系统(第四版)[M].
+北京:机械工业出版社,2016</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    线性系统理论01-绪论
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机概述及分类</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

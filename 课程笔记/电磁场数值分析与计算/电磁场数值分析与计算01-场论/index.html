@@ -25,12 +25,12 @@
         <meta name="keywords" content="课程笔记,电磁场数值分析与计算" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁数值分析的定解问题（敬请期待） 4.电磁场数值分析与计算04-有限元法简介（敬请期待） 5.电磁场数值分析与计算05-二维有限元分析（敬请期待） 基础概念 标量(Scalar)：只">
+    <meta name="description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 基础概念 标量(Scalar)：只有大小，没有方向的量。如质量、温度、电流等。 矢量(Vector)：既有大小又有方向">
 <meta property="og:type" content="article">
 <meta property="og:title" content="电磁场数值分析与计算01-场论">
 <meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁数值分析的定解问题（敬请期待） 4.电磁场数值分析与计算04-有限元法简介（敬请期待） 5.电磁场数值分析与计算05-二维有限元分析（敬请期待） 基础概念 标量(Scalar)：只">
+<meta property="og:description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 基础概念 标量(Scalar)：只有大小，没有方向的量。如质量、温度、电流等。 矢量(Vector)：既有大小又有方向">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/1%20矢量的点积.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/2%20矢量的叉积.png">
@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/6%20旋度数学推导.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/7%20常见的几种场.png">
 <meta property="article:published_time" content="2023-09-15T07:05:41.000Z">
-<meta property="article:modified_time" content="2023-09-18T00:25:06.063Z">
+<meta property="article:modified_time" content="2023-10-08T03:12:02.516Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="电磁场数值分析与计算">
@@ -259,7 +259,7 @@
                             &nbsp;
                             电磁场数值分析与计算
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -268,7 +268,7 @@
                             &nbsp;
                             线性系统理论
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -449,9 +449,8 @@
 <h2 id="目录">目录</h2>
 <p>1.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/" title="电磁场数值分析与计算01-场论">电磁场数值分析与计算01-场论</a><br />
 2.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/" title="电磁场数值分析与计算02-Maxwell方程组">电磁场数值分析与计算02-Maxwell方程组</a><br />
-3.电磁场数值分析与计算03-电磁数值分析的定解问题（敬请期待）<br />
-4.电磁场数值分析与计算04-有限元法简介（敬请期待）<br />
-5.电磁场数值分析与计算05-二维有限元分析（敬请期待）</p>
+3.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/" title="电磁场数值分析与计算03-电磁场数值分析的定解问题">电磁场数值分析与计算03-电磁场数值分析的定解问题</a><br />
+4.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/" title="电磁场数值分析与计算04-边界条件">电磁场数值分析与计算04-边界条件</a></p>
 <h2 id="基础概念">基础概念</h2>
 <p>标量(Scalar)：只有大小，没有方向的量。如质量、温度、电流等。<br />
 矢量(Vector)：既有大小又有方向的量。如力、速度、电场强度、电流密度等。<br />
@@ -749,7 +748,7 @@ z}\)</span>（梯度场的散度）<br />
 ④<span class="math inline">\({\bf{\nabla}} \times {\bf{\nabla}} u =
 0\)</span>（梯度场无旋）<br />
 ⑤<span class="math inline">\({\bf{\nabla}} \cdot ({\bf{\nabla}} \times
-{\bf{A}}) = 0\)</span>（旋度场无散）<br />
+{\bf{A}}) = 0\)</span>（旋度场无散、旋度场无源）<br />
 ⑥<span class="math inline">\({\bf{\nabla}}(uv) = v{\bf{\nabla}}u +
 u{\bf{\nabla}}v\)</span><br />
 ⑦<span class="math inline">\({\bf{\nabla}} \cdot (u{\bf{A}}) =
@@ -764,7 +763,10 @@ u{\bf{\nabla}} \times {\bf{A}} + ({\bf{\nabla}}u) \times
 ⑩<span class="math inline">\({\bf{\nabla}} ({\bf{A}} \cdot {\bf{B}}) =
 {\bf{A}} \times ({\bf{\nabla}} \times {\bf{B}}) + {\bf{A}}
 ({\bf{\nabla}} \cdot {\bf{B}}) + {\bf{B}} \times ({\bf{\nabla}} \times
-{\bf{A}}) + {\bf{B}} ({\bf{\nabla}} \cdot {\bf{A}})\)</span></p>
+{\bf{A}}) + {\bf{B}} ({\bf{\nabla}} \cdot {\bf{A}})\)</span><br />
+<mark>⑪<span class="math inline">\({\bf{\nabla}} \times {\bf{\nabla}}
+\times {\bf{A}} = {\bf{\nabla}}({\bf{\nabla}} \cdot {\bf{A}}) -
+{\bf{\nabla}}^2 {\bf{A}}\)</span></mark></p>
 <h2 id="常见的几种场">常见的几种场</h2>
 按照旋度与散度值分类：<br />
 ①无旋无源场（平行板电容器）<br />
@@ -876,65 +878,64 @@ class="math inline">\(\phi\)</span></td>
 <p>一个矢量场被它的散度、旋度和边界条件唯一性确定。<br />
 证明：设有两个矢量场<span class="math inline">\(F_1\)</span>、<span
 class="math inline">\(F_2\)</span>，在体积<span
-class="math inline">\(V\)</span>及其边界<span
+class="math inline">\(V\)</span>及其边界表面<span
 class="math inline">\(S\)</span>上有定义，且有以下关系成立。<br />
-在<span class="math inline">\(V\)</span>内<span
-class="math inline">\({\bf{\nabla}} \times {\bf{F_1}} = {\bf{\nabla}}
-\times {\bf{F_2}}\)</span>①<br />
-在<span class="math inline">\(V\)</span>内<span
-class="math inline">\({\bf{\nabla}} \cdot {\bf{F_1}} = {\bf{\nabla}}
-\cdot {\bf{F_2}}\)</span>②<br />
-在<span class="math inline">\(S\)</span>上<span
-class="math inline">\(F_{1n}=F_{2n}\)</span>或<span
-class="math inline">\(F_{1t}=F_{2t}\)</span>③<br />
-证明<span
-class="math inline">\({\bf{F_1}}={\bf{F_2}}\)</span>，即两个矢量场相等。<br />
+<span class="math inline">\({\bf{\nabla}} \times {\bf{F_1}} =
+{\bf{\nabla}} \times {\bf{F_2}}\)</span>（在<span
+class="math inline">\(V\)</span>内）①<br />
+<span class="math inline">\({\bf{\nabla}} \cdot {\bf{F_1}} =
+{\bf{\nabla}} \cdot {\bf{F_2}}\)</span>（在<span
+class="math inline">\(V\)</span>内）②<br />
+<span class="math inline">\(F_{1n}=F_{2n}\)</span>或<span
+class="math inline">\(F_{1t}=F_{2t}\)</span>（在<span
+class="math inline">\(S\)</span>上）③<br />
+下标t和n分别表示矢量的切向和法向分量。<br />
+现证明<span
+class="math inline">\({\bf{F_1}}={\bf{F_2}}\)</span>，即两个矢量场是同一个场。<br />
 令<span
 class="math inline">\({\bf{F}}={\bf{F_1}}-{\bf{F_2}}\)</span>，由①得<span
 class="math inline">\({\bf{\nabla}} \times {\bf{F}} = {\bf{\nabla}}
-\times {\bf{F_1}} - {\bf{\nabla}} \times {\bf{F_2}} = 0\)</span>（<span
+\times {\bf{F_1}} - {\bf{\nabla}} \times {\bf{F_2}} =
+{\bf{0}}\)</span>（<span
 class="math inline">\(\bf{F}\)</span>为无旋场）④<br />
-故<span class="math inline">\(\bf{F}\)</span>可表示成标量函数<span
+故<span class="math inline">\(\bf{F}\)</span>可表示成某一标量函数<span
 class="math inline">\(\varphi\)</span>的梯度，即<span
 class="math inline">\(\bf{F}=\bf{\nabla}\varphi\)</span>⑤<br />
 注：这里使用了“梯度场无旋”这一性质，可以将无旋度的<span
 class="math inline">\(\bf{F}\)</span>替换为一个标量函数的梯度。<br />
-利用格林公式<span class="math inline">\(\mathop{
-{\int\!\!\!\!\!\int}\mkern-9mu \circ}\limits_S {u\frac{dv}{dn}} dS =
-\iiint\limits_V {(u{ {\bf{\nabla}} ^2}v + {\bf{\nabla}} v \cdot
-{\bf{\nabla}} u)}dV\)</span>⑥<br />
+利用第一格林公式<span class="math inline">\(\oint\limits_S
+{u\frac{dv}{dn}} dS = \int\limits_V {(u{ {\bf{\nabla}} ^2}v +
+{\bf{\nabla}} v \cdot {\bf{\nabla}} u)}dV\)</span>⑥<br />
 将<span class="math inline">\(u=v=\varphi\)</span>代入⑥，得<span
-class="math inline">\(\mathop{ {\int\!\!\!\!\!\int}\mkern-9mu
-\circ}\limits_S {\varphi\frac{d\varphi}{dn}} dS = \iiint\limits_V
-{(\varphi{ {\bf{\nabla}} ^2}\varphi + {\bf{\nabla}} \varphi \cdot
-{\bf{\nabla}} \varphi)}dV\)</span>⑦<br />
+class="math inline">\(\oint\limits_S {\varphi\frac{d\varphi}{dn}} dS =
+\int\limits_V {(\varphi{ {\bf{\nabla}} ^2}\varphi + {\bf{\nabla}}
+\varphi \cdot {\bf{\nabla}} \varphi)}dV\)</span>⑦<br />
 考虑到<span class="math inline">\({\bf{\nabla}}^2\varphi = {\bf{\nabla}}
 \cdot ({\bf{\nabla}}\varphi) = {\bf{\nabla}} \cdot {\bf{F}} =
 {\bf{\nabla}} \cdot {\bf{F_1}} - {\bf{\nabla}} \cdot {\bf{F_2}} =
 0\)</span>⑧<br />
+因此⑦右边第一项为零<br />
 若边界条件为<span class="math inline">\(F_{1n}=F_{2n}\)</span>，则<span
 class="math inline">\(\frac{\partial \varphi}{\partial
 n}=F_{1n}-F_{2n}=0\)</span>⑨<br />
-因此⑦右边为零<br />
+因此⑦左边为零<br />
 若边界条件为<span class="math inline">\(F_{1t}=F_{2t}\)</span>，则<span
 class="math inline">\(({\bf{\nabla}}\varphi)_t=0\)</span>，即<span
 class="math inline">\(S\)</span>面为<span
 class="math inline">\(\varphi\)</span>的等量面，同时由于<span
 class="math inline">\(\varphi\)</span>为调和函数，可以利用第三格林公式<span
-class="math inline">\(\mathop{ {\int\!\!\!\!\!\int}\mkern-9mu
-\circ}\limits_S {\frac{\partial \varphi }{\partial n}ds =
-0}\)</span>⑩<br />
-因此⑦在左边项<span class="math inline">\(\mathop{
-{\int\!\!\!\!\!\int}\mkern-9mu \circ}\limits_S {\varphi\frac{\partial
-\varphi }{\partial n}ds} = \varphi \mathop{
-{\int\!\!\!\!\!\int}\mkern-9mu \circ}\limits_S {\frac{\partial \varphi
-}{\partial n}ds} = 0\)</span>⑪<br />
-因此⑦在右边第二项等于零，即<span class="math inline">\(\iiint\limits_V
-{({\bf{\nabla}} \varphi \cdot {\bf{\nabla}} \varphi)}dV = 0 \Rightarrow
-\iiint\limits_V { ({ {\bf{\nabla}}\varphi})^2}dV = 0\)</span>⑫<br />
+class="math inline">\(\oint\limits_S {\frac{\partial \varphi }{\partial
+n}ds = 0}\)</span>⑩<br />
+因此⑦的左边项<span class="math inline">\(\oint\limits_S
+{\varphi\frac{\partial \varphi }{\partial n}ds} = \varphi \oint\limits_S
+{\frac{\partial \varphi }{\partial n}ds} = 0\)</span>⑪<br />
+因此无论是哪一种边界条件，⑦的左边项均为零。因此<span
+class="math inline">\(\int\limits_V {({\bf{\nabla}} \varphi \cdot
+{\bf{\nabla}} \varphi)}dV = 0 \Rightarrow \int\limits_V { ({
+{\bf{\nabla}}\varphi})^2}dV = 0\)</span>⑫<br />
 由于<span class="math inline">\(({ {\bf{\nabla}}\varphi})^2 \geqslant
 0\)</span>，因此使⑫成立的唯一可能性为<span
-class="math inline">\({\bf{\nabla}}\varphi=0\)</span>，即<span
+class="math inline">\({\bf{\nabla}}\varphi\)</span>处处为零，即<span
 class="math inline">\({\bf{F}}={\bf{F_1}}-{\bf{F_2}}=0\)</span>，<span
 class="math inline">\({\bf{F_1}}={\bf{F_2}}\)</span>，证毕。</p>
 <h2 id="参考资料">参考资料</h2>

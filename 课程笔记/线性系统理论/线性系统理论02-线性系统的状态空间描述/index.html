@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>线性系统理论02-线性系统的状态空间描述 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,线性系统理论" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="线性系统理论课程笔记 对应教材内容第二章 线性系统的状态空间描述的内容 状态和状态空间 状态是一个列向量，由各个状态变量构成。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性系统理论02-线性系统的状态空间描述">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="线性系统理论课程笔记 对应教材内容第二章 线性系统的状态空间描述的内容 状态和状态空间 状态是一个列向量，由各个状态变量构成。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/1%20动力学系统结构示意图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/2%20连续时间线性系统结构图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/3%20离散时间线性系统结构图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/4%20RLC电路网络结构图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/5%20系统方块图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/6%20等效方块图.png">
+<meta property="article:published_time" content="2023-09-23T00:57:37.000Z">
+<meta property="article:modified_time" content="2023-10-04T08:30:23.789Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="线性系统理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/1%20动力学系统结构示意图.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/线性系统理论/线性系统理论02-线性系统的状态空间描述" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/">线性系统理论</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/" rel="tag">线性系统理论</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">
+            <time datetime="2023-09-23T00:57:37.000Z" itemprop="datePublished">2023-09-23</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            线性系统理论02-线性系统的状态空间描述
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%92%8C%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4"><span class="toc-number">1.</span> <span class="toc-text">状态和状态空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">线性系统的状态空间描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%8C%89%E5%85%B6%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">系统按其状态空间描述的分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%96%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0%E4%B8%BA%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.</span> <span class="toc-text">化输入—输出描述为状态空间描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA1%E7%94%B1%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0%E5%AF%BC%E5%87%BA%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.1.</span> <span class="toc-text">结论1——由输入输出描述导出状态空间描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA2%E7%94%B1%E8%BE%93%E5%85%A5%E8%BE%93%E5%87%BA%E6%8F%8F%E8%BF%B0%E5%AF%BC%E5%87%BA%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.2.</span> <span class="toc-text">结论2——由输入输出描述导出状态空间描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA3%E7%94%B1%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0%E6%8F%8F%E8%BF%B0%E5%AF%BC%E5%87%BA%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.3.</span> <span class="toc-text">结论3——由传递函数描述导出状态空间描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B1%E6%96%B9%E5%9D%97%E5%9B%BE%E6%8F%8F%E8%BF%B0%E5%AF%BC%E5%87%BA%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0"><span class="toc-number">4.4.</span> <span class="toc-text">由方块图描述导出状态空间描述</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%89%B9%E5%BE%81%E7%BB%93%E6%9E%84"><span class="toc-number">5.</span> <span class="toc-text">线性时不变系统的特征结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%96%B9%E7%A8%8B%E7%9A%84%E5%AF%B9%E8%A7%92%E7%BA%BF%E8%A7%84%E8%8C%83%E5%BD%A2%E5%92%8C%E7%BA%A6%E5%BD%93%E8%A7%84%E8%8C%83%E5%BD%A2"><span class="toc-number">6.</span> <span class="toc-text">状态方程的对角线规范形和约当规范形</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%B9%E8%A7%92%E7%BA%BF%E8%A7%84%E8%8C%83%E6%80%A7"><span class="toc-number">6.1.</span> <span class="toc-text">对角线规范性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A6%E5%BD%93%E8%A7%84%E8%8C%83%E5%BD%A2"><span class="toc-number">6.2.</span> <span class="toc-text">约当规范形</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B1%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0%E5%AF%BC%E5%87%BA%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0%E7%9F%A9%E9%98%B5"><span class="toc-number">7.</span> <span class="toc-text">由状态空间描述导出传递函数矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>线性系统理论课程笔记<br />
+对应教材内容<code>第二章 线性系统的状态空间描述</code>的内容</p>
+<h2 id="状态和状态空间">状态和状态空间</h2>
+<p>状态是一个列向量，由各个状态变量构成。 <span id="more"></span> <span
+class="math display">\[X(t) = \left[ {\begin{array}{*{20}{c}} {
+{x_1}(t)} \\ \vdots \\ { {x_n}(t)} \end{array}} \right]t \geqslant
+{t_0}\]</span>
+状态空间是状态向量的集合，状态空间的维数等于状态的维数。</p>
+<h2 id="线性系统的状态空间描述">线性系统的状态空间描述</h2>
+<center>
+<img src="1 动力学系统结构示意图.png"/ width=400><span
+class="caption">图1 动力学系统结构示意图</span>
+</center>
+<p>输入变量组：<span class="math inline">\({u_1},{u_2}, \cdots
+,{u_p}\)</span>（环境对系统的作用）<br />
+输出变量组：<span class="math inline">\({y_1},{y_2}, \cdots
+,{y_q}\)</span>（系统对环境的作用）<br />
+状态变量组：<span class="math inline">\({x_1},{x_2}, \cdots
+,{x_n}\)</span>（能完全表征其时间域行为的一个最小内部变量组，刻画系统在每个时刻所处状况的变量，体现了系统的行为）</p>
+<p>系统的外部描述：又称作输入—输出描述。外部描述是不完全的描述，不表征系统的内部结构和内部变量，只反映外部变量间的因果关系，即输出和输入间的因果关系。<br />
+线性定常、单输入—单输出系统，外部描述为线性常系数微分方程。 <span
+class="math display">\[{y^{(n)}} + {a_{n - 1}}{y^{(n - 1)}} +  \cdots  +
+{a_1}{y^{(1)}} + {a_0}y = {b_{n - 1}}{u^{(n - 1)}} + {b_{n - 2}}{u^{(n -
+2)}} +  \cdots  + {b_1}{u^{(1)}} + {b_0}u\]</span>
+假定初始条件为零，取拉氏变换。得到其复频率域描述，即传递函数。 <span
+class="math display">\[G(s) = \frac{ { {b_{n - 1}}{s^{n - 1}}
++  \cdots  + {b_1}s + {b_0}}}{ { {s^n} + {a_{n - 1}}{s^{n - 1}}
++  \cdots  + {a_1}s + {a_0}}}\]</span></p>
+<p>系统的内部描述：这里指状态空间描述。内部描述是完全的描述，能够完全反映系统的所有动力学特性。内部描述需要由两个数学方程表征（状态方程和输出方程，统称为状态空间表达式）。<br />
+状态方程：微分方程或差分方程（状态变量组和输入变量组间的因果关系）。<br />
+一般的情况下，为一阶非线性时变微分方程组。 <span
+class="math display">\[\left\{ {\begin{array}{*{20}{c}} { { {\dot x}_1}
+= {f_1}({x_1}, \cdots ,{x_n};{u_1}, \cdots ,{u_p},t)} \\ \cdots \\ { {
+{\dot x}_n} = {f_n}({x_1}, \cdots ,{x_n};{u_1}, \cdots ,{u_p},t)}
+\end{array}} \right.t \geqslant {t_0}\]</span> 向量方程形式为<span
+class="math inline">\(\dot X = f(x,u,t),t \geqslant {t_0}\)</span></p>
+<p>输出方程：代数方程（状态变量组、输入变量组和输出变量组间的转换关系）。<br />
+一般的情况下，输出方程为 <span class="math display">\[\left\{
+{\begin{array}{*{20}{c}}{ {y_1} = {g_1}({x_1}, \cdots ,{x_n};{u_1},
+\cdots ,{u_p},t)} \\ \cdots  \\ { {y_q} = {g_q}({x_1}, \cdots
+,{x_n};{u_1}, \cdots ,{u_p},t)}
+\end{array}} \right.t \geqslant {t_0}\]</span> 向量方程形式为<span
+class="math inline">\(Y = g(x,u,t),t \geqslant {t_0}\)</span></p>
+连续时间系统的线性系统状态空间描述为： <span
+class="math display">\[\left\{ {\begin{array}{*{20}{c}}{\dot x = A(t)x +
+B(t)u} \\ {y = C(t)x + D(t)u}
+\end{array}} \right.t \geqslant {t_0}\]</span>
+<center>
+<img src="2 连续时间线性系统结构图.png"/ width=400><span
+class="caption">图2 连续时间线性系统结构图</span>
+</center>
+离散时间系统的线性系统状态空间描述为： <span
+class="math display">\[\left\{ {\begin{array}{*{20}{c}}{x(k+1) =
+G(k)x(k) + H(k)u(k)} \\ {y(k) = C(k)x(k) + D(k)u(k)}
+\end{array}} \right.k=1,2,\cdots\]</span>
+<center>
+<img src="3 离散时间线性系统结构图.png"/ width=400><span
+class="caption">图3 离散时间线性系统结构图</span>
+</center>
+系统状态空间描述的列写举例（RLC电路网络）：
+<center>
+<img src="4 RLC电路网络结构图.png"/ width=400><span class="caption">图4
+RLC电路网络结构图</span>
+</center>
+<p>选取电感电流<span class="math inline">\(i_L\)</span>与电容电压<span
+class="math inline">\(u_C\)</span>作为状态变量，列写回路方程： <span
+class="math display">\[\left\{ {\begin{array}{*{20}{c}}
+{i_L=(u-L\frac{di_L}{dt})\frac{1}{R_1}}+C\frac{du_C}{dt} \\
+{L\frac{di_L}{dt}+u_C+C\frac{du_C}{dt}R_2=u}
+\end{array}}\right.\]</span> 整理得 <span class="math display">\[\left\{
+{\begin{array}{*{20}{c}}
+{\frac{di_L}{dt}=\frac{u}{L}-\frac{i_L}{L}(\frac{R_1R_2}{R_1+R_2})-\frac{u_C}{L}(\frac{R_1}{R_1+R_2})}
+\\ {\frac{du_C}{dt}=\frac{R_1}{C(R_1+R_2)}i_L-\frac{1}{C(R_1+R_2)}u_C}
+\end{array}}\right.\]</span> 取状态变量<span
+class="math inline">\(x_1=i_L\)</span>、<span
+class="math inline">\(x_2=u_C\)</span>，进一步整理得到状态方程 <span
+class="math display">\[\left\{ {\begin{array}{*{20}{c}} {\dot
+x_1=-\frac{1}{L}(\frac{R_1R_2}{R_1+R_2})x_1-\frac{1}{L}(\frac{R_1}{R_1+R_2})x_2+\frac{1}{L}u}
+\\ {\dot x_2=\frac{R_1}{C(R_1+R_2)}x_1-\frac{1}{C(R_1+R_2)}x_2}
+\end{array}}\right.\]</span> 该状态方程可简化为<span
+class="math inline">\(\dot x = A(t)x + B(t)u\)</span>，其中<span
+class="math inline">\(A = \left[ {\begin{array}{*{20}{c}}
+-\frac{1}{L}(\frac{R_1R_2}{R_1+R_2})&amp;-\frac{1}{L}(\frac{R_1}{R_1+R_2})
+\\ \frac{R_1}{C(R_1+R_2)}&amp;-\frac{1}{C(R_1+R_2)} \end{array}}
+\right]\)</span>，<span class="math inline">\(B=\left[
+{\begin{array}{*{20}{c}} \frac{1}{L} \\ 0 \end{array}}
+\right]\)</span><br />
+选取<span class="math inline">\(u_{R2}\)</span>作为输出变量<span
+class="math inline">\(y\)</span>，则有： <span
+class="math display">\[u_{R2}=R_2 i_C=R_2 C\frac{dU_c}{dt}=\frac{R_1
+R_2}{R_1+R_2}i_L-\frac{R_2}{R_1+R_2}u_C\]</span> <span
+class="math display">\[y=\frac{R_1
+R_2}{R_1+R_2}x_1-\frac{R_2}{R_1+R_2}x_2\]</span> 该输出方程可简化为<span
+class="math inline">\(y = C(t)x + D(t)u\)</span>，其中<span
+class="math inline">\(C=\left[ {\begin{array}{*{20}{c}} \frac{R_1
+R_2}{R_1+R_2} &amp; -\frac{R_2}{R_1+R_2} \end{array}}
+\right]\)</span>，<span class="math inline">\(D=[0]\)</span></p>
+<h2 id="系统按其状态空间描述的分类">系统按其状态空间描述的分类</h2>
+<ol type="1">
+<li>线性系统和非线性系统</li>
+<li>时变系统和时不变系统</li>
+<li>连续时间系统和离散时间系统</li>
+<li>确定性系统和不确定性系统</li>
+</ol>
+<h2 id="化输入输出描述为状态空间描述">化输入—输出描述为状态空间描述</h2>
+<h3
+id="结论1由输入输出描述导出状态空间描述">结论1——由输入输出描述导出状态空间描述</h3>
+<p>给定单输入，单输出线性时不变系统的输入输出描述： <span
+class="math display">\[{y^{(n)}} + {a_{n - 1}}{y^{(n - 1)}} +  \cdots  +
+{a_1}{y^{(1)}} + {a_0}y = {b_m}{u^{(m)}} + {b_{m - 1}}{u^{(m - 1)}}
++  \cdots  + {b_1}{u^{(1)}} + {b_0}u\]</span> <span
+class="math display">\[G(s) = \frac{Y(s)}{U(s)} = \frac{ { {b_m}{s^m} +
+{b_{m - 1}}{s^{m - 1}} +  \cdots  + {b_1}{s^1} + {b_0}}}{ { {s^n} +
+{a_{n - 1}}{s^{n - 1}} +  \cdots  + {a_1}s + {a_0}}}\]</span> <span
+class="math inline">\(m &lt; n\)</span>时，有 <span
+class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}}0&amp;1&amp;0&amp; \cdots &amp;0 \\ \vdots
+&amp;{}&amp; \ddots &amp;{}&amp; \vdots  \\ 0&amp;{}&amp;{}&amp; \ddots
+&amp;0 \\ 0&amp;0&amp;0&amp; \cdots &amp;1 \\ { - {a_0}}&amp;{ -
+{a_1}}&amp;{ - {a_2}}&amp; \cdots &amp;{ - {a_{n - 1}}} \end{array}}
+\right]x + \left[ {\begin{array}{*{20}{c}} 0 \\ 0 \\ \vdots \\ 0 \\ 1
+\end{array}} \right]u \hfill \\ \hfill \\ y = \left[
+{\begin{array}{*{20}{c}}{b_0}&amp;{b_1}&amp; \cdots
+&amp;{b_m}&amp;0&amp; \cdots &amp;0 \end{array}} \right]x \hfill \\
+\end{gathered}\]</span> 【例1】：<span class="math inline">\({y^{(3)}} +
+16{y^{(2)}} + 194{y^{(1)}} + 640y = 160{u^{(1)}} + 720u\)</span> <span
+class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}} 0&amp;1&amp;0 \\ 0&amp;0&amp;1 \\ { -
+640}&amp;{ - 194}&amp;{ - 16} \end{array}} \right] x + \left[
+{\begin{array}{*{20}{c}} 0 \\ 0 \\ 1 \end{array}} \right]u \hfill \\
+\hfill \\ y = \left[ {\begin{array}{*{20}{c}} {720}&amp;{160}&amp;0
+\end{array}} \right] x \hfill \\ \end{gathered}\]</span> <span
+class="math inline">\(m = n\)</span>时，有 <span
+class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}}0&amp;1&amp;0&amp; \cdots &amp;0 \\ \vdots
+&amp;{}&amp; \ddots &amp;{}&amp; \vdots  \\ 0&amp;{}&amp;{}&amp; \ddots
+&amp;0 \\ 0&amp;0&amp;0&amp; \cdots &amp;1 \\ { - {a_0}}&amp;{ -
+{a_1}}&amp;{ - {a_2}}&amp; \cdots &amp;{ - {a_{n - 1}}} \end{array}}
+\right]x + \left[ {\begin{array}{*{20}{c}} 0 \\ 0 \\ \vdots \\ 0 \\ 1
+\end{array}} \right]u \hfill \\ \hfill \\ y = \left[
+{\begin{array}{*{20}{c}} {({b_0} - {b_n}{a_0}),}&amp;{({b_1} -
+{b_n}{a_1}),}&amp;{ \cdots ,}&amp;{({b_{n - 1}} - {b_n}{a_{n- 1}})}
+\end{array}} \right]x + {b_n}u \hfill \\ \end{gathered}\]</span>
+【例2】：<span class="math inline">\({y^{(3)}} + 16{y^{(2)}} +
+194{y^{(1)}} + 640y = 4{u^{(3)}} + 160{u^{(1)}} + 720u\)</span><br />
+<span class="math inline">\(b_0 - b_3 a_0 = 720 - 4 \times 640 =
+-1840\)</span><br />
+<span class="math inline">\(b_1 - b_3 a_1 = 160 - 4 \times 194 =
+-616\)</span><br />
+<span class="math inline">\(b_0 - b_3 a_0 = 0 - 4 \times 16 =
+-64\)</span> <span class="math display">\[\begin{gathered} \dot x =
+\left[ {\begin{array}{*{20}{c}} 0&amp;1&amp;0 \\ 0&amp;0&amp;1 \\ { -
+640}&amp;{ - 194}&amp;{ - 16} \end{array}} \right]x + \left[
+{\begin{array}{*{20}{c}} 0 \\ 0 \\ 1 \end{array}} \right]u \hfill \\
+\hfill \\ y = \left[
+{\begin{array}{*{20}{c}}{-1840}&amp;{-616}&amp;{-64} \end{array}}
+\right]x + 4u \hfill \\ \end{gathered}\]</span></p>
+<h3
+id="结论2由输入输出描述导出状态空间描述">结论2——由输入输出描述导出状态空间描述</h3>
+<p>给定单输入，单输出线性时不变系统的输入输出描述：<br />
+<span class="math inline">\(m = 0\)</span>时，输入输出描述为： <span
+class="math display">\[{y^{(n)}} + {a_{n - 1}}{y^{(n - 1)}} +  \cdots  +
+{a_1}{y^{(1)}} + {a_0}y = {b_0}u\]</span> <span
+class="math display">\[G(s) = \frac{b_0}{ { {s^n} + {a_{n - 1}}{s^{n -
+1}} +  \cdots  + {a_1}s + {a_0}}}\]</span> 其对应的状态空间描述为：
+<span class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}} 0&amp;1&amp;0&amp; \cdots &amp;0 \\ \vdots
+&amp;{}&amp; \ddots &amp;{}&amp; \vdots \\ 0&amp;{}&amp;{}&amp; \ddots
+&amp;0 \\ 0&amp;0&amp;0&amp; \cdots &amp;1 \\ { - {a_0}}&amp;{ -
+{a_1}}&amp;{ - {a_2}}&amp; \cdots &amp;{ - {a_{n - 1}}} \end{array}}
+\right]x + \left[ {\begin{array}{*{20}{c}}0 \\ 0 \\ \vdots \\ 0 \\ {b_0}
+\end{array}} \right]u \hfill \\ y = \left[
+{\begin{array}{*{20}{c}}{1,}&amp;{0,}&amp;{ \cdots ,}&amp;0 \end{array}}
+\right]x \hfill \\ \end{gathered}\]</span> <span class="math inline">\(m
+\ne 0\)</span>时，输入输出描述为： <span
+class="math display">\[{y^{(n)}} + {a_{n - 1}}{y^{(n - 1)}} +  \cdots  +
+{a_1}{y^{(1)}} + {a_0}y = {b_n}{u^{(n)}} + {b_{n - 1}}{u^{(n - 1)}}
++  \cdots  + {b_1}{u^{(1)}} + {b_0}u\]</span> <span
+class="math display">\[G(s) = \frac{ { {b_n}{s^n} + {b_{n - 1}}{s^{n -
+1}} +  \cdots  + {b_1}{s^1} + {b_0}}}{ { {s^n} + {a_{n - 1}}{s^{n - 1}}
++  \cdots  + {a_1}s + {a_0}}}\]</span> 其对应的状态空间描述为： <span
+class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}}0&amp;1&amp;0&amp; \cdots &amp;0 \\ \vdots
+&amp;{}&amp; \ddots &amp;{}&amp; \vdots  \\ 0&amp;{}&amp;{}&amp; \ddots
+&amp;0 \\ 0&amp;0&amp;0&amp; \cdots &amp;1 \\ { - {a_0}}&amp;{ -
+{a_1}}&amp;{ - {a_2}}&amp; \cdots &amp;{ - {a_{n - 1}}}\end{array}}
+\right]x + \left[ {\begin{array}{*{20}{c}}{\beta _1} \\ {\beta _2} \\
+\vdots  \\ {\beta _{n - 1}} \\ {\beta _n} \end{array}} \right]u \hfill
+\\ \hfill \\ \begin{array}{*{20}{c}} {}&amp;{} \end{array}y = \left[
+{\begin{array}{*{20}{c}}{1,}&amp;{0,}&amp;{ \cdots ,}&amp;0 \end{array}}
+\right]x + b_n u \hfill \\ \end{gathered}\]</span> 其中<span
+class="math inline">\({\beta _0} = {b_n}\)</span><br />
+<span class="math inline">\({\beta _1} = {b_{n - 1}} - {a_{n - 1}}{\beta
+_0}\)</span><br />
+<span class="math inline">\({\beta _2} = {b_{n - 2}} - {a_{n - 1}}{\beta
+_1} - {a_{n - 2}}{\beta _0}\)</span><br />
+<span class="math inline">\(\vdots\)</span><br />
+<span class="math inline">\({\beta _n} = {b_0} - {a_{n - 1}}{\beta _{n -
+1}} - {a_{n - 2}}{\beta _{n - 2}} - \cdots - {a_1}{\beta _1} -
+{a_0}{\beta _0}\)</span><br />
+【例3】：<span class="math inline">\({y^{(3)}} + 16{y^{(2)}} +
+194{y^{(1)}} + 640y = 160{u^{(1)}} + 720u\)</span><br />
+<span class="math inline">\({\beta _0} = {b_3} = 0\)</span><br />
+<span class="math inline">\({\beta _1} = {b_2} - {a_2}{\beta _0} = 0-16
+\times 0=0\)</span><br />
+<span class="math inline">\({\beta _2} = {b_1} - {a_2}{\beta _1} -
+{a_1}{\beta _0}=160-16 \times 0-194 \times 0=160\)</span><br />
+<span class="math inline">\({\beta _3} = {b_0} - {a_2}{\beta _2} -
+{a_1}{\beta _1} - {a_0}{\beta _0}=720-16 \times 160-194 \times 0-640
+\times 0=-1840\)</span><br />
+<span class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}} 0&amp;1&amp;0 \\ 0&amp;0&amp;1 \\ { -
+640}&amp;{ - 194}&amp;{ - 16} \end{array}} \right] x + \left[
+{\begin{array}{*{20}{c}} 0 \\ 160 \\ -1840 \end{array}} \right]u \hfill
+\\ \hfill \\ y = \left[ {\begin{array}{*{20}{c}} 1&amp;0&amp;0
+\end{array}} \right] x \hfill \\ \end{gathered}\]</span>
+注：与例1相比，相同的输入输出描述得到的状态空间描述不同，说明同一个输入输出描述可以对应多个状态空间描述。</p>
+<h3
+id="结论3由传递函数描述导出状态空间描述">结论3——由传递函数描述导出状态空间描述</h3>
+<p>给定单输入、单输出线性时不变系统的传递函数描述为： <span
+class="math display">\[G(s) = \frac{ { {b_m}{s^m} + {b_{m - 1}}{s^{m -
+1}} +  \cdots  + {b_1}{s^1} + {b_0}}}{ { {s^n} + {a_{n - 1}}{s^{n - 1}}
++  \cdots  + {a_1}s + {a_0}}}\]</span> 当分母方程的根<span
+class="math inline">\({\lambda_1},{\lambda_2},\cdots,{\lambda_n}\)</span>两两相异<br />
+<span class="math inline">\(m &lt; n\)</span>时，有<br />
+<span class="math inline">\(\begin{gathered}G(s) = \frac{k_1}{s -
+{\lambda_1}} + \frac{k_2}{s - {\lambda_2}} + \cdots + \frac{k_n}{s -
+{\lambda_n}} \hfill \\{k_i} = \mathop {\lim }\limits_{s \to \infty }
+G(s)(s - {\lambda_i}),\begin{array}{*{20}{c}}{}&amp;{} \end{array}i =
+1,2, \cdots ,n \hfill \\ \end{gathered}\)</span><br />
+对应的状态空间描述为： <span class="math display">\[\begin{gathered}\dot
+x = \left[ {\begin{array}{*{20}{c}}{\lambda _1}&amp;{}&amp;{}&amp;{} \\
+{}&amp;{\lambda _2}&amp;{}&amp;{} \\ {}&amp;{}&amp; \ddots &amp;{} \\
+{}&amp;{}&amp;{}&amp;{\lambda _n} \end{array}} \right]x + \left[
+{\begin{array}{*{20}{c}}{k_1} \\ {k_2} \\ \vdots  \\ {k_n} \end{array}}
+\right]u \hfill \\y = \left[ {\begin{array}{*{20}{c}}{1,}&amp;{1,}&amp;{
+\cdots ,}&amp;1 \end{array}} \right]x \hfill \\ \end{gathered}\]</span>
+<span class="math inline">\(m = n\)</span>时，有<br />
+<span class="math inline">\(\begin{gathered}G(s) = \frac{ { {b_n}{s^n} +
+{b_{n - 1}}{s^{n - 1}} + \cdots + {b_1}s + {b_0}}}{ { {s^n} + {a_{n -
+1}}{s^{n - 1}} + \cdots + {a_1}s + {a_0}}} = {b_n} + \bar G(s) \hfill \\
+\bar G(s) = \frac{ {\left( { {b_{n - 1}} - {b_n}{a_{n - 1}}}
+\right){s^{n - 1}} + \cdots + \left( { {b_0} - {b_n}{a_0}} \right)}}{ {
+{s^n} + {a_{n - 1}}{s^{n - 1}} + \cdots + {a_1}s + {a_0}}} \hfill \\{
+{\bar k}_i} = \mathop {\lim }\limits_{s \to {\lambda _i}} \bar G(s)(s -
+{\lambda_i}),\begin{array}{*{20}{c}}{}&amp;{} \end{array}i = 1,2, \cdots
+,n \hfill \\ \end{gathered}\)</span><br />
+对应的状态空间描述为： <span class="math display">\[\begin{gathered}\dot
+x = \left[ {\begin{array}{*{20}{c}}{\lambda_1}&amp;{}&amp;{}&amp;{} \\
+{}&amp;{\lambda_2}&amp;{}&amp;{} \\ {}&amp;{}&amp; \ddots &amp;{} \\
+{}&amp;{}&amp;{}&amp;{\lambda_n} \end{array}} \right]x + \left[
+{\begin{array}{*{20}{c}}{ {\bar k}_1} \\ { {\bar k}_2} \\ \vdots  \\ {
+{\bar k}_n} \end{array}} \right]u \hfill \\y = \left[
+{\begin{array}{*{20}{c}}{1,}&amp;{1,}&amp;{\cdots ,}&amp;1 \end{array}}
+\right]x + {b_n}u \hfill \\\end{gathered}\]</span> 【例4】：<span
+class="math inline">\(G(s)=\frac{7s^2+2s+1}{s^3+6s^2+11s+6}\)</span><br />
+<span
+class="math inline">\(D(s)=s^3+6s^2+11s+6=(s+1)(s+2)(s+3)\)</span><br />
+<span class="math inline">\(k_1=\mathop {\lim }\limits_{s \to -1 }
+\frac{7s^2+2s+1}{(s+2)(s+3)}\)</span>，同理<span
+class="math inline">\(k_2=-25\)</span>、<span
+class="math inline">\(k_3=29\)</span>。 对应的状态空间描述为： <span
+class="math display">\[\begin{gathered}\dot x = \left[
+{\begin{array}{*{20}{c}} -1&amp;0&amp;0 \\ 0&amp;-2&amp;0 \\
+0&amp;0&amp;-3 \end{array}} \right] x + \left[ {\begin{array}{*{20}{c}}
+3 \\ -25 \\ 29 \end{array}} \right]u \hfill \\ \hfill \\ y = \left[
+{\begin{array}{*{20}{c}} 1&amp;1&amp;1 \end{array}} \right] x \hfill \\
+\end{gathered}\]</span></p>
+<h3 id="由方块图描述导出状态空间描述">由方块图描述导出状态空间描述</h3>
+<center>
+<img src="5 系统方块图.png"/ width=300><span class="caption">图5
+系统方块图</span>
+</center>
+由<span
+class="math inline">\(\frac{7s+13}{s^2+5s+4}=\frac{2}{s+1}+\frac{5}{s+4}\)</span>，该方块图可等效为：
+<center>
+<img src="6 等效方块图.png"/ width=300><span class="caption">图6
+等效方块图</span>
+</center>
+<p>可以得到变量间的关系：<br />
+<span class="math inline">\(\left\{ \begin{gathered}x_1 =
+\frac{5}{s+4}(u-x_3) \hfill \\x_2 = \frac{2}{s+1}(u-x_3) \hfill \\x_3 =
+\frac{1}{s+2}(x_1+x_2) \hfill \\y = x_1 + x_2 \hfill \\ \end{gathered}
+\right. \Rightarrow \left\{ \begin{gathered}{ {\dot x}_1} = - 4{x_1} +
+5(u - {x_3}) \hfill \\{ {\dot x}_2} = - {x_2} + 2(u - {x_3}) \hfill \\{
+{\dot x}_3} = - 2{x_3} + y \hfill \\y = {x_1} + {x_2} \hfill \\
+\end{gathered} \right.\)</span><br />
+得到状态空间描述为： <span class="math display">\[\begin{gathered}{\dot
+x} = \left[ {\begin{array}{*{20}{c}}{ - 4}&amp;0&amp;{ - 5} \\ 0&amp;{ -
+1}&amp;{ - 2} \\ 1&amp;1&amp;{ - 2} \end{array}} \right]x + \left[
+{\begin{array}{*{20}{c}}5 \\ 2 \\ 0 \end{array}} \right]u \hfill \\ y =
+\left[ {\begin{array}{*{20}{c}} 1&amp;1&amp;0 \end{array}} \right]x
+\hfill \\ \end{gathered}\]</span> 注：这里有<span
+class="math inline">\(sx_1={\dot x_1}\)</span>、<span
+class="math inline">\(sx_2={\dot x_2}\)</span>、<span
+class="math inline">\(sx_3={\dot x_3}\)</span></p>
+<h2 id="线性时不变系统的特征结构">线性时不变系统的特征结构</h2>
+<p>对于连续线性时不变系统<span class="math inline">\(\dot x = Ax +
+Bu\)</span>，其特征矩阵定义为<span
+class="math inline">\((sI-A)\)</span>。<br />
+特征多项式<span class="math inline">\(\alpha (s) = \det (sI - A) = {s^n}
++ {\alpha _{n - 1}}{s^{n - 1}} + \cdots + {\alpha _1}s + {\alpha
+_0}\)</span><br />
+Caley-Hamilton定理：<span class="math inline">\(\alpha (A) = {A^n} +
+{\alpha _{n - 1}}{A^{n - 1}} + \cdots + {\alpha _1}A + {\alpha _0}I =
+0\)</span><br />
+矩阵的迹：<span
+class="math inline">\(trH=(h_{11}+h_{22}+\cdots+h_{nn})=\sum\limits_{i=1}^n{h_{ii}}\)</span><br />
+基于迹计算的特征多项式的迭代算法： <span
+class="math display">\[\begin{array}{*{20}{c}}
+  { {R_{n - 1}} = I}&amp;{ {\alpha _{n - 1}} =  - \frac{ {tr{R_{n -
+1}}A}}{1}} \\
+  { {R_{n - 2}} = {R_{n - 1}}A+{\alpha _{n - 1}}I}&amp;{ {\alpha _{n -
+2}} =  - \frac{ {tr{R_{n - 2}}A}}{2}} \\
+  { {R_{n - 3}} = {R_{n - 2}}A+{\alpha _{n - 2}}I}&amp;{ {\alpha _{n -
+3}} =  - \frac{ {tr{R_{n - 3}}A}}{3}} \\
+  {\vdots}&amp;{\vdots} \\
+  { {R_1} = {R_2}A+{\alpha _2}I}&amp;{ {\alpha _1} =  - \frac{
+{tr{R_1}A}}{n-1}} \\
+  { {R_0} = {R_1}A+{\alpha _1}I}&amp;{ {\alpha _0} =  - \frac{
+{tr{R_0}A}}{n}}
+\end{array}\]</span></p>
+<p>特征值：特征方程<span class="math inline">\(\alpha (s) = \det (sI -
+A) = {s^n} + {\alpha_{n - 1}}{s^{n - 1}} + \cdots + {\alpha_1}s +
+{\alpha_0} = 0\)</span>的根。<br />
+特征向量：设<span
+class="math inline">\(\lambda_i\)</span>为系统矩阵A的特征值，则右特征向量为满足<span
+class="math inline">\({\lambda_i}{v_i} = A{v_i}\)</span>的<span
+class="math inline">\(n\times 1\)</span>非零向量<span
+class="math inline">\(v_i\)</span>，则左特征向量为满足<span
+class="math inline">\(\bar v_i^T{\lambda_i} = \bar
+v_i^TA\)</span>的<span class="math inline">\(1\times
+n\)</span>非零向量<span class="math inline">\(\bar
+v_i^T\)</span>。<br />
+【例5】<span class="math inline">\(A=\left[ {\begin{array}{*{20}{c}}
+-2&amp;0&amp;1&amp;1 \\ 1&amp;-1&amp;1&amp;2 \\ 1&amp;2&amp;-1&amp;2 \\
+1&amp;1&amp;1&amp;2 \end{array}} \right]\)</span> <span
+class="math display">\[\begin{array}{*{20}{c}}
+  {R_3=I=\left[ {\begin{array}{*{20}{c}} 1&amp;0&amp;0&amp;0 \\
+0&amp;1&amp;0&amp;0 \\ 0&amp;0&amp;1&amp;0 \\ 0&amp;0&amp;0&amp;1
+\end{array}} \right]}&amp;{R_3 A=R_3=\left[ {\begin{array}{*{20}{c}}
+-2&amp;0&amp;1&amp;1 \\ 1&amp;-1&amp;1&amp;2 \\ 1&amp;2&amp;-1&amp;2 \\
+1&amp;1&amp;1&amp;2 \end{array}} \right]}&amp;{\alpha_3=-\frac{trR_3
+A}{1}}=2 \\
+  {R_2=R_3 A+\alpha_3 I=\left[ {\begin{array}{*{20}{c}}
+0&amp;0&amp;1&amp;1 \\ 1&amp;1&amp;1&amp;2 \\ 1&amp;2&amp;1&amp;1 \\
+1&amp;1&amp;1&amp;4 \end{array}} \right]}&amp;{R_2 A=\left[
+{\begin{array}{*{20}{c}} 2&amp;3&amp;0&amp;3 \\ 2&amp;3&amp;3&amp;8 \\
+2&amp;1&amp;3&amp;8 \\ 4&amp;5&amp;5&amp;12 \end{array}}
+\right]}&amp;{\alpha_2=-\frac{trR_2 A}{2}=-10} \\
+  {R_1=R_2 A+\alpha_2 I=\left[ {\begin{array}{*{20}{c}}
+-8&amp;3&amp;0&amp;3 \\ 2&amp;-7&amp;3&amp;8 \\ 2&amp;1&amp;-7&amp;8 \\
+4&amp;5&amp;5&amp;2 \end{array}} \right]}&amp;{R_1 A=\left[
+{\begin{array}{*{20}{c}} 22&amp;0&amp;-2&amp;4 \\ 0&amp;21&amp;0&amp;7
+\\ -2&amp;-7&amp;18&amp;13 \\ 4&amp;7&amp;6&amp;23 \end{array}}
+\right]}&amp;{\alpha_1=-\frac{trR_1 A}{3}=-28} \\
+  {R_0=R_1 A+\alpha_1 I=\left[ {\begin{array}{*{20}{c}}
+-6&amp;0&amp;-2&amp;4 \\ 0&amp;-7&amp;0&amp;7 \\
+-2&amp;-7&amp;-10&amp;13 \\ 4&amp;7&amp;6&amp;-5 \end{array}}
+\right]}&amp;{R_0 A=\left[ {\begin{array}{*{20}{c}} 14&amp;0&amp;0&amp;0
+\\ 0&amp;14&amp;0&amp;0 \\ 0&amp;0&amp;14&amp;0 \\ 0&amp;0&amp;0&amp;14
+\end{array}} \right]}&amp;{\alpha_0=-\frac{trR_0 A}{4}=-14}
+\end{array}\]</span> <span class="math inline">\(\alpha (s)=
+s^4+2s^3-10s^2-28s-14\)</span></p>
+<h2
+id="状态方程的对角线规范形和约当规范形">状态方程的对角线规范形和约当规范形</h2>
+<h3 id="对角线规范性">对角线规范性</h3>
+<p>对于连续线性时不变系统<span class="math inline">\(\dot x = Ax +
+Bu\)</span>，其特征值<span
+class="math inline">\({\lambda_1},{\lambda_2},\cdots,{\lambda_n}\)</span>两两相异，构造变换阵<span
+class="math inline">\(P=[v_1,v_2,\cdots,v_n]\)</span>，则状态方程可通过线性非奇异变换<span
+class="math inline">\(\bar X = {P^{ - 1}}X\)</span>化为对角线规范性。
+<span class="math display">\[\dot {\bar X} = \left[
+{\begin{array}{*{20}{c}} {\lambda _1}&amp;{}&amp;{}&amp;{} \\
+{}&amp;{\lambda _2}&amp;{}&amp;{} \\ {}&amp;{}&amp; \ddots &amp;{} \\
+{}&amp;{}&amp;{}&amp;{\lambda _n} \end{array}} \right]\bar X + \bar
+Bu\]</span> 其中<span class="math inline">\(\bar X = {P^{ -
+1}}X\)</span>，<span class="math inline">\(\bar B = {P^{ -
+1}}B\)</span>。<br />
+【例6】<span class="math inline">\(\dot X = \left[
+{\begin{array}{*{20}{c}}2&amp;{-1}&amp;{-1} \\ 0&amp;{-1}&amp;0 \\
+0&amp;2&amp;1 \end{array}} \right]X + \left[ {\begin{array}{*{20}{c}} 7
+\\ 2 \\ 3 \end{array}} \right]u\)</span><br />
+由<span class="math inline">\(|\lambda I-A|=0\)</span>⇒<span
+class="math inline">\((\lambda-2)(\lambda+1)(\lambda-1)=0\)</span>，特征值为<span
+class="math inline">\(\lambda_1 = 2,\lambda _2 = -1,\lambda _3 =
+1\)</span>。<br />
+由等式<span class="math inline">\(\lambda_i
+v_i=Av_i\)</span>，解方程组<span class="math inline">\(|\lambda_i
+I-A|v_i=0\)</span>，得到特征向量<br />
+<span class="math display">\[{\begin{array}{*{20}{c}} {v_1=\left[
+{\begin{array}{*{20}{c}} 1\\0\\0 \end{array}}\right]}&amp;{v_2=\left[
+{\begin{array}{*{20}{c}} 1\\0\\1 \end{array}}\right]}&amp;{v_3=\left[
+{\begin{array}{*{20}{c}} 0\\1\\-1 \end{array}}\right]}
+\end{array}}\]</span> 得到<span class="math inline">\(P =[v_1,v_2,v_3] =
+\left[ {\begin{array}{*{20}{c}}1&amp;1&amp;0 \\ 0&amp;0&amp;1 \\
+0&amp;1&amp;-1\end{array}} \right]\)</span>，求其逆矩阵<span
+class="math inline">\(P^{-1} = \left[
+{\begin{array}{*{20}{c}}1&amp;-1&amp;-1 \\ 0&amp;1&amp;1 \\
+0&amp;1&amp;0 \end{array}} \right]\)</span><br />
+<span class="math inline">\(\bar A = P^{-1}AP = \left[
+{\begin{array}{*{20}{c}}2&amp;0&amp;0 \\ 0&amp;-1&amp;0 \\ 0&amp;0&amp;1
+\end{array}} \right]\)</span>，<span class="math inline">\(\bar
+B=P^{-1}B = \left[ {\begin{array}{*{20}{c}}2\\5\\2\end{array}}
+\right]\)</span><br />
+<span class="math inline">\(\dot{\bar X} = \left[
+{\begin{array}{*{20}{c}}2&amp;0&amp;0 \\ 0&amp;-1&amp;0 \\ 0&amp;0&amp;1
+\end{array}} \right]\bar X + \left[ {\begin{array}{*{20}{c}}2\\5\\2
+\end{array}} \right]u\)</span></p>
+<h3 id="约当规范形">约当规范形</h3>
+<p>系统的特征值为并非两两相异时，状态方程可变换为约当规范形。<br />
+设系统特征值<span
+class="math inline">\({\lambda_1},{\lambda_2},\cdots,{\lambda_l}\)</span>分别为<span
+class="math inline">\({\sigma_1},{\sigma_2},\cdots,{\sigma_l}\)</span>重特征值，则状态方程可通过变换<span
+class="math inline">\(\bar X = {Q^{ - 1}}X\)</span>（<span
+class="math inline">\(Q\)</span>为可逆矩阵）化为约当规范型： <span
+class="math display">\[\dot {\bar X}=\left[
+{\begin{array}{*{20}{c}}{J_1}&amp;{}&amp;{} \\ {}&amp; \ddots &amp;{} \\
+{}&amp;{}&amp;{J_l} \end{array}} \right]\bar X + \bar Bu\]</span>
+其中<span class="math inline">\(\bar X = {Q^{ - 1}}X\)</span>，<span
+class="math inline">\(\bar B = {Q^{ - 1}}B\)</span>，<span
+class="math inline">\(J_1,\cdots,J_l\)</span>为对应特征值<span
+class="math inline">\({\lambda_1},\cdots,{\lambda_l}\)</span>的约当块，其形式为：
+<span class="math display">\[{J_{i}} = \left[
+{\begin{array}{*{20}{c}}{\lambda_i}&amp;1&amp;{}&amp;{} \\ {}&amp;
+\ddots &amp; \ddots &amp;{} \\ {}&amp;{}&amp; \ddots &amp;1 \\
+{}&amp;{}&amp;{}&amp; \end{array}} \right]\]</span>
+约当块的行数（列数）与所对应特征值的重数相等。在约当规范形中，每一个状态变量的方程和下一序号的状态变量构成耦合。<br />
+【例7】求<span
+class="math inline">\(A=\left[{\begin{array}{*{20}{c}}0&amp;1&amp;0\\0&amp;0&amp;1\\2&amp;3&amp;0\end{array}}\right]\)</span>
+的约当阵。<br />
+由<span class="math inline">\(|\lambda I-A|=0\)</span>⇒<span
+class="math inline">\(\lambda^3-3\lambda-2=0\)</span>，特征值为<span
+class="math inline">\(\lambda_1 = \lambda_2 = -1,\lambda_3 =
+2\)</span>。<br />
+对于<span class="math inline">\(\lambda_1=-1\)</span>，有<span
+class="math inline">\(\lambda_1 Q_1 - AQ_1 = 0\)</span>，解得<span
+class="math inline">\(Q_1=\left[{\begin{array}{*{20}{c}}1\\-1\\1\end{array}}\right]\)</span><br />
+对于<span class="math inline">\(\lambda_2=-1\)</span>，有<mark><span
+class="math inline">\(\lambda_2 Q_2 - AQ_2 =
+-Q_1\)</span></mark>，解得<span
+class="math inline">\(Q_2=\left[{\begin{array}{*{20}{c}}1\\0\\1\end{array}}\right]\)</span><br />
+对于<span class="math inline">\(\lambda_3=2\)</span>，有<span
+class="math inline">\(\lambda_3 Q_3 - AQ_3 = 0\)</span>，解得<span
+class="math inline">\(Q_3=\left[{\begin{array}{*{20}{c}}1\\2\\4\end{array}}\right]\)</span><br />
+得到<span class="math inline">\(Q =[Q_1,Q_2,Q_3] = \left[
+{\begin{array}{*{20}{c}}1&amp;1&amp;1 \\ -1&amp;0&amp;2 \\
+1&amp;1&amp;4\end{array}} \right]\)</span>，求其逆矩阵<span
+class="math inline">\(P^{-1} = \frac{1}{3}\left[
+{\begin{array}{*{20}{c}}-2&amp;-3&amp;2 \\ 6&amp;3&amp;-3 \\
+-1&amp;0&amp;1 \end{array}} \right]\)</span><br />
+得到约当阵<span class="math inline">\(\bar A = P^{-1}AP = \left[
+{\begin{array}{*{20}{c}}-1&amp;1&amp;0 \\ 0&amp;-1&amp;0 \\
+0&amp;0&amp;2 \end{array}} \right] = \left[ {\begin{array}{*{20}{c}}
+J_1&amp;0 \\ 0&amp;J_2 \end{array}} \right]\)</span>。<br />
+其中<span class="math inline">\(J_1=\left[ {\begin{array}{*{20}{c}}
+-1&amp;1 \\ 0&amp;-1 \end{array}} \right]\)</span>，<span
+class="math inline">\(J_2=[2]\)</span>。</p>
+<h2
+id="由状态空间描述导出传递函数矩阵">由状态空间描述导出传递函数矩阵</h2>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://www.tup.tsinghua.edu.cn/booksCenter/book_00550102.html">郑大钟.
+线性系统理论(第2版)[M]. 北京:清华大学出版社,2002</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电磁场数值分析与计算04-边界条件
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电磁场数值分析与计算03-电磁场数值分析的定解问题</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

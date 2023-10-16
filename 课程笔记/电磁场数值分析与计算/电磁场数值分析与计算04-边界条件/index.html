@@ -25,18 +25,20 @@
         <meta name="keywords" content="课程笔记,电磁场数值分析与计算" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 初始条件(Initial Condition) 说明整个系统的初始状态 初始条件给出物理量\(u\)于初始瞬间在系统中">
+    <meta name="description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 5.电磁场数值分析与计算05-有限元方法介绍 初始条件(Initial Condition) 说明整个系统的初始状态">
 <meta property="og:type" content="article">
 <meta property="og:title" content="电磁场数值分析与计算04-边界条件">
 <meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 初始条件(Initial Condition) 说明整个系统的初始状态 初始条件给出物理量\(u\)于初始瞬间在系统中">
+<meta property="og:description" content="电磁场数值分析与计算课程笔记 无PPT，按照板书整理，若有错误敬请指正。 目录 1.电磁场数值分析与计算01-场论 2.电磁场数值分析与计算02-Maxwell方程组 3.电磁场数值分析与计算03-电磁场数值分析的定解问题 4.电磁场数值分析与计算04-边界条件 5.电磁场数值分析与计算05-有限元方法介绍 初始条件(Initial Condition) 说明整个系统的初始状态">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/1%20分界面的两侧电场强度的切向量分量连续.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/2%20两种电介质分界面上无自由电荷场两侧电位移法向分量连续.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/3%20静电场折射定律.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/4%20两侧磁通密度的法向分量连续.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/5%20媒质2为未饱和的铁磁质.png">
 <meta property="article:published_time" content="2023-10-08T03:11:08.000Z">
-<meta property="article:modified_time" content="2023-10-09T06:57:50.288Z">
+<meta property="article:modified_time" content="2023-10-14T11:03:20.784Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="电磁场数值分析与计算">
@@ -255,7 +257,7 @@
                             &nbsp;
                             电磁场数值分析与计算
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -264,7 +266,7 @@
                             &nbsp;
                             线性系统理论
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -435,7 +437,7 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E6%9D%A1%E4%BB%B6initial-condition"><span class="toc-number">2.</span> <span class="toc-text">初始条件(Initial Condition)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6boundry-condition"><span class="toc-number">3.</span> <span class="toc-text">边界条件(Boundry Condition)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AA%92%E8%B4%A8%E4%BA%A4%E7%95%8C%E9%9D%A2%E6%9D%A1%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">不同媒质交界面条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%94%B5%E5%9C%BAbfebfd"><span class="toc-number">4.1.</span> <span class="toc-text">两种媒质分界面上的电场（\(\bf{E}\)、\(\bf{D}\)）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AF%BC%E7%94%B5%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%A8%B3%E5%AE%9A%E7%94%B5%E6%B5%81%E5%9C%BA"><span class="toc-number">4.2.</span> <span class="toc-text">两种导电媒质分界面上的稳定电流场</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%A3%81%E5%9C%BA%E7%A8%B3%E5%AE%9A"><span class="toc-number">4.3.</span> <span class="toc-text">两种媒质分界面上的磁场（稳定）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E6%9D%A1%E4%BB%B6initial-condition"><span class="toc-number">2.</span> <span class="toc-text">初始条件(Initial Condition)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6boundry-condition"><span class="toc-number">3.</span> <span class="toc-text">边界条件(Boundry Condition)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E5%90%8C%E5%AA%92%E8%B4%A8%E4%BA%A4%E7%95%8C%E9%9D%A2%E6%9D%A1%E4%BB%B6"><span class="toc-number">4.</span> <span class="toc-text">不同媒质交界面条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%94%B5%E5%9C%BAbfebfd"><span class="toc-number">4.1.</span> <span class="toc-text">两种媒质分界面上的电场（\(\bf{E}\)、\(\bf{D}\)）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AF%BC%E7%94%B5%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%A8%B3%E5%AE%9A%E7%94%B5%E6%B5%81%E5%9C%BA"><span class="toc-number">4.2.</span> <span class="toc-text">两种导电媒质分界面上的稳定电流场</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%A4%E7%A7%8D%E5%AA%92%E8%B4%A8%E5%88%86%E7%95%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%A3%81%E5%9C%BA%E7%A8%B3%E5%AE%9A"><span class="toc-number">4.3.</span> <span class="toc-text">两种媒质分界面上的磁场（稳定）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E7%94%B5%E7%A3%81%E4%BD%8D%E8%A1%A8%E7%A4%BA%E7%9A%84%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">用电磁位表示的边界条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E7%94%B5%E4%BD%8Dphi%E8%A1%A8%E7%A4%BA%E7%9A%84%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">5.1.</span> <span class="toc-text">用电位\(\Phi\)表示的边界条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E7%A3%81%E4%BD%8Dbfa%E8%A1%A8%E7%A4%BA%E7%9A%84%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">5.2.</span> <span class="toc-text">用磁位\(\bf{A}\)表示的边界条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
@@ -446,7 +448,8 @@
 <p>1.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/" title="电磁场数值分析与计算01-场论">电磁场数值分析与计算01-场论</a><br />
 2.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/" title="电磁场数值分析与计算02-Maxwell方程组">电磁场数值分析与计算02-Maxwell方程组</a><br />
 3.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/" title="电磁场数值分析与计算03-电磁场数值分析的定解问题">电磁场数值分析与计算03-电磁场数值分析的定解问题</a><br />
-4.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/" title="电磁场数值分析与计算04-边界条件">电磁场数值分析与计算04-边界条件</a></p>
+4.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/" title="电磁场数值分析与计算04-边界条件">电磁场数值分析与计算04-边界条件</a><br />
+5.<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/" title="电磁场数值分析与计算05-有限元方法介绍">电磁场数值分析与计算05-有限元方法介绍</a></p>
 <h2 id="初始条件initial-condition">初始条件(Initial Condition)</h2>
 <p>说明整个系统的初始状态<br />
 初始条件给出物理量<span
@@ -555,10 +558,25 @@ class="math inline">\(E_{1t}=E_{2t}\)</span><br />
 (3)电流密度线的折射定律<span class="math inline">\(\frac{tan
 \alpha_1}{tan \alpha_2}=\frac{\sigma_1}{\sigma_2}\)</span></p>
 <h3 id="两种媒质分界面上的磁场稳定">两种媒质分界面上的磁场（稳定）</h3>
-<p>(1)两侧磁通密度的法向分量连续<span
+(1)两侧磁通密度的法向分量连续<span
 class="math inline">\(B_{1n}=B_{2n}\)</span><br />
-<span class="math inline">\(\oint_S { {\bf{B}}d{\bf{S}}}
-=0\)</span><br />
+证明：沿着分界面做一封闭的圆柱体，高度为<span
+class="math inline">\(\Delta h\)</span>，上下底面为<span
+class="math inline">\(\Delta S\)</span>。<br />
+由高斯定理<span class="math inline">\(\oint_S { {\bf{B}}d{\bf{S}}} =
+\int_V { ({\bf{\nabla}}\cdot{\bf{B}})d{\bf{V}}} = 0\)</span><br />
+当<span class="math inline">\(\Delta h \to
+0\)</span>时，侧面积趋近于0<br />
+则有<span class="math inline">\(\oint_S { {\bf{B}}d{\bf{S}}} =
+{B_{2n}}{\bf{n_2}}\cdot{\Delta S} + {B_{1n}}{\bf{n_1}}\cdot{\Delta
+S}=0\)</span><br />
+⇒<span class="math inline">\(({B_{2n}}-{B_{1n}}){\Delta
+S}=0\)</span><br />
+得到<span class="math inline">\(B_{1n}=B_{2n}\)</span>
+<center>
+<img src="4 两侧磁通密度的法向分量连续.png"/><span class="caption">图4
+两侧磁通密度的法向分量连续</span>
+</center>
 (2)在分界面上无电流时，磁场强度的切向分量连续<span
 class="math inline">\(H_{1t}=H_{2t}\)</span>⇒<span
 class="math inline">\(\frac{tan \alpha_1}{tan
@@ -569,7 +587,69 @@ class="math inline">\(H_{1t}-H_{2t}=J_s\)</span><br />
 \infty\)</span>）<br />
 当<span class="math inline">\(\bf{B}\)</span>为有限值时，<span
 class="math inline">\(H_{2t}=0\)</span>，<span
-class="math inline">\(H_{1t}=J_s\)</span></p>
+class="math inline">\(H_{1t}=J_s\)</span>
+<center>
+<img src="5 媒质2为未饱和的铁磁质.png"/><span class="caption">图5
+媒质2为未饱和的铁磁质</span>
+</center>
+<p><mark>总结：切向分量连续（<span
+class="math inline">\({\bf{E}}\)</span>、<span
+class="math inline">\({\bf{H}}\)</span>）；法向分量连续（<span
+class="math inline">\({\bf{D}}\)</span>、<span
+class="math inline">\({\bf{J}}\)</span>、<span
+class="math inline">\({\bf{B}}\)</span>）。</mark></p>
+<h2 id="用电磁位表示的边界条件">用电磁位表示的边界条件</h2>
+<h3 id="用电位phi表示的边界条件">用电位<span
+class="math inline">\(\Phi\)</span>表示的边界条件</h3>
+<p><span
+class="math inline">\({\bf{E}}=-{\bf{\nabla}}\Phi\)</span>⇒<span
+class="math inline">\(E_x{\bf{i}}+E_y{\bf{j}}+E_z{\bf{k}}=-\frac{\partial
+\Phi}{\partial x}{\bf{i}}-\frac{\partial \Phi}{\partial
+y}{\bf{j}}-\frac{\partial \Phi}{\partial z}{\bf{k}}\)</span><br />
+<span
+class="math inline">\(E_n{\bf{n}}+E_{\tau}{\bf{\tau}}+E_t{\bf{t}}=-\frac{\partial
+\Phi}{\partial n}{\bf{n}}-\frac{\partial \Phi}{\partial
+\tau}{\bf{\tau}}-\frac{\partial \Phi}{\partial t}{\bf{t}}\)</span><br />
+由两侧电场强度的切向分量连续<span
+class="math inline">\(E_{1t}=E_{2t}\)</span>，可知<span
+class="math inline">\(-\frac{\partial \Phi_1}{\partial
+t}=-\frac{\partial \Phi_2}{\partial t}\)</span><br />
+得到<span
+class="math inline">\(\Phi_1=\Phi_2\)</span>，即在介质分界面上电位连续</p>
+<p><span
+class="math inline">\({\bf{D_{2n}}}-{\bf{D_{1n}}}=\rho_s\)</span><br />
+<span
+class="math inline">\({\bf{D_{1n}}}=\varepsilon_1{\bf{E_{1n}}}=-\varepsilon_1\frac{\partial
+\Phi_1}{\partial n}\)</span><br />
+<span
+class="math inline">\({\bf{D_{2n}}}=\varepsilon_2{\bf{E_{2n}}}=-\varepsilon_2\frac{\partial
+\Phi_2}{\partial n}\)</span><br />
+⇒<span class="math inline">\(\varepsilon_1\frac{\partial
+\Phi_1}{\partial n}-\varepsilon_2\frac{\partial \Phi_2}{\partial
+n}=\rho_s\)</span><br />
+在介质的分界面上电位导数不连续</p>
+<h3 id="用磁位bfa表示的边界条件">用磁位<span
+class="math inline">\(\bf{A}\)</span>表示的边界条件</h3>
+<p>由两侧磁通密度的法向分量连续<span
+class="math inline">\(B_{1n}=B_{2n}\)</span><br />
+且<span class="math inline">\({\bf{A}}=A_z{\bf{k}}\)</span>，<span
+class="math inline">\({\bf{J}}=J_z{\bf{k}}\)</span><br />
+⇒<span class="math inline">\({\bf{B} } = {\bf{\nabla} } \times {\bf{A} }
+= \left| {\begin{array}{*{20}{c}}{\bf{t}}&amp;{\bf{n}}&amp;{\bf{k}} \\
+{\frac{\partial }{ {\partial t}}}&amp;{\frac{\partial }{ {\partial
+n}}}&amp;{\frac{\partial}{ {\partial k}}} \\ {0}&amp;{0}&amp;{A_z}
+\end{array}} \right| = \frac{\partial A_z}{\partial n}{\bf{t}} -
+\frac{\partial A_z}{\partial t}{\bf{n}} = B_t{\bf{t}} +
+B_n{\bf{n}}\)</span><br />
+即<span class="math inline">\(B_n=-\frac{\partial A_z}{\partial
+t}\)</span>，<span class="math inline">\(B_t=\frac{\partial
+A_z}{\partial n}\)</span><br />
+可知<span class="math inline">\(B_{1n}=-\frac{\partial A_{1z}}{\partial
+t}\)</span>，<span class="math inline">\(B_{2n}=-\frac{\partial
+A_{2z}}{\partial t}\)</span><br />
+⇒<span class="math inline">\(\frac{\partial A_{1z}}{\partial
+t}=\frac{\partial A_{2z}}{\partial t}\)</span>⇒<span
+class="math inline">\(A_{1t}=A_{2t}\)</span></p>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
@@ -600,6 +680,15 @@ target="_blank" rel="noopener" href="http://www.tup.tsinghua.edu.cn/booksCenter/
 
     
 <nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    线性系统理论03-线性系统的运动分析
+                
+            </div>
+        </a>
     
     
         <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/" id="article-nav-older" class="article-nav-link-wrap">

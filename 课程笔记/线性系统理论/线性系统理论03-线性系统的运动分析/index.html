@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>线性系统理论03-线性系统的运动分析 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,线性系统理论" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="线性系统理论课程笔记 对应教材内容第三章 线性系统的运动分析的内容 引言 运动分析的实质">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性系统理论03-线性系统的运动分析">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="线性系统理论课程笔记 对应教材内容第三章 线性系统的运动分析的内容 引言 运动分析的实质">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-10-12T07:54:20.000Z">
+<meta property="article:modified_time" content="2023-10-14T08:57:41.686Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="线性系统理论">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/线性系统理论/线性系统理论03-线性系统的运动分析" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/">线性系统理论</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/" rel="tag">线性系统理论</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">
+            <time datetime="2023-10-12T07:54:20.000Z" itemprop="datePublished">2023-10-12</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            线性系统理论03-线性系统的运动分析
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9E%E8%B4%A8"><span class="toc-number">1.1.</span> <span class="toc-text">运动分析的实质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E7%9A%84%E5%AD%98%E5%9C%A8%E6%80%A7%E5%92%8C%E5%94%AF%E4%B8%80%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text">解的存在性和唯一性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E8%BE%93%E5%85%A5%E5%93%8D%E5%BA%94%E5%92%8C%E9%9B%B6%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%E5%93%8D%E5%BA%94"><span class="toc-number">1.3.</span> <span class="toc-text">零输入响应和零初始状态响应</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E5%AE%9A%E5%B8%B8%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">线性定常系统的运动分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E8%BE%93%E5%85%A5%E5%93%8D%E5%BA%94"><span class="toc-number">2.1.</span> <span class="toc-text">零输入响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0%E5%87%BD%E6%95%B0%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="toc-number">2.2.</span> <span class="toc-text">矩阵指数函数的性质</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E6%8C%87%E6%95%B0%E5%87%BD%E6%95%B0%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="toc-number">2.3.</span> <span class="toc-text">矩阵指数函数的求解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E6%B3%95"><span class="toc-number">2.3.1.</span> <span class="toc-text">定义法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%80%BC%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">特征值法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%89%E9%99%90%E9%A1%B9%E5%B1%95%E5%BC%80%E6%B3%95"><span class="toc-number">2.3.3.</span> <span class="toc-text">有限项展开法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%84%E8%A7%A3%E7%9F%A9%E9%98%B5%E6%B3%95"><span class="toc-number">2.3.4.</span> <span class="toc-text">预解矩阵法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%E5%93%8D%E5%BA%94"><span class="toc-number">2.4.</span> <span class="toc-text">零初始状态响应</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%8A%B6%E6%80%81%E8%BF%90%E5%8A%A8%E8%A7%84%E5%BE%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">2.5.</span> <span class="toc-text">系统状态运动规律的基本表达式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB%E7%9F%A9%E9%98%B5"><span class="toc-number">3.</span> <span class="toc-text">连续时间线性时不变系统的状态转移矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%84%89%E5%86%B2%E5%93%8D%E5%BA%94%E7%9F%A9%E9%98%B5"><span class="toc-number">4.</span> <span class="toc-text">连续时间线性时不变系统的脉冲响应矩阵</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>线性系统理论课程笔记<br />
+对应教材内容<code>第三章 线性系统的运动分析</code>的内容</p>
+<h2 id="引言">引言</h2>
+<h3 id="运动分析的实质">运动分析的实质</h3>
+<span id="more"></span>
+<p><span class="math inline">\(\dot x = A(t)x + B(t)u,\quad x({t_0}) =
+{x_0}\)</span><br />
+<span class="math inline">\(\dot x = Ax + Bu,\quad x(0) = {x_0},\quad t
+\geqslant 0\)</span><br />
+从数学模型出发，定量地和精确地定出系统运动的变化规律，为系统的实际运动过程作出估计。<br />
+给定初始状态<span class="math inline">\(x_0\)</span>和外输入作用<span
+class="math inline">\(u\)</span>，求解出状态方程的解。</p>
+<h3 id="解的存在性和唯一性">解的存在性和唯一性</h3>
+<p>①系统矩阵<span class="math inline">\(A(t)\)</span>的各个元<span
+class="math inline">\(a_{ij}(t)\)</span>在时间区间<span
+class="math inline">\([t_0, t_\alpha]\)</span>上为绝对可积，即<br />
+<span class="math inline">\(\int_{t_0}^{t_\alpha}{|{a_{ij}}(t)|dt &lt;
+\infty ,\quad \quad i,j = 1,2, \cdots n}\)</span><br />
+②输入矩阵<span class="math inline">\(B(t)\)</span>的各个元<span
+class="math inline">\(b_{ij}(t)\)</span>在时间区间<span
+class="math inline">\([t_0, t_\alpha]\)</span>上为平方可积，即<br />
+<span class="math inline">\(\int_{t_0}^{t_\alpha }{ {
+{[{b_{ik}}(t)]}^2}dt &lt; \infty ,\quad \quad i = 1,2, \cdots n,\quad
+\;k = 1,2 \cdots p}\)</span><br />
+③输入<span class="math inline">\(u(t)\)</span>的各个元<span
+class="math inline">\(u_k(t)\)</span>在时间区间<span
+class="math inline">\([t_0, t_\alpha]\)</span>上为平方可积，即<br />
+<span class="math inline">\(\int_{t_0}^{t_\alpha}{ { {[{u_k}(t)]}^2}dt
+&lt; \infty ,\quad \quad k = 1,2 \cdots p}\)</span></p>
+<p>条件②③可一步合并为要求<span
+class="math inline">\(B(t)u(t)\)</span>的各元在时间区间<span
+class="math inline">\([t_0, t_\alpha]\)</span>上绝对可积，即<br />
+<span class="math inline">\(\int_{t_0}^{t_\alpha}{ {
+{[{b_{ik}}(t){u_k}(t)]}^2}dt &lt; \infty ,\quad \quad k = 1,2 \cdots
+p}\)</span></p>
+<h3 id="零输入响应和零初始状态响应">零输入响应和零初始状态响应</h3>
+<p>线性系统满足叠加原理。在初始状态和输入向量作用下的运动，分解为两个单独的分运动。<br />
+<span class="math inline">\(x(t)=x_{ou}(t)+x_{ox}(t)\)</span><br />
+①自治系统（零输入响应）<span class="math inline">\(\dot x=Ax \quad
+x({t_0}) = {x_0}\)</span><br />
+②受迫系统（零初始状态响应）<span class="math inline">\(\dot x = Ax + Bu
+\quad x(t_0) = x_0\)</span></p>
+<h2 id="线性定常系统的运动分析">线性定常系统的运动分析</h2>
+<h3 id="零输入响应">零输入响应</h3>
+<p>自治系统状态方程<span class="math inline">\(\dot x=Ax \quad x({t_0})
+= {x_0}\)</span><br />
+<span class="math inline">\(sx-x_0=Ax \Rightarrow sx-Ax=x_0 \Rightarrow
+(sI-A)x=x_0 \Rightarrow x=(sI-A)^{-1}x_0=e^{At}x_0\)</span><br />
+结论：系统自治状态方程的解<span
+class="math inline">\(x_{ou}(t)=e^{At}x_0 \quad (t \geqslant 0)\)</span>
+其中<span
+class="math inline">\(e^{At}\)</span>为矩阵指数函数，可以展开为<br />
+<span class="math inline">\(e^{At}=I + At + \frac{1}{2!}{A^2}{t^2} +
+\cdots = \sum\limits_{k=0}^\infty{\frac{1}{k!}{A^k}{t^k}}\)</span></p>
+<p>渐近稳定的充要条件：<br />
+对于线性定常系统，零输入响应最终趋向于系统平衡状态<span
+class="math inline">\(x=0\)</span><br />
+当且仅当<span class="math inline">\(e^{At}\)</span>最终趋于0，即<span
+class="math inline">\(\mathop {\lim }\limits_{t \to \infty } e^{At} =
+0\)</span>。</p>
+<h3 id="矩阵指数函数的性质">矩阵指数函数的性质</h3>
+<p>①<span class="math inline">\(\mathop {\lim }\limits_{t \to 0}
+{e^{At}} = I\)</span><br />
+②<span class="math inline">\({e^{A(t + \tau )}} = {e^{At}} \cdot
+{e^{A\tau }} = {e^{A\tau }} \cdot {e^{At}}\)</span><br />
+③<span
+class="math inline">\(e^{At}\)</span>总是非奇异的，且其逆为：<span
+class="math inline">\({({e^{At}})^{ - 1}} = {e^{ - At}}\)</span><br />
+④设<span class="math inline">\(A\)</span>和<span
+class="math inline">\(F\)</span>为两个同维可交换方阵，即<span
+class="math inline">\(AF = FA\)</span>，则有<span
+class="math inline">\({e^{(A + F)t}} = {e^{At}}{e^{Ft}} =
+{e^{Ft}}{e^{At}}\)</span><br />
+⑤<span class="math inline">\(\frac{d}{dt}{e^{At}} = A{e^{At}} =
+{e^{At}}A\)</span><br />
+⑥<span class="math inline">\(\frac{d}{dt}{e^{ - At}} = - A{e^{ - At}} =
+- {e^{ - At}}A\)</span><br />
+⑦<span class="math inline">\({({e^{At}})^m} = {e^{A(mt)}},\quad m =
+0,1,2, \cdots\)</span></p>
+<h3 id="矩阵指数函数的求解">矩阵指数函数的求解</h3>
+<h4 id="定义法">定义法</h4>
+<p><span class="math inline">\(e^{At}=I + At + \frac{1}{2!}{A^2}{t^2} +
+\cdots = \sum\limits_{k=0}^\infty{\frac{1}{k!}{A^k}{t^k}}\)</span></p>
+<h4 id="特征值法">特征值法</h4>
+<p>若<span class="math inline">\(\bar A =
+diag(\begin{array}{*{20}{c}}{\lambda _1}&amp;{\lambda _2}&amp; \cdots
+&amp;{ {\lambda _n})} \end{array}\)</span>，则有<span
+class="math inline">\({e^{\bar At}} =
+diag(\begin{array}{*{20}{c}}{e^{\lambda _1 t}}&amp;{e^{\lambda _2
+t}}&amp; \cdots &amp;{e^{\lambda _n t})}\end{array}\)</span><br />
+且<span class="math inline">\(\bar A = {P^{ - 1}}AP \quad A = P\bar
+A{P^{ - 1}}\)</span>，则有<span class="math inline">\({e^{At}} =
+P{e^{\bar At}}{P^{ - 1}}\)</span><br />
+【例1】<span class="math inline">\(A = \left[
+{\begin{array}{*{20}{c}}0&amp;1&amp;0 \\ 0&amp;0&amp;1 \\
+-6&amp;-11&amp;-6 \end{array}} \right]\)</span><br />
+由<span class="math inline">\(|\lambda
+I-A|=\lambda^3+6\lambda^2+11\lambda+6=(\lambda+1)(\lambda+2)(\lambda+3)=0
+\quad \Rightarrow \quad
+\lambda_1=1,\lambda_2=2,\lambda_3=3\)</span><br />
+由等式<span class="math inline">\(\lambda_i
+v_i=Av_i\)</span>，解方程组<span class="math inline">\(|\lambda_i
+I-A|v_i=0\)</span>，得到特征向量<br />
+<span class="math display">\[{\begin{array}{*{20}{c}} {v_1=\left[
+{\begin{array}{*{20}{c}} 1\\-1\\1 \end{array}}\right]}&amp;{v_2=\left[
+{\begin{array}{*{20}{c}} 1\\-2\\4 \end{array}}\right]}&amp;{v_3=\left[
+{\begin{array}{*{20}{c}} 1\\-3\\9 \end{array}}\right]}
+\end{array}}\]</span> 得到<span class="math inline">\(P =[v_1,v_2,v_3] =
+\left[ {\begin{array}{*{20}{c}}1&amp;1&amp;1 \\ -1&amp;-2&amp;-3 \\
+1&amp;4&amp;9\end{array}} \right]\)</span><br />
+该式构成范德蒙德行列式，其行列式值<span
+class="math inline">\(|P|=[(-2)-(-1)][(-3)-(-2)][(-3)-(-1)]=-2\)</span>
+求其逆矩阵<span class="math inline">\(P^{-1} =
+\frac{P^*}{|P|}=\frac{1}{2}\left[ {\begin{array}{*{20}{c}}6&amp;5&amp;1
+\\ -6&amp;-8&amp;-2 \\ 2&amp;3&amp;1\end{array}} \right]\)</span><br />
+则有<span class="math inline">\(\bar A = {P^{ - 1}}AP = \left[
+{\begin{array}{*{20}{c}}{ - 1}&amp;0&amp;0 \\ 0&amp;{ - 2}&amp;0 \\
+0&amp;0&amp;{ - 3} \end{array}} \right]\)</span><br />
+由<span class="math inline">\(\bar A = {P^{ - 1}}AP \quad \Rightarrow
+\quad A = P\bar A{P^{ - 1}}\)</span>计算出</p>
+<p><span class="math inline">\({e^{At}} = P{e^{\bar At}}{P^{ - 1}} =
+P\left[ {\begin{array}{*{20}{c}} e^{-t}&amp;0&amp;0 \\
+0&amp;e^{-2t}&amp;0 \\ 0&amp;0&amp;e^{-3t} \end{array}} \right]{P^{ -
+1}}\)</span><br />
+<span class="math inline">\(= \left[ {\begin{array}{*{20}{c}}{3{e^{ -
+t}} - 3{e^{ - 2t}} + {e^{ - 3t}}}&amp;{\frac{5}{2}{e^{ - t}} - 4{e^{ -
+2t}} + \frac{3}{2}{e^{ - 3t}}}&amp;{\frac{1}{2}{e^{ - t}} - {e^{ - 2t}}
++ \frac{1}{2}{e^{ - 3t}}} \\ { - 3{e^{ - t}} + 6{e^{ - 2t}} - 3{e^{ -
+3t}}}&amp;{ - \frac{5}{2}{e^{ - t}} + 8{e^{ - 2t}} - \frac{9}{2}{e^{ -
+3t}}}&amp;{ - \frac{1}{2}{e^{ - t}} + 2{e^{ - 2t}} - \frac{3}{2}{e^{ -
+3t}}} \\ {3{e^{ - t}} - 12{e^{ - 2t}} + 9{e^{ -
+3t}}}&amp;{\frac{5}{2}{e^{ - t}} - 16{e^{ - 2t}} +
+\frac27{2}{e^{ - 3t}}}&amp;{\frac{1}{2}{e^{ - t}} -
+4{e^{ - 2t}} + \frac{9}{2}{e^{ - 3t}}} \end{array}} \right]\)</span></p>
+<p>注：其中<span class="math inline">\(P^*\)</span>为<span
+class="math inline">\(P\)</span>的伴随矩阵<br />
+伴随矩阵公式<span class="math inline">\(A^*=\left[
+{\begin{array}{*{20}{c}}A_{11}&amp;A_{21}&amp;A_{31} \\
+A_{12}&amp;A_{22}&amp;A_{32} \\ A_{13}&amp;A_{23}&amp;A_{33}\end{array}}
+\right]\)</span><br />
+其中<span
+class="math inline">\(A_{ij}=(-1)^{i+j}M_{ij}\)</span>为元素<span
+class="math inline">\(a_{ij}\)</span>的代数余子式。</p>
+<p>约当阵的情况：<br />
+若<span class="math inline">\(\bar A = J =
+diag(\begin{array}{*{20}{c}}{J_1}&amp;{J_2}&amp; \cdots &amp;{J_l})
+\end{array}\)</span><br />
+其中<span class="math inline">\({J_i} = \left[
+{\begin{array}{*{20}{c}}{\lambda _i}&amp;1&amp;0&amp; \cdots &amp;0 \\
+0&amp;{\lambda _i}&amp;1&amp; \cdots &amp;0 \\ 0&amp;0&amp;{\lambda
+_i}&amp; \cdots &amp;0 \\ {}&amp;{}&amp; \cdots &amp;{}&amp;{} \\
+0&amp;0&amp;0&amp; \cdots &amp;{\lambda _i} \end{array}}
+\right]\)</span><br />
+则<span class="math inline">\({e^{\bar At}} =
+diag(\begin{array}{*{20}{c}}e^{J_1}t&amp;e^{J_2}t&amp; \cdots
+&amp;e^{J_l}t) \end{array}\)</span><br />
+其中<span class="math inline">\({e^{ {J_i}t}} = \left[
+{\begin{array}{*{20}{c}}{ {e^{ {\lambda _i}t}}}&amp;{t{e^{
+{\lambda_i}t}}}&amp;{\frac{1}{2!} {t^2}{e^{ {\lambda_i}t}}}&amp;\cdots
+&amp;{} \\ 0&amp;{ {e^{ {\lambda _i}t}}}&amp;{t{e^{ {\lambda
+_i}t}}}&amp; \cdots &amp;{} \\ 0&amp;0&amp;{ {e^{ {\lambda _i}t}}}&amp;
+\cdots &amp;{} \\ {}&amp;{}&amp; \cdots &amp;{}&amp;{} \\
+0&amp;0&amp;0&amp; \cdots &amp;{ {e^{ {\lambda _i}t}}} \end{array}}
+\right]\)</span></p>
+<h4 id="有限项展开法">有限项展开法</h4>
+<p>设<span
+class="math inline">\(\lambda_1,\lambda_2,\cdots,\lambda_n\)</span>为<span
+class="math inline">\(A\)</span>的<span
+class="math inline">\(n\)</span>个互异特征值<br />
+<span class="math inline">\({e^{At}} = {\alpha _0}I + {\alpha _1}A +
+{\alpha _2}{A^2} + \cdots {\alpha _{n - 1}}{A^{n - 1}}\)</span><br />
+<span class="math inline">\(\left\{ \begin{gathered}{e^{ {\lambda _1}t}}
+= {\alpha _0} + {\alpha _1}{\lambda _1} + {\alpha _2}{\lambda _1}^2 +
+\cdots {\alpha _{n - 1}}{\lambda _1}^{n - 1} \hfill \\{e^{ {\lambda
+_2}t}} = {\alpha _0} + {\alpha _1}{\lambda _2} + {\alpha _2}{\lambda
+_2}^2 + \cdots {\alpha _{n - 1}}{\lambda _2}^{n - 1} \hfill \\ \cdots
+\hfill \\{e^{ {\lambda _n}t}} = {\alpha _0} + {\alpha _1}{\lambda _n} +
+{\alpha _2}{\lambda _n}^2 + \cdots {\alpha _{n - 1}}{\lambda _n}^{n - 1}
+\hfill \\ \end{gathered} \right.\)</span><br />
+若<span class="math inline">\(\lambda_i\)</span>为<span
+class="math inline">\(l\)</span>重特征值，则相应的<span
+class="math inline">\(l\)</span>个方程为<br />
+<span class="math inline">\(\left\{ \begin{gathered} {e^{ {\lambda
+_i}t}} = {\alpha _0} + {\alpha _1}{\lambda _i} + {\alpha _2}{\lambda
+_i}^2 + \cdots + {\alpha _{n - 1}}{\lambda _i}^{n - 1} \hfill \\ \frac{
+{\text{d}}}{ { {\text{d}}{\lambda _i}}}{e^{ {\lambda _i}t}} = {\alpha
+_1} + 2{\alpha _2}{\lambda _i} + \cdots + (n - 1){\alpha _{n -
+1}}{\lambda _i}^{n - 2} \hfill \\ \cdots \hfill \\ \frac{ { {
+{\text{d}}^{(l - 1)}}}}{ { {\text{d}}{\lambda _i}^{(l - 1)}}}{e^{
+{\lambda _i}t}} = {\alpha _{l - 1}}(l - 1)! + {\alpha _l}l!{\lambda _i}
++ \cdots + {\alpha _{n - 1}}\frac{ {(n - 1)!}}{ {(n - l)!}}{\lambda
+_i}^{n - l} \hfill \\ \end{gathered} \right.\)</span><br />
+【例2】<span class="math inline">\(A = \left[ {\begin{array}{*{20}{c}}
+0&amp;0&amp;-2 \\ 0&amp;1&amp;0 \\ 1&amp;0&amp;3
+\end{array}}\right]\)</span><br />
+<span class="math inline">\(|\lambda I - A| = 0 \Rightarrow {(\lambda -
+1)^2}(\lambda - 2) = 0\)</span><br />
+<span class="math inline">\(\Rightarrow {\lambda_1,2} = 1,{\lambda_3} =
+2\)</span><br />
+令<span class="math inline">\({e^{At}} = {\alpha _0}I + {\alpha _1}A +
+{\alpha _2}{A^2}\)</span><br />
+列出方程组<span class="math inline">\(\left\{ \begin{gathered}{e^t} =
+{\alpha _0} + {\alpha _1} + {\alpha _2} \hfill \\t{e^t} = {\alpha _1} +
+2{\alpha _2} \hfill \\{e^{2t}} = {\alpha _0} + 2{\alpha _1} + 4{\alpha
+_2} \hfill \\ \end{gathered} \right.\)</span><br />
+解得<span class="math inline">\(\left\{ \begin{gathered}{\alpha _0} = -
+2t{e^t} + {e^{2t}} \hfill \\{\alpha _1} = 3t{e^t} + 2{e^t} - 2{e^{2t}}
+\hfill \\{\alpha _2} = - t{e^t} - {e^t} + {e^{2t}} \hfill \\
+\end{gathered} \right.\)</span><br />
+进而得到<span class="math inline">\({e^{At}} = {\alpha _0}I + {\alpha
+_1}A + {\alpha _2}{A^2}\)</span><br />
+<span class="math inline">\(= ( - 2t{e^t} + {e^{2t}})I + (3t{e^t} +
+2{e^t} - 2{e^{2t}})A + ( - t{e^t} - {e^t} +
+{e^{2t}}){A^2}\)</span><br />
+<span class="math inline">\(= \left[ {\begin{array}{*{20}{c}}{2{e^t} -
+{e^{2t}}}&amp;0&amp;{2{e^t} - 2{e^{2t}}} \\ 0&amp;{ {e^t}}&amp;0 \\ { -
+{e^t} + {e^{2t}}}&amp;0&amp;{ - {e^t} + 2{e^{2t}}} \end{array}}
+\right]\)</span></p>
+<h4 id="预解矩阵法">预解矩阵法</h4>
+<p><span class="math inline">\({e^{At}} = {L^{ - 1}}[{\left( {sI - A}
+\right)^{ - 1}}]\)</span><br />
+【例3】<span class="math inline">\(A = \left[ {\begin{array}{*{20}{c}}
+0&amp;1 \\ -2&amp;-3 \end{array}}\right]\)</span><br />
+<span class="math inline">\((sI-A)^{-1}=\left[ {\begin{array}{*{20}{c}}
+s&amp;-1 \\ 2&amp;s+3 \end{array}}\right]^{-1}=\left[
+{\begin{array}{*{20}{c}} \frac{s+3}{(s+1)(s+2)}&amp;\frac{1}{(s+1)(s+2)}
+\\ \frac{-2}{(s+1)(s+2)}&amp;\frac{s}{(s+1)(s+2)}
+\end{array}}\right]=\left[ {\begin{array}{*{20}{c}}
+\frac{2}{s+1}-\frac{1}{s+2}&amp;\frac{1}{s+1}-\frac{1}{s+2} \\
+-\frac{2}{s+1}+\frac{2}{s+2}&amp;-\frac{1}{s+1}+\frac{2}{s+2}
+\end{array}}\right]\)</span><br />
+<span class="math inline">\(L^{-1}[(sI-A)^{-1}]=\left[
+{\begin{array}{*{20}{c}} 2e^{-t}-e^{-2t}&amp;e^{-t}-e^{-2t} \\
+-2e^{-t}+2e^{-2t}&amp;-e^{-t}+2e^{-2t} \end{array}}\right]\)</span></p>
+<h3 id="零初始状态响应">零初始状态响应</h3>
+<p>线性定常系统的零初始状态响应<span
+class="math inline">\(x_{ox}(t)\)</span>具有以下表达式：<br />
+<span class="math inline">\(x_{ox}(t)=\int_0^t { {e^{A(t - \tau
+)}}Bu(\tau ){\text{d}}\tau}\)</span><br />
+【例4】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} 0&amp;1 \\ -2&amp;-3 \end{array}}\right]x +
+\left[ {\begin{array}{*{20}{c}} 0 \\ 1 \end{array}}\right]u,\quad
+t\geqslant 0\)</span><br />
+其中，初始状态<span
+class="math inline">\(x_1(0)=x_2(0)=0\)</span>，输入<span
+class="math inline">\(u(t)=I(t)\)</span><br />
+由【例3】知<span class="math inline">\(e^{A(t-\tau)}=\left[
+{\begin{array}{*{20}{c}}
+2e^{-(t-\tau)}-e^{-2(t-\tau)}&amp;e^{-(t-\tau)}-e^{-2(t-\tau)} \\
+-2e^{-(t-\tau)}+2e^{-2(t-\tau)}&amp;-e^{-(t-\tau)}+2e^{-2(t-\tau)}
+\end{array}}\right]\)</span> <span class="math inline">\(\Rightarrow
+x_{ox}(t)=\int_0^t { {e^{A(t - \tau )}}Bu(\tau ){\text{d}}\tau}=\int_0^t
+{\left[ {\begin{array}{*{20}{c}} e^{-(t-\tau)}-e^{-2(t-\tau)} \\
+-e^{-(t-\tau)}+2e^{-2(t-\tau)} \end{array}}\right]{\text{d}}\tau}=\left[
+{\begin{array}{*{20}{c}} \frac{1}{2}-e^{-t}+\frac{1}{2}e^{-2t} \\
+e^{-t}-e^{-2t} \end{array}}\right]\)</span></p>
+<h3 id="系统状态运动规律的基本表达式">系统状态运动规律的基本表达式</h3>
+<p>同时作用初始状态和输入的状态方程的解<br />
+对初始时刻<span class="math inline">\(t_0=0\)</span>，有表达式<span
+class="math inline">\(x(t) = {e^{At}}{x_0} + \int_0^t {e^{A(t - \tau
+)}Bu(\tau ){\text{d}}\tau }, \quad t \geqslant 0\)</span><br />
+对初始时刻<span class="math inline">\(t_0 \ne 0\)</span>，有表达式<span
+class="math inline">\(x(t) = {e^{A(t - {t_0})}}{x_0} + \int_{t_0}^t
+{e^{A(t - \tau )}Bu(\tau ){\text{d}}\tau ,\quad t \geqslant
+{t_0}}\)</span></p>
+<h2
+id="连续时间线性时不变系统的状态转移矩阵">连续时间线性时不变系统的状态转移矩阵</h2>
+<p>定义：矩阵方程<span class="math inline">\(\dot \Phi (t - {t_0})=A\Phi
+(t - {t_0}),\quad \Phi (0)=I\)</span>的解<span
+class="math inline">\(\Phi (t - {t_0})\)</span>称为状态转移矩阵。<br />
+<span class="math inline">\(t_0=0\)</span>时，<span
+class="math inline">\(\Phi (t) = {e^{At}}\quad \quad t \geqslant
+0\)</span><br />
+<span class="math inline">\(t_0 \ne 0\)</span>时，<span
+class="math inline">\(\Phi (t - {t_0}) = {e^{A(t - {t_0})}},\quad t
+\geqslant {t_0}\)</span></p>
+<p>基于状态转移矩阵的系统响应表达式：<br />
+<span class="math inline">\({x_{ou}}(t) = \Phi (t -
+{t_0}){x_0}\)</span><br />
+<span class="math inline">\({x_{ox}}(t) = \int_{t_0}^t {\Phi (t - \tau
+)Bu(\tau ){\text{d}}\tau } \quad t \geqslant {t_0}\)</span><br />
+<span class="math inline">\(x(t) = \Phi (t - {t_0}){x_0} + \int_{t_0}^t
+{\Phi (t - \tau )Bu(\tau ){\text{d}}\tau }\)</span></p>
+<p>状态转移矩阵的特性：<br />
+①<span class="math inline">\(\Phi (0) = I\)</span><br />
+②<span class="math inline">\({\Phi ^{ - 1}}(t) = \Phi ( - t) \quad {\Phi
+^{ - 1}}(t - {t_0}) = \Phi ({t_0} - t)\)</span><br />
+③<span class="math inline">\(\Phi ({t_2} - {t_1})\Phi ({t_1} - {t_0}) =
+\Phi ({t_2} - {t_0})\)</span><br />
+④<span class="math inline">\(\Phi ({t_2} + {t_1}) = \Phi ({t_2})\Phi
+({t_1}) = \Phi ({t_1})\Phi ({t_2})\)</span><br />
+⑤<span class="math inline">\(\Phi (mt) = {\left[ {\Phi (t)}
+\right]^m}\)</span><br />
+⑥<span class="math inline">\(\frac{\text{d}}{ {\text{d}}t}\Phi (t -
+{t_0}) = A\Phi (t - {t_0}) = \Phi (t - {t_0})A\)</span><br />
+⑦<span class="math inline">\(\frac{\text{d}}{ {\text{d}t}}{\Phi ^{ -
+1}}(t - {t_0}) = - A\Phi ({t_0} - t) = - \Phi ({t_0} - t)A\)</span></p>
+<h2
+id="连续时间线性时不变系统的脉冲响应矩阵">连续时间线性时不变系统的脉冲响应矩阵</h2>
+<p>注：自学内容，仅供参考。</p>
+<p>定义：对于输入维数为<span
+class="math inline">\(p\)</span>，输出维数为<span
+class="math inline">\(q\)</span>的连续时间线性时不变系统，脉冲响应矩阵定义为零初始状态下以脉冲响应<span
+class="math inline">\(h_{ij}(t-\tau)\)</span>为元构成的一个<span
+class="math inline">\(q \times p\)</span>输出响应矩阵。<br />
+其中<span class="math inline">\(h_{ij}(t-\tau)\)</span>为第<span
+class="math inline">\(j\)</span>个输入端在时刻<span
+class="math inline">\(\tau\)</span>加以单位脉冲<span
+class="math inline">\(\delta(t-\tau)\)</span>而所有其他输入为零时，在第<span
+class="math inline">\(i\)</span>个输出端的脉冲响应 <span
+class="math display">\[H(t - \tau ) = \left[
+{\begin{array}{*{20}{c}}{h_{11}(t - \tau )}&amp;{h_{12}(t - \tau )}&amp;
+\cdots &amp;{h_{1p}(t - \tau )} \\ {h_{21}(t - \tau )}&amp;{h_{22}(t -
+\tau )}&amp; \cdots &amp;{h_{2p}(t - \tau )} \\ \cdots &amp; \cdots
+&amp; \cdots &amp; \cdots  \\ {h_{q1}(t - \tau )}&amp;{h_{q2}(t - \tau
+)}&amp; \cdots &amp;{h_{qp}(t - \tau )} \end{array}} \right]\]</span>
+且<span class="math inline">\(H(t - \tau ) = 0\)</span>，<span
+class="math inline">\(\forall \tau\)</span>和<span
+class="math inline">\(\forall t \prec \tau\)</span></p>
+<p>输出响应：<br />
+对<span class="math inline">\(p\)</span>维输入，<span
+class="math inline">\(q\)</span>维输出连续时间线性时不变系统，假设初始状态为零，则系统在任意输入<span
+class="math inline">\(u\)</span>作用下基于脉冲响应矩阵的输出响应<span
+class="math inline">\(y(t)\)</span>为<br />
+<span class="math inline">\(y(t) = \int_{t_0}^t {H(t - \tau )u(\tau
+){\text{d}}\tau } = \int_{t_0}^t {H(\tau )u(t - \tau ){\text{d}}\tau
+\quad t \geqslant {t_0}}\)</span></p>
+<p>脉冲响应矩阵<span
+class="math inline">\(H(t)\)</span>和传递函数矩阵<span
+class="math inline">\(G(s)\)</span>之间的关系：<br />
+<span class="math inline">\(G(s) = L\left[ {H(t)} \right],H(t) = {L^{ -
+1}}\left[ {G(s)} \right]\)</span><br />
+<span class="math inline">\(G(s) = C{(sI - A)^{ - 1}}B + D\)</span></p>
+<p>对连续时间线性时不变系统<span class="math inline">\((A, B, C,
+D)\)</span>，设初始状态为零，则系统的脉冲响应矩阵为<br />
+<span class="math inline">\(H(t - \tau ) = C{e^{A(t - \tau )}}B +
+D\delta (t - \tau )\)</span><br />
+<span class="math inline">\(= C\Phi (t - \tau )B + D\delta (t - \tau
+)\)</span></p>
+<p>①两个代数等价的连续时间线性时不变系统具有相同的脉冲响应矩阵。<br />
+②两个代数等价的连续时间线性时不变系统具有相同的“输出零状态响应”和“输出零输入响应”。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://www.tup.tsinghua.edu.cn/booksCenter/book_00550102.html">郑大钟.
+线性系统理论(第2版)[M]. 北京:清华大学出版社,2002</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电磁场数值分析与计算05-有限元方法介绍
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电磁场数值分析与计算04-边界条件</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

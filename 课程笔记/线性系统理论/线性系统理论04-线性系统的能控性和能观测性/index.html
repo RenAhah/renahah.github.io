@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>线性系统理论04-线性系统的能控性和能观测性 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,线性系统理论" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="线性系统理论课程笔记 对应教材内容第四章 线性系统的能控性和能观测性的内容 能控性与能观测性的定义 系统内部每一个状态变量都可由输入定量影响，则系统状态完全能控； 系统内部每一个状态变量都可由输出完全反映，则系统状态完全能观。 线性时不变系统的能控性判据 格拉姆矩阵判据 线性时不变系统为完全能控的充分必要条件为存在时刻\(t_1&gt;0\)使如下定义的格拉姆矩阵为非奇异（不满秩的方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线性系统理论04-线性系统的能控性和能观测性">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="线性系统理论课程笔记 对应教材内容第四章 线性系统的能控性和能观测性的内容 能控性与能观测性的定义 系统内部每一个状态变量都可由输入定量影响，则系统状态完全能控； 系统内部每一个状态变量都可由输出完全反映，则系统状态完全能观。 线性时不变系统的能控性判据 格拉姆矩阵判据 线性时不变系统为完全能控的充分必要条件为存在时刻\(t_1&gt;0\)使如下定义的格拉姆矩阵为非奇异（不满秩的方">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/1%20电路系统建模判定能控.png">
+<meta property="article:published_time" content="2023-10-17T08:26:22.000Z">
+<meta property="article:modified_time" content="2023-10-19T08:21:10.043Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="线性系统理论">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/1%20电路系统建模判定能控.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/线性系统理论/线性系统理论04-线性系统的能控性和能观测性" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/">线性系统理论</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/" rel="tag">线性系统理论</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">
+            <time datetime="2023-10-17T08:26:22.000Z" itemprop="datePublished">2023-10-17</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            线性系统理论04-线性系统的能控性和能观测性
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E6%8E%A7%E6%80%A7%E4%B8%8E%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="toc-number">1.</span> <span class="toc-text">能控性与能观测性的定义</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%88%A4%E6%8D%AE"><span class="toc-number">2.</span> <span class="toc-text">线性时不变系统的能控性判据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E6%8B%89%E5%A7%86%E7%9F%A9%E9%98%B5%E5%88%A4%E6%8D%AE"><span class="toc-number">2.1.</span> <span class="toc-text">格拉姆矩阵判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%A9%E5%88%A4%E6%8D%AE"><span class="toc-number">2.2.</span> <span class="toc-text">秩判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dbh%E5%88%A4%E6%8D%AE"><span class="toc-number">2.3.</span> <span class="toc-text">DBH判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A6%E5%BD%93%E8%A7%84%E8%8C%83%E5%9E%8B"><span class="toc-number">2.4.</span> <span class="toc-text">约当规范型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E8%A7%82%E6%80%A7%E5%88%A4%E6%8D%AE"><span class="toc-number">3.</span> <span class="toc-text">线性时不变系统的能观性判据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%BC%E6%8B%89%E5%A7%86%E7%9F%A9%E9%98%B5%E5%88%A4%E6%8D%AE-1"><span class="toc-number">3.1.</span> <span class="toc-text">格拉姆矩阵判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A7%A9%E5%88%A4%E6%8D%AE-1"><span class="toc-number">3.2.</span> <span class="toc-text">秩判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pbh%E5%88%A4%E6%8D%AE"><span class="toc-number">3.3.</span> <span class="toc-text">PBH判据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%A6%E5%BD%93%E8%A7%84%E8%8C%83%E5%9E%8B-1"><span class="toc-number">3.4.</span> <span class="toc-text">约当规范型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%83%BD%E6%8E%A7%E8%A7%84%E8%8C%83%E5%9E%8B%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E8%A7%84%E8%8C%83%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">能控规范型和能观测规范型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%BD%E6%8E%A7%E8%A7%84%E8%8C%83%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">能控规范型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%BD%E8%A7%82%E6%B5%8B%E8%A7%84%E8%8C%83%E5%9E%8B"><span class="toc-number">4.2.</span> <span class="toc-text">能观测规范型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%93%E6%9E%84%E5%88%86%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">连续时间线性时不变系统的结构分解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>线性系统理论课程笔记<br />
+对应教材内容<code>第四章 线性系统的能控性和能观测性</code>的内容</p>
+<h2 id="能控性与能观测性的定义">能控性与能观测性的定义</h2>
+<p>系统内部每一个状态变量都可由输入定量影响，则系统状态完全能控；<br />
+系统内部每一个状态变量都可由输出完全反映，则系统状态完全能观。</p>
+<h2 id="线性时不变系统的能控性判据">线性时不变系统的能控性判据</h2>
+<h3 id="格拉姆矩阵判据">格拉姆矩阵判据</h3>
+<p>线性时不变系统为完全能控的充分必要条件为存在时刻<span
+class="math inline">\(t_1&gt;0\)</span>使如下定义的格拉姆矩阵为非奇异（不满秩的方阵、行列式为0的方阵）<br />
+<span class="math inline">\({W_c}[0,{t_1}]\mathop = \limits^\Delta
+\int_0^{t_1} {e^{ - At}BB^T e^{-{A^T}t}dt}\)</span></p>
+<h3 id="秩判据">秩判据</h3>
+对线性时不变系统，构造能控判别矩阵<span class="math inline">\({Q_c} =
+[B,AB,{A^2}B, \cdot \cdot \cdot ,{A^{n - 1}}B]\)</span><br />
+则系统完全能控的充要条件为<span
+class="math inline">\(rank(Q_c)=n\)</span>（<span
+class="math inline">\(Q_c\)</span>满秩）<br />
+【例1】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} 4&amp;0 \\ 0&amp;-5 \end{array}}\right]x +
+\left[ {\begin{array}{*{20}{c}} 1 \\ 2
+\end{array}}\right]u\)</span><br />
+<span class="math inline">\(Q_c=\left[ {\begin{array}{*{20}{c}} B&amp;AB
+\end{array}}\right]=\left[ {\begin{array}{*{20}{c}} 1&amp;4 \\ 2&amp;-10
+\end{array}}\right]\)</span><br />
+<span
+class="math inline">\(rank(Q_c)=2\)</span>，满秩，系统完全能控<br />
+【例2】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} -1&amp;-4&amp;-2 \\ 0&amp;6&amp;-1 \\
+1&amp;7&amp;-1 \end{array}}\right]x + \left[ {\begin{array}{*{20}{c}}
+2&amp;0 \\ 0&amp;1 \\ 1&amp;1 \end{array}}\right]u\)</span><br />
+<span class="math inline">\(Q_c=\left[ {\begin{array}{*{20}{c}}
+B&amp;AB&amp;A^2 B \end{array}}\right]=\left[ {\begin{array}{*{20}{c}}
+2&amp;0&amp;-4&amp;*&amp;*&amp;* \\ 0&amp;1&amp;-1&amp;*&amp;*&amp;* \\
+1&amp;1&amp;1&amp;*&amp;*&amp;* \end{array}}\right]\)</span><br />
+<span
+class="math inline">\(rank(Q_c)=3\)</span>，满秩，系统完全能控<br />
+注：前三列已经可以判定矩阵满秩，就可以判定整个矩阵满秩。<br />
+【例3】
+<center>
+<img src="1 电路系统建模判定能控.png"/><span class="caption">图1
+电路系统建模判定能控</span>
+</center>
+<p><span class="math inline">\(\left\{ {\begin{array}{*{20}{c}}
+i_1(t)=C\frac{dx_1}{dt} \\ i_2(t)=C\frac{dx_2}{dt} \\ x_1+Ri_1=u(t) \\
+x_2+Ri_2=u(t) \end{array}} \right. \Rightarrow \left\{
+{\begin{array}{*{20}{c}} \dot x_1=-\frac{1}{RC}x_1+\frac{1}{RC}u \\ \dot
+x_2=-\frac{1}{RC}x_2+\frac{1}{RC}u \end{array}} \right. \Rightarrow \dot
+x=\left[ {\begin{array}{*{20}{c}} -\frac{1}{RC}&amp;0 \\
+0&amp;-\frac{1}{RC} \end{array}} \right]x+\left[
+{\begin{array}{*{20}{c}} \frac{1}{RC} \\ \frac{1}{RC}
+\end{array}}\right]u\)</span><br />
+<span class="math inline">\(Q=\left[ {\begin{array}{*{20}{c}} B&amp;AB
+\end{array}}\right]=\left[ {\begin{array}{*{20}{c}}
+\frac{1}{RC}&amp;-\frac{1}{(RC)^2} \\ \frac{1}{RC}&amp;-\frac{1}{(RC)^2}
+\end{array}}\right]\)</span><br />
+<span
+class="math inline">\(rank(Q_c)=1&lt;2\)</span>，不满秩，系统不能控</p>
+<h3 id="dbh判据">DBH判据</h3>
+<p><span
+class="math inline">\(n\)</span>维线性时不变系统完全能控的充分必要条件<br />
+<span class="math inline">\(rank[sI-A,B]=n\)</span>或<span
+class="math inline">\(rank[\lambda_i-A,B]=n\)</span>（<span
+class="math inline">\(\lambda_i\)</span>为特征值）<br />
+【例4】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} 4&amp;0 \\ 0&amp;-5 \end{array}}\right]x +
+\left[ {\begin{array}{*{20}{c}} 1 \\ 2
+\end{array}}\right]u\)</span><br />
+<span class="math inline">\([sI-A,B]=\left[ {\begin{array}{*{20}{c}}
+s-4&amp;0&amp;1 \\ 0&amp;s-5&amp;2 \end{array}}\right] \quad
+\lambda_1=4,\lambda_2=-5\)</span><br />
+对<span class="math inline">\(\lambda_1=4\)</span>有<span
+class="math inline">\(rank[\lambda_1-A,B]=2=n\)</span><br />
+对<span class="math inline">\(\lambda_2=-5\)</span>有<span
+class="math inline">\(rank[\lambda_2-A,B]=2=n\)</span><br />
+得到系统完全能控。</p>
+<h3 id="约当规范型">约当规范型</h3>
+<p><mark>①特征值互异的约当块最后一行对应的B阵中，该行元素不全为零。<br />
+②特征值相同的各约当块最后一行对应的B阵各行向量线性无关。</mark><br />
+【例5】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} {\lambda
+_1}&amp;1&amp;{}&amp;{}&amp;{}&amp;{}&amp;{} \\{}&amp;{\lambda
+_1}&amp;{}&amp;{}&amp;{}&amp;{}&amp;{} \\ {}&amp;{}&amp;{\lambda
+_1}&amp;{}&amp;{}&amp;{}&amp;{} \\ {}&amp;{}&amp;{}&amp;{\lambda
+_1}&amp;1&amp;{}&amp;{} \\ {}&amp;{}&amp;{}&amp;{}&amp;{\lambda
+_1}&amp;{}&amp;{} \\ {}&amp;{}&amp;{}&amp;{}&amp;{}&amp;{\lambda
+_2}&amp;1 \\ {}&amp;{}&amp;{}&amp;{}&amp;{}&amp;{}&amp;{\lambda _2}
+\end{array}} \right]x + \left[ {\begin{array}{*{20}{c}} 0&amp;0&amp;0 \\
+1&amp;0&amp;0 \\ 0&amp;1&amp;0 \\ 1&amp;1&amp;2 \\ 0&amp;0&amp;1 \\
+1&amp;1&amp;1 \\ 0&amp;0&amp;1 \end{array}}
+\right]u\begin{array}{*{20}{c}}{} \\ { \leftarrow {b_{l11}}} \\ {
+\leftarrow {b_{l12}}} \\ {} \\ { \leftarrow {b_{l13}}} \\ {} \\ {
+\leftarrow {b_{l21}}} \end{array}\)</span><br />
+该例子中系统能控的充分必要条件是向量组<span
+class="math inline">\(\{b_{l11}、b_{l12}、b_{l13}\}\)</span>线性无关以及<span
+class="math inline">\(\{b_{l21}\}\)</span>线性无关（即不为零）。<br />
+该例子中两矩阵行向量均线性无关⇒系统完全能控。<br />
+注：任意一个向量组里只要有零向量，就一定线性相关。另外复习一下约当块相关知识。<br />
+<mark>总结：找出同一特征值的所有不含元素“1”的行，其对应于C阵的行向量组成一个行向量组，若所有这样的行向量组均线性无关，则系统完全能控。</mark></p>
+<h2 id="线性时不变系统的能观性判据">线性时不变系统的能观性判据</h2>
+<h3 id="格拉姆矩阵判据-1">格拉姆矩阵判据</h3>
+<p><span class="math inline">\({W_0}[0,{t_1}]\mathop = \limits^\Delta
+\int_0^{t_1}{e^{
+{A^T}t}{C^T}C{e^{At}}dt}\)</span>是非奇异，则系统完全能观测。</p>
+<h3 id="秩判据-1">秩判据</h3>
+<p>对<span
+class="math inline">\(n\)</span>维连续时间线性时不变系统，系统完全能观测的充分必要条件为能观测性判别矩阵
+<span class="math inline">\({Q_0} = \left[ \begin{gathered} C \\ CA \\
+\vdots \\ C{A^{n-1}} \\ \end{gathered}\right] \quad
+rank(Q_0)=n\)</span><br />
+【例6】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} -1&amp;-4&amp;-2 \\ 0&amp;6&amp;-1 \\
+1&amp;7&amp;-1 \end{array}}\right]x \quad y=\left[
+{\begin{array}{*{20}{c}} 0&amp;2&amp;1 \\ 1&amp;1&amp;0
+\end{array}}\right]x\)</span><br />
+<span class="math inline">\({Q_0} = \left[ \begin{gathered} C \\ CA \\
+CA^2 \\ \end{gathered}\right] = \left[ {\begin{array}{*{20}{c}}
+0&amp;2&amp;1 \\ 1&amp;1&amp;0 \\ 1&amp;19&amp;-3 \\ *&amp;*&amp;* \\
+*&amp;*&amp;* \\ *&amp;*&amp;* \end{array}}\right] \Rightarrow
+rank(Q_0)=3\)</span><br />
+满秩，系统完全能观</p>
+<h3 id="pbh判据">PBH判据</h3>
+<p><span
+class="math inline">\(n\)</span>维连续时间线性时不变系统完全能观测的充分必要条件为<br />
+<span class="math inline">\(rank\left[ \begin{gathered} SI-A \\ C \\
+\end{gathered} \right] = n\)</span><br />
+或<span class="math inline">\(rank\left[\begin{gathered}{\lambda_i}I - A
+\hfill \\ C \hfill \\ \end{gathered}\right] = n\quad
+,\lambda_1,\lambda_2, \ldots \lambda_n\)</span>为系统特征值</p>
+<h3 id="约当规范型-1">约当规范型</h3>
+<p>对<span
+class="math inline">\(n\)</span>维连续时间线性时不变系统，若<span
+class="math inline">\(A\)</span>为约当阵，系统完全能观测的充分必要条件是：<br />
+<mark>特征值互异的约当块第一列对应的<span
+class="math inline">\(C\)</span>阵中，该列元素不全为零。<br />
+特征值相同的约当块第一列对应的<span
+class="math inline">\(C\)</span>阵中，各列向量线性无关。</mark><br />
+【例7】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} -2&amp;1&amp;{}&amp;{}&amp;{}&amp;{}&amp;{}
+\\{}&amp;-2&amp;{}&amp;{}&amp;{}&amp;{}&amp;{} \\
+{}&amp;{}&amp;-2&amp;{}&amp;{}&amp;{}&amp;{} \\
+{}&amp;{}&amp;{}&amp;-2&amp;{}&amp;{}&amp;{} \\
+{}&amp;{}&amp;{}&amp;{}&amp;3&amp;1&amp;{} \\
+{}&amp;{}&amp;{}&amp;{}&amp;{}&amp;3&amp;{} \\
+{}&amp;{}&amp;{}&amp;{}&amp;{}&amp;{}&amp;3 \end{array}} \right]x \quad
+y=\left[ {\begin{array}{*{20}{c}} 1&amp;0&amp;0&amp;0&amp;1&amp;0&amp;0
+\\ 0&amp;0&amp;4&amp;0&amp;1&amp;0&amp;4 \\
+0&amp;0&amp;0&amp;7&amp;0&amp;0&amp;1 \end{array}}
+\right]x\)</span><br />
+该例子中系统能观的充分必要条件是向量组<span class="math inline">\(\left[
+{\begin{array}{*{20}{c}} 1&amp;0&amp;0 \\ 0&amp;4&amp;0 \\ 0&amp;0&amp;7
+\end{array}}\right]\)</span>与向量组<span class="math inline">\(\left[
+{\begin{array}{*{20}{c}} 1&amp;0 \\ 1&amp;4 \\ 0&amp;1
+\end{array}}\right]\)</span>列向量线性无关。<br />
+该例子中两矩阵列向量均线性无关⇒系统完全能观。<br />
+<mark>总结：找出同一特征值的所有不含元素“1”的列，其对应于C阵的列向量组成一个列向量组，若所有这样的列向量组均线性无关，则系统完全能观。</mark></p>
+<h2 id="能控规范型和能观测规范型">能控规范型和能观测规范型</h2>
+<h3 id="能控规范型">能控规范型</h3>
+<p>基于线性非奇异变换<span class="math inline">\(\bar X = {P^{ -
+1}}X\)</span>导出<br />
+<span class="math inline">\(\dot {\bar x} = { {\bar A}_c} \bar x + {
+{\bar b}_c}u\)</span><br />
+<span class="math inline">\(y = { {\bar c}_c} \bar x\)</span><br />
+<span class="math inline">\({\bar A_c} = {P^{ - 1}}AP = \left[
+{\begin{array}{*{20}{c}} 0&amp;1&amp;{}&amp;{}&amp;{} \\
+0&amp;0&amp;1&amp;{}&amp;{} \\ \vdots &amp;{}&amp;{}&amp; \ddots &amp;{}
+\\ 0&amp;{}&amp;{}&amp;{}&amp;1 \\ { - {\alpha_0}}&amp;{ -
+{\alpha_1}}&amp;{}&amp; \cdots &amp;{ - {\alpha_{n - 1}}} \end{array}}
+\right] \quad {\bar b_c} = {P^{ - 1}}b = \left[ \begin{gathered} 0
+\hfill \\ 0 \hfill \\ \vdots \hfill \\ 1 \hfill \\ \end{gathered}
+\right] \quad {\bar c_c} = cP = \left[ { {\beta _0},{\beta _1}, \cdots
+{\beta _{n - 1}}} \right]\)</span><br />
+<span class="math inline">\(\det (sI - A)\mathop = \limits^\Delta {s^n}
++ {\alpha _{n - 1}}{s^{n - 1}} + \cdots + {\alpha _1}s + {\alpha
+_0}\)</span><br />
+<span class="math inline">\(\left\{ \begin{gathered}{\beta _{n - 1}} =
+cb \hfill \\{\beta _{n - 2}} = cAb + {\alpha_{n - 1}}cb \hfill \\ \cdots
+\hfill \\{\beta _1} = c{A^{n - 2}}b + {\alpha_{n - 1}}c{A^{n - 3}}b +
+\cdots + {\alpha_2}cb \hfill \\{\beta _0} = c{A^{n - 1}}b + {\alpha_{n -
+1}}c{A^{n - 2}}b + \cdots + {\alpha_1}cb \hfill \\\end{gathered}
+\right.\)</span><br />
+【例8】<span class="math inline">\(\dot x = \left[
+{\begin{array}{*{20}{c}} 1&amp;0&amp;2 \\ 2&amp;1&amp;1 \\
+1&amp;0&amp;-2 \end{array}}\right]x + \left[ {\begin{array}{*{20}{c}} 1
+\\ 2 \\ 1 \end{array}}\right]u \quad y=\left[ {\begin{array}{*{20}{c}}
+0&amp;1&amp;1 \end{array}}\right]x\)</span><br />
+<span class="math inline">\(\det (sI - A) = s^3-5s+4 \quad \Rightarrow
+\quad \alpha_0=4,\alpha_1=-5,\alpha_2=0\)</span><br />
+<span class="math inline">\(\beta_2=cb=3\)</span><br />
+<span class="math inline">\(\beta_1=cAb+\alpha_2 cb=4\)</span><br />
+<span class="math inline">\(\beta_0=cA^2 b+\alpha_2 cAb+\alpha_1
+cb=0\)</span><br />
+<span class="math inline">\(\Rightarrow \dot {\bar x} = \left[
+{\begin{array}{*{20}{c}} 0&amp;1&amp;0 \\ 0&amp;0&amp;1 \\
+-4&amp;5&amp;0 \end{array}}\right]\bar x + \left[
+{\begin{array}{*{20}{c}} 0 \\ 0 \\ 1 \end{array}}\right]u \quad y=\left[
+{\begin{array}{*{20}{c}} 0&amp;4&amp;3 \end{array}}\right]\bar
+x\)</span></p>
+<h3 id="能观测规范型">能观测规范型</h3>
+<p>基于线性非奇异变换<span class="math inline">\(\hat X =
+QX\)</span>导出<br />
+<span class="math inline">\(\dot {\hat x} = { {\hat A}_o}\hat x + {
+{\hat b}_o}u\)</span><br />
+<span class="math inline">\(y = { {\hat c}_o}\hat x\)</span><br />
+<span class="math inline">\(\hat A_o = QA{Q^{ - 1}} = \left[
+{\begin{array}{*{20}{c}} 0&amp;\cdots&amp;0&amp;-{\alpha_0} \\
+1&amp;\cdots&amp;0&amp;-{\alpha_1} \\
+\vdots&amp;\ddots&amp;\vdots&amp;\vdots \\
+0&amp;\cdots&amp;1&amp;-{\alpha_{n-1}} \end{array}}\right] \quad \hat
+b_o = Qb = \left[ {\begin{array}{*{20}{c}} {\beta _0} \\ {\beta _1} \\
+\vdots \\ {\beta _{n - 1}} \end{array}} \right] \quad \hat c_o = cQ^{-1}
+= \left[ {\begin{array}{*{20}{c}} 0&amp;\cdots&amp;0&amp;1 \end{array}}
+\right]\)</span><br />
+【例9】求【例8】的能观测规范型：<br />
+<span class="math inline">\(\dot {\hat x} = \left[
+{\begin{array}{*{20}{c}} 0&amp;0&amp;-4 \\ 1&amp;0&amp;5 \\
+0&amp;1&amp;0 \end{array}}\right]\hat x + \left[
+{\begin{array}{*{20}{c}} 0 \\ 4 \\ 3 \end{array}}\right]u \quad y=\left[
+{\begin{array}{*{20}{c}} 0&amp;0&amp;1 \end{array}}\right]\hat
+x\)</span></p>
+<h2
+id="连续时间线性时不变系统的结构分解">连续时间线性时不变系统的结构分解</h2>
+<p>对于不完全能控或能观的系统，可以将其分解为能控/能观子系统与不能控/不能观子系统。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://www.tup.tsinghua.edu.cn/booksCenter/book_00550102.html">郑大钟.
+线性系统理论(第2版)[M]. 北京:清华大学出版社,2002</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电磁场数值分析与计算06-2D有限元分析
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电磁场数值分析与计算05-有限元方法介绍</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2023 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

@@ -19,23 +19,30 @@
     } 
     </script>
     
-    <title>使用技巧 | RenAhahWiki</title>
+    <title>线性系统理论06-线性反馈系统的时间域综合 | RenAhahWiki</title>
     
     
-        <meta name="keywords" content="使用技巧" />
+        <meta name="keywords" content="课程笔记,线性系统理论" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Hexo指令 在hexoblog文件夹内，右键点击Git Bash Here进入窗口输入指令 启动本地服务器 hexo s 清空静态文件 hexo clean 生成静态文件 hexo g 上传至git hexo d 创建新文章 hexo new 文章名称.md 安装Nodejs插件 npm i 插件名称 --save 卸载Nodejs插件 npm un 插件名称 --save 查">
+    <meta name="description" content="线性系统理论课程笔记 对应教材内容第六章 线性反馈系统的时间域综合的内容 引言 综合问题：系统的综合问题由受控系统，性能指标和控制输入三个要素组成，所谓系统综合，就是对给定受控系统，确定反馈形式的控制，使所导出闭环系统的运动行为达到或优于指定的期望性能指标。 性能指标的类型： \(\left\{ {\begin{array}{*{20}{c}} 非优化型性能指标\left\{ {\be">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用技巧">
-<meta property="og:url" content="https://renahah.github.io/hello-world/index.html">
+<meta property="og:title" content="线性系统理论06-线性反馈系统的时间域综合">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="Hexo指令 在hexoblog文件夹内，右键点击Git Bash Here进入窗口输入指令 启动本地服务器 hexo s 清空静态文件 hexo clean 生成静态文件 hexo g 上传至git hexo d 创建新文章 hexo new 文章名称.md 安装Nodejs插件 npm i 插件名称 --save 卸载Nodejs插件 npm un 插件名称 --save 查">
+<meta property="og:description" content="线性系统理论课程笔记 对应教材内容第六章 线性反馈系统的时间域综合的内容 引言 综合问题：系统的综合问题由受控系统，性能指标和控制输入三个要素组成，所谓系统综合，就是对给定受控系统，确定反馈形式的控制，使所导出闭环系统的运动行为达到或优于指定的期望性能指标。 性能指标的类型： \(\left\{ {\begin{array}{*{20}{c}} 非优化型性能指标\left\{ {\be">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-05-11T02:53:46.000Z">
-<meta property="article:modified_time" content="2023-09-17T00:00:47.047Z">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/1%20状态反馈.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/2%20输出反馈.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/3%20全维观测器.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/4%20状态观测器设计.png">
+<meta property="article:published_time" content="2023-10-20T23:03:59.000Z">
+<meta property="article:modified_time" content="2023-10-22T07:51:33.557Z">
 <meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="线性系统理论">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/1%20状态反馈.png">
     
 
     
@@ -227,9 +234,9 @@
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             课程笔记
                         </a>
@@ -252,13 +259,13 @@
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             线性系统理论
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -307,7 +314,7 @@
                     </li> 
                      <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
                     </li> 
-                     <li class="file active"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
     </div>
     <script>
         $(document).ready(function() {
@@ -378,7 +385,7 @@
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-课程笔记/线性系统理论/线性系统理论06-线性反馈系统的时间域综合" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -386,12 +393,22 @@
                 
                     <div class="article-meta">
                         
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/">线性系统理论</a>
+    </div>
+
                         
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/" rel="tag">线性系统理论</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/hello-world/">
-            <time datetime="2023-05-11T02:53:46.000Z" itemprop="datePublished">2023-05-11</time>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">
+            <time datetime="2023-10-20T23:03:59.000Z" itemprop="datePublished">2023-10-21</time>
         </a>
     </div>
 
@@ -406,7 +423,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            使用技巧
+            线性系统理论06-线性反馈系统的时间域综合
         </h1>
     
 
@@ -419,94 +436,177 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo%E6%8C%87%E4%BB%A4"><span class="toc-number">1.</span> <span class="toc-text">Hexo指令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Hexo语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%91%98%E8%A6%81"><span class="toc-number">2.1.</span> <span class="toc-text">摘要</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%99%E5%86%85%E9%93%BE%E6%8E%A5"><span class="toc-number">2.2.</span> <span class="toc-text">站内链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#html%E8%AF%AD%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">HTML语法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E9%AB%98%E4%BA%AE"><span class="toc-number">3.1.</span> <span class="toc-text">文本高亮</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E6%9C%AC%E4%B8%8B%E5%88%92%E7%BA%BF"><span class="toc-number">3.2.</span> <span class="toc-text">文本下划线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E7%AB%A0%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">文章插入图片方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mathjax%E5%85%AC%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">Mathjax公式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">4.1.</span> <span class="toc-text">使用说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">公式语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%8F%E6%B5%8B%E8%AF%95"><span class="toc-number">4.3.</span> <span class="toc-text">公式测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hexo-d%E6%8A%A5%E9%94%99spawn-failed%E7%9A%84%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">hexo d报错“Spawn
-failed”的解决办法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%AE%B5%E5%B5%8C%E5%85%A5%E6%B5%8B%E8%AF%95"><span class="toc-number">6.</span> <span class="toc-text">代码段嵌入测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">7.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%95%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%8D%E9%A6%88%E5%92%8C%E8%BE%93%E5%87%BA%E5%8F%8D%E9%A6%88"><span class="toc-number">2.</span> <span class="toc-text">状态反馈和输出反馈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%8D%E9%A6%88"><span class="toc-number">2.1.</span> <span class="toc-text">状态反馈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%87%BA%E5%8F%8D%E9%A6%88"><span class="toc-number">2.2.</span> <span class="toc-text">输出反馈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%8D%E9%A6%88%E5%92%8C%E8%BE%93%E5%87%BA%E5%8F%8D%E9%A6%88%E7%9A%84%E6%AF%94%E8%BE%83"><span class="toc-number">2.3.</span> <span class="toc-text">状态反馈和输出反馈的比较</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%8D%E9%A6%88%E7%9A%84%E6%9E%81%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">状态反馈的极点配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%8D%E9%A6%88%E9%95%87%E5%AE%9A"><span class="toc-number">4.</span> <span class="toc-text">状态反馈镇定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%A8%E7%BB%B4%E5%BA%A6%E7%8A%B6%E6%80%81%E8%A7%82%E6%B5%8B%E5%99%A8"><span class="toc-number">5.</span> <span class="toc-text">全维度状态观测器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
         
-            <h2 id="hexo指令">Hexo指令</h2>
-<p>在hexoblog文件夹内，右键点击Git Bash Here进入窗口输入指令<br />
-启动本地服务器 <code>hexo s</code><br />
-清空静态文件 <code>hexo clean</code><br />
-生成静态文件 <code>hexo g</code><br />
-上传至git <code>hexo d</code><br />
-创建新文章 <code>hexo new 文章名称.md</code><br />
-安装Nodejs插件 <code>npm i 插件名称 --save</code><br />
-卸载Nodejs插件 <code>npm un 插件名称 --save</code><br />
-查看插件是否安装 <code>npm list 插件名称</code><br />
-<a target="_blank" rel="noopener" href="https://hexoscript.github.io/using">一键部署脚本up.sh</a>
-清空+生成+上传git <code>source up.sh</code></p>
-<h2 id="hexo语法">Hexo语法</h2>
-<h3 id="摘要">摘要</h3>
-<p><code>&lt;!--more--&gt;</code>之上的内容为摘要。</p>
-<h3 id="站内链接">站内链接</h3>
-<p>格式为：<br />
-<code>&#123;% post_link 音乐/乐理/乐理笔记01-基础知识 '乐理笔记01-基础知识' %&#125;</code><br />
-显示效果：<br />
-<a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" title="乐理笔记01-基础知识">乐理笔记01-基础知识</a></p>
-<h2 id="html语法">HTML语法</h2>
-<p>Markdown不支持或者支持效果不好的语法可以使用HTML代替。</p>
-<h3 id="文本高亮">文本高亮</h3>
-<p><code>&lt;mark&gt;文本高亮&lt;/mark&gt;</code>
-<mark>文本高亮</mark></p>
-<h3 id="文本下划线">文本下划线</h3>
-<p><code>&lt;u&gt;文本下划线&lt;/u&gt;</code> <u>文本下划线</u></p>
-<h3 id="文章插入图片方法">文章插入图片方法</h3>
-<p>修改工程根目录下的_config.yml的配置：post_asset_folder: true；<br />
-创建一个文件夹，文件夹的名字和博客文件名一样，在里面放置你要引入的图片；<br />
-在文章中正常引用，只需要把图片名字引入即可，不需要写相对地址和绝对地址<br />
-<code>&lt;center&gt;&lt;img src="1 图片插入模板.png" width=400/&gt;&lt;span class="caption"&gt;图1 图片插入模板&lt;/span&gt;&lt;/center&gt;</code></p>
-<h2 id="mathjax公式">Mathjax公式</h2>
-<h3 id="使用说明">使用说明</h3>
-<ul>
-<li>所用渲染插件为hexo-rendere-pandoc</li>
-<li>从mathtype粘贴AMSLaTex格式，公式内不能出现连续的左大括号——将公式内连续的大括号用空格隔开即可</li>
-<li>公式内不能出现换行——删掉换行即可</li>
-<li>公式符号边要紧挨$字符，不能有空格</li>
-</ul>
-<h3 id="公式语法">公式语法</h3>
-<p>太多了，暂略</p>
-<h3 id="公式测试">公式测试</h3>
-<p><span class="math display">\[E = m{c^2}\]</span><br />
-行内<span class="math inline">\(O(f(n))=log_2^{n}\)</span>测试<br />
-行内<span class="math inline">\(\begin{Bmatrix}  a &amp; b \\  c &amp; d
-\end{Bmatrix}\)</span>显示测试<br />
-<span class="math display">\[{I_d} - {I_{dL}}\]</span><br />
-<span class="math display">\[i\hbar\frac{\partial}{\partial
-t}\psi=-\frac{\hbar^2}{2m}\nabla^2\psi+V\psi\]</span><br />
-<span class="math display">\[\left\{ \begin{gathered} {U_{d0} } - E =
-R({I_d} + {T_e}\frac{ {d{I_d} } } { {dt} }) \hfill \\{I_d} - {I_{dL} } =
-\frac{ { {T_m} } } {R}\frac{ {dE} } { {dt} } \hfill \\
-\end{gathered}  \right. \]</span> <span class="math display">\[{I_d} -
-{I_{dL}} = \frac{G{D^2}}{375*{C_T}*{C_e}}\frac{dE}{dt}\]</span> <span
-class="math display">\[u(t) = {K_p}e(t) + {K_i}\int_0^t {e(t)dt +
-{K_d}\frac{de(t)}{dt}}\]</span> <span class="math display">\[X_{k +
-1}^{(j)} = X_k^{(j)} + v_{k + 1}^{(j)} \cdot dt\]</span> <span
-class="math display">\[{W_{opi} }(s) = \frac{ { {K_i}({\tau _i}s + 1)} }
-{ { {\tau _i}s} }\frac{ {\beta {K_s}/R} } { {({T_l}s + 1)({T_{\sum i}}s
-+ 1)} }\]</span> <span class="math display">\[3\sqrt {\frac{1} { { {T_m}
-{T_l} } } }  = 3 \times \sqrt {\frac{1} { {0.137 \times 0.032} } } {s^{
-- 1} } = 45.31{s^{ - 1} } &lt; {\omega _{ci} }\]</span></p>
-<h2 id="hexo-d报错spawn-failed的解决办法">hexo d报错“Spawn
-failed”的解决办法</h2>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">进入站点根目录</span><br><span class="line">cd D:/RenAhah/hexoblog</span><br><span class="line"> </span><br><span class="line">删除git提交内容文件夹</span><br><span class="line">rm -rf .deploy_git/</span><br><span class="line"> </span><br><span class="line">执行</span><br><span class="line">git config --global core.autocrlf false</span><br><span class="line"> </span><br><span class="line">最后</span><br><span class="line">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</span><br></pre></td></tr></table></figure>
-<h2 id="代码段嵌入测试">代码段嵌入测试</h2>
-<p>在主题配置文件_config.Wikitten.yml中修改customize.highlight的值，即可修改代码段的高亮样式，高亮样式文件夹位于hexoblog\themes\Wikitten\source\css\_highlight<br />
-目前所用高亮样式为atelier-forest-light<br />
-注意修改yml文件后要重新hexo s一次才能生效<br />
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);<span class="comment">//设置中断优先级分组为组2：2位抢占优先级，2位响应优先级</span></span><br><span class="line">    delay_init();            <span class="comment">//延时函数初始化</span></span><br><span class="line">    uart_init(<span class="number">9600</span>);     <span class="comment">//串口初始化为115200</span></span><br><span class="line">    TIM1_Int_Init(<span class="number">99</span>,<span class="number">7199</span>);<span class="comment">//定时10ms(电机)</span></span><br><span class="line">        CAN2_Configuration();</span><br><span class="line">        Sensor_Init();</span><br><span class="line">    PID_Reset(&amp;pid1);</span><br><span class="line">    PID_Reset(&amp;pid2);</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">            </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><code>To Be Countinued未完待续......</code></p>
+            <p>线性系统理论课程笔记<br />
+对应教材内容<code>第六章 线性反馈系统的时间域综合</code>的内容</p>
+<h2 id="引言">引言</h2>
+<p>综合问题：系统的综合问题由受控系统，性能指标和控制输入三个要素组成，所谓系统综合，就是对给定受控系统，确定反馈形式的控制，使所导出闭环系统的运动行为达到或优于指定的期望性能指标。<br />
+性能指标的类型：<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}}
+非优化型性能指标\left\{ {\begin{array}{*{20}{c}} 渐近稳定 \\ 极点配置 \\
+解耦控制 \\ 跟踪问题 \end{array}}\right. \\ 优化型性能指标
+\end{array}}\right.\)</span></p>
+<h2 id="状态反馈和输出反馈">状态反馈和输出反馈</h2>
+<h3 id="状态反馈">状态反馈</h3>
+<center>
+<img src="1 状态反馈.png" width=300/><span class="caption">图1
+状态反馈</span>
+</center>
+<p>连续时间线性时不变系统<span class="math inline">\(\dot x = Ax +
+Bu,\quad y = Cx\)</span>，状态反馈下受控系统的输入为<span
+class="math inline">\(u=-Kx+v\)</span>。<br />
+则有反馈系统状态空间描述为<span class="math inline">\(\dot x = (A - BK)x
++ Bv,\quad y = Cx\)</span><br />
+对连续时间线性时不变系统，状态反馈保持能控性，不保持能观测性。</p>
+<h3 id="输出反馈">输出反馈</h3>
+<center>
+<img src="2 输出反馈.png" width=300/><span class="caption">图2
+输出反馈</span>
+</center>
+<p>连续时间线性时不变系统<span class="math inline">\(\dot x = Ax +
+Bu,\quad y = Cx\)</span>，输出反馈下受控系统的输入为<span
+class="math inline">\(u=-Fy+v\)</span>。<br />
+则有反馈系统状态空间描述为<span class="math inline">\(\dot x = (A -
+BFC)x + Bv,\quad y = Cx\)</span><br />
+对连续时间线性时不变系统，输出反馈保持能控性和能观测性。</p>
+<h3 id="状态反馈和输出反馈的比较">状态反馈和输出反馈的比较</h3>
+<p>反馈原理：状态反馈为系统结构信息的完全反馈，输出反馈则是系统结构信息的不完全反馈。<br />
+反馈功能：状态反馈在功能上远优于输出反馈。<br />
+改善输出反馈的途径：扩展输出反馈（动态输出反馈）<br />
+反馈实现上，输出反馈要优越于状态反馈。<br />
+解决状态反馈物理实现的途径：引入状态观测器，扩展状态反馈和扩展输出反馈的等价性。</p>
+<h2 id="状态反馈的极点配置">状态反馈的极点配置</h2>
+<p>极点配置定理：对单输入<span
+class="math inline">\(n\)</span>维连续时间线性时不变受控系统<span
+class="math inline">\(\dot x = Ax + Bu\)</span>，系统全部<span
+class="math inline">\(n\)</span>个极点可任意配置的充分必要条件为<span
+class="math inline">\((A,b)\)</span>完全能控。<br />
+极点配置算法：<br />
+①判别<span class="math inline">\((A,b)\)</span>的能控性。<br />
+注：可以构造能控判别矩阵<span class="math inline">\({Q_c} =
+[B,AB,{A^2}B, \cdot \cdot \cdot ,{A^{n - 1}}B]\)</span><br />
+系统完全能控的充要条件为<span
+class="math inline">\(rank(Q_c)=n\)</span>（<span
+class="math inline">\(Q_c\)</span>满秩）<br />
+②计算矩阵<span class="math inline">\(A\)</span>特征多项式<span
+class="math inline">\(det(sI-A)=\alpha(s)=s^n+\alpha_{n-1}s^{n-1}+\cdots+\alpha_1
+s+\alpha_0\)</span><br />
+③计算由期望闭环特征值<span class="math inline">\(\{ \lambda_1^*, \cdots
+,\lambda_n^* \}\)</span>决定的特征多项式<br />
+<span class="math inline">\({\alpha ^*}(s) = \mathop \Pi \limits_{i =
+1}^n (s - \lambda _i^*) = {s^n} + \alpha _{n - 1}^*{s^{n - 1}} + \cdots
++ \alpha _1^*s + \alpha _0^*\)</span><br />
+④<span class="math inline">\(\bar k = \left[ {\alpha _0^* - {\alpha
+_0},\alpha _1^* - {\alpha _1}, \cdots ,\alpha _{n - 1}^* - {\alpha _{n -
+1}}} \right]\)</span><br />
+⑤<span class="math inline">\(P = \left[ {A^{n - 1}b, \cdots ,Ab,b}
+\right]\quad \left[ \begin{gathered}1 &amp; &amp; &amp; \\ {\alpha _{n -
+1}}&amp;\ddots&amp; &amp; \\ \vdots &amp; \ddots &amp; \ddots &amp; \\
+{\alpha _1} &amp; \cdots &amp; {\alpha _{n - 1}}&amp;1 \hfill \\
+\end{gathered} \right]\)</span><br />
+⑥<span class="math inline">\(Q=p^{-1}\)</span><br />
+⑦<span class="math inline">\(k = \bar kQ\)</span></p>
+<p>【例1】连续时间线性时不变状态方程为<span class="math inline">\(\dot x
+= \left[ {\begin{array}{*{20}{c}}0&amp;0&amp;0 \\ 1&amp;{ - 6}&amp;0 \\
+0&amp;1&amp;{ - 12} \end{array}} \right]\;x + \left[
+{\begin{array}{*{20}{c}} 1 \\ 0 \\ 0 \end{array}}
+\right]\;u\)</span><br />
+期望闭环极点为<span class="math inline">\(\begin{array}{*{20}{c}}{
+{\lambda _1}^* = - 2}&amp;{ {\lambda _2}^* = - 1 + j}&amp;{ {\lambda
+_3}^* = - 1 - j} \end{array}\)</span>，求状态反馈阵<span
+class="math inline">\(k\)</span>。</p>
+<p>能控性判定矩阵<span class="math inline">\(Q_c = [B,AB,A^2 B] = \left[
+{\begin{array}{*{20}{c}}1&amp;0&amp;0 \\ 0&amp;1&amp;-6 \\ 0&amp;0&amp;1
+\end{array}} \right]\)</span><br />
+<span class="math inline">\(r(Q_c)=3=n \quad\)</span>⇒系统能控<br />
+<span class="math inline">\(\det (sI - A) = \left[
+{\begin{array}{*{20}{c}}0&amp;0&amp;0 \\ { - 1}&amp;{s + 6}&amp;0 \\
+0&amp;{ - 1}&amp;{s + 12} \end{array}} \right] = {s^3} + 18{s^2} +
+72s\)</span><br />
+期望闭环极点的特征多项式<span class="math inline">\({\alpha ^*}(s) = (s
++ 2)(s + 1 - j)(s + 1 + j) = {s^3} + 4{s^2} + 6s + 4\)</span><br />
+<span class="math inline">\(\bar k = [\alpha _0^* - {\alpha _0},\alpha
+_1^* - {\alpha _1},\alpha _2^* - {\alpha _2}] = [4, - 66, -
+14]\)</span><br />
+<span class="math inline">\(P = [{A^2}b,Ab,b]\left[
+{\begin{array}{*{20}{c}} 1&amp;{}&amp;{} \\ {\alpha _2}&amp;1&amp;{} \\
+{\alpha _1}&amp;{\alpha _2}&amp;1 \end{array}} \right] = \left[
+{\begin{array}{*{20}{c}} 0&amp;0&amp;1 \\ { - 6}&amp;1&amp;0 \\
+1&amp;0&amp;0 \end{array}} \right]\left[ {\begin{array}{*{20}{c}}
+1&amp;0&amp;0 \\ {18}&amp;1&amp;0 \\ {72}&amp;{18}&amp;1 \end{array}}
+\right] = \left[ {\begin{array}{*{20}{c}} {72}&amp;{18}&amp;1 \\
+{12}&amp;1&amp;0 \\ 1&amp;0&amp;0 \end{array}} \right]\)</span><br />
+<span class="math inline">\(Q = {P^{ - 1}} = \left[
+{\begin{array}{*{20}{c}} 0&amp;0&amp;1 \\ 0&amp;1&amp;{ - 12} \\ 1&amp;{
+- 18}&amp;{144} \end{array}} \right]\)</span><br />
+<span class="math inline">\(k = \bar kQ = \left[
+{\begin{array}{*{20}{c}} {4,}&amp;{ - 66,}&amp;{ - 14} \end{array}}
+\right]\left[ {\begin{array}{*{20}{c}} 0&amp;0&amp;1 \\ 0&amp;1&amp;{ -
+12} \\ 1&amp;{ - 18}&amp;{144} \end{array}} \right] = \left[
+{\begin{array}{*{20}{c}} { - 14,}&amp;{186}&amp;{ - 1220} \end{array}}
+\right]\)</span></p>
+<h2 id="状态反馈镇定">状态反馈镇定</h2>
+<p>状态镇定问题：对给定时间线性时不变受控系统，找到一个状态反馈型控制律<span
+class="math inline">\(u = - Kx +
+v\)</span>，使所导出的状态反馈型闭环系统<span class="math inline">\(\dot
+x = (A - BK)x +
+Bv\)</span>为渐近稳定，即系统闭环特征值均具有负实部。</p>
+<p>结论：连续时间线性时不变系统可由状态反馈镇定，当且仅当系统不能控部分为为渐近稳定。<br />
+结论：连续时间线性时不变系统可由状态反馈镇定的一个充分条件是系统完全能控。</p>
+<p>状态反馈镇定算法：<br />
+①判断<span class="math inline">\((A,
+B)\)</span>能控性，若完全能控，去④。<br />
+②对<span class="math inline">\((A, B)\)</span>按能控性分解<br />
+③对能控部分进行极点配置<br />
+④计算镇定状态反馈矩阵</p>
+<h2 id="全维度状态观测器">全维度状态观测器</h2>
+全维观测器是指重构状态向量的维数与原系统相同。观测器结构如下：<br />
+
+<center>
+<img src="3 全维观测器.png" width=300/><span class="caption">图3
+全维观测器</span>
+</center>
+<p>观测器动态方程为：<span class="math inline">\(\dot {\hat x} = (A -
+HC)\hat x + Bu + Hy\)</span></p>
+【例2】系统动态方程为：<span
+class="math inline">\(\begin{array}{*{20}{c}} {\dot x = \left[
+{\begin{array}{*{20}{c}} 0&amp;1 \\ { - 2}&amp;{ - 3} \end{array}}
+\right]x + \left[ {\begin{array}{*{20}{c}} 0 \\ 1 \end{array}}
+\right]u}&amp;{y = \left[ {\begin{array}{*{20}{c}} 2&amp;0 \end{array}}
+\right]x} \end{array}\)</span><br />
+设计一个状态观测器，其中矩阵<span
+class="math inline">\(A-hc\)</span>的特征值（观测器极点）为<span
+class="math inline">\(-10,-10\)</span>。<br />
+设<span class="math inline">\(h = \left[ {\begin{array}{*{20}{c}} h_1 \\
+h_2 \end{array}} \right]\)</span><br />
+<span class="math inline">\(\left| {\lambda I - (A - hc)} \right| =
+{\lambda ^2} + (2{h_1} + 3)\lambda + 6{h_1} + 2{h_2} + 2\)</span><br />
+希望的特征多项式<span class="math inline">\(\alpha^*(s)={(\lambda +
+10)^2} = {\lambda ^2} + 20\lambda + 100\)</span><br />
+得到<span class="math inline">\(h = \left[ {\begin{array}{*{20}{c}}8.5
+\\ 23.5 \end{array}} \right]\)</span><br />
+由观测器方程<span class="math inline">\(\dot {\hat x} = (A - hc)\hat x +
+bu + hy\)</span>得到<br />
+<span class="math inline">\(\dot {\hat x} = \left[
+{\begin{array}{*{20}{c}}{ - 17}&amp;1 \\ { - 49}&amp;{ - 3}
+\end{array}}\right]\hat x + \left[ {\begin{array}{*{20}{c}} 0 \\ 1
+\end{array}} \right]u + \left[ {\begin{array}{*{20}{c}} {8.5} \\ {23.5}
+\end{array}} \right]y\)</span><br />
+原系统及其状态观测器结构图如下：
+<center>
+<img src="4 状态观测器设计.png" width=500/><span class="caption">图4
+状态观测器设计</span>
+</center>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
 <li><a
-target="_blank" rel="noopener" href="https://blog.csdn.net/liegu0317/article/details/121886380">hexo部署报错Spawn
-failed原因及解决方法</a></li>
-<li><a
-target="_blank" rel="noopener" href="https://a1.trump2023.org/zthxxx/hexo-theme-Wikitten/blob/master/README_zh-CN.md">hexo-theme-Wikitten说明</a></li>
-<li><a
-target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44846324/article/details/114582328">这次彻底解决在Hexo中渲染MathJax数学公式出现的问题！！！</a></li>
+target="_blank" rel="noopener" href="http://www.tup.tsinghua.edu.cn/booksCenter/book_00550102.html">郑大钟.
+线性系统理论(第2版)[M]. 北京:清华大学出版社,2002</a></li>
 </ul>
 </blockquote>
 
@@ -524,15 +624,11 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/qq_44846324/article/d
     
 <nav id="article-nav">
     
-        <a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">上一篇</strong>
-            <div class="article-nav-title">
-                
-                    论外星人存在的可能性
-                
-            </div>
-        </a>
     
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">线性系统理论05-系统运动的稳定性</div>
+        </a>
     
 </nav>
 

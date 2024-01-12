@@ -19,22 +19,29 @@
     } 
     </script>
     
-    <title>鲁棒控制理论与应用02-H∞控制器的设计方法 | RenAhahWiki</title>
+    <title>鲁棒控制理论与应用02-H∞控制器设计与仿真 | RenAhahWiki</title>
     
     
         <meta name="keywords" content="课程笔记,鲁棒控制理论与应用" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="鲁棒控制理论与应用课程笔记 无PPT，按照板书、教材及网络上的内容整理，若有错误敬请指正。 \(H_\infty\)标准设计问题 \(H_\infty\)标准模型如下图所示。 其中\(w\)为干扰输入信号、\(z\)为评价信号、\(u\)为控制输入信号（对于\(K(s)\)而言是输出信号）、\(y\)为观测量（对于\(K(s)\)而言是输入量）。 \(G(s)\)是由输入信号\(u,w\">
+    <meta name="description" content="为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 无PPT，按照板书、教材及网络上的内容整理，若有错误敬请指正。 本文首先介绍\(H_\infty\)标准设计问题和永磁同步电动机(PMSM)的数学模型，根据数学模型与电机参数进行\(H_\infty\)鲁棒控制器设计。使用Simulink搭建\(H_\infty\)控制PMSM调速系统仿真模型，将其与采用传统双闭环PI控制">
 <meta property="og:type" content="article">
-<meta property="og:title" content="鲁棒控制理论与应用02-H∞控制器的设计方法">
+<meta property="og:title" content="鲁棒控制理论与应用02-H∞控制器设计与仿真">
 <meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="鲁棒控制理论与应用课程笔记 无PPT，按照板书、教材及网络上的内容整理，若有错误敬请指正。 \(H_\infty\)标准设计问题 \(H_\infty\)标准模型如下图所示。 其中\(w\)为干扰输入信号、\(z\)为评价信号、\(u\)为控制输入信号（对于\(K(s)\)而言是输出信号）、\(y\)为观测量（对于\(K(s)\)而言是输入量）。 \(G(s)\)是由输入信号\(u,w\">
+<meta property="og:description" content="为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 无PPT，按照板书、教材及网络上的内容整理，若有错误敬请指正。 本文首先介绍\(H_\infty\)标准设计问题和永磁同步电动机(PMSM)的数学模型，根据数学模型与电机参数进行\(H_\infty\)鲁棒控制器设计。使用Simulink搭建\(H_\infty\)控制PMSM调速系统仿真模型，将其与采用传统双闭环PI控制">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/1%20H∞标准模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/2%20H∞控制系统原理图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/3%20H∞控制系统仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/4%20H∞控制器仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/5%20PMSM%20PI控制转速响应曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/6%20PMSM%20H∞控制转速响应曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/7%20PMSM%20PI控制电流响应曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/8%20PMSM%20H∞控制电流响应曲线.png">
 <meta property="article:published_time" content="2023-12-06T02:49:40.000Z">
-<meta property="article:modified_time" content="2023-12-06T04:29:31.237Z">
+<meta property="article:modified_time" content="2024-01-12T07:29:20.708Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="课程笔记">
 <meta property="article:tag" content="鲁棒控制理论与应用">
@@ -280,7 +287,7 @@
                             &nbsp;
                             鲁棒控制理论与应用
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器的设计方法</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -438,7 +445,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            鲁棒控制理论与应用02-H∞控制器的设计方法
+            鲁棒控制理论与应用02-H∞控制器设计与仿真
         </h1>
     
 
@@ -451,16 +458,22 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#h_infty%E6%A0%87%E5%87%86%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">\(H_\infty\)标准设计问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#h_infty%E6%A0%87%E5%87%86%E8%AE%BE%E8%AE%A1%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">\(H_\infty\)标准设计问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pmsm%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">PMSM数学模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#h_infty%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E5%99%A8%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">\(H_\infty\)鲁棒控制器设计</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">仿真模型搭建与数据分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">5.</span> <span class="toc-text">结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
         
-            <p>鲁棒控制理论与应用课程笔记<br />
+            <p>为完成<code>鲁棒控制理论与应用</code>与<code>交流伺服电机及其控制</code>课程大作业所整理的笔记。<br />
 无PPT，按照板书、教材及网络上的内容整理，若有错误敬请指正。</p>
+<p>本文首先介绍<span
+class="math inline">\(H_\infty\)</span>标准设计问题和永磁同步电动机(PMSM)的数学模型，根据数学模型与电机参数进行<span
+class="math inline">\(H_\infty\)</span>鲁棒控制器设计。使用Simulink搭建<span
+class="math inline">\(H_\infty\)</span>控制PMSM调速系统仿真模型，将其与采用传统双闭环PI控制的PMSM调速系统进行对比分析，通过分析二者的动态与稳态性能，来证明<span
+class="math inline">\(H_\infty\)</span>鲁棒控制在提高系统抗扰动能力的鲁棒性上的有效性。</p>
 <h2 id="h_infty标准设计问题"><span
 class="math inline">\(H_\infty\)</span>标准设计问题</h2>
-<span class="math inline">\(H_\infty\)</span>标准模型如下图所示。<br />
+<span
+class="math inline">\(H_\infty\)</span>控制问题可以归结为如下图所示的标准设计问题。<br />
 其中<span class="math inline">\(w\)</span>为干扰输入信号、<span
 class="math inline">\(z\)</span>为评价信号、<span
 class="math inline">\(u\)</span>为控制输入信号（对于<span
@@ -470,11 +483,336 @@ class="math inline">\(K(s)\)</span>而言是输入量）。<br />
 <span class="math inline">\(G(s)\)</span>是由输入信号<span
 class="math inline">\(u,w\)</span>到输出信号<span
 class="math inline">\(z,y\)</span>的传递函数阵，被称为增广被控对象。<span
-class="math inline">\(K(s)\)</span>为控制器。
+class="math inline">\(K(s)\)</span>为反馈控制器。
 <center>
 <img src="1 H∞标准模型.png" width=300/><span class="caption">图1
-H∞标准模型</span>
+H∞标准设计问题</span>
 </center>
+<p>传递函数<span
+class="math inline">\(G(s)\)</span>的状态空间实现（增广被控对象）可由下式给出：<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}} {\dot
+x}={\bf A}x+{\bf B_1}w+{\bf B_2}u \\ z={\bf C_1}x+{\bf D_{11}}w+{\bf
+D_{12}}u \\ y={\bf C_2}x+{\bf D_{21}}w+{\bf D_{22}}u
+\end{array}}\right.\)</span>①<br />
+式中，x为n维变量，w为r维信号向量，u为p维、z为m维、
+y为q维信号向量，该式亦可表示为：<br />
+<span class="math inline">\(G(s)=\left[ {\begin{array}{*{20}{c}}
+G_{11}(s)&amp;G_{12}(s) \\
+G_{21}(s)&amp;G_{22}(s)\end{array}}\right]=\left[
+{\begin{array}{*{20}{c}} {\bf A}&amp;{\bf B_1}&amp;{\bf B_2} \\ {\bf
+C_1}&amp;{\bf D_{11}}&amp;{\bf D_{12}}\\ {\bf C_2}&amp;{\bf
+D_{21}}&amp;{\bf D_{22}} \end{array}}\right]\)</span>②<br />
+从w到z的闭环传递函数为：<br />
+<span
+class="math inline">\(T_{zw}=LFT(G(s),K(s))=G_{11}+G_{12}K(I-G_{22}K)^{-1}G_{21}\)</span>③<br />
+对于增广被控对象，需要求解传递函数的范数<span
+class="math inline">\(\parallel {T_{zw}}(s){\parallel _\infty
+}\)</span>最小，进而求得控制器<span
+class="math inline">\(K(s)\)</span>，即<span class="math inline">\(\min
+\parallel {T_{zw}}(s){\parallel _\infty } = {\gamma _0}\)</span></p>
+<p>由此可以定义<span
+class="math inline">\(H_\infty\)</span>的次优设计问题如下：<br />
+对于给定的增广被控对象<span class="math inline">\(G(s)\)</span>和<span
+class="math inline">\(\gamma(\gamma&gt;\gamma_0)\)</span>，求反馈控制器<span
+class="math inline">\(K(s)\)</span>使得闭环系统内部稳定且<span
+class="math inline">\({T_{zw}}(s)\)</span>满足<br />
+<span class="math inline">\(\parallel {T_{zw}}(s){\parallel_\infty }
+&lt; \gamma\)</span>④<br />
+若满足式④，则对于给定的被控对象<span
+class="math inline">\(G(s)\)</span>存在次优解，可以通过反复地减小<span
+class="math inline">\(\gamma\)</span>来进行对此迭代，将控制器的解慢慢逼近最优解，即<span
+class="math inline">\(\gamma \to {\gamma_0}\)</span>。
+这样式④就等价于<span class="math inline">\(\parallel \frac{1}{\gamma
+}{T_{zw}}(s){\parallel _\infty } &lt; 1\)</span>⑤<br />
+其中<span class="math inline">\(\frac{1}{\gamma
+}{T_{zw}}(s)\)</span>对应增广被控对象<span class="math inline">\(G(s) =
+\left[ {\begin{array}{*{20}{c}} { {\gamma ^{ - 1}}{G_{11}}(s)}&amp;{
+{G_{12}}(s)} \\ { {\gamma ^{ - 1}}{G_{21}}(s)}&amp;{ {G_{22}}(s)}
+\end{array}} \right]\)</span>⑥<br />
+上述增广被控对象和控制器<span
+class="math inline">\(K(s)\)</span>能构成如图1所示系统的闭环传递函数。在实际工程中，往往采用<span
+class="math inline">\(\gamma=1\)</span>的情况，这使得式④等价于<span
+class="math inline">\(\parallel {T_{zw}}(s){\parallel_\infty } &lt;
+1\)</span>⑦<br />
+通过这样的变换，可以将控制器的设计问题转化为标准的<span
+class="math inline">\(H_\infty\)</span>设计问题。</p>
+<p>讨论状态反馈<span
+class="math inline">\(H_\infty\)</span>控制器的设计问题。即设系统的观测量等于系统的状态变量<span
+class="math inline">\(y=x\)</span>，在增广被控对象满足特定条件的前提下，直接基于Riccati不等式的设计方法。<br />
+这里给出<span class="math inline">\(H_\infty\)</span>次优设计问题在<span
+class="math inline">\(D_{11}=0,D_{12}\)</span>列满秩的特例下的特解。<br />
+设增广被控对象的状态空间实现为<span class="math inline">\(\left\{
+{\begin{array}{*{20}{c}}{\dot x = {\mathbf{A}}x + {
+{\mathbf{B}}_{\mathbf{1}}}w + { {\mathbf{B}}_{\mathbf{2}}}u} \\ {z = {
+{\mathbf{C}}_{\mathbf{1}}}x + { {\mathbf{D}}_{ {\mathbf{12}}}}u}
+\end{array}} \right.\)</span>⑧<br />
+且<span class="math inline">\(rank{\bf{D_{12}}}=p\)</span>，<span
+class="math inline">\(({\bf{A}},{\bf{B_2}})\)</span>可稳定，即<span
+class="math inline">\(G(s) = \left[
+{\begin{array}{*{20}{c}}{\mathbf{A}}&amp;{ {
+{\mathbf{B}}_{\mathbf{1}}}}&amp;{ { {\mathbf{B}}_{\mathbf{2}}}}\\{ {
+{\mathbf{C}}_{\mathbf{1}}}}&amp;0&amp;{ { {\mathbf{D}}_{
+{\mathbf{12}}}}} \\ {\mathbf{I}}&amp;0&amp;0
+\end{array}}\right]\)</span>⑨<br />
+对式⑧所示的系统，考虑状态反馈控制器<span class="math inline">\(u =
+{\mathbf{K}}x,\quad {\mathbf{K}} \in {R^{p \times n}}\)</span>⑩<br />
+可以使用以下的结论求得控制器：对于给定的<span
+class="math inline">\(\gamma&gt;0\)</span>，存在<span
+class="math inline">\(\mathbf{K}\)</span>使得闭环系统⑧和⑩内部稳定且<span
+class="math inline">\(\parallel {T_{zw}}(s){\parallel_\infty } &lt;
+\gamma\)</span>成立的充分必要条件是存在正定阵<span
+class="math inline">\({\bf X}&gt;0\)</span>，满足Riccati不等式<br />
+<span class="math inline">\({\bf A}^T{\bf X}+{\bf XA}+\gamma^{-2}{\bf
+XB_1 B_1}^T {\bf X}+{\bf C_1}^T {\bf C_1}-({\bf XB_2}+{\bf C_1}^T {\bf
+D_{12}})({\bf D_{12}}^T {\bf D_{12}})^{-1}({\bf B_2}^T {\bf X}+{\bf
+D_{12}}^T {\bf C_1})&lt;0\)</span>⑪<br />
+若上述不等式有正定解，则使闭环系统稳定且式④成立的反馈阵由下式给出<br />
+<span class="math inline">\({\bf K}=-({\bf D_{12}}^T {\bf
+D_{12}})^{-1}({\bf B_2}^T {\bf X}+{\bf D_{12}}^T {\bf
+C_1})\)</span>⑫</p>
+<h2 id="pmsm数学模型">PMSM数学模型</h2>
+<p>基于PMSM的实际工作特性，建立PMSM的数学模型。<br />
+以转子参考坐标，建立d-q坐标系。取永磁体基波磁场的方向为d轴，q轴顺着旋转方向超前d轴90°电角度，转子参考坐标的旋转速度即为转轴速度。<br />
+电压方程为：<span class="math inline">\(\left\{
+{\begin{array}{*{20}{c}}{ {u_q} = {R_s}{i_q} + p{\psi _q} + {\omega
+_r}{\psi _d}} \\ { {u_d} = {R_s}{i_d} + p{\psi _d} - {\omega _r}{\psi
+_q}} \end{array}} \right.\)</span>⑬<br />
+磁链方程为：<span class="math inline">\(\left\{
+{\begin{array}{*{20}{c}}{ {\psi _q} = {L_q}{i_q}} \\ { {\psi _d} =
+{L_d}{i_d} + {\psi _f}} \end{array}} \right.\)</span>⑭<br />
+上述公式中，<span
+class="math inline">\(u_d,u_q\)</span>为d,q轴电压；<span
+class="math inline">\(\psi_d,\psi_q\)</span>为d,q轴磁链；<span
+class="math inline">\(i_d,i_q\)</span>为d,q轴电流；<span
+class="math inline">\(L_d,L_q\)</span>为d,q轴电感；<span
+class="math inline">\(R_s\)</span>为定子相电阻；<span
+class="math inline">\(\omega_r\)</span>为转子电角速度；<span
+class="math inline">\(\psi_f\)</span>为永磁体的励磁磁链；p为微分算子。<br />
+转矩方程为：<span class="math inline">\({T_{em}} =
+\frac{3}{2}{p_n}[{\psi _q}{i_q} + ({L_d} -
+{L_q}){i_d}{i_q}]\)</span>⑮<br />
+式中，<span class="math inline">\(T_{em}\)</span>为电磁转矩，<span
+class="math inline">\(p_n\)</span>为电机的极对数，若采取<span
+class="math inline">\(i_d=0\)</span>矢量控制策略，则转矩方程可简化为：<br />
+<span class="math inline">\({T_{em}} = \frac{3}{2}{p_n}{\psi
+_f}{i_q}\)</span>⑯<br />
+此时<span class="math inline">\(\psi_f=\psi_q\)</span>，转矩大小与<span
+class="math inline">\(i_q\)</span>大小成正比，可以更方便地通过控制<span
+class="math inline">\(i_q\)</span>大小来控制转矩。<br />
+运动方程为：<span class="math inline">\({T_{em}} = {T_l} + B{\Omega _r}
++ Jp{\Omega _r}\)</span>⑰<br />
+式中，<span
+class="math inline">\(T_l\)</span>为负载转矩，B为粘滞摩擦系数，<span
+class="math inline">\(\Omega_r\)</span>为机械角速度，J为转子和所带负载的总转动惯量。<br />
+由电角速度<span class="math inline">\(\omega_r\)</span>与机械角速度<span
+class="math inline">\(\Omega_r\)</span>的关系<span
+class="math inline">\(\omega_r=p_n
+\Omega_r\)</span>，可以将运动方程可整理为：<br />
+<span class="math inline">\({T_{em}} - {T_l} = \frac{J}{ { {p_n}}}\frac{
+{d{\omega _r}}}{ {dt}} + \frac{B}{ { {p_n}}}{\omega _r}\)</span>⑱<br />
+根据上述方程所推导出的状态方程为：<span class="math inline">\(\left\{
+\begin{gathered}p{i_d} = ({u_d} - {R_s}{i_d} +
+{\omega_r}{L_q}{i_q})/{L_d} \hfill \\p{i_q} = ({u_q} - {R_s}{i_q} -
+{\omega_r}{L_d}{i_d} - {\omega_r}{\psi_f})/{L_q} \hfill \\p{\omega_r} =
+({p_n}{T_{em}} - {p_n}{T_l} - B{\omega_r})/J \hfill \\ \end{gathered}
+\right.\)</span>⑲</p>
+<h2 id="h_infty鲁棒控制器设计"><span
+class="math inline">\(H_\infty\)</span>鲁棒控制器设计</h2>
+<p>根据PMSM的数学模型及系统控制的实际需要，建立如下的<span
+class="math inline">\(H_\infty\)</span>鲁棒控制器。<br />
+首先，确定状态变量为：<span class="math inline">\(\left[
+{\begin{array}{*{20}{c}} x_1&amp;x_2&amp;x_3
+\end{array}}\right]^T=\left[ {\begin{array}{*{20}{c}}
+\omega_r&amp;i_q&amp;\int_0^t (\omega_r^*-\omega_r)dt
+\end{array}}\right]^T\)</span>⑳<br />
+式中，<span
+class="math inline">\(\omega_r\)</span>为电机转速给定值，<span
+class="math inline">\(i_q\)</span>为q轴电流，<span
+class="math inline">\(\int_0^t (\omega_r^*
+-\omega_r)dt\)</span>为给定转速与实际转速差值的积分变量，其作用是消除系统的稳态误差。<br />
+考虑到系统的扰动主要来自负载转矩与转速给定的变化，选取系统扰动变量为：<span
+class="math inline">\(w=\left[ {\begin{array}{*{20}{c}}
+T_L&amp;\omega_r^* \end{array}}\right]^T\)</span>㉑<br />
+设PMSM系统增广被控对象的状态空间实现为式⑧的形式，则<span
+class="math inline">\(G(s)\)</span>可列为式⑨的形式。<br />
+根据如式⑯和式⑲所示的系统的状态方程，得到式⑨中的参数矩阵<span
+class="math inline">\({\bf A},{\bf {B_1}},{\bf
+{B_2}}\)</span>分别为：<br />
+<span class="math inline">\({\bf A}=\left[ {\begin{array}{*{20}{c}}
+-\frac{B}{J}&amp;\frac{3p_n^2 \psi_f}{2J}&amp;0 \\
+-\frac{\psi_f}{L_q}&amp;-\frac{R_s}{L_q}&amp;0 \\ -1&amp;0&amp;0
+\end{array}}\right],{\bf B_1}=\left[ {\begin{array}{*{20}{c}}
+-\frac{p_n}{J}&amp;0 \\ 0&amp;0 \\ 0&amp;-1 \end{array}}\right],{\bf
+B_2}=\left[ {\begin{array}{*{20}{c}} 0 \\ \frac{1}{L_q} \\ 0
+\end{array}}\right]\)</span>㉒<br />
+定义评价信号为：<br />
+<span class="math inline">\(z = {\bf{C_1}}x+{\bf{D_{12}}}u=\left[
+{\begin{array}{*{20}{c}} \sqrt q_1&amp;0&amp;0 \\ 0&amp;\sqrt q_2&amp;0
+\\ 0&amp;0&amp;\sqrt q_3 \\ 0&amp;0&amp;0 \end{array}}\right]x+\left[
+{\begin{array}{*{20}{c}} 0 \\ 0 \\ 0 \\ \sqrt \rho
+\end{array}}\right]\)</span>㉓<br />
+对系统按照式⑩的要求设计状态反馈控制器，采用标准<span
+class="math inline">\(H_\infty\)</span>设计方法，借助MATLAB解⑪、⑫式就可以求得控制器<span
+class="math inline">\(\bf K\)</span>。</p>
+<p>下面根据电机的参数计算控制器<span class="math inline">\(\bf
+K\)</span>，电机具体参数如下：<br />
+定子电阻<span class="math inline">\({R_s} =
+0.958\Omega\)</span>，极对数<span
+class="math inline">\(p_n=4\)</span>，粘滞摩擦系数<span
+class="math inline">\(B = 0.008N \cdot M \cdot s\)</span>，d轴电感<span
+class="math inline">\({L_d} = 5.25mH\)</span>，q轴电感<span
+class="math inline">\({L_q} = 12mH\)</span>，永磁体的励磁磁链<span
+class="math inline">\({\Psi _f} = 0.1827wb\)</span>，转动惯量<span
+class="math inline">\(J = 0.003kg \cdot {m^2}\)</span>。<br />
+将上述参数代入式㉒，得到参数矩阵如下：<br />
+<span class="math inline">\({\mathbf{A}} = \left[
+{\begin{array}{*{20}{c}} { - 2.667}&amp;{1491.6}&amp;0 \\ { -
+15.225}&amp;{79.833}&amp;0 \\ { - 1}&amp;0&amp;0 \end{array}} \right],{
+{\mathbf{B}}_{\mathbf{1}}} = \left[ {\begin{array}{*{20}{c}} { -
+1333.3}&amp;0 \\ 0&amp;0 \\ 0&amp;{ - 1} \end{array}} \right],{
+{\mathbf{B}}_{\mathbf{2}}} = \left[ {\begin{array}{*{20}{c}} 0 \\
+{83.333} \\ 0 \end{array}} \right]\)</span>㉔<br />
+取评价信号加权系数<span class="math inline">\({q_1} =
+0.0009\)</span>、<span class="math inline">\({q_2} =
+0.011\)</span>、<span class="math inline">\({q_3} =
+101.85\)</span>、<span class="math inline">\(\rho =
+0.000625\)</span>代入式㉓。</p>
+<p>使用MATLAB解上述参数矩阵构成的Riccati不等式。这里使用了MATLAB的μ分析与综合工具箱的hinffi.m函数，涉及模型构成、模型转换、hinffi命令共三条语句，其程序代码为：
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">p=[A,B1,B2;C1,zeros(q,m),D12];</span><br><span class="line">sys=pss2sys(p,n);</span><br><span class="line">[k,g,gfin,ax,hamx]=hinffi(sys, r, <span class="number">0</span>, <span class="number">1</span>, <span class="number">20</span>, <span class="number">1</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure> 其中q为<span class="math inline">\(\bf
+C_1\)</span>行数，m为<span class="math inline">\(\bf
+B_1\)</span>列数，n为<span class="math inline">\(\bf
+A\)</span>的阶数，r为<span class="math inline">\(\bf
+B_2\)</span>列数。<br />
+这里取q=4,m=2,n=3,r=1，运行代码后得到控制器<span
+class="math inline">\(\bf K\)</span>的值：<br />
+<span class="math inline">\({\mathbf{K}} = \left[
+{\begin{array}{*{20}{c}} { - 2.821}&amp;{ - 12.032}&amp;{458.180}
+\end{array}} \right]\)</span>㉕</p>
+<h2 id="仿真模型搭建与数据分析">仿真模型搭建与数据分析</h2>
+根据控制系统的稳态与动态性能的要求，设计出PMSM的<span
+class="math inline">\(H_\infty\)</span>控制系统原理图如下图所示。
+<center>
+<img src="2 H∞控制系统原理图.png" width=500/><span class="caption">图2
+H∞控制系统原理图</span>
+</center>
+该原理图与双闭环PI控制的PMSM控制系统的原理图的区别体现在，其对于转速环<span
+class="math inline">\(\omega\)</span>与电流环<span
+class="math inline">\(i_q\)</span>采用<span
+class="math inline">\(H_\infty\)</span>控制，两者的共同点体现在电流环<span
+class="math inline">\(i_d\)</span>均采用PI控制。为便于对二者进行对比分析，二者的结构框图在闭环控制之外的部分保持相同。<br />
+PMSM控制系统采用空间电压矢量调制(Space Vector Pulse Width
+Modulation，SVPWM)技术，空间电压矢量调制又被称作称“磁链跟踪控制”。它以三相正弦波电压供电时交流电机的理想磁通轨迹为基准，通过三相功率逆变器的六个功率开关元件组成的特定开关模式来产生的脉宽调制波，用逆变器不同的开关模式产生的实际磁通去逼近基准磁通圆，从而达到较高的控制性能。<br />
+同时，该系统采取了<span
+class="math inline">\(i_d=0\)</span>矢量控制策略，该方法实现了对PMSM的解耦控制，具有控制简单、调速范围宽、转矩特性好、有效降低铜耗的优点。<br />
+根据图2所示的PMSM的<span
+class="math inline">\(H_\infty\)</span>控制系统原理图，应用MATLAB软件建立如图3所示的永磁同步电机控制系统Simulink仿真模型，将其与采用双闭环PI控制的系统进行对比分析。以验证<span
+class="math inline">\(H_\infty\)</span>鲁棒控制器在改善系统的动态与稳态性能上的有效性。
+<center>
+<img src="3 H∞控制系统仿真模型.png" width=500/><span class="caption">图3
+H∞控制系统仿真模型</span>
+</center>
+<span
+class="math inline">\(H_\infty\)</span>控制器的仿真模型如图4所示。其中，<span
+class="math inline">\(H_\infty\)</span>控制器的三个输入分别是：<span
+class="math inline">\({x_1} = {\omega _r}\)</span>、<span
+class="math inline">\({x_2} = {i_q}\)</span>、<span
+class="math inline">\({x_3} = \int_0^t {(\omega_r^* -
+{\omega_r})}dt\)</span>。其控制器参数<span
+class="math inline">\({k_1},{k_2},{k_3}\)</span>取自式㉕，<span
+class="math inline">\(k_i\)</span>为控制器增益，这里取<span
+class="math inline">\(k_i=7.1\)</span>。
+<center>
+<img src="4 H∞控制器仿真模型.png" width=300/><span class="caption">图4
+H∞控制器仿真模型</span>
+</center>
+<p>为了进行对比分析，再搭建一个转速、电流双闭环控制的PI控制的PMSM控制系统，使用工程整定方法确定转速环与电流环的PI控制器参数。<br />
+取转速环PI控制器参数<span class="math inline">\({k_p} =
+0.2\)</span>，<span class="math inline">\({k_i} = 30\)</span>，输出<span
+class="math inline">\(i_q^*\)</span>的限幅范围为-25.7A≤<span
+class="math inline">\(i_q^*\)</span>≤25.7A；<br />
+取电流环<span class="math inline">\(i_q\)</span>的PI控制器参数<span
+class="math inline">\({k_p} = 300\)</span>，<span
+class="math inline">\({k_i} = 23950\)</span>，输出<span
+class="math inline">\(u_q^*\)</span>的限幅范围为-161.6V≤<span
+class="math inline">\(u_q^*\)</span>≤161.6V；<br />
+取电流环<span class="math inline">\(i_d\)</span>的PI控制器参数<span
+class="math inline">\({k_p} = 131.25\)</span>，<span
+class="math inline">\({k_i} = 23950\)</span>，输出<span
+class="math inline">\(u_d^*\)</span>的限幅范围为-161.6V≤<span
+class="math inline">\(u_d^*\)</span>≤161.6V，为了起到对照作用，这一组参数与<span
+class="math inline">\(H_\infty\)</span>控制系统中的电流环<span
+class="math inline">\(i_d\)</span>的PI控制器参数保持一致。</p>
+<p>接下来确定所要观察的控制系统动态与稳态性能指标。<br />
+所要分析的动态与稳态性能指标如下：动态性能指标包括上升时间<span
+class="math inline">\(t_r\)</span>、峰值时间<span
+class="math inline">\(t_p\)</span>、调节时间<span
+class="math inline">\(t_s\)</span>、超调量<span
+class="math inline">\(\tau\)</span>。这里我们主要考察系统起动和受到负载扰动情况下的调节时间（或恢复时间）与超调量，并取系统从响应至保持在终值±
+2%所经过的时间作为调节时间（或恢复时间）。稳态性能指标指系统的稳态误差。</p>
+<p>分别对PI控制的系统与<span
+class="math inline">\(H_\infty\)</span>控制的系统进行仿真分析，设定为电机转速给定值<span
+class="math inline">\(\omega_r^* =
+1000r/\min\)</span>，使其空载起动，0.1秒后对电机施加12<span
+class="math inline">\(N \cdot
+m\)</span>的负载转矩，仿真得到电机转速<span
+class="math inline">\(\omega_r\)</span>与电流<span
+class="math inline">\(i_q\)</span>的波形，对其动态与静态性能进行对比分析。</p>
+PI控制系统与<span
+class="math inline">\(H_\infty\)</span>控制系统起动和突加负载的转速响应曲线如图5与图6所示，电流响应曲线如图7与图8所示。
+<center>
+<img src="5 PMSM PI控制转速响应曲线.png" width=500/><span
+class="caption">图5 PMSM PI控制转速响应曲线</span>
+</center>
+<center>
+<img src="6 PMSM H∞控制转速响应曲线.png" width=500/><span
+class="caption">图6 PMSM H∞控制转速响应曲线</span>
+</center>
+由图5与图6的响应曲线可以看出，在系统起动时，PI控制下的调节时间为21.558ms，超调量为4.4%，<span
+class="math inline">\(H_\infty\)</span>控制下的调节时间为12.714ms，超调量为0.6%；突加负载扰动后，PI控制下的恢复时间为8.392ms，<span
+class="math inline">\(H_\infty\)</span>控制下的恢复时间为6.884ms。PI控制系统与
+控制系统转速最终均稳定为给定值，稳态误差为0。<br />
+由转速响应曲线归纳出的数据表明，二者在稳态性能上均符合控制需求，在动态性能指标上，<span
+class="math inline">\(H_\infty\)</span>控制系统具有更短的调节时间与恢复时间，以及更小的超调量，这说明相较于PI控制系统，<span
+class="math inline">\(H_\infty\)</span>控制系统具有更好的快速性。
+<center>
+<img src="7 PMSM PI控制电流响应曲线.png" width=500/><span
+class="caption">图7 PMSM PI控制电流响应曲线</span>
+</center>
+图7为PI控制系统的电流<span
+class="math inline">\(i_q\)</span>响应曲线，可以观察到电机起动后电流迅速上升，受到PI控制器限幅环节影响，在2.43ms时达到设定的限幅值25.7A，然后电流值不再上升，此时系统处于恒流升速状态，直到11.8ms时刻电流开始迅速下降。转速仍有小幅上升，电流下降至0后继续下降，在18.7ms时达到反向峰值-0.83A，随后电流回升最终稳定在0.03s时刻趋于稳定。0.1s突加负载后，电流回归稳态所用恢复时间为17.76ms。
+<center>
+<img src="8 PMSM H∞控制电流响应曲线.png" width=500/><span
+class="caption">图8 PMSM H∞控制电流响应曲线</span>
+</center>
+<p>图14为<span
+class="math inline">\(H_\infty\)</span>控制系统的电流<span
+class="math inline">\(i_q\)</span>响应曲线，可以观察到电机起动后电流同样迅速上升，但上升速度较PI控制系统更快，在1.92ms便达到25.7A，由于<span
+class="math inline">\(H_\infty\)</span>控制系统没有设计限幅环节，因此电流继续上升，在6.31ms上升至峰值59.6A，随后电流迅速下降，在0.02s时刻之后趋于稳定。0.1s突加负载后，电流回归稳态所用恢复时间为13.43ms。<br />
+由电流响应曲线归纳出的数据表明，<span
+class="math inline">\(H_\infty\)</span>控制系统具有更好的快速性。对于扰动的恢复时间更短，即具有更好的抵抗扰动的能力。</p>
+<h2 id="结论">结论</h2>
+<p>为解决PMSM运行过程中，容易受到来自控制系统内部和外部扰动的多种不确定性因素的影响的问题，设计采用<span
+class="math inline">\(H_\infty\)</span>鲁棒控制的PMSM控制系统，将其与传统PI控制的系统进行仿真分析，分析仿真效果以验证<span
+class="math inline">\(H_\infty\)</span>鲁棒控制在提升控制系统动态与稳态性能的有效性。</p>
+<p>首先，介绍了<span
+class="math inline">\(H_\infty\)</span>控制基本原理，以及将控制器设计问题转化为<span
+class="math inline">\(H_\infty\)</span>鲁棒控制标准问题的基本过程，并说明了一种情况下的<span
+class="math inline">\(H_\infty\)</span>鲁棒控制器的设计方法。<br />
+随后建立了永磁同步电动机的数学模型。<br />
+接下来根据所建立的PMSM数学模型，结合系统的实际控制需求，以及系统的主要扰动来源，并选取合适的评价信号加权系数，最终得到系统的增广被控对象
+。借助MATLAB解Riccati不等式的正定解，进而得到<span
+class="math inline">\(H_\infty\)</span>控制器的参数矩阵<span
+class="math inline">\(\bf K\)</span>。</p>
+<p>最后对采用<span
+class="math inline">\(H_\infty\)</span>控制的系统与采用双闭环PI控制的系统进行Simulink仿真对比分析，比较二者在电机起动与突加负载的情况下的转速与电流响应曲线，根据曲线得到两种控制方法下电机起动时的转速调节时间、超调量与电流<span
+class="math inline">\(i_q\)</span>的调节时间，突加负载时转速与电流<span
+class="math inline">\(i_q\)</span>的恢复时间。<br />
+仿真结果表明，采用<span
+class="math inline">\(H_\infty\)</span>控制的调速系统的调节时间、超调量与恢复时间均小于采用双闭环PI控制的调速系统。且对于系统状态突变的响应更快，这说明采用<span
+class="math inline">\(H_\infty\)</span>控制的调速系统具有更好的抵抗扰动的能力，即鲁棒性更强。</p>
+<p>最终得出结论，相较于PI控制的永磁同步电机系统，采用<span
+class="math inline">\(H_\infty\)</span>控制器的系统具有更好的动态与稳态性能，这验证了<span
+class="math inline">\(H_\infty\)</span>控制器在提高控制系统鲁棒性方面的有效性。</p>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
@@ -484,6 +822,11 @@ H∞控制理论及应用[M]. 北京:清华大学出版社,1996</a></li>
 <li><a
 target="_blank" rel="noopener" href="https://book.douban.com/subject/1882833">郭庆鼎,孙宜标,王丽梅.
 现代永磁电动机交流伺服系统[M]. 北京:中国电力出版社,2006</a></li>
+<li>蓝益鹏．永磁直线电机伺服系统鲁棒控制的研究[D]．沈阳：沈阳工业大学，2007．</li>
+<li>张馨圆， 蓝益鹏. 直线同步电机参数不确定性系统H∞控制策略[J].
+电机与控制应用，2020，47(11)：18-24.</li>
+<li>蔡超豪. 永磁同步电动机的鲁棒H∞控制[J].
+电气传动自动化，2006，28(2)：13-15.</li>
 </ul>
 </blockquote>
 
@@ -528,7 +871,7 @@ target="_blank" rel="noopener" href="https://book.douban.com/subject/1882833">�
         <footer id="footer">
     <div class="outer">
         <div id="footer-info" class="inner">
-            RenAhah &copy; 2023 
+            RenAhah &copy; 2024 
             <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
             <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
             

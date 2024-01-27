@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>基于粒子群算法的电机控制器参数整定研究 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="智能优化算法,粒子群算法" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本科毕业设计课题，本文将对之进行重新修订整理。 本文主要介绍粒子群算法原理及参数整定原理，搭建双闭环PI控制的PMSM仿真模型，并建立粒子群算法电机控制器参数整定程序。将使用粒子群算法整定与传统工程整定方法得到的PI控制器参数分别进行仿真分析，对比二者的动态与稳态性能，来证明采用粒子群算法可以有效改善系统性能。 智能优化算法概述 智能优化算法是为解决信号解析、图像辨析、模式识别、任务调度、生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于粒子群算法的电机控制器参数整定研究">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="本科毕业设计课题，本文将对之进行重新修订整理。 本文主要介绍粒子群算法原理及参数整定原理，搭建双闭环PI控制的PMSM仿真模型，并建立粒子群算法电机控制器参数整定程序。将使用粒子群算法整定与传统工程整定方法得到的PI控制器参数分别进行仿真分析，对比二者的动态与稳态性能，来证明采用粒子群算法可以有效改善系统性能。 智能优化算法概述 智能优化算法是为解决信号解析、图像辨析、模式识别、任务调度、生">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/1%20PMSM控制系统原理图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/2%20PMSM控制系统仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/3%20粒子群算法参数整定前后转速曲线比较.png">
+<meta property="article:published_time" content="2024-01-20T01:42:06.000Z">
+<meta property="article:modified_time" content="2024-01-27T03:30:22.426Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="智能优化算法">
+<meta property="article:tag" content="粒子群算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/1%20PMSM控制系统原理图.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/电机/基于粒子群算法的电机控制器参数整定研究" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/">电机</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%99%BA%E8%83%BD%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" rel="tag">智能优化算法</a>, <a class="tag-link-link" href="/tags/%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/" rel="tag">粒子群算法</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">
+            <time datetime="2024-01-20T01:42:06.000Z" itemprop="datePublished">2024-01-20</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            基于粒子群算法的电机控制器参数整定研究
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">智能优化算法概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">粒子群算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.1.</span> <span class="toc-text">粒子群算法介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">粒子群算法原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B9%E8%BF%9B%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">改进粒子群算法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pmsm%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">PMSM仿真模型搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A8%8B%E5%BA%8F"><span class="toc-number">4.</span> <span class="toc-text">参数整定程序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A5%E5%8F%A3%E7%A8%8B%E5%BA%8Fmain.m"><span class="toc-number">4.1.</span> <span class="toc-text">入口程序(main.m)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E5%87%BD%E6%95%B0pso.m"><span class="toc-number">4.2.</span> <span class="toc-text">粒子群算法函数(PSO.m)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E6%95%88%E6%9E%9C%E8%AE%A1%E7%AE%97%E5%87%BD%E6%95%B0cal_n.m"><span class="toc-number">4.3.</span> <span class="toc-text">电机控制效果计算函数(cal_n.m)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%84%E4%BB%B7%E5%87%BD%E6%95%B0%E8%AE%A1%E7%AE%97%E5%87%BD%E6%95%B0pid_n_access.m"><span class="toc-number">4.4.</span> <span class="toc-text">评价函数计算函数(PID_n_access.m)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E5%9B%BE%E5%87%BD%E6%95%B0draw.m"><span class="toc-number">4.5.</span> <span class="toc-text">作图函数(draw.m)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-number">5.</span> <span class="toc-text">仿真结果分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>本科毕业设计课题，本文将对之进行重新修订整理。<br />
+本文主要介绍粒子群算法原理及参数整定原理，搭建双闭环PI控制的PMSM仿真模型，并建立粒子群算法电机控制器参数整定程序。将使用粒子群算法整定与传统工程整定方法得到的PI控制器参数分别进行仿真分析，对比二者的动态与稳态性能，来证明采用粒子群算法可以有效改善系统性能。</p>
+<h2 id="智能优化算法概述">智能优化算法概述</h2>
+<p>智能优化算法是为解决信号解析、图像辨析、模式识别、任务调度、生产规划分配、控制系统设计等各行各业的复杂优化类问题，受到人类智能、生物种群的社会行为或者是自然界的固有现象而启发，通过现代化的计算机技术手段所设计出的算法。<br />
+常见的智能优化算法可以分为以下6类：传统智能优化算法（模糊PID控制算法、专家经验PID控制算法）、进化类智能算法（遗传算法、差分进化算法、免疫算法）、群体智能类算法（粒子群算法、蚁群算法、人群搜索算法、人工蜂群算法等）、模拟退火算法、禁忌搜索算法与神经网络算法。<br />
+在电机控制领域，引入了智能优化算法的电机 PID
+控制器在参数整定上相较于传统参数整定方式具有更好的整定效果，可以有效提高电机的控制精度，更好地满足电机控制指标。</p>
+<h2 id="粒子群算法">粒子群算法</h2>
+<h3 id="粒子群算法介绍">粒子群算法介绍</h3>
+<p>粒子群优化算法(Particle Swarm Optimization,
+PSO)是由肯尼迪和埃伯哈特提出的一种新型智能优化算法，属于演化类智能优化算法，其算法灵感来源于自然界中鸟群觅食时的群体行为特点。粒子群算法将鸟群中的一只只觅食的鸟抽象为一个个粒子，这些粒子只具备坐标与速率这两个属性，鸟群中的鸟不知道食物的具体位置，但是知道其余各个鸟的具体位置，以及它们各自离食物的距离。也就是粒子群中各个粒子存在的信息共享机制，虽然单独的鸟未必每次运动都会离目标越近，但鸟群整体会越来越靠近目标食物位置。<br />
+粒子群算法易于理解，快速高效，在实时性强的复杂函数优化问题的最优化求解上效果显著，目前广泛应用于模式识别、神经深度学习、控制系统参数整定、目标函数最优化等各个场景。其缺点是运算过程中容易陷入局部最优解，导致所求解的不全面，使问题处理效果不尽人意。</p>
+<h3 id="粒子群算法原理">粒子群算法原理</h3>
+<p>假设粒子群参数维度为<span
+class="math inline">\(N\)</span>，粒子群中粒子总数<span
+class="math inline">\(m\)</span>，迭代次数为<span
+class="math inline">\(n\)</span>，设定迭代速度系数为<span
+class="math inline">\(c_1\)</span>、<span
+class="math inline">\(c_2\)</span>、<span
+class="math inline">\(\omega\)</span>。<br />
+为确保每个粒子在限定范围内呈随机分散分布，输入向量<span
+class="math inline">\(x=(x_1,x_2,\cdots,x_N )^T\)</span>的限制范围为：
+<span class="math display">\[\left\{ \begin{gathered}  x_{\min }^{(1)}
+&lt; {x_1} &lt; x_{\max }^{(1)} \hfill \\  x_{\min }^{(2)} &lt; {x_2}
+&lt; x_{\max }^{(2)} \hfill \\  ... \hfill \\  x_{\min }^{(N)} &lt;
+{x_N} &lt; x_{\max }^{(N)} \hfill \\ \end{gathered}  \right.\]</span>
+记<span
+class="math inline">\(X_{min}=(x_{min}^{(1)},x_{min}^{(2)},\cdots,x_{min}^{(N)}
+)\)</span>，<span
+class="math inline">\(X_{max}=(x_{max}^{(1)},x_{max}^{(2)},\cdots,x_{max}^{(N)})\)</span><br />
+输入向量应满足<span
+class="math inline">\(X_{min}&lt;x&lt;X_{max}\)</span><br />
+这里设定每个粒子的初始速度<span class="math inline">\(v_0 =
+0\)</span>，则第<span class="math inline">\(j\)</span>个粒子<span
+class="math inline">\((1 \leqslant j \leqslant
+m)\)</span>下一步的迭代速度可以用公式表示成：<br />
+<span class="math display">\[{v^{(j)}} = \omega  \cdot {v_0} + {c_1}
+\cdot rand \cdot ({P^{(j)}} - {X^{(j)}}) + {c_2} \cdot rand \cdot ({P_G}
+- {X^{(j)}})\]</span></p>
+<p>迭代速度公式由三个部分相加而得，其中<span
+class="math inline">\(rand\)</span>表示调用函数生成的0到1之间的随机数。</p>
+<p>公式第一部分体现了粒子的<mark>自身因素</mark>，其包含粒子上一次迭代时的速度信息，<span
+class="math inline">\(v_0\)</span>是上一次迭代时的粒子速度；<br />
+第二部分体现了粒子的<mark>学习因素</mark>，<span
+class="math inline">\(P^{(j)}\)</span>为第<span
+class="math inline">\(j\)</span>个粒子在历次迭代运动过程中最接近于待优化问题结果的那一次迭代时的位置（鸟离食物最近时的位置）；<br />
+第三部分体现粒子的<mark>交流因素</mark>，<span
+class="math inline">\(P_G\)</span>表示当前的最接近于待优化问题结果的粒子的所在位置（鸟群离食物最近时的位置）。<br />
+粒子迭代速度系数可以根据仿真实际需要加以修改，结合实际情况与工程实践经验，可以取<mark><span
+class="math inline">\(\omega=1,c_1=c_2=2\)</span></mark>，对于粒子群中粒子数量较多的情况，为确保运算结果能得到较快收敛，可以适当减小<span
+class="math inline">\(\omega\)</span>的值。</p>
+<p>根据迭代速度公式计算下一时刻的速度及其粒子位置，其公式可表达为：<br />
+<span class="math display">\[X_{k + 1}^{(j)} = X_k^{(j)} + v_{k +
+1}^{(j)} \cdot dt\]</span> 式中<span
+class="math inline">\(X_{k+1}^{(j)}\)</span>表示第<span
+class="math inline">\((k+1)\)</span>步迭代的位置，<span
+class="math inline">\(X_k^{(j)}\)</span>表示第<span
+class="math inline">\(k\)</span>步迭代的位置，<span
+class="math inline">\(v_{k+1}^{(j)}\)</span>表示第<span
+class="math inline">\((k+1)\)</span>步迭代的速度，<span
+class="math inline">\(dt\)</span>是仿真间隔，默认值为1，适当减小该值可以使仿真更慢更平滑。</p>
+<p>计算<span class="math inline">\(P_G\)</span>与<span
+class="math inline">\(P^{(j)}\)</span>的公式如下所示，用于迭代过程中的最优粒子与粒子群的更新：
+<span class="math display">\[{P_G} = \left\{
+\begin{gathered}  P_G^{(k)},F(P_G^{(k)}) &gt; F(P_G^{(k + 1)}) \hfill
+\\  P_G^{(k + 1)},F(P_G^{(k)}) &lt; F(P_G^{(k + 1)}) \hfill \\
+\end{gathered}  \right.\]</span> <span class="math display">\[P_G^{(j)}
+= \left\{ \begin{gathered}  P_k^{(j)},F(P_k^{(j)}) &gt; F(P_{k +
+1}^{(j)}) \hfill \\  P_{k + 1}^{(j)},F(P_k^{(j)}) &lt; F(P_{k +
+1}^{(j)}) \hfill \\ \end{gathered}  \right.\]</span></p>
+<h3 id="改进粒子群算法">改进粒子群算法</h3>
+<p>在粒子群算法的参数调整中，惯性因子<span
+class="math inline">\(\omega\)</span>以及学习因子<span
+class="math inline">\(c_1,c_2\)</span>是关键。<br />
+学习因子主要影响粒子的目标方向感，即目标识别能力。<br />
+在进化上，<span
+class="math inline">\(c_1\)</span>相对越大，粒子行为越独立，“分散”现象越明显，即学习因素比重较大，全局最优解颇具盲目性，算法收敛速度慢;<br />
+<span
+class="math inline">\(c_2\)</span>相对越大，粒子群体意识越强，“群聚”现象越明显，交流因素比重大，但容易陷入局部最优解。</p>
+<p>为解决传统的粒子群算法存在的收敛速度慢、容易陷入局部最优解等问题。需要对算法的惯性权重与学习因子在迭代过程中动态调整。<br />
+对于学习因子，在前期应当有较大的搜索空间，随着粒子的进化逐渐缩小搜索区域，向全局最优解加速进化，这就
+要求<span class="math inline">\(c_1\)</span>应当先大后小，<span
+class="math inline">\(c_2\)</span>先小后大。<br />
+学习因子在迭代过程中的公式如下所示，这里引入了反正切函数进行优化。设定<span
+class="math inline">\(c_1\)</span>与<span
+class="math inline">\(c_2\)</span>的值域为<span
+class="math inline">\([0.1,2]\)</span>。<span
+class="math inline">\(n\)</span>为迭代总次数，<span
+class="math inline">\(k\)</span>为当前迭代次数。<br />
+<span
+class="math inline">\(c_1=-\frac{4.265}{2\pi}arctan[\frac{8}{n}(k-\frac{n}{2})]+1\)</span><br />
+<span
+class="math inline">\(c_2=\frac{4.265}{2\pi}arctan[\frac{8}{n}(k-\frac{n}{2})]+1\)</span><br />
+注：arctan的结果单位是角度，式中<span
+class="math inline">\(2\pi\)</span>为360°</p>
+<p>对于惯性因子，应当先大后小，使算法在迭代初期增强全局搜索能力，更大范围遍历整体空间，避免陷入局部最优解；而在后期增强局部搜索能力，在更小范围内搜索到精确解。<br />
+惯性因子<span
+class="math inline">\(\omega\)</span>在迭代过程中的公式如下所示，其在迭代过程中由权重最大值<span
+class="math inline">\(\omega_{max}\)</span>线性衰减至权重最小值<span
+class="math inline">\(\omega_{min}\)</span>。<span
+class="math inline">\(n\)</span>为迭代总次数，<span
+class="math inline">\(k\)</span>为当前迭代次数。<br />
+<span
+class="math inline">\(\omega=\omega_{max}-\frac{k}{n}(\omega_{max}-\omega_{min})\)</span><br />
+这里取<span class="math inline">\(\omega_{max}=0.9\)</span>、<span
+class="math inline">\(\omega_{min}=0.4\)</span></p>
+<h2 id="pmsm仿真模型搭建">PMSM仿真模型搭建</h2>
+<p>PMSM的<mark>数学模型</mark>参见<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/" title="鲁棒控制理论与应用02-H∞控制器的设计方法">鲁棒控制理论与应用02-H∞控制器的设计方法</a>，本文沿用了上述数学模型，这里不再赘述。</p>
+<p>电机具体参数如下：<br />
+定子电阻<span class="math inline">\({R_s} =
+0.958\Omega\)</span>，极对数<span
+class="math inline">\(p_n=4\)</span>，粘滞摩擦系数<span
+class="math inline">\(B = 0.008N \cdot M \cdot s\)</span>，d轴电感<span
+class="math inline">\({L_d} = 5.25mH\)</span>，q轴电感<span
+class="math inline">\({L_q} = 12mH\)</span>，永磁体的励磁磁链<span
+class="math inline">\({\Psi _f} = 0.1827wb\)</span>，转动惯量<span
+class="math inline">\(J = 0.003kg \cdot {m^2}\)</span>。</p>
+<p>首先搭建双闭环PI控制的PMSM控制系统，使用工程整定方法确定转速环与电流环的PI控制器参数：<br />
+取转速环PI控制器参数<span class="math inline">\({k_p} =
+0.2\)</span>，<span class="math inline">\({k_i} = 30\)</span>，输出<span
+class="math inline">\(i_q^*\)</span>的限幅范围为-25.7A≤<span
+class="math inline">\(i_q^*\)</span>≤25.7A；<br />
+取电流环<span class="math inline">\(i_q\)</span>的PI控制器参数<span
+class="math inline">\(K_{pn} = 300\)</span>，<span
+class="math inline">\(K_{In} = 23950\)</span>，输出<span
+class="math inline">\(u_q^*\)</span>的限幅范围为-161.6V≤<span
+class="math inline">\(u_q^*\)</span>≤161.6V；<br />
+取电流环<span class="math inline">\(i_d\)</span>的PI控制器参数<span
+class="math inline">\(K_{pi} = 131.25\)</span>，<span
+class="math inline">\(K_{Ii} = 23950\)</span>，输出<span
+class="math inline">\(u_d^*\)</span>的限幅范围为-161.6V≤<span
+class="math inline">\(u_d^*\)</span>≤161.6V。</p>
+在双闭环PI控制的PMSM控制基础上，引入改进的粒子群算法，对转速环的PI参数进行优化，限幅值及电流环PI参数保持不变。其控制系统原理图如下图所示：
+<center>
+<img src="1 PMSM控制系统原理图.png" width=500/><span class="caption">图1
+PMSM控制系统原理图</span>
+</center>
+<p>该系统采用空间电压矢量调制技术(Space Vector Pulse Width
+Modulation，SVPWM)。空间电压矢量调制又被称作称“磁链跟踪控制”。它以三相正弦波电压供电时交流电机的理想磁通轨迹为基准，通过三相功率逆变器的六个功率开关元件组成的特定开关模式来产生的脉宽调制波，用逆变器不同的开关模式产生的实际磁通去逼近基准磁通圆，从而达到较高的控制性能。</p>
+<p>该系统采用<span
+class="math inline">\(i_d=0\)</span>的矢量控制策略。该方法实现了对PMSM的解耦控制，具有控制简单、调速范围宽、转矩特性好、有效降低铜耗的优点。</p>
+<p>图中，<span class="math inline">\(\omega^*\)</span>为目标转速，<span
+class="math inline">\(\omega\)</span>为实际转速；<span
+class="math inline">\(i_a,i_b,i_c\)</span>为三相静止坐标系下的相电流；<span
+class="math inline">\(i_\alpha,i_\beta\)</span>为经过CLARKE变换后的两相静止绕组电流；<span
+class="math inline">\(i_d,i_q\)</span>为经过PARK变换后的两相旋转绕组电流；<span
+class="math inline">\(u_\alpha,u_\beta\)</span>为<span
+class="math inline">\(u_d,u_q\)</span>经过PARK逆变换得到的参数。</p>
+根据PMSM控制系统原理图，可以搭建出如下图所示的控制系统仿真模型。
+<center>
+<img src="2 PMSM控制系统仿真模型.png" width=600/><span
+class="caption">图2 PMSM控制系统仿真模型</span>
+</center>
+<p>仿真总时长为0.2s，采样周期为<span
+class="math inline">\(10^{-5}s\)</span>。设定电机转速给定值<span
+class="math inline">\(\omega_r^* =
+1000r/\min\)</span>，使其空载起动，0.1秒后对电机施加12<span
+class="math inline">\(N \cdot m\)</span>的负载转矩。</p>
+<h2 id="参数整定程序">参数整定程序</h2>
+<p>粒子群算法参数整定程序共由5个MATLAB脚本文件和1个Simulink仿真文件构成，运行入口程序后，将依次执行粒子群算法参数初始化，粒子群算法参数整定，Simulink仿真文件调用及仿真结果数据处理，仿真结果与参数整定结果图像输出等程序功能。</p>
+<h3 id="入口程序main.m">入口程序(main.m)</h3>
+<p>入口程序是第一个被执行的程序，用于初始化粒子群算法相关参数，包括迭代次数、粒子群规模、粒子限幅值等参数。并导入需要使用的其他MATLAB文件。
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br><span class="line"><span class="keyword">global</span> Kpn KIn bar</span><br><span class="line">Kpn=<span class="number">0.2</span>;KIn=<span class="number">30</span>;</span><br><span class="line">bar=<span class="number">0</span>;</span><br><span class="line">n=<span class="number">20</span>;m=<span class="number">50</span>;xmax=[<span class="number">2</span>,<span class="number">500</span>];xmin=[<span class="number">0.05</span>,<span class="number">5</span>];</span><br><span class="line">cal_f=@cal_n;</span><br><span class="line">f=@PID_n_access;</span><br><span class="line">[Pg,fmin]=PSO(n,m,xmax,xmin,cal_f,f);</span><br><span class="line">draw();</span><br><span class="line"><span class="built_in">disp</span>(<span class="string">&#x27;OK&#x27;</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="粒子群算法函数pso.m">粒子群算法函数(PSO.m)</h3>
+<p>粒子群算法函数的输入参数为迭代次数、粒子群的粒子总数、粒子限幅值、电机控制效果计算函数和评价函数计算函数，输出参数为评价函数最小值及其对应的电机PI控制参数。
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[Pg,fmin]</span>=<span class="title">PSO</span><span class="params">(n,m,xmax,xmin,cal_f,f)</span></span></span><br><span class="line"><span class="comment">%全局粒子群算法,f为目标函数,dimension为维度,n为代数,m为种群规模</span></span><br><span class="line">    dimension=<span class="built_in">numel</span>(xmax);  <span class="comment">%numel函数，返回数组元素个数   dimension=2</span></span><br><span class="line">    wmax=<span class="number">0.9</span>;wmin=<span class="number">0.4</span>;<span class="comment">%速度惯性系数 先大后小</span></span><br><span class="line">    dt=<span class="number">1</span>;<span class="comment">%位移仿真间隔</span></span><br><span class="line">    vmax=<span class="number">0.1</span>*(xmax-xmin);<span class="comment">%速度限幅</span></span><br><span class="line">    v=<span class="built_in">zeros</span>(m,dimension);<span class="comment">%初始速度为0</span></span><br><span class="line">    X=(xmax-xmin).*<span class="built_in">rand</span>(m,dimension)+xmin;<span class="comment">%初始位置满足(xmin,xmax)内均匀分布</span></span><br><span class="line">    P=X;<span class="comment">%P为每个粒子每代的最优位置</span></span><br><span class="line">    last_f=f(X);</span><br><span class="line">    [fmin,min_i]=<span class="built_in">min</span>(last_f);<span class="comment">%Pg为所有代中的最优位置 </span></span><br><span class="line">    Pg=X(min_i,:);</span><br><span class="line">    last_Pg=Pg;</span><br><span class="line">    Pg_draw=<span class="built_in">zeros</span>(n,dimension);<span class="comment">%待绘图的PI参数集合</span></span><br><span class="line">    legend_i=<span class="number">1</span>;</span><br><span class="line">    Pg_draw(legend_i,:)=Pg;</span><br><span class="line">    [ts_n,sigma_n,ts_nb,sigma_nb,n_err]=cal_f(Pg);<span class="comment">%计算初始粒子群的性能参数</span></span><br><span class="line">    <span class="built_in">disp</span>([<span class="string">&#x27;初始粒子群最优粒子 f=&#x27;</span>,num2str(fmin)]);</span><br><span class="line">    <span class="built_in">disp</span>([<span class="string">&#x27;sigma_n=&#x27;</span>,num2str(sigma_n),<span class="string">&#x27; ts_n=&#x27;</span>,num2str(ts_n),<span class="string">&#x27; sigma_nb=&#x27;</span>,num2str(sigma_nb),<span class="string">&#x27; ts_nb=&#x27;</span>,num2str(ts_nb),<span class="string">&#x27; n_err=&#x27;</span>,num2str(n_err)]);</span><br><span class="line">    <span class="built_in">disp</span>([<span class="string">&#x27;Kpn=&#x27;</span>,num2str(Pg(<span class="number">1</span>)),<span class="string">&#x27; KIn=&#x27;</span>,num2str(Pg(<span class="number">2</span>))]);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:n</span><br><span class="line">        w=wmax-<span class="built_in">i</span>*(wmax-wmin)/n;<span class="comment">%改进w 先大后小</span></span><br><span class="line">        c1=<span class="number">-4.265</span>/<span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="number">8</span>*(<span class="built_in">i</span>-n/<span class="number">2</span>)/n)+<span class="number">1</span>;<span class="comment">%改进c1 先大后小</span></span><br><span class="line">        c2=<span class="number">4.265</span>/<span class="number">2</span>/<span class="built_in">pi</span>*<span class="built_in">atan</span>(<span class="number">8</span>*(<span class="built_in">i</span>-n/<span class="number">2</span>)/n)+<span class="number">1</span>;<span class="comment">%改进c2 先小后大</span></span><br><span class="line">        v=w*v+c1*<span class="built_in">rand</span>*(P-X)+c2*<span class="built_in">rand</span>*(<span class="built_in">ones</span>(m,<span class="number">1</span>)*Pg-X);</span><br><span class="line">        v=(v&gt;vmax).*vmax+(v&gt;=-vmax &amp; v&lt;=vmax).*v+(v&lt;-vmax).*(-vmax);</span><br><span class="line">        X=X+v*dt;</span><br><span class="line">        X=(X&gt;xmax).*xmax+(X&gt;=xmin &amp; X&lt;=xmax).*X+(X&lt;xmin).*(xmin);</span><br><span class="line">        new_f=f(X);<span class="comment">%新的目标函数值</span></span><br><span class="line">        update_j=<span class="built_in">find</span>(new_f&lt;last_f);</span><br><span class="line">        P(update_j,:)=X(update_j,:);<span class="comment">%修正每个粒子的历史最优值</span></span><br><span class="line">        [new_fmin,min_i]=<span class="built_in">min</span>(new_f);</span><br><span class="line">        new_Pg=X(min_i,:);</span><br><span class="line">        Pg=(new_fmin&lt;fmin)*new_Pg+(new_fmin&gt;=fmin)*Pg;</span><br><span class="line">        last_f=new_f;<span class="comment">%保存当前的函数值</span></span><br><span class="line">        fmin=<span class="built_in">min</span>(new_fmin,fmin);<span class="comment">%更新函数最小值</span></span><br><span class="line">        [ts_n,sigma_n,ts_nb,sigma_nb,n_err]=cal_f(Pg);</span><br><span class="line">        <span class="keyword">if</span> last_Pg~=Pg</span><br><span class="line">            legend_i=legend_i+<span class="number">1</span>;</span><br><span class="line">            Pg_draw(legend_i,:)=Pg;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        last_Pg=Pg;</span><br><span class="line">        <span class="built_in">disp</span>([<span class="string">&#x27;第&#x27;</span>,num2str(<span class="built_in">i</span>),<span class="string">&#x27;次迭代完成 f=&#x27;</span>,num2str(fmin)]);</span><br><span class="line">        <span class="built_in">disp</span>([<span class="string">&#x27;sigma_n=&#x27;</span>,num2str(sigma_n),<span class="string">&#x27; ts_n=&#x27;</span>,num2str(ts_n),<span class="string">&#x27; sigma_nb=&#x27;</span>,num2str(sigma_nb),<span class="string">&#x27; ts_nb=&#x27;</span>,num2str(ts_nb),<span class="string">&#x27; n_err=&#x27;</span>,num2str(n_err)]);</span><br><span class="line">        <span class="built_in">disp</span>([<span class="string">&#x27;Kpn=&#x27;</span>,num2str(Pg(<span class="number">1</span>)),<span class="string">&#x27; KIn=&#x27;</span>,num2str(Pg(<span class="number">2</span>))]);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="电机控制效果计算函数cal_n.m">电机控制效果计算函数(cal_n.m)</h3>
+<p>电机控制效果计算函数的输入参数为一组（单个粒子）的电机转速环PI控制参数(<span
+class="math inline">\(K_{pn},K_{In}\)</span>)，首先将上述参数导入到双闭环PMSM控制系统仿真模型文件，然后运行仿真程序，提取所得转速数据，分析所得数据，求得转速环调节时间、转速环超调量、突加负载最大转速降落、突加负载转速环恢复时间与系统稳定后的转速波动，作为输出参数用于评价函数计算。</p>
+<p>这里取系统从响应至保持在终值±
+2%所经过的时间作为调节时间（或恢复时间），系统稳定后的转速波动为0.18s~0.2s时刻转速最大值与最小值的差值。
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[ts_n,sigma_n,ts_nb,sigma_nb,n_err]</span>=<span class="title">cal_n</span><span class="params">(parameters)</span></span></span><br><span class="line">    <span class="keyword">global</span> Kpn KIn</span><br><span class="line">    <span class="comment">%将simulink所需参数导入工作区，以便仿真使用</span></span><br><span class="line">    obj_slx=<span class="string">&#x27;PMSM_SVPWM_2015b_Jiazai.mdl&#x27;</span>;</span><br><span class="line">    Kpn=parameters(<span class="number">1</span>);</span><br><span class="line">    KIn=parameters(<span class="number">2</span>);</span><br><span class="line">    sim(obj_slx);</span><br><span class="line">    n_data=n.signals.values;</span><br><span class="line">    n_max=<span class="built_in">max</span>(n_data);</span><br><span class="line">    sigma_n=n_max<span class="number">-1000</span>; <span class="comment">%转速超调量</span></span><br><span class="line">    ts_n1=<span class="built_in">find</span>(n_data(<span class="number">1</span>:<span class="number">10000</span>)&gt;<span class="number">1020</span>);</span><br><span class="line">    ts_n2=<span class="built_in">find</span>(n_data(<span class="number">1</span>:<span class="number">10000</span>)&lt;<span class="number">980</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">numel</span>(ts_n1)==<span class="number">0</span>)</span><br><span class="line">        ts_n=ts_n2(<span class="keyword">end</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ts_n=ts_n1(<span class="keyword">end</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    n_min=<span class="built_in">min</span>(n_data(<span class="number">10001</span>:<span class="number">20000</span>));</span><br><span class="line">    sigma_nb=<span class="number">1000</span>-n_min; <span class="comment">%突加负载最大转速降落</span></span><br><span class="line">    ts_nb1=<span class="built_in">find</span>(n_data(<span class="number">10001</span>:<span class="number">20000</span>)&lt;<span class="number">980</span>);</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">numel</span>(ts_nb1)==<span class="number">0</span>)</span><br><span class="line">        ts_nb=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ts_nb=ts_nb1(<span class="keyword">end</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    n_infty_max=<span class="built_in">max</span>(n_data(<span class="number">18000</span>:<span class="number">20000</span>));<span class="comment">%转速终值</span></span><br><span class="line">    n_infty_min=<span class="built_in">min</span>(n_data(<span class="number">18000</span>:<span class="number">20000</span>));<span class="comment">%转速终值</span></span><br><span class="line">    n_err=n_infty_max-n_infty_min;<span class="comment">%转速波动</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
+<h3
+id="评价函数计算函数pid_n_access.m">评价函数计算函数(PID_n_access.m)</h3>
+<p>评价函数是粒子群算法待优化的函数，本程序的输入参数是待处理的所有粒子群参数，程序首先将将粒子群逐一分散为粒子，针对每个粒子所对应的电机PI控制参数逐一单独仿真，带入参数计算程序，计算所得的各个控制效果参数，包括转速环调节时间<span
+class="math inline">\(T_{sn}\)</span>、转速环超调量<span
+class="math inline">\(\omega_{sn}\)</span>、突加负载最大转速降落<span
+class="math inline">\(n_d\)</span>、突加负载转速环恢复时间<span
+class="math inline">\(T_{sd}\)</span>、系统稳定后的转速波动<span
+class="math inline">\(n_{err}\)</span>。<br />
+最后将上述参数带入如下式所示的评价函数，其中<span
+class="math inline">\(T_{sn0},\omega_{sn0},n_{d0},T_{sd0}\)</span>为基准值。<br />
+<span
+class="math display">\[f=3*\log(\frac{T_{sn}}{T_{sn0}}+1)+3*\log(\frac{\omega_{sn}}{\omega_{sn0}}+1)+\log(\frac{n_d}{n_{d0}}+1)+\log(\frac{T_{sd}}{T_{sd0}}+1)+10*n_{err}\]</span>
+上述五个参数都是越小越好，这使得所得函数值越小，代表电机控制效果越好。各项式子前的系数代表着各个参数对于评价函数值的影响权重，可以根据实际控制性能的不同需求修改这些系数。
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[y,ts_n,sigma_n,ts_nb,sigma_nb,n_err]</span>=<span class="title">PID_n_access</span><span class="params">(parameters_list)</span></span></span><br><span class="line">    <span class="keyword">global</span> bar</span><br><span class="line">    M=<span class="built_in">size</span>(parameters_list,<span class="number">1</span>);<span class="comment">%计算需要仿真的组数（simulink无法并行仿真）</span></span><br><span class="line">    ts_n0=<span class="number">1200.0</span>;sigma_n0=<span class="number">10.0</span>;ts_nb0=<span class="number">600</span>;sigma_nb0=<span class="number">20.0</span>;<span class="comment">%基准值</span></span><br><span class="line">    <span class="comment">%将simulink所需参数导入工作区，以便仿真使用</span></span><br><span class="line">    <span class="comment">%if((mod(bar,4)==1&amp;&amp;bar&lt;=200)||(mod(bar,2)==1&amp;&amp;bar&gt;=200))</span></span><br><span class="line">    y=<span class="built_in">zeros</span>(M,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> sim_i=<span class="number">1</span>:M</span><br><span class="line">        bar=bar+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">mod</span>(bar,<span class="number">2</span>)==<span class="number">1</span>)</span><br><span class="line">            <span class="built_in">disp</span>(<span class="string">&#x27;█&#x27;</span>);</span><br><span class="line">            fprintf(<span class="string">&#x27;%c&#x27;</span>,<span class="number">8</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        parameters=parameters_list(sim_i,:);</span><br><span class="line">        [ts_n,sigma_n,ts_nb,sigma_nb,n_err]=cal_n(parameters);</span><br><span class="line">        y(sim_i)=<span class="number">3</span>*<span class="built_in">log</span>(ts_n/ts_n0+<span class="number">1</span>)+<span class="number">3</span>*<span class="built_in">log</span>(sigma_n/sigma_n0+<span class="number">1</span>)+<span class="built_in">log</span>(ts_nb/ts_nb0+<span class="number">1</span>)+<span class="built_in">log</span>(sigma_nb/sigma_nb0+<span class="number">1</span>)+n_err*<span class="number">10</span>;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<h3 id="作图函数draw.m">作图函数(draw.m)</h3>
+<p>用于绘制参数整定前后的转速曲线图。 <figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span><span class="params">()</span></span></span><br><span class="line">    <span class="keyword">global</span> Kpn KIn</span><br><span class="line">    <span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">    sim(<span class="string">&#x27;PMSM_SVPWM_2015b_Jiazai.mdl&#x27;</span>)</span><br><span class="line">    n_data=n.signals.values;time=n.time;<span class="comment">%获取转速序列及对应时刻</span></span><br><span class="line">    <span class="built_in">plot</span>(time,n_data)</span><br><span class="line">    <span class="built_in">hold</span> on</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">    Kpn=<span class="number">0.2</span>;</span><br><span class="line">    KIn=<span class="number">30</span>;</span><br><span class="line">    sim(<span class="string">&#x27;PMSM_SVPWM_2015b_Jiazai.mdl&#x27;</span>)</span><br><span class="line">    n_data=n.signals.values;time=n.time;<span class="comment">%获取转速序列及对应时刻</span></span><br><span class="line">    <span class="built_in">plot</span>(time,n_data)</span><br><span class="line">    <span class="built_in">hold</span> on</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">figure</span>(<span class="number">1</span>)</span><br><span class="line">    legend_str&#123;<span class="number">1</span>&#125;=<span class="string">&#x27;PSO-PI&#x27;</span>;</span><br><span class="line">    legend_str&#123;<span class="number">2</span>&#125;=<span class="string">&#x27;PI&#x27;</span>;</span><br><span class="line">    <span class="built_in">legend</span>(legend_str)</span><br><span class="line">    xlabel(<span class="string">&#x27;时间/s&#x27;</span>) </span><br><span class="line">    ylabel(<span class="string">&#x27;电机转速n/(r/min)&#x27;</span>) </span><br><span class="line">    <span class="built_in">disp</span>(<span class="string">&#x27;比较曲线绘制完成&#x27;</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="仿真结果分析">仿真结果分析</h2>
+<center>
+<img src="3 粒子群算法参数整定前后转速曲线比较.png" width=600/><span
+class="caption">图3 粒子群算法参数整定前后转速曲线比较</span>
+</center>
+<p>运行代码后，输出参数整定前后的转速曲线如上图所示。其具体参数见下表：</p>
+<center>
+<span class="caption">表1 粒子群算法参数前后的控制性能比较</span>
+</center>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"></th>
+<th style="text-align: center;">PI</th>
+<th style="text-align: center;">PSO-PI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">转速环PI参数</td>
+<td style="text-align: center;"><span
+class="math inline">\(K_{pn}=0.2,K_{In}=30\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(K_{pn}=0.24005,K_{In}=276.6148\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">转速环调节时间/ms</td>
+<td style="text-align: center;">21.57</td>
+<td style="text-align: center;">14.54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">转速环超调量/(r/min)</td>
+<td style="text-align: center;">44.167</td>
+<td style="text-align: center;">28.0042</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">突加负载最大转速降落/(r/min)</td>
+<td style="text-align: center;">40.1785</td>
+<td style="text-align: center;">24.7302</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">转速环恢复时间/ms</td>
+<td style="text-align: center;">8.48</td>
+<td style="text-align: center;">1.99</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">稳态转速波动/(r/min)</td>
+<td style="text-align: center;">0.17</td>
+<td style="text-align: center;">0.09</td>
+</tr>
+</tbody>
+</table>
+<p>由上表可知，采用粒子群算法整定后的PID参数，无论是在电机启动速度及超调量，还是加入负载转矩后恢复时的属性，都显著优于工程整定方法所得的参数。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/sy243772901/article/details/82108816">CSDN—沉沙丶—永磁同步电机矢量控制系列教程</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44044411/article/details/91353491">【Simulink】粒子群算法（PSO）整定PID参数（附代码和讲解）</a></li>
+<li>刘子健. 基于改进的PSO-BP神经网络算法的永磁同步电机PID参数整定[J].
+兰州文理学院学报（自然科学版），2024，38(1)：77-81.</li>
+<li>谢金法. 基于改进粒子群优化算法的PMSM矢量控制[J].
+现代制造工程，2019(7)：6-11.</li>
+<li>曾雄飞. 基于粒子群算法优化BP神经网络的PID控制算法[J].
+电子设计工程，2022，30(11)：69-73.</li>
+<li>金宝宝. 基于智能算法的无刷直流电机控制系统设计与实现[D].
+兰州交通大学，2023</li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">鲁棒控制理论与应用02-H∞控制器设计与仿真</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

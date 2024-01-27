@@ -25,12 +25,12 @@
         <meta name="keywords" content="课题" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 按照教材及网络上的内容整理，若有错误敬请指正。 绪论 从分类上看，永磁同步电机属于交流电机、同步电机（电机转速与定子磁场的同步转速始终保持相同的交流电机）。 交流永磁伺服电动机主要有两大类，一是无刷直流电动机(The Blush-less DC Motor,BDCM)，二是永磁同步电动机(Permanent Magn">
+    <meta name="description" content="最初是为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 将陆续补充内容，介绍永磁同步电动机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、控制策略等内容。 按照教材及网络上的内容整理，若有错误敬请指正。 绪论 从分类上看，永磁同步电机属于交流电机、同步电机（电机转速与定子磁场的同步转速始终保持相同的交流电机）。 交流永磁伺服电动机主要有两大类，一是无刷直流电动">
 <meta property="og:type" content="article">
 <meta property="og:title" content="永磁同步电机">
 <meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 按照教材及网络上的内容整理，若有错误敬请指正。 绪论 从分类上看，永磁同步电机属于交流电机、同步电机（电机转速与定子磁场的同步转速始终保持相同的交流电机）。 交流永磁伺服电动机主要有两大类，一是无刷直流电动机(The Blush-less DC Motor,BDCM)，二是永磁同步电动机(Permanent Magn">
+<meta property="og:description" content="最初是为完成鲁棒控制理论与应用与交流伺服电机及其控制课程大作业所整理的笔记。 将陆续补充内容，介绍永磁同步电动机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、控制策略等内容。 按照教材及网络上的内容整理，若有错误敬请指正。 绪论 从分类上看，永磁同步电机属于交流电机、同步电机（电机转速与定子磁场的同步转速始终保持相同的交流电机）。 交流永磁伺服电动机主要有两大类，一是无刷直流电动">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/1%20二极PMSM.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/2%20三相两电平电压型逆变器.png">
@@ -39,7 +39,7 @@
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/4%20第Ⅰ扇区七段式PWM波形.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/5%20永磁同步电机矢量控制系统框图.png">
 <meta property="article:published_time" content="2023-11-24T13:13:13.000Z">
-<meta property="article:modified_time" content="2023-12-07T01:58:15.981Z">
+<meta property="article:modified_time" content="2024-01-25T05:20:21.009Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="课题">
 <meta name="twitter:card" content="summary">
@@ -86,8 +86,6 @@
     
 
 
-    
-        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
     
 <meta name="generator" content="Hexo 5.4.2"></head>
 
@@ -302,7 +300,7 @@
                             &nbsp;
                             电机
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -433,9 +431,6 @@
 
 
                         
-                            <i class="fa fa-bar-chart"></i>
-                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
-                        
                         
                     </div>
                 
@@ -455,12 +450,13 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%9B%B8%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">三相永磁同步电动机的数学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8E%8B%E6%96%B9%E7%A8%8B%E4%B8%8E%E7%A3%81%E9%93%BE%E6%96%B9%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">电压方程与磁链方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%9F%A9%E6%96%B9%E7%A8%8B%E4%B8%8E%E8%BF%90%E5%8A%A8%E6%96%B9%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">转矩方程与运动方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%96%B9%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">状态方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="toc-number">2.4.</span> <span class="toc-text">坐标变换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%9A%84%E7%9F%A2%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">永磁同步电动机的矢量控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E7%94%B5%E5%8E%8B%E7%9F%A2%E9%87%8F%E8%B0%83%E5%88%B6svpwm"><span class="toc-number">3.1.</span> <span class="toc-text">空间电压矢量调制(SVPWM)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A2%E9%87%8F%E6%8E%A7%E5%88%B6%E7%AD%96%E7%95%A5"><span class="toc-number">3.2.</span> <span class="toc-text">矢量控制策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#simulink%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">Simulink仿真分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%B1%95%E6%9C%9B"><span class="toc-number">5.</span> <span class="toc-text">总结与展望</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">绪论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%9B%B8%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">三相永磁同步电动机的数学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8E%8B%E6%96%B9%E7%A8%8B%E4%B8%8E%E7%A3%81%E9%93%BE%E6%96%B9%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">电压方程与磁链方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E7%9F%A9%E6%96%B9%E7%A8%8B%E4%B8%8E%E8%BF%90%E5%8A%A8%E6%96%B9%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">转矩方程与运动方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%96%B9%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">状态方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%90%E6%A0%87%E5%8F%98%E6%8D%A2"><span class="toc-number">2.4.</span> <span class="toc-text">坐标变换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A9%BA%E9%97%B4%E7%94%B5%E5%8E%8B%E7%9F%A2%E9%87%8F%E8%B0%83%E5%88%B6svpwm"><span class="toc-number">3.</span> <span class="toc-text">空间电压矢量调制(SVPWM)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%9A%84%E6%8E%A7%E5%88%B6%E7%AD%96%E7%95%A5"><span class="toc-number">4.</span> <span class="toc-text">永磁同步电动机的控制策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A2%E9%87%8F%E6%8E%A7%E5%88%B6"><span class="toc-number">4.1.</span> <span class="toc-text">矢量控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#simulink%E4%BB%BF%E7%9C%9F%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">Simulink仿真方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
         
-            <p>为完成<code>鲁棒控制理论与应用</code>与<code>交流伺服电机及其控制</code>课程大作业所整理的笔记。<br />
+            <p>最初是为完成<code>鲁棒控制理论与应用</code>与<code>交流伺服电机及其控制</code>课程大作业所整理的笔记。<br />
+将陆续补充内容，介绍永磁同步电动机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、<mark>控制策略</mark>等内容。<br />
 按照教材及网络上的内容整理，若有错误敬请指正。</p>
 <h2 id="绪论">绪论</h2>
 <p>从分类上看，永磁同步电机属于交流电机、同步电机（电机转速与定子磁场的同步转速始终保持相同的交流电机）。<br />
@@ -625,8 +621,7 @@ cos\varphi&amp;-sin\varphi \\ sin\varphi&amp;cos\varphi
 \end{array}}\right]\)</span><br />
 其中<span class="math inline">\(\varphi\)</span>为静止的<span
 class="math inline">\(\alpha\)</span>轴与旋转的d轴的夹角。</p>
-<h2 id="永磁同步电动机的矢量控制">永磁同步电动机的矢量控制</h2>
-<h3 id="空间电压矢量调制svpwm">空间电压矢量调制(SVPWM)</h3>
+<h2 id="空间电压矢量调制svpwm">空间电压矢量调制(SVPWM)</h2>
 <p>脉宽调制(Pulse Width
 Modulation,PWM)指的是利用半导体开关器件的导通与关断，把直流电压变成电压脉冲序列，并通过控制脉冲宽度和脉冲序列的周期来达到调压、调频、控制谐波的目的。<br />
 空间电压矢量调制(Space Vector
@@ -881,7 +876,12 @@ class="math inline">\(T_b\)</span></td>
 class="math inline">\(\alpha-\beta\)</span>坐标系第一象限上的，与<span
 class="math inline">\(\alpha\)</span>轴夹角为0~60°范围的区域为Ⅰ扇区，然后逆时针方向依次为Ⅱ、Ⅲ、Ⅳ、Ⅴ、Ⅵ扇区，它们的N值分别为3,1,5,4,6,2。<br />
 部分参考文献直接使用N值来定义扇区号，二者相等（将N值1-6定义为Ⅰ—Ⅵ扇区），这种定义方法更适合做仿真分析。</p>
-<h3 id="矢量控制策略">矢量控制策略</h3>
+<h2 id="永磁同步电动机的控制策略">永磁同步电动机的控制策略</h2>
+<p>永磁同步电机的控制策略主要有以下几种：<mark>矢量控制(Field Oriented
+Control，FOC)、恒压频比控制(VVVF)、直接转矩控制(Direct Torque
+Control，DTC)和基于现代控制理论的自适应控制和滑模控制等</mark>。</p>
+<h3 id="矢量控制">矢量控制</h3>
+矢量控制是通过坐标变换(CLARKE变换与PARK变换)的方法将交流电机近似等效为直流电机，从而获得像直流电机的控制量，保证良好的动态特性。本文将采用矢量控制策略对永磁同步电动机进行控制。
 <center>
 <img src="5 永磁同步电机矢量控制系统框图.png" width=600/><span
 class="caption">图5 永磁同步电机矢量控制系统框图</span>
@@ -896,7 +896,7 @@ class="math inline">\(i_q\)</span>又可称作转矩电流</mark>。<br />
 若能控制励磁电流<span
 class="math inline">\(i_d=0\)</span>，则电磁转矩直接与<span
 class="math inline">\(i_q\)</span>成正比。此时定子只有交轴分量，其控制特性与直流电机相同。<br />
-该控制实际上实现了对PMSM的解耦控制，使定子电流只用于产生电磁转矩，通过调节交轴分量大小即可控制电磁转矩的大小，该方法控制简单、调速范围宽、转矩特性好，而且能有效的降低铜耗，常用于要求较高的控制场合，在PMSM的矢量控制中应用最为广泛。<br />
+该控制实际上实现了对PMSM的解耦控制，使定子电流只用于产生电磁转矩，通过调节交轴分量大小即可控制电磁转矩的大小，该方法<mark>控制简单、调速范围宽、转矩特性好，而且能有效的降低铜耗，常用于要求较高的控制场合</mark>，在PMSM的矢量控制中应用最为广泛。<br />
 其缺点是，随着输出转矩的增大，漏感压降增大，功率因数降低；同时由于没有弱磁电流，电机调速范围有限。<br />
 本文将采用<span class="math inline">\(i_d=0\)</span>控制策略。<br />
 (2)功率因数<span class="math inline">\(cos\varphi=1\)</span>控制<br />
@@ -912,8 +912,7 @@ class="math inline">\(\Psi_\delta=\Psi_f\)</span>。<br />
 在凸极永磁同步电机中，通过控制<span
 class="math inline">\(i_d\)</span>来获得最大转矩，也可称作单位电流输出最大转矩的控制。<br />
 由于逆变器需要的输出电流小，适合选用较小的逆变器，能在电机输出转矩满足要求的条件下，使定子电流最小，减小了电机的铜耗，有利于降低系统损耗，降低系统运行成本，提高系统效率。在该方案的基础上，再采用适当的弱磁控制，可以改善电机高速运行时的性能。但是随着输出转矩的增大功率因数下降比较多。</p>
-<h2 id="simulink仿真分析">Simulink仿真分析</h2>
-<h2 id="总结与展望">总结与展望</h2>
+<h2 id="simulink仿真方法">Simulink仿真方法</h2>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
@@ -994,11 +993,6 @@ target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42887190/artic
             RenAhah &copy; 2024 
             <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
             <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
-            
-                <br>
-                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
-                &nbsp;|&nbsp;
-                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
             
         </div>
     </div>

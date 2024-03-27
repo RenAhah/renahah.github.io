@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>单神经元PID控制器的设计与仿真 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,神经网络原理及应用" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="预习神经网络原理及应用课程大作业所整理的笔记。 本文将介绍单神经元PID控制器原理、有监督Hebb学习规则、单神经元PID控制器的改进、Simlink仿真具体步骤、S-function的使用方法。依照上述原理与方法完成单神经元PID控制器的设计与仿真。 下一篇文章将介绍基于BP神经网络的PID控制器的设计与仿真。 绪论 神经网络 人工神经网络(Artificial Neural Net">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单神经元PID控制器的设计与仿真">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="预习神经网络原理及应用课程大作业所整理的笔记。 本文将介绍单神经元PID控制器原理、有监督Hebb学习规则、单神经元PID控制器的改进、Simlink仿真具体步骤、S-function的使用方法。依照上述原理与方法完成单神经元PID控制器的设计与仿真。 下一篇文章将介绍基于BP神经网络的PID控制器的设计与仿真。 绪论 神经网络 人工神经网络(Artificial Neural Net">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/1%20单神经元模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/2%20单神经元PID控制框图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/3%20单神经元PID控制系统仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/4%20单神经元PID控制器仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/5%20S函数模块参数.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/6%20封装编辑器.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/7%20参数设置.png">
+<meta property="article:published_time" content="2024-03-23T14:19:32.000Z">
+<meta property="article:modified_time" content="2024-03-27T09:22:57.526Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="神经网络原理及应用">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/1%20单神经元模型.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/神经网络原理及应用/单神经元PID控制器的设计与仿真" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/">神经网络原理及应用</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">神经网络原理及应用</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">
+            <time datetime="2024-03-23T14:19:32.000Z" itemprop="datePublished">2024-03-23</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            单神经元PID控制器的设计与仿真
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.1.</span> <span class="toc-text">神经网络</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.2.</span> <span class="toc-text">单神经元原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83pid%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.</span> <span class="toc-text">单神经元PID控制器原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83pid%E6%8E%A7%E5%88%B6%E5%99%A8%E6%94%B9%E8%BF%9B"><span class="toc-number">1.4.</span> <span class="toc-text">单神经元PID控制器改进</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83pid%E6%8E%A7%E5%88%B6%E5%99%A8%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">单神经元PID控制器仿真分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#s-function%E6%A8%A1%E5%9D%97"><span class="toc-number">2.1.</span> <span class="toc-text">S-function模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s-function%E7%BC%96%E5%86%99"><span class="toc-number">2.2.</span> <span class="toc-text">S-function编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%E5%88%86%E6%9E%90"><span class="toc-number">2.3.</span> <span class="toc-text">仿真结果分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>预习<code>神经网络原理及应用</code>课程大作业所整理的笔记。<br />
+本文将介绍单神经元PID控制器原理、有监督Hebb学习规则、单神经元PID控制器的改进、Simlink仿真具体步骤、S-function的使用方法。依照上述原理与方法完成单神经元PID控制器的设计与仿真。<br />
+下一篇文章将介绍基于BP神经网络的PID控制器的设计与仿真。</p>
+<h2 id="绪论">绪论</h2>
+<h3 id="神经网络">神经网络</h3>
+<p>人工神经网络(Artificial Neural
+Networks，ANN)，简称神经网络，是指一类受生物学和神经科学启发得来的的数学模型。主要通过对人脑的神经元网络进行抽象，构建人工神经元，并按照一定拓扑结构来建立人工神经元之间的连接，来模拟生物的神经网络。<br />
+人工神经网络由许许多多信息处理单位（对应于人脑中的神经元）根据不同的相互作用强度（即连接权值）互连而成，其实质是对生物学上的人脑神经体系的一种近似与模拟，人工神经网络能够像人体神经系统一样对外界知识进行检索、处理与存储。</p>
+<h3 id="单神经元原理">单神经元原理</h3>
+单神经元，又被称作MP神经元，由心理学家McCulloch和数学家Pitts于1943年根据生物神经元的结构提出。
+<center>
+<img src="1 单神经元模型.png"/><span class="caption">图1
+单神经元模型</span>
+</center>
+<p>单神经元模型如上图所示，其中<span
+class="math inline">\(x_1,x_2,\cdots,x_n\)</span>为接收到的信息，<span
+class="math inline">\(\omega_{i1},\omega_{i2},\cdots,\omega_{in}\)</span>为连接的权值。将各个信息值按照权重相加并做一定处理，所得到的结果被称为“净输入”，其表达式为：<br />
+<span class="math inline">\(net_i=\sum\limits_{j = 1}^n
+\omega_{ij}x_j-\theta_i\)</span><br />
+式中<span class="math inline">\(\theta_i\)</span>为神经元<span
+class="math inline">\(i\)</span>的阈值。<br />
+最终的输出值<span class="math inline">\(y_i\)</span>与净输入<span
+class="math inline">\(net_i\)</span>的关系式为：<span
+class="math inline">\(y_i=g(net_i)\)</span>，这里的<span
+class="math inline">\(g\)</span>被称为<mark>激活函数</mark>。</p>
+<h3 id="单神经元pid控制器原理">单神经元PID控制器原理</h3>
+<center>
+<img src="2 单神经元PID控制框图.png" width=600/><span
+class="caption">图2 单神经元PID控制框图</span>
+</center>
+<p>单神经元PID控制框图如上图所示，图中<span
+class="math inline">\(r_{in}\)</span>为系统输入值（设定值），<span
+class="math inline">\(y_{out}\)</span>为系统实际输出值，输入转换模块将<span
+class="math inline">\(r_{in}\)</span>与<span
+class="math inline">\(y_{out}\)</span>变换为神经元的输入状态变量<span
+class="math inline">\(x_i(k)\)</span>，这三个状态变量与PID控制器的三个参数（<span
+class="math inline">\(K_p,K_i,K_d\)</span>）相关，PID控制器采用<mark>增量式</mark>算法，其中：<br />
+<span
+class="math inline">\(x_1(k)=e(k)\)</span>，对应PID控制的积分项，与误差量相等；<br />
+<span class="math inline">\(x_2(k)=\Delta
+e(k)=e(k)-e(k-1)\)</span>，对应PID控制的比例项，反映误差变化的方向；<br />
+<span class="math inline">\(x_3(k)=\Delta^2
+e(k)=e(k)-2e(k-1)+e(k-2)\)</span>，对应PID控制的微分项。</p>
+<p>取<span class="math inline">\(\omega_i(k)\)</span>为<span
+class="math inline">\(x_i(k)\)</span>的神经元连接权值，取<span
+class="math inline">\(K\)</span>为神经元的比例系数（要求<span
+class="math inline">\(K&gt;0\)</span>），则有：<br />
+<span class="math inline">\(u(k)=u(k-1)+K\sum\limits_{i = 1}^3
+\omega_i(k)x_i(k)\)</span><br />
+<span class="math inline">\(\Delta
+u(k)=K[\omega_1(k)e(k)+\omega_2(k)\Delta e(k)+\omega_3(k)\Delta^2
+e(k)]\)</span><br />
+由此可知，<span
+class="math inline">\(K\)</span>值越大，系统整体速度越快，但同时超调量也会增多，而且影响系统整体稳定性。</p>
+<p>神经元通过<mark>有监督型Hebb学习</mark>，对神经元连接权值进行实时修正，以实现对PID控制器参数的自适应调整。<br />
+这里取教师信号（系统性能指标）<span
+class="math inline">\(z(k)=e(k)\)</span>，得到<span
+class="math inline">\(k\)</span>时刻的连接权值为：<br />
+<span class="math inline">\(\omega_i(k)=\omega_i(k-1)+\eta
+z(k)u(k)x_i(k)\)</span><br />
+式中<span
+class="math inline">\(\eta\)</span>为学习速率，取大于零的较小值。</p>
+<h3 id="单神经元pid控制器改进">单神经元PID控制器改进</h3>
+<p>为解决当<span
+class="math inline">\(\eta\)</span>的值较大时，单神经元PID的学习速度增大的同时可能造成的收敛速度降低问题，可以让输入状态变量的连接权值以不同学习速率分开调整。<br />
+这里对不同状态变量采用不同的连接权值学习速率<span
+class="math inline">\(\eta_P,\eta_I,\eta_D\)</span>，可以得到：<br />
+<span class="math inline">\(\omega_1(k)=\omega_1(k-1)+\eta_I
+z(k)u(k-1)x_1(k)\)</span><br />
+<span class="math inline">\(\omega_2(k)=\omega_2(k-1)+\eta_P
+z(k)u(k-1)x_2(k)\)</span><br />
+<span class="math inline">\(\omega_3(k)=\omega_3(k-1)+\eta_D
+z(k)u(k-1)x_3(k)\)</span><br />
+<span class="math inline">\(u(k)=u(k-1)+K\sum\limits_{i=1}^3
+\omega_i^{&#39;}(k)x_i(k)\)</span><br />
+<span
+class="math inline">\(\omega_i^{&#39;}(k)=\frac{\omega_i(k)}{\sum\limits_{j=1}^3
+|\omega_j(k)|}\)</span>（归一化处理）</p>
+<p>而实际经验表明，PID参数不仅与<span
+class="math inline">\(e(k)\)</span>有关，还与其变化值<span
+class="math inline">\(\delta
+e(k)\)</span>有关，将后者也加入到连接权值调整公式中，可以得到：<br />
+<span class="math inline">\(\omega_1(k)=\omega_1(k-1)+\eta_I
+z(k)u(k-1)[e(k)+\Delta e(k)]\)</span><br />
+<span class="math inline">\(\omega_2(k)=\omega_2(k-1)+\eta_P
+z(k)u(k-1)[e(k)+\Delta e(k)]\)</span><br />
+<span class="math inline">\(\omega_3(k)=\omega_3(k-1)+\eta_D
+z(k)u(k-1)[e(k)+\Delta e(k)]\)</span></p>
+<h2 id="单神经元pid控制器仿真分析">单神经元PID控制器仿真分析</h2>
+使用Simulink构建一个简单的连续系统仿真模型，如下图所示：
+<center>
+<img src="3 单神经元PID控制系统仿真模型.png" width=600/><span
+class="caption">图3 单神经元PID控制系统仿真模型</span>
+</center>
+其中输入为阶跃信号，传递函数为<span
+class="math inline">\(G(s)=\frac{1}{20s+1}\)</span>，单神经元PID控制器如下图所示：
+<center>
+<img src="4 单神经元PID控制器仿真模型.png" width=600/><span
+class="caption">图4 单神经元PID控制器系统仿真模型</span>
+</center>
+<p>仿真模型最中央的“exp_pidf”是一个S函数(S-function)模块，它是一个Matlab脚本文件，在仿真模型中实现单神经元PID的相关运算。<br />
+S函数模块左侧的Mux总线与该函数的五个输入值相连，它们分别是<span
+class="math inline">\(e(k),e(k-1),e(k-2),u(k-1),u(k)\)</span>。<br />
+这里<span
+class="math inline">\(e(k)\)</span>是误差变量，也是整个PID控制器的输入变量。在<span
+class="math inline">\(e(k)\)</span>的基础上串联一个延时环节(Unit
+Delay)就会得到<span
+class="math inline">\(e(k-1)\)</span>，他表示的是上一次的误差。同理串联两个延时环节得到<span
+class="math inline">\(e(k-2)\)</span>。<br />
+<span
+class="math inline">\(u(k)\)</span>是控制器输出量，同理可知串联一个延时环节得到的<span
+class="math inline">\(u(k-1)\)</span>是上一次的输出量。<br />
+S函数模块右侧的Demux总线与该函数的四个输出值相连，它们是控制器输出值<span
+class="math inline">\(u(k)\)</span>与PID的三个参数<span
+class="math inline">\(K_i,K_p,K_d\)</span>。<br />
+这里<span
+class="math inline">\(u(k)\)</span>是必须输出的值，而输出PID的三个参数值，是为了观察仿真运行过程中三个参数的变化情况。</p>
+<h3 id="s-function模块">S-function模块</h3>
+S函数(S-function)是System-function系统函数的缩写，是指采用非图形化的方式（计算机语言）描述的一个功能块。<br />
+首先要在Simulink中，找到S函数模块，打开库浏览器，找到Simulink-&gt;User-Defined
+Functions-&gt;S Function。<br />
+
+<center>
+<img src="5 S函数模块参数.png" width=400/><span class="caption">图5
+S函数模块参数</span>
+</center>
+<p>打开S函数模块，可以看到“模块参数”界面，有三个空。<br />
+第一个是S-Function名称，这个名称就是自己创建的matlab脚本的名称，脚本与仿真文件需要在同一文件夹内，点击“编辑”可以打开该脚本文件。<br />
+第二个是S-Function参数，它既不是输入参数也不是输出参数，而是外部参数，这些参数将被导入到脚本文件中参与计算。本次仿真外部参数为不同的连接权值学习速率<span
+class="math inline">\(\eta_P,\eta_I,\eta_D\)</span>和神经元比例系数<span
+class="math inline">\(K\)</span>，填写为<code>[ni;np;nd],K</code>。<br />
+最后一个是S-Function模块，在S-function是用C语言编写并用MEX工具编译的C-MEX文件时，需要填写该参数，这里不做修改。</p>
+而如果导入了外部参数，还需要进行另外的一步，那就是封装。<br />
+右键S函数模块-&gt;封装-&gt;编辑封装，就能打开封装编辑器(Mask Editor)。
+<center>
+<img src="6 封装编辑器.png" width=600/><span class="caption">图6
+封装编辑器</span>
+</center>
+将之前的四个外部参数(np,ni,nd,K)按如图所示添加进去，这里的参数名称和前面“模块参数”中的名称保持一致。<br />
+完成这一步后，再打开S函数模块，会直接弹出设置外部参数的对话框，更方便调整参数。
+<center>
+<img src="7 参数设置.png" width=400/><span class="caption">图7
+参数设置</span>
+</center>
+<h3 id="s-function编写">S-function编写</h3>
+<p>下面介绍S函数的编写原则，并基于此写出单神经元PID控制器的S函数。<br />
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[sys,x0,str,ts,simStateCompliance]</span> = <span class="title">exp_pidf</span><span class="params">(t,x,u,flag,deltak,K)</span></span></span><br></pre></td></tr></table></figure>
+这是主函数的第一行，函数的定义，exp_pidf是函数名，其右侧为输入参数（包括外部参数），等号左侧是输出参数。</p>
+<p>t是时间变量；<br />
+x是状态变量，对应前面的<span
+class="math inline">\(x_i(k)\)</span>或<span
+class="math inline">\(\omega_i(k)\)</span>；<br />
+u是输入向量，对应仿真文件中S函数模块与左侧Mux总线相连的五个输入值<span
+class="math inline">\(e(k),e(k-1),e(k-2),u(k-1),u(k)\)</span>，它们在S函数程序中被表示为<span
+class="math inline">\(u(1),u(2),u(3),u(4),u(5)\)</span>；<br />
+flag是标志位，在仿真程序运行的不同阶段，会根据标志位运行不同的子函数。<br />
+deltak是外部参数，这里deltak=[ni;np;nd]，表示控制器积分、比例、微分的学习速率，它是一个列向量。<br />
+K是外部参数，神经元比例系数。这里的外部参数与前面“模块参数”界面中设置的参数要一一对应。</p>
+<p>sys是程序返回值，它不一定是控制器输出量，返回的值取决于flag值，也就是不同的子函数；<br />
+x0是状态变量初始值；<br />
+str默认为空，无需设置；<br />
+ts是采样时间，包含采样时间和偏移量；<br />
+simStateComplicance是附加变量；</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> flag,</span><br><span class="line">  <span class="keyword">case</span> <span class="number">0</span>,</span><br><span class="line">    [sys,x0,str,ts,simStateCompliance]=mdlInitializeSizes;</span><br><span class="line"><span class="comment">%调用初始化函数</span></span><br><span class="line">  <span class="keyword">case</span> <span class="number">2</span>,</span><br><span class="line">    sys=mdlUpdate(t,x,u,deltak);</span><br><span class="line"><span class="comment">%更新状态变量，此算法有三个状态变量，三个权值系数w1(k),w2(k),w3(k)</span></span><br><span class="line">  <span class="keyword">case</span> <span class="number">3</span>,</span><br><span class="line">    sys=mdlOutputs(t,x,u,K);</span><br><span class="line"><span class="comment">%调用输出函数，输出控制值信号</span></span><br><span class="line">  <span class="keyword">case</span> &#123;<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>&#125;,</span><br><span class="line">    sys=[];</span><br><span class="line">  <span class="keyword">otherwise</span></span><br><span class="line">    DAStudio.error(<span class="string">&#x27;Simulink:blocks:unhandledFlag&#x27;</span>, num2str(flag));</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>接下来完成这个主函数，它是一个switch-case结构，选择不同的标志位以进入不同的子函数。<br />
+其中flag=0时进入初始化函数，flag=2时更新状态变量，flag=3时计算控制器输出值。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[sys,x0,str,ts,simStateCompliance]</span>=<span class="title">mdlInitializeSizes</span></span></span><br><span class="line"><span class="comment">%初始化函数</span></span><br><span class="line">sizes = simsizes;</span><br><span class="line">sizes.NumContStates  = <span class="number">0</span>;</span><br><span class="line">sizes.NumDiscStates  = <span class="number">3</span>;</span><br><span class="line"><span class="comment">%定义三个离散的状态变量，w1(k),w2(k),w3(k)</span></span><br><span class="line">sizes.NumOutputs     = <span class="number">4</span>;</span><br><span class="line"><span class="comment">%定义四个输出，算法中的控制变量u（k)和三个PID参数Kp,Ki,Kd</span></span><br><span class="line">sizes.NumInputs      = <span class="number">5</span>;</span><br><span class="line"><span class="comment">%定义该系统有五个输入</span></span><br><span class="line">sizes.DirFeedthrough = <span class="number">1</span>;</span><br><span class="line"><span class="comment">%直接馈通，输出和输入有关存在直接馈通参数为1</span></span><br><span class="line">sizes.NumSampleTimes = <span class="number">1</span>;  </span><br><span class="line"><span class="comment">%采样时间个数，默认值</span></span><br><span class="line">sys = simsizes(sizes);</span><br><span class="line">x0  = [<span class="number">0.1</span>,<span class="number">0.1</span>,<span class="number">0.1</span>];</span><br><span class="line"><span class="comment">%定义三个状态变量的初始值，即w1(0)=0.1,w2(0)=0.1,w3(0)=0.1</span></span><br><span class="line">str = [];</span><br><span class="line">ts  = [<span class="number">-1</span> <span class="number">0</span>];</span><br><span class="line"><span class="comment">%S-function设置为[-1 0]为按照其所连接块的速率来运行</span></span><br><span class="line">simStateCompliance = <span class="string">&#x27;UnknownSimState&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>初始化函数如上所示，主要关注离散的状态变量数量(NumDiscStates)、输出量数量(NumOutputs)、输入量数量(NumInputs)。<br />
+状态变量初始值x0设成不为零的较小数，可以避免可能出现的程序报错。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sys</span>=<span class="title">mdlUpdate</span><span class="params">(t,x,u,deltak)</span></span></span><br><span class="line">sys = x+deltak*u(<span class="number">1</span>)*u(<span class="number">5</span>)*(<span class="number">2</span>*u(<span class="number">1</span>)-u(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+<p>状态变量更新函数如上所示。<br />
+其中x为上一次状态变量，<span
+class="math inline">\(x=[\omega_1(k-1);\omega_2(k-1);\omega_3(k-1)]\)</span><br />
+sys为更新后状态变量，<span
+class="math inline">\(sys=[\omega_1(k);\omega_2(k);\omega_3(k)]\)</span><br />
+其对应的公式为：<br />
+<span class="math inline">\(\omega(k)=\omega(k-1)+\eta
+z(k)u(k-1)[e(k)+\Delta e(k)]\)</span></p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sys</span>=<span class="title">mdlOutputs</span><span class="params">(t,x,u,K)</span></span></span><br><span class="line">xx = [u(<span class="number">1</span>) u(<span class="number">1</span>)-u(<span class="number">2</span>) u(<span class="number">1</span>)+u(<span class="number">3</span>)<span class="number">-2</span>*u(<span class="number">2</span>)];</span><br><span class="line">sys = [u(<span class="number">4</span>)+K*xx*x/sum(<span class="built_in">abs</span>(x));K*x/sum(<span class="built_in">abs</span>(x))];</span><br></pre></td></tr></table></figure>
+<p>控制器输出值计算函数如上所示。 其中xx对应<span
+class="math inline">\(x_i(k)\)</span><br />
+sys的第一个参数是控制器输出值，对应公式：<br />
+<span class="math inline">\(u(k)=u(k-1)+K\sum\limits_{i=1}^3
+\omega_i^{&#39;}(k)x_i(k)\)</span><br />
+sys的后面三个输出值为PID控制器参数<span
+class="math inline">\(K_i,K_p,K_d\)</span>，对应公式为：<br />
+<span class="math inline">\(K_i=K \omega_1^{&#39;}(k)\)</span><br />
+<span class="math inline">\(K_p=K \omega_2^{&#39;}(k)\)</span><br />
+<span class="math inline">\(K_d=K \omega_3^{&#39;}(k)\)</span><br />
+值得注意的是，这里的xx是行向量，x是列向量，只有这样向量相乘才会得到一个数。</p>
+<h3 id="仿真结果分析">仿真结果分析</h3>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nndl.github.io/">邱锡鹏. 神经网络与深度学习[M].
+北京:机械工业出版社,2020</a></li>
+<li>李捷菲. 基于BP神经网络的PID控制系统研究与设计[D].
+吉林大学，2019</li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42650162/article/details/90517955">CSDN—小师兄1995—单神经元PID控制+Simulink控制系统仿真</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42650162/article/details/90488610">CSDN—小师兄1995—Matlab
+S-function 使用总结</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_50892810/article/details/130982793">CSDN—Mr.
+邹—几种神经网络整定PID参数原理剖析及simulink案例仿真</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">神经网络算法概述</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

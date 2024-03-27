@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>神经网络算法概述 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,神经网络原理及应用" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="预习神经网络原理及应用课程大作业所整理的笔记。 本文将初步介绍神经网络与深度学习相关理论原理，后面的文章将讲解基于神经网络算法的电机控制器参数整定研究。 按照网络上的内容整理，若有错误敬请指正。 绪论 人工智能 智能是知识与智慧的总和，与大脑的思维活动相关。人工智能(Artificial Intelligence，AI)就是通过计算机控制的方式，让机器具有人类的智能。 人工智能的就是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络算法概述">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="预习神经网络原理及应用课程大作业所整理的笔记。 本文将初步介绍神经网络与深度学习相关理论原理，后面的文章将讲解基于神经网络算法的电机控制器参数整定研究。 按照网络上的内容整理，若有错误敬请指正。 绪论 人工智能 智能是知识与智慧的总和，与大脑的思维活动相关。人工智能(Artificial Intelligence，AI)就是通过计算机控制的方式，让机器具有人类的智能。 人工智能的就是">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/1%20传统机器学习的数据处理流程.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/2%20深度学习的数据处理流程.png">
+<meta property="article:published_time" content="2024-02-15T00:17:45.000Z">
+<meta property="article:modified_time" content="2024-03-25T08:54:19.073Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="神经网络原理及应用">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/1%20传统机器学习的数据处理流程.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/神经网络原理及应用/神经网络算法概述" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/">神经网络原理及应用</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/" rel="tag">神经网络原理及应用</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">
+            <time datetime="2024-02-15T00:17:45.000Z" itemprop="datePublished">2024-02-15</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            神经网络算法概述
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%AA%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">绪论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD"><span class="toc-number">1.1.</span> <span class="toc-text">人工智能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.2.</span> <span class="toc-text">机器学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E7%A4%BA%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.3.</span> <span class="toc-text">表示学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.4.</span> <span class="toc-text">深度学习</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">1.5.</span> <span class="toc-text">神经网络</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">2.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>预习<code>神经网络原理及应用</code>课程大作业所整理的笔记。<br />
+本文将初步介绍神经网络与深度学习相关理论原理，后面的文章将讲解基于神经网络算法的电机控制器参数整定研究。<br />
+按照网络上的内容整理，若有错误敬请指正。</p>
+<h2 id="绪论">绪论</h2>
+<h3 id="人工智能">人工智能</h3>
+<p>智能是知识与智慧的总和，与大脑的思维活动相关。人工智能(Artificial
+Intelligence，AI)就是通过计算机控制的方式，让机器具有人类的智能。<br />
+人工智能的就是让机器的行为看起来就像是人所表现出的智能行为一样。<br />
+人工智能的研究主要领域有这三个方面：</p>
+<ul>
+<li>模拟人的感知能力，对外部刺激信息（视觉和语音等）进行感知和加工。主要研究领域包括语音信息处理和计算机视觉等。</li>
+<li>模拟人的学习能力，主要研究如何从样例或从与环境的交互中进行学习。主要研究领域包括监督学习、无监督学习和强化学习等。</li>
+<li>模拟人的认知能力，主要研究领域包括知识表示、自然语言理解、推理、规划、决策等。</li>
+</ul>
+<h3 id="机器学习">机器学习</h3>
+机器学习(MachineLearning，ML)是指从有限的观测数据中学习（或猜测）出具有一般性的规律，并利用这些规律对未知数据进行预测的方法。机器学习人工智能的一个重要分支。<br />
+通常一个机器学习模型通常包括<mark>数据预处理、特征提取、特征转换、预测</mark>这四个环节。<br />
+其中数据预处理、特征提取、特征转换可以统称为特征处理。预测环节是机器学习的核心环节，它对特征处理所得的数据进行了一次“浅层学习”。
+<center>
+<img src="1 传统机器学习的数据处理流程.png" width=600/><span
+class="caption">图1 传统机器学习的数据处理流程</span>
+</center>
+<p>机器学习可以分为<mark>监督学习、无监督学习和强化学习</mark>。</p>
+<h3 id="表示学习">表示学习</h3>
+<p>为了提高机器学习系统的准确率，我们就需要将输入信息转换为<mark>有效的特征</mark>，或者更一般性地称为表示（Representation）．如果有一种算法可以自动地学习出有效的特征，并提高最终机器学习模型的性能，那么这种学习就可以叫作表示学习（Representation
+Learning，RL）。<br />
+表示学习的关键是解决语义鸿沟（SemanticGap）问题．语义鸿沟问题是指输入数据的底层特征和高层语义信息之间的不一致性和差异性。<br />
+我们需要需要一个“好的表示”，这种好的表示可以可以通过一定的规则，将所得到的底层特征与相对抽象的高层语义概念联系起来。<br />
+这里的底层特征，可以比作一张由不同颜色的点组成的图片，而高层语义概念，则可以比作我们的能够从图片上观察得到的事物，比如“汽车、房子”。我们需要一个“好的表示”，把图片上的一个个点的特征表示出来，让它们与我们所认知的“汽车、房子”能够更好地通过一定的规则对应上。</p>
+<h3 id="深度学习">深度学习</h3>
+为了学习一种好的表示，需要构建具有一定“深度”的模型，并通过学习算法来让模型自动学习出好的特征表示（从底层特征，到中层特征，再到高层特征），从而最终提升预测模型的准确率。<br />
+深度学习(DeepLearning，DL)是机器学习的一个子问题，其主要目的是从数据中自动学习到有效的特征表示。<br />
+“深度”是指原始数据进行非线性特征转换的次数．如果把一个表示学习系统看作一个有向图结构，深度也可以看作从输入节点到输出节点所经过的最长路径的长度。
+<center>
+<img src="2 深度学习的数据处理流程.png" width=600/><span
+class="caption">图2 深度学习的数据处理流程</span>
+</center>
+<p>深度学习需要解决的关键问题是贡献度分配问题(CreditAssignment
+Problem，CAP)，即一个系统中不同的组件(component)或其参数对最终系统输出结果的贡献或影响。<br />
+目前，深度学习采用的模型主要是神经网络模型。神经网络模型可以使用误差反向传播算法，从而可以比较好地解决贡献度分配问题．只要是超过一层的神经网络都会存在贡献度分配问题，因此可以将超过一层的神经网络都看作深度学习模型。</p>
+<h3 id="神经网络">神经网络</h3>
+<p>人工神经网络(Artificial Neural
+Networks，ANN)，简称神经网络，由许许多多信息处理单位（对应于人脑中的神经元）根据不同的相互作用强度（即连接权值）互连而成，其实质是对生物学上的人脑神经体系的一种近似与模拟，能够像人体神经系统一样对外界知识进行检索、处理与存储。</p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nndl.github.io/">邱锡鹏. 神经网络与深度学习[M].
+北京:机械工业出版社,2020</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vr4y1J7Nv">神经网络与深度学习
+研究生选修课程</a></li>
+<li>李捷菲. 基于BP神经网络的PID控制系统研究与设计[D].
+吉林大学，2019</li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    单神经元PID控制器的设计与仿真
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">基于粒子群算法的电机控制器参数整定研究</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

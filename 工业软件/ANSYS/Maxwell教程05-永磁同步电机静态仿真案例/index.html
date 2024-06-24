@@ -19,24 +19,30 @@
     } 
     </script>
     
-    <title>Maxwell教程05-永磁同步电机静态仿真案例 | RenAhahWiki</title>
+    <title>Maxwell教程05-永磁同步电机静态及瞬态仿真案例 | RenAhahWiki</title>
     
     
         <meta name="keywords" content="Maxwell" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="基于B站视频【Maxwell基础入门】永磁同步电机静态仿真案例整理的学习笔记，视频原作者为我真的爱吃炸鸡。 使用的软件版本为2021R1 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 电机参数    部件 参数     定子外径 180mm   定子内径 120mm   气隙 0.6mm   永磁体厚">
+    <meta name="description" content="基于B站视频【Maxwell基础入门】永磁同步电机静态仿真案例整理的学习笔记，视频原作者为我真的爱吃炸鸡。 并在此基础上，参考书籍、网络上的资料，实现永磁同步电机瞬态仿真。 本次实验将观察电机的空载磁力线、空载磁密分布、定子感应电势波形、空载气隙磁密波形。 使用的软件版本为2021R1 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 静态仿真">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Maxwell教程05-永磁同步电机静态仿真案例">
+<meta property="og:title" content="Maxwell教程05-永磁同步电机静态及瞬态仿真案例">
 <meta property="og:url" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="基于B站视频【Maxwell基础入门】永磁同步电机静态仿真案例整理的学习笔记，视频原作者为我真的爱吃炸鸡。 使用的软件版本为2021R1 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 电机参数    部件 参数     定子外径 180mm   定子内径 120mm   气隙 0.6mm   永磁体厚">
+<meta property="og:description" content="基于B站视频【Maxwell基础入门】永磁同步电机静态仿真案例整理的学习笔记，视频原作者为我真的爱吃炸鸡。 并在此基础上，参考书籍、网络上的资料，实现永磁同步电机瞬态仿真。 本次实验将观察电机的空载磁力线、空载磁密分布、定子感应电势波形、空载气隙磁密波形。 使用的软件版本为2021R1 为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记 静态仿真">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/1%20永磁同步电机仿真模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/2%20磁力线分布.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/3%20磁通密度.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/4%20定子感应电势波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/5%20气隙磁密波形.png">
 <meta property="article:published_time" content="2024-04-05T03:59:05.000Z">
-<meta property="article:modified_time" content="2024-04-05T13:29:19.621Z">
+<meta property="article:modified_time" content="2024-05-17T14:17:06.172Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="Maxwell">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/1%20永磁同步电机仿真模型.png">
     
 
     
@@ -212,7 +218,7 @@
                             &nbsp;
                             Maxwell
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态仿真案例</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file active"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -240,6 +246,24 @@
                             电力电子技术
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -302,7 +326,7 @@
                             &nbsp;
                             电机
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -439,7 +463,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Maxwell教程05-永磁同步电机静态仿真案例
+            Maxwell教程05-永磁同步电机静态及瞬态仿真案例
         </h1>
     
 
@@ -452,7 +476,7 @@
             
                 <div id="toc" class="toc-article">
                 <strong class="toc-title">文章目录</strong>
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E5%8F%82%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">电机参数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%98%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">模型绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%90%E6%96%99%E7%BB%91%E5%AE%9A"><span class="toc-number">3.</span> <span class="toc-text">材料绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E7%BB%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">4.</span> <span class="toc-text">绕组设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">边界条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%88%A8%E5%88%86"><span class="toc-number">6.</span> <span class="toc-text">模型刨分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B1%82%E8%A7%A3%E4%B8%8E%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%E6%9F%A5%E7%9C%8B"><span class="toc-number">7.</span> <span class="toc-text">模型求解与仿真结果查看</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">8.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">静态仿真</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E5%8F%82%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">电机参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E7%BB%98%E5%88%B6"><span class="toc-number">1.2.</span> <span class="toc-text">模型绘制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%90%E6%96%99%E7%BB%91%E5%AE%9A"><span class="toc-number">1.3.</span> <span class="toc-text">材料绑定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E7%BB%84%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">绕组设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.5.</span> <span class="toc-text">边界条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E5%88%A8%E5%88%86"><span class="toc-number">1.6.</span> <span class="toc-text">模型刨分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B1%82%E8%A7%A3%E4%B8%8E%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%E6%9F%A5%E7%9C%8B"><span class="toc-number">1.7.</span> <span class="toc-text">模型求解与仿真结果查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9E%AC%E6%80%81%E4%BB%BF%E7%9C%9F"><span class="toc-number">2.</span> <span class="toc-text">瞬态仿真</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E7%BB%95%E7%BB%84%E6%BF%80%E5%8A%B1"><span class="toc-number">2.1.</span> <span class="toc-text">设置绕组激励</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6-1"><span class="toc-number">2.2.</span> <span class="toc-text">边界条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E8%BF%90%E5%8A%A8%E9%83%A8%E4%BB%B6"><span class="toc-number">2.3.</span> <span class="toc-text">设置运动部件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%B1%82%E8%A7%A3%E4%B8%8E%E4%BB%BF%E7%9C%9F%E7%BB%93%E6%9E%9C%E6%9F%A5%E7%9C%8B-1"><span class="toc-number">2.4.</span> <span class="toc-text">模型求解与仿真结果查看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
                 </div>
             
         
@@ -460,9 +484,12 @@
             <p>基于B站视频<a
 target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MG4y1c7Q4">【Maxwell基础入门】永磁同步电机静态仿真案例</a>整理的学习笔记，视频原作者为<a
 target="_blank" rel="noopener" href="https://space.bilibili.com/641979324">我真的爱吃炸鸡</a>。<br />
+并在此基础上，参考书籍、网络上的资料，实现永磁同步电机瞬态仿真。<br />
+本次实验将观察电机的空载磁力线、空载磁密分布、定子感应电势波形、空载气隙磁密波形。<br />
 <em>使用的软件版本为2021R1</em><br />
 <em>为了节约流量，使网页更快打开，整理的笔记以文字为主，不会有太多图片，所以最好配合视频来看笔记</em></p>
-<h2 id="电机参数">电机参数</h2>
+<h2 id="静态仿真">静态仿真</h2>
+<h3 id="电机参数">电机参数</h3>
 <table>
 <thead>
 <tr class="header">
@@ -497,7 +524,7 @@ target="_blank" rel="noopener" href="https://space.bilibili.com/641979324">我�
 </tr>
 </tbody>
 </table>
-<h2 id="模型绘制">模型绘制</h2>
+<h3 id="模型绘制">模型绘制</h3>
 <p>打开软件，点击Desktop菜单里的Maxwell图标，点击Maxwell
 2D，创建一个二维的Maxwell工程。<br />
 点击菜单栏Modeler-&gt;Units，确认仿真单位为mm。</p>
@@ -515,7 +542,7 @@ of Segments设置为5。这样将会使圆弧近似转化为5条线段的组合�
 (7)将其由线段的组合转化为面。选中这个定子槽整体，点击Draw菜单栏中Surface-&gt;Cover
 Lines，就可以看到整个定子槽被填充成实心的了。</p>
 <p>(8)接下来画定子槽导体，先画下导体，点击Draw菜单栏中的直线(Draw
-Line)，然后在右下角xyz坐标处依次输入(61.25,1,0)-&gt;(61.25,-1,0)-&gt;(61.25,-2.75,0)-&gt;(71.99,-3.45,0)-&gt;(71.99,3.45,0)-&gt;(61.25,2.75,0)-&gt;(61.25,1,0)，每输入一个数据就回车一次。<br />
+Line)，然后在右下角xyz坐标处依次输入(61.25,1,0)-&gt;(61.25,-1,0)-&gt;(62.75,-2.75,0)-&gt;(71.99,-3.45,0)-&gt;(71.99,3.45,0)-&gt;(62.75,2.75,0)-&gt;(61.25,1,0)，每输入一个数据就回车一次。<br />
 (9)再画上导体，这次不一个一个输入坐标，而是直接描线段，依次点击八个端点得到上导体。<br />
 (10)给导体命名，修改属性窗口中的Name，下导体(Polyline4)命名为down，上导体(Polyline5)命名为up。还可以顺便修改颜色。</p>
 <p>接下来画定子铁芯。</p>
@@ -557,7 +584,11 @@ Segments设置为180），二者相减得到定子求解边界，命名为air。
 (28)画一个半径为59.7mm的外圆（Number of
 Segments设置为180）与15mm的内圆（Number of
 Segments设置为36），二者相减得到定子求解边界，命名为band。</p>
-<h2 id="材料绑定">材料绑定</h2>
+<center>
+<img src="1 永磁同步电机仿真模型.png"/ width=400><span
+class="caption">图1 永磁同步电机仿真模型</span>
+</center>
+<h3 id="材料绑定">材料绑定</h3>
 <p>(1)选中所有导体（36个上导体与36个下导体），右键Assign
 Material，选择copper（铜）作为导体的材料。<br />
 (2)选中定子与转子，右键Assign
@@ -568,7 +599,7 @@ Type设置为Cylindrical（径向磁化，圆柱坐标）。<br />
 (4)选中永磁体S极，右键Assign Material，搜索NdFe30，选中后点击Clone
 Material，Material Coordinate System Type设置为Cylindrical，将属性里的R
 Component设置为-1。</p>
-<h2 id="绕组设置">绕组设置</h2>
+<h3 id="绕组设置">绕组设置</h3>
 <p>(1)选中up,up1,up2,up18,up19,up20,down,down34,down35,down16,down17,down18。右键Assign
 Excitation-&gt;Current，命名(Base
 Name)为PA（A相正极），15A，Positive。<br />
@@ -587,13 +618,13 @@ Name)为PC（C相正极），7.5A，Positive。<br />
 (6)选中up3,up4,up5,up21,up22,up23,down19,down20,down21,down1,down2,down3。右键Assign
 Excitation-&gt;Current，命名(Base
 Name)为RC（C相负极），7.5A，Negative。</p>
-<h2 id="边界条件">边界条件</h2>
+<h3 id="边界条件">边界条件</h3>
 <p>(1)将Draw菜单栏中的Select由Object改为Edge。<br />
 (2)依次选中定子外径的36条边，右键Assign Boundary-&gt;Vector
 Potential，然后OK。<br />
-(3)选中转子内径，可以之间拖动选取，右键Assign Boundary-&gt;Vector
+(3)再选中转子内径，右键Assign Boundary-&gt;Vector
 Potential，然后OK。</p>
-<h2 id="模型刨分">模型刨分</h2>
+<h3 id="模型刨分">模型刨分</h3>
 <p>(1)打开Simulation菜单栏，点击Mesh Settings，Mesh
 Method选择为Classic。<br />
 (2)选中所有的定子导体，右键Assign Mesh Operation-&gt;Inside
@@ -612,20 +643,78 @@ Length设置为4。<br />
 Selection-&gt;Skin Depth Layers Based，命名为air，Skin
 Depth设置为5，Number of Layers of Elements设置为22，Surface Triangle
 Length设置为0.3。</p>
-<h2 id="模型求解与仿真结果查看">模型求解与仿真结果查看</h2>
+<h3 id="模型求解与仿真结果查看">模型求解与仿真结果查看</h3>
 <p>(1)右键Project Manager中的Analysis-&gt;Add Solution
 Setup，进入求解设置界面，使用默认设置，直接确定即可。<br />
 (2)点击Simulation菜单栏的Validate，可以检查目前是否达成正式开始仿真运行的所有条件。<br />
 (3)点击Validate旁边的Analyze All，开始求解，需要较长的一段时间。<br />
 (4)求解结束后，就可以看各种仿真结果了。先看一下磁力线分布，选中整个电机模型，右键Fields-&gt;A-&gt;Flux_Lines，设置界面中In
-Volume选择AllObjects，确认后开始生成相应的图像，右击图像上的图例Modify进入设置界面，可以修改图像的显示效果。<br />
-(5)再看一下磁场密度，选中电机模型后右键Fields-&gt;B-&gt;Mag_B，设置界面中In
+Volume选择AllObjects，确认后开始生成相应的图像，双击图像上的图例进入设置界面，可以修改图像的显示效果。<br />
+(5)再看一下磁通密度，选中电机模型后右键Fields-&gt;B-&gt;Mag_B，设置界面中In
 Volume选择AllObjects。</p>
+<center>
+<img src="2 磁力线分布.png"/ width=400><span class="caption">图2
+磁力线分布</span>
+</center>
+<center>
+<img src="3 磁通密度.png"/ width=400><span class="caption">图3
+磁通密度</span>
+</center>
+<h2 id="瞬态仿真">瞬态仿真</h2>
+<p>瞬态仿真采用与静态仿真相同的电机参数，其模型绘制、材料绑定、模型刨分环节与静态仿真一致，这里不再赘述。</p>
+<h3 id="设置绕组激励">设置绕组激励</h3>
+<p>瞬态仿真与静态仿真的绕组设置方式不同。<br />
+(1)选中三相绕组所有首端（前文静态仿真中的A相正极、B相正极、C相正极），右键选择Assign
+Excitation-&gt;Coil，命名为Pos，Number of
+Conductors为<mark>线圈导线数，其值为匝数与并绕根数乘积，这里设置为10</mark>，Polarity极性设置为Positive。<br />
+(2)选中三相绕组所有尾端（前文静态仿真中的A相负极、B相负极、C相负极），右键选择Assign
+Excitation-&gt;Coil，命名为Neg，Number of
+Conductors设置为10，Polarity极性设置为Negative。<br />
+(3)添加绕组分组，右键Project Manager中的Excitations-&gt;Add
+Windings，命名为Winding_A，Type选择Current（电流激励），并<mark>选择Stranded（Stranded是分散导体、多股绞线，如异步和同步电机定子绕组；Solid是实心导体，如鼠笼式异步电机转子导条，存在集肤效应）</mark>，这里进行的是空载实验，永磁体磁极为激励，不设电流激励，Current值为0。Number
+of parallel branch（并联支路数）设为1。<br />
+(4)右键Winding_A-&gt;Add Coils添加属于A相的所有线圈。<br />
+(5)同理设置Winding_B与Winding_C并添加对应的线圈。</p>
+<h3 id="边界条件-1">边界条件</h3>
+<p>(1)将Draw菜单栏中的Select由Object改为Edge。<br />
+(2)依次选中定子外径的36条边，右键Assign Boundary-&gt;Vector
+Potential，得到0矢量边界1。<br />
+(3)再选中转子内径，右键Assign Boundary-&gt;Vector
+Potential，得到0矢量边界2。</p>
+<h3 id="设置运动部件">设置运动部件</h3>
+<p>选中转子(band)，右键Assign
+Band，Type选项卡下选择Rotation，Mechanical选项卡下设置Angular
+Velocity（角速度）为1500r/min。</p>
+<h3 id="模型求解与仿真结果查看-1">模型求解与仿真结果查看</h3>
+模型求解方法与静态仿真一致。<br />
+磁力线分布与磁通密度的仿真结果查看方式与静态仿真一致，这里介绍定子感应电势波形与气隙磁密曲线的仿真结果获取方法。<br />
+首先观察定子感应电势波形（三相反电动势波形），右键Project
+Manager中的Result-&gt;Creat Transient Report-&gt;Rectangular
+Plot，Category选择Winding，Quantity选择InducedVoltage(Winding_A)、InducedVoltage(Winding_B)、InducedVoltage(Winding_C)，点击New
+Report即可生成感应电势曲线，如下图所示。
+<center>
+<img src="4 定子感应电势波形.png"/ width=600><span class="caption">图4
+定子感应电势波形</span>
+</center>
+然后观察气隙磁密波形，首先要绘制气隙线，点击Draw菜单栏中的圆绘制一个以电机轴心为圆心，半径为59.7mm的圆，点击后会弹出窗口，寻味是否创建一个Non
+Model Object点击OK即可（或者在Draw菜单栏最右侧Material中的Model改为Non
+Model，这样不会弹出窗口）。<br />
+选中所得的圆，展开并删除CoverLines，只保留CreateCircle，得到的就是气隙线。<br />
+右键Project Manager中的Create Fields Report-&gt;Rectangular
+Plot，Geometry选择所得的气隙线，X为Default，Y选择Mag_B（在Category选择Calculator
+Expressions，Quantity选择Mag_B），点击New
+Report即可生成气隙磁密波形曲线，如下图所示。<br />
+
+<center>
+<img src="5 气隙磁密波形.png"/ width=600><span class="caption">图5
+气隙磁密波形</span>
+</center>
 <h2 id="参考资料">参考资料</h2>
 <blockquote>
 <ul>
 <li><a
 target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MG4y1c7Q4">【Maxwell基础入门】永磁同步电机静态仿真案例</a></li>
+<li>Ansoft Maxwell 13电机电磁场实例分析 (刘慧娟)</li>
 </ul>
 </blockquote>
 
@@ -642,6 +731,15 @@ target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MG4y1c7Q4
 
     
 <nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    开关磁阻电机
+                
+            </div>
+        </a>
     
     
         <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">

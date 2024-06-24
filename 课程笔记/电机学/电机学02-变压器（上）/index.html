@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机学02-变压器（上） | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,电机学" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="为进一步掌握电机相关原理概念整理的电机学笔记。 根据视频电机学（哈尔滨理工大学）p5-p10整理，若有错误敬请指正。 变压器概述 变压器的分类 用途： (1)电力变压器：在电力系统中传送和分配电能。 (2)调压变压器：在电力网或实验室中调节电压。 (3)测量变压器：如电流互感器、电压互感器。 (4)专用变压器：电炉变压器、电焊变压器、整流变压器、高压实验变压器、仪器用小功率变压器等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机学02-变压器（上）">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="为进一步掌握电机相关原理概念整理的电机学笔记。 根据视频电机学（哈尔滨理工大学）p5-p10整理，若有错误敬请指正。 变压器概述 变压器的分类 用途： (1)电力变压器：在电力系统中传送和分配电能。 (2)调压变压器：在电力网或实验室中调节电压。 (3)测量变压器：如电流互感器、电压互感器。 (4)专用变压器：电炉变压器、电焊变压器、整流变压器、高压实验变压器、仪器用小功率变压器等">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/1%20空载运行.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/2%20空载运行关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/3%20空载运行相位关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/4%20空载运行等效电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/5%20空载运行等效电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/6%20负载运行.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/7%20负载运行关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/8%20负载运行关系.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/9%20T型等效电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/10%20负载运行向量图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/11%20简化等效电路.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/12%20简化相量图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/13%20空载实验.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/14%20短路实验.png">
+<meta property="article:published_time" content="2024-06-15T07:14:26.000Z">
+<meta property="article:modified_time" content="2024-06-20T04:21:30.154Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="电机学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/1%20空载运行.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/电机学/电机学02-变压器（上）" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/">电机学</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E6%9C%BA%E5%AD%A6/" rel="tag">电机学</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">
+            <time datetime="2024-06-15T07:14:26.000Z" itemprop="datePublished">2024-06-15</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机学02-变压器（上）
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">变压器概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">变压器的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">变压器的基本结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E9%A2%9D%E5%AE%9A%E5%80%BC"><span class="toc-number">1.3.</span> <span class="toc-text">变压器的额定值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E7%A9%BA%E8%BD%BD%E8%BF%90%E8%A1%8C"><span class="toc-number">2.</span> <span class="toc-text">变压器的空载运行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E8%B4%9F%E8%BD%BD%E8%BF%90%E8%A1%8C"><span class="toc-number">3.</span> <span class="toc-text">变压器的负载运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A3%81%E5%8A%A8%E5%8A%BF%E5%B9%B3%E8%A1%A1%E6%96%B9%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">磁动势平衡方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%83%BD%E9%87%8F%E5%AE%88%E6%81%92%E6%96%B9%E7%A8%8B"><span class="toc-number">3.2.</span> <span class="toc-text">能量守恒方程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8E%8B%E5%B9%B3%E8%A1%A1%E6%96%B9%E7%A8%8B"><span class="toc-number">3.3.</span> <span class="toc-text">电压平衡方程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E5%BD%92%E7%AE%97"><span class="toc-number">4.</span> <span class="toc-text">变压器的归算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E7%AD%89%E6%95%88%E7%94%B5%E8%B7%AF%E4%B8%8E%E7%9B%B8%E9%87%8F%E5%9B%BE"><span class="toc-number">5.</span> <span class="toc-text">变压器的等效电路与相量图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E5%8E%8B%E5%99%A8%E7%9A%84%E5%8F%82%E6%95%B0%E6%B5%8B%E5%AE%9A"><span class="toc-number">6.</span> <span class="toc-text">变压器的参数测定</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A9%BA%E8%BD%BD%E5%AE%9E%E9%AA%8C"><span class="toc-number">6.1.</span> <span class="toc-text">空载实验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%AD%E8%B7%AF%E5%AE%9E%E9%AA%8C"><span class="toc-number">6.2.</span> <span class="toc-text">短路实验</span></a></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>为进一步掌握电机相关原理概念整理的电机学笔记。<br />
+根据视频<a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cx411Z76w">电机学（哈尔滨理工大学）p5-p10</a>整理，若有错误敬请指正。</p>
+<h2 id="变压器概述">变压器概述</h2>
+<h3 id="变压器的分类">变压器的分类</h3>
+<p>用途：<br />
+(1)电力变压器：在电力系统中传送和分配电能。<br />
+(2)调压变压器：在电力网或实验室中调节电压。<br />
+(3)测量变压器：如电流互感器、电压互感器。<br />
+(4)专用变压器：电炉变压器、电焊变压器、整流变压器、高压实验变压器、仪器用小功率变压器等。</p>
+<p>绕组数目：双绕组变压器、三绕组变压器。<br />
+铁芯结构：芯式变压器、壳式变压器。<br />
+相数：单相变压器、三相变压器、多相变压器（六相、十二相等）。<br />
+冷却方式：油浸式变压器、干式变压器。</p>
+<h3 id="变压器的基本结构">变压器的基本结构</h3>
+<p><strong>铁芯</strong>与<strong>绕组</strong>，是变压器最基本的两个组成部件，二者合称为变压器的器身。<br />
+对于油浸式变压器，还有<strong>油箱</strong>、<strong>绝缘管套</strong>等组件。</p>
+<p>铁芯：<strong>构成变压器的磁路</strong>，机械骨架，由硅钢片制成。
+大型变压器多为芯式并采用油浸，小型变压器多采用壳式。<br />
+硅钢片按碾压方向分为热轧（无碾压方向）与冷轧（有方向性）两种，目前多采用冷轧。<br />
+为了进一步降低空载电流、空载损耗、铁芯叠片采用全斜接缝，上层与下层叠片接缝错开。</p>
+<p>绕组：<strong>构成变压器的电路</strong>。<br />
+根据高低压绕组在铁芯柱上的相对位置，变压器绕组分为同心式与交叠式两种。</p>
+<p>油箱：变压器的外壳，装载变压器油起到<strong>绝缘与散热</strong>的作用。</p>
+<p>绝缘管套：使高压引线与接地的油箱绝缘。</p>
+<h3 id="变压器的额定值">变压器的额定值</h3>
+<p>额定容量<span
+class="math inline">\(S_n\)</span>：视在功率，单位kVA，规定一次侧、二次侧额定容量设计值相等。<br />
+额定电压：<span
+class="math inline">\(U_{1N}\)</span>为额定状态下一次绕组所加电压值，<span
+class="math inline">\(U_{2N}\)</span>为一次绕组所加电压为<span
+class="math inline">\(U_{1N}\)</span>时二次侧的空载电压值。<br />
+三相变压器的额定电压指<strong>线电压</strong>。<br />
+额定电流：<span class="math inline">\(I_{1N}=\frac{S_N}{U_{1N}} \quad
+I_{2N}=\frac{S_N}{U_{2N}}\)</span><br />
+对于三相变压器<span class="math inline">\(I_{1N}=\frac{S_N}{\sqrt 3
+U_{1N}} \quad I_{2N}=\frac{S_N}{\sqrt 3 U_{2N}}\)</span><br />
+三相变压器的额定电压指<strong>线电流</strong>。<br />
+额定频率：<span class="math inline">\(f_N=50Hz\)</span>
+此外，额定值还包括变压器效率、温升等。</p>
+<h2 id="变压器的空载运行">变压器的空载运行</h2>
+一次侧接电源电压，二次侧开路。<br />
+<mark>假定<span class="math inline">\(e\)</span>、<span
+class="math inline">\(i\)</span>同方向，<span
+class="math inline">\(\Phi\)</span>的方向与<span
+class="math inline">\(i\)</span>的方向符合右手螺旋定则。</mark>
+<center>
+<img src="1 空载运行.png" width=300/><span class="caption">图1
+空载运行</span>
+</center>
+<center>
+<img src="2 空载运行关系.png" width=600/><span class="caption">图2
+空载运行关系</span>
+</center>
+<p><mark>注：电压箭头方向为由高到低，电势箭头方向为由低到高。</mark><br />
+<mark>电势按照由低到高，也就是由负极到正极的方向画箭头，该方向与电压方向相反。</mark><br />
+<mark>KVL公式仍然可以按照由高到低，也就是由正极到负极的方式列写，不要被电势箭头方向干扰。</mark><br />
+变比<span class="math inline">\(k=\left| \frac{u_1}{u_2} \right|=\left|
+\frac{E_1}{E_2} \right|=\frac{N_1}{N_2}\)</span><br />
+主磁通<span
+class="math inline">\(\Phi\)</span>是同时与一次侧绕组与二次侧绕组交链的磁通，其磁力线沿铁芯闭合。受铁磁材料饱和现象影响，磁阻为非常数，<span
+class="math inline">\(\Phi\)</span>与<span
+class="math inline">\(i_0\)</span>呈<strong>非线性</strong>关系。<br />
+漏磁通<span
+class="math inline">\(\Phi_{1\sigma}\)</span>仅与一次侧绕组相交链，不能传递能量，仅起电压降的作用。沿非铁磁材料(油、空气)闭合，磁阻为常数，<span
+class="math inline">\(\Phi_{1\sigma}\)</span>与<span
+class="math inline">\(i_0\)</span>呈<strong>线性</strong>关系。</p>
+<p>主磁通感应电动势<span class="math inline">\(\Phi=\Phi_m sin \omega
+t\)</span><br />
+<span class="math inline">\(\Rightarrow e_1=-N_1\frac{d\Phi}{dt}=-N_1
+\omega \Phi_m cos \omega t=N_1 \omega \Phi_m sin(\omega
+t-\frac{\pi}{2})=\sqrt 2 E_1 sin(\omega t-\frac{\pi}{2})\)</span><br />
+其中<span class="math inline">\(E_1=\frac{N_1 \omega \Phi_m}{\sqrt
+2}=\frac{N_1 2\pi f}{\sqrt 2}\Phi_m=4.44N_1 f \Phi_m\)</span><br />
+<mark><span class="math inline">\(4.44\approx \sqrt 2
+\pi\)</span></mark><br />
+<span class="math inline">\(\Rightarrow \Phi_m=\frac{E_1}{4.44N_1
+f}\approx \frac{U_1}{4.44N_1 f}\)</span><br />
+同理<span class="math inline">\(E_2=4.44N_2 f \Phi_m\)</span><br />
+化为相量形式<span class="math inline">\(\dot E_1 = -j4.44N_1 f \dot
+\Phi_m \quad \dot E_2 = -j4.44N_2 f \dot \Phi_m\)</span></p>
+由上篇文章的论述可知，若铁芯无损耗，则<span class="math inline">\(\dot
+I_0\)</span>与主磁通<span class="math inline">\(\dot
+\Phi_m\)</span>同相位。若考虑铁耗（涡流损耗与磁滞损耗），则<span
+class="math inline">\(\dot I_0\)</span>将超前<span
+class="math inline">\(\dot \Phi_m\)</span>一定的角度，这个角度<span
+class="math inline">\(\alpha\)</span>被称作铁耗角。<br />
+
+<center>
+<img src="3 空载运行相位关系.png" width=300/><span class="caption">图3
+空载运行相位关系</span>
+</center>
+<span class="math inline">\(\dot I_m = \dot I_\mu + \dot I_{Fe}
+\Rightarrow \dot I_m = -\dot E_1
+(\frac{1}{R_{Fe}}+\frac{1}{jX_\mu})\)</span><br />
+这里将空载状态下的变压器等效为电路。其中<span
+class="math inline">\(R_{Fe}\)</span>为激磁电阻（铁耗分量产生），<span
+class="math inline">\(X_\mu\)</span>为激磁电抗（磁化分量产生）。<br />
+
+<center>
+<img src="4 空载运行等效电路.png" width=500/><span class="caption">图4
+空载运行等效电路</span>
+</center>
+<p><span
+class="math inline">\(R_m=R_{Fe}\frac{X_{\mu}^2}{X_{\mu}^2+R_{Fe}^2}
+\quad X_m=X_{\mu}\frac{R_{Fe}^2}{X_{\mu}^2+R_{Fe}^2}\)</span><br />
+<span class="math inline">\(-\dot E_1=\dot I_m Z_m=\dot
+I_m(R_m+jX_m)\)</span><br />
+<mark>注：<span class="math inline">\(-\dot
+E_1\)</span>是电势不是电压，箭头方向与电压的相反，所以等式左侧有负号。</mark></p>
+<span class="math inline">\(\dot U_1=\dot I_{10}R_1 -\dot E_{1\sigma} -
+\dot E_1\)</span><br />
+<span class="math inline">\(=\dot I_{10}R_1+j\dot I_{10}\dot X_{1\sigma}
+- \dot E_1=\dot I_{10}(R_1+jX_{1\sigma})-\dot E_1\)</span><br />
+<span class="math inline">\(\dot E_2 = \dot U_2\)</span><br />
+<span class="math inline">\(X_{1\sigma}=\omega L_{1\sigma}=2\pi
+fL_{1\sigma}\)</span><br />
+漏电感<span
+class="math inline">\(L_{1\sigma}=\frac{\Psi_{1\sigma}}{i_0}=\frac{N_1\Phi_{1\sigma}}{i_0}=\frac{N_1}{i_0}\frac{F_{1\sigma}}{R_{1\sigma}}=N_1^2
+\Lambda_{1\sigma}\)</span><br />
+考虑了漏磁通与内阻后的变压器空载运行等效电路如下图所示：
+<center>
+<img src="5 空载运行等效电路.png" width=200/><span class="caption">图5
+空载运行等效电路</span>
+</center>
+<h2 id="变压器的负载运行">变压器的负载运行</h2>
+一次侧接电源电压，二次接入负载<span class="math inline">\(Z_L\)</span>。
+<center>
+<img src="6 负载运行.png" width=300/><span class="caption">图6
+负载运行</span>
+</center>
+<center>
+<img src="7 负载运行关系.png" width=700/><span class="caption">图7
+负载运行关系</span>
+</center>
+<h3 id="磁动势平衡方程">磁动势平衡方程</h3>
+<p>设一次侧绕组磁动势<span class="math inline">\(\dot
+F_1\)</span>，二次侧绕组磁动势<span class="math inline">\(\dot
+F_2\)</span>，合成磁动势<span class="math inline">\(\dot
+F_0\)</span>。<br />
+只考虑主磁通<span class="math inline">\(\dot
+\Phi_m\)</span>时，合成磁动势与空载磁动势近似相等，负载励磁电流与空载电流<span
+class="math inline">\(\dot
+I_0\)</span>近似相等，负载时励磁电流由一次侧供给，得<br />
+<span class="math inline">\(\dot F_1+\dot F_2=\dot F_0 \Rightarrow N_1
+\dot I_1 + N_2 \dot I_2 = N_1 \dot I_0\)</span><br />
+<span class="math inline">\(\Rightarrow \dot I_1 + \dot
+I_2(\frac{N_2}{N_1})=\dot I_0\)</span><br />
+<span class="math inline">\(\Rightarrow \dot I_1 = \dot I_0+(-\frac{\dot
+I_2}{k})=\dot I_0+\dot I_{1L}\)</span><br />
+式中<span class="math inline">\(\dot I_{1L}=-\frac{\dot
+I_2}{k}\)</span>为一次侧电流负载分量。</p>
+<p><mark><span class="math inline">\(F_m=F_1+F_2 \Rightarrow N_1 l_m=N_1
+i_1+N_2 i_2\)</span></mark><br />
+<mark><span class="math inline">\(\Rightarrow \dot N_1 \dot I_m=\dot N_1
+\dot I_1+\dot N_2 \dot I_2\)</span></mark><br />
+<mark style="background-color:cyan">不清楚这里为什么是<span
+class="math inline">\(F_m\)</span>，以及<span
+class="math inline">\(F_m\)</span>与<span
+class="math inline">\(F_0\)</span>的关系。</mark><br />
+<mark style="background-color:cyan">有没有一种可能，<span
+class="math inline">\(F_m\)</span>就是<span
+class="math inline">\(F_0\)</span>。</mark></p>
+<h3 id="能量守恒方程">能量守恒方程</h3>
+<p>二次侧绕组向外发出多少能量，一次侧绕组就从电网接收多少能量。<br />
+等式右侧负号体现了能量传递的方向。<br />
+<span class="math inline">\(E_1 I_{1L}=(kE_2)(-\frac{1}{k}I_2)=-E_2
+I_2\)</span></p>
+<h3 id="电压平衡方程">电压平衡方程</h3>
+<center>
+<img src="8 负载运行关系.png" width=400/><span class="caption">图8
+负载运行关系</span>
+</center>
+<p><span class="math inline">\(\dot E_{1\sigma}=-j\dot I_1 X_{1_\sigma}
+\quad \dot E_{2\sigma}=-j\dot I_2 X_{2_\sigma}\)</span></p>
+<p>变压器基本方程组：<br />
+一次绕组电压方程：<span class="math inline">\(u_1=i_1
+R_1-e_{1\sigma}-e_1 \quad \Rightarrow \quad \dot U_1=\dot
+I_1(R_1+jX_{1\sigma})-\dot E_1\)</span><br />
+二次绕组电压方程：<span class="math inline">\(e_2+e_{2\sigma}=i_2
+R_2+u_2 \quad \Rightarrow \quad \dot U_2=\dot E_2-\dot
+I_2(R_2+jX_{2\sigma})\)</span><br />
+合成磁势方程：<span class="math inline">\(N_1 i_m=N_1 i_1+N_2 i_2 \quad
+\Rightarrow \quad N_1 \dot I_m=N_1 \dot I_1 +N_2 \dot I_2\)</span><br />
+电势关系：<span class="math inline">\(\frac{e_1}{e_2}=\frac{N_1}{N_2}=k
+\quad \Rightarrow \quad \frac{\dot E_1}{\dot
+E_2}=\frac{N_1}{N_2}=k\)</span><br />
+激磁回路的参数关系：<span class="math inline">\(\dot E_1=-\dot I_m Z_m
+\quad \Rightarrow \quad \dot E_1=-\dot I_m(R_m+jX_m)\)</span></p>
+<h2 id="变压器的归算">变压器的归算</h2>
+<p>以二次侧折算到一次侧为例，用匝数为<span
+class="math inline">\(N_1\)</span>的等效绕组代替原来的匝数为<span
+class="math inline">\(N_2\)</span>的二次侧绕组。<br />
+折算条件是前后的磁动势<span class="math inline">\(\dot
+F_2\)</span>不变。</p>
+<p>(1)电动势归算：<span
+class="math inline">\(\frac{E_2&#39;}{E_2}=\frac{N_1}{N_2}=k \Rightarrow
+E_2&#39;=kE_2\)</span><br />
+(2)电流归算：<span class="math inline">\(N_2 I_2=N_1 I_2&#39;
+\Rightarrow I_2&#39;=\frac{N_2}{N_1}I_2=\frac{1}{k}I_2\)</span><br />
+验证一下是否能量守恒：<span class="math inline">\(E_2&#39;I_2&#39;=kE_2
+\frac{1}{k}I_2=E_2 I_2\)</span><br />
+(3)电压归算：<span
+class="math inline">\(U_2I_2=U_2&#39;I_2&#39;\Rightarrow
+U_2&#39;=\frac{I_2}{I_2&#39;}U_2=kU_2\)</span><br />
+(4)阻抗归算：<span
+class="math inline">\(R_2I_2^2=R_2&#39;{I_2&#39;}^2\Rightarrow
+R_2&#39;=(\frac{I_2}{I_2&#39;})^2 R_2=k^2R_2\)</span><br />
+同理<span class="math inline">\(X_{2\sigma}&#39;=k^2X_{2\sigma} \quad
+Z_{2\sigma}&#39;=k^2Z_{2\sigma} \quad\)</span>（式中<span
+class="math inline">\(Z_{2\sigma}=R_2+X_{2\sigma}\)</span>）<br />
+<mark>总结：单位为V，乘以k；单位为A，除以k；单位为Ω，乘以k²。</mark><br />
+若是一次侧折算到二次侧，同理可知单位为V时除以k，单位为A时乘以k，单位为Ω时除以k²。</p>
+<p>归算后的变压器基本方程组：<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}} \dot
+U_1=\dot I_1(R_1+jX_{1\sigma})-\dot E_1① \\ U_2&#39;=\dot E_2&#39;-\dot
+I_2&#39;(R_2&#39;+jX_{2\sigma}&#39;)② \\ I_m=\dot I_1+\dot I_2&#39;③ \\
+\dot E_1 = \dot E_2&#39;=-\dot I_m(R_m+jX_m)④
+\end{array}}\right.\)</span></p>
+<h2 id="变压器的等效电路与相量图">变压器的等效电路与相量图</h2>
+<center>
+<img src="9 T型等效电路.png" width=400/><span class="caption">图9
+T型等效电路</span>
+</center>
+<p>上图体现了T型等效电路的形成过程。<br />
+首先根据上文所得的变压器基本方程组中的式①与式②得到图(a)所示的两个电路；<br />
+然后根据式③可知<span class="math inline">\(\dot E_1\)</span>与<span
+class="math inline">\(\dot
+E_2&#39;\)</span>是等电位，将两个电路组合，如图(b)；<br />
+最后根据式④得到完整的T型等效电路，如图(c)。</p>
+<p>根据变压器基本方程组画出如下图所示的相量图。<br />
+先画负载，以负载电压<span class="math inline">\(\dot
+U_2&#39;\)</span>为基准，确定负载电流<span class="math inline">\(\dot
+I_2&#39;\)</span>（这里采用<mark>感性负载，其电压超前于电流</mark>，夹角<span
+class="math inline">\(\varphi_2\)</span>为功率因数角）。<br />
+接下来画漏阻抗压降。<span class="math inline">\(\dot
+I_2&#39;R_2&#39;\)</span>与<span class="math inline">\(\dot
+I_2&#39;\)</span>平行，<span
+class="math inline">\(jI_2&#39;X_{2\sigma}&#39;\)</span>超前于电流90度。<br />
+得到<span class="math inline">\(\dot E_2&#39;=\dot U_2&#39;+\dot
+I_2&#39;R_2&#39;+jI_2&#39;X_{2\sigma}&#39;\)</span>（变压器基本方程组公式②）<br />
+其中漏阻抗压降相对于负载电压而言非常小，这里对其放大来方便作图。</p>
+<p>画主磁通<span class="math inline">\(\dot
+\Phi_m\)</span>，它超前于<span class="math inline">\(\dot
+E_2&#39;\)</span> 90度。<br />
+画<span class="math inline">\(-\dot E_1\)</span>，其与<span
+class="math inline">\(\dot E_2&#39;\)</span>方向相反（负号）。<br />
+<mark style="background-color:cyan">确定<span class="math inline">\(\dot
+I_m\)</span>（图中为<span class="math inline">\(\dot
+I_0\)</span>，实为一个东西） <span class="math inline">\(\dot
+I_m\)</span>与<span class="math inline">\(-\dot
+E_1\)</span>的夹角为铁耗角，<span
+class="math inline">\(\psi=tan^{-1}\frac{X_m}{R_m}\)</span></mark><br />
+画<span class="math inline">\(-\dot
+I_2&#39;\)</span>，根据变压器基本方程组公式③，得到<span
+class="math inline">\(\dot I_1=-\dot I_2&#39;+I_m\)</span></p>
+<p>以<span class="math inline">\(-\dot E_1\)</span>终点为起点，画与<span
+class="math inline">\(\dot I_1\)</span>平行的<span
+class="math inline">\(\dot I_1 R_1\)</span>，超前90度的<span
+class="math inline">\(j\dot I_1X_{1\sigma}\)</span>。<br />
+得到<span class="math inline">\(\dot U_1=\dot I_1(R_1+jX_{1\sigma})-\dot
+E_1\)</span>（变压器基本方程组公式①），相量图至此绘制完成。</p>
+<center>
+<img src="10 负载运行向量图.png" width=300/><span class="caption">图10
+负载运行向量图</span>
+</center>
+实际上，<span class="math inline">\(I_0 \ll I_1,I_1Z_1 \ll U_1,I_2Z_2
+\ll U_2\)</span>。<br />
+因此可以对等效电路做一定的简化，简化后的等效电路如下图所示。<br />
+
+<center>
+<img src="11 简化等效电路.png" width=300/><span class="caption">图11
+简化等效电路</span>
+</center>
+该电路将激磁支路断开（<span
+class="math inline">\(I_0=0\)</span>），将等效电路简化为一个串联阻抗。<br />
+取短路电阻<span
+class="math inline">\(R_K=R_1+R_2&#39;\)</span>，短路电抗<span
+class="math inline">\(X_k=X_{1\sigma}+X_{2\sigma}&#39;\)</span>，短路阻抗<span
+class="math inline">\(Z_k=R_k+jX_K\)</span>。<br />
+得到电压方程<span class="math inline">\(\dot U_1 = \dot
+I_1(R_k+jX_k)-\dot U_2&#39;\)</span><br />
+进而得到简化的向量图如下图所示：
+<center>
+<img src="12 简化相量图.png" width=200/><span class="caption">图12
+简化相量图（感性负载）</span>
+</center>
+<h2 id="变压器的参数测定">变压器的参数测定</h2>
+<h3 id="空载实验">空载实验</h3>
+在低压侧加压（考虑精度与人身安全），二次侧（高压侧）开路。<br />
+空载输入电压<span class="math inline">\(U_0\)</span>先取<span
+class="math inline">\((1.2-1.25)U_{1N}\)</span>，然后逐步降低电压，画出<span
+class="math inline">\(I_0=f(U_0)\)</span>与<span
+class="math inline">\(p_0=f(U_0)\)</span>关系曲线。<br />
+<mark>由上一章节的论述可知，<span class="math inline">\(H \propto I
+\quad B \propto \Phi \propto E \approx U_0\)</span>，故B-H曲线形如<span
+class="math inline">\(U_0-I_0\)</span>关系曲线。<br />
+又由空载损耗<span class="math inline">\(p_0 \propto
+B^2\)</span>可以推断出<span
+class="math inline">\(U_0-p_0\)</span>关系曲线的形状。</mark><br />
+空载损耗<span class="math inline">\(p_0\)</span>可视作铁耗<span
+class="math inline">\(p_{Fe}\)</span>。<br />
+
+<center>
+<img src="13 空载实验.png" width=700/><span class="caption">图13
+空载实验</span>
+</center>
+<p><mark style="background-color:cyan">变比<span
+class="math inline">\(k=\frac{U_{20}}{U_{1N}}\)</span>（视频写法，意为高压侧比低压侧，与书存在冲突）</mark><br />
+<span class="math inline">\(Z_m=\frac{U_0}{I_0} \quad
+R_m=\frac{p_0}{I_0^2} \quad X_m=\sqrt{Z_m^2-R_m^2}\)</span><br />
+其中<span
+class="math inline">\(Z_1=R_1+jX_{1\sigma}\)</span>的值远远小于<span
+class="math inline">\(Z_m\)</span>，可忽略不计。<br />
+<mark style="background-color:cyan">这里所测得值为低压侧的值。可以将结果乘以<span
+class="math inline">\(k^2\)</span>折算到高压侧。</mark></p>
+<h3 id="短路实验">短路实验</h3>
+在高压侧加压（电流小），施加的电压要远小于额定电压（<span
+class="math inline">\(U_k=(0.04-0.1)U_{1N}\)</span>），二次侧短路。<br />
+取<span
+class="math inline">\(I_{1k}=(1.2-1.25)I_{1N}\)</span>，然后逐步降低电流（升高电压），画出<span
+class="math inline">\(I_k=f(U_k)\)</span>与<span
+class="math inline">\(p_k=f(U_k)\)</span>关系曲线。<br />
+<mark>因为施加的电压小，铁芯中主磁通很小，所以忽略励磁电流与铁芯损耗。此外电压小使得磁路不饱和，<span
+class="math inline">\(U_k-I_k\)</span>关系曲线为直线。</mark><br />
+短路损耗<span class="math inline">\(p_k\)</span>可视作铜耗<span
+class="math inline">\(p_{Cuk}\)</span>（电阻损耗），<span
+class="math inline">\(U_k-p_k\)</span>关系曲线为二次曲线。<br />
+
+<center>
+<img src="14 短路实验.png" width=700/><span class="caption">图14
+短路实验</span>
+</center>
+<p><span class="math inline">\(Z_k=\frac{U_k}{I_k} \quad
+R_k=\frac{p_k}{I_k^2} \quad X_k=\sqrt{Z_k^2-R_k^2}\)</span><br />
+<mark style="background-color:cyan">这里所测得值为高压侧的值。可以将结果乘以<span
+class="math inline">\(\frac{1}{k^2}\)</span>折算到低压侧。</mark></p>
+<p>得到的<span
+class="math inline">\(R_k\)</span>值会受温度影响而发生变化，下面介绍热态电阻及阻抗参数。<br />
+取基准温度为75℃，则在<span
+class="math inline">\(\theta\)</span>温度下的电阻及阻抗公式如下<br />
+<span
+class="math inline">\(R_{k75℃}=\frac{235+75}{235+\theta}R_{k\theta}\)</span><br />
+<span class="math inline">\(Z_{k75℃}=\sqrt{R_{k75℃}+X_k^2}\)</span></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电机设计01-电机的主要参数之间的关系
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机学01-基础理论</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

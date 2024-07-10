@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机学04-交流电机理论的共同问题 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,电机学" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="为进一步掌握电机相关原理概念整理的电机学笔记。 根据视频电机学（哈尔滨理工大学）p22-p29整理，若有错误敬请指正。 交流电机绕组基本理论 注：本节内容来自于电机设计教学视频p10,p11（定子绕组设计）。 定子绕组分类 (1)按绕组排列分：分布式、集中式 (2)按相带分：120°、60°、30°（相带是电机每一项所占的角度大小） (3)按每极每相槽数\(q\)分：整数槽绕组、分数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机学04-交流电机理论的共同问题">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="为进一步掌握电机相关原理概念整理的电机学笔记。 根据视频电机学（哈尔滨理工大学）p22-p29整理，若有错误敬请指正。 交流电机绕组基本理论 注：本节内容来自于电机设计教学视频p10,p11（定子绕组设计）。 定子绕组分类 (1)按绕组排列分：分布式、集中式 (2)按相带分：120°、60°、30°（相带是电机每一项所占的角度大小） (3)按每极每相槽数\(q\)分：整数槽绕组、分数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/1%20单层同心式连接.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/2%20单层交叉式连接.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/3%20单层叠绕组.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/4%20单层叠绕组(a=2).png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/5%20双层叠绕组.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/6%20双层叠绕组线圈连接示意图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/7%20星形图与相带.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/8%20槽内导体沿定子圆周的分布情况.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/9%20正弦分布的主极磁场.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/10%20匝电动势与短距系数.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/11%20线圈组电动势与分布系数.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/12%20主磁极产生的气隙磁场波形及其分解.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/13%20单相绕组磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/14%20磁动势基波及各次谐波.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/15%20分布绕组的磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/16%20分布绕组的合成磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/17%20双层短距分布绕组的磁动势.jpg">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/18%20双层短距分布绕组的合成磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/19%20相绕组基波磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/20%20三相绕组基波磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/21%20不对称电流产生的椭圆形旋转磁动势.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/22%20均值等温体的发热与冷却曲线.png">
+<meta property="article:published_time" content="2024-06-25T08:48:00.000Z">
+<meta property="article:modified_time" content="2024-07-09T12:56:41.394Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="电机学">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/1%20单层同心式连接.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/电机学/电机学04-交流电机理论的共同问题" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/">电机学</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E6%9C%BA%E5%AD%A6/" rel="tag">电机学</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">
+            <time datetime="2024-06-25T08:48:00.000Z" itemprop="datePublished">2024-06-25</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机学04-交流电机理论的共同问题
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%BB%95%E7%BB%84%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="toc-number">1.</span> <span class="toc-text">交流电机绕组基本理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%AD%90%E7%BB%95%E7%BB%84%E5%88%86%E7%B1%BB"><span class="toc-number">1.1.</span> <span class="toc-text">定子绕组分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%95%E7%BB%84%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="toc-number">1.2.</span> <span class="toc-text">绕组设计基本要求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E5%B1%82%E7%BB%95%E7%BB%84%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.</span> <span class="toc-text">单层绕组的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E7%BB%95%E7%BB%84%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.4.</span> <span class="toc-text">双层绕组的设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%B5%81%E7%BB%95%E7%BB%84%E7%9A%84%E6%84%9F%E5%BA%94%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="toc-number">2.</span> <span class="toc-text">交流绕组的感应电动势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A7%BD%E7%94%B5%E5%8A%A8%E5%8A%BF%E6%98%9F%E5%BD%A2%E5%9B%BE"><span class="toc-number">2.1.</span> <span class="toc-text">槽电动势星形图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E4%BD%93%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="toc-number">2.2.</span> <span class="toc-text">导体电动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%9D%E7%94%B5%E5%8A%A8%E5%8A%BF%E4%B8%8E%E7%9F%AD%E8%B7%9D%E7%B3%BB%E6%95%B0"><span class="toc-number">2.3.</span> <span class="toc-text">匝电动势与短距系数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E5%9C%88%E7%BB%84%E7%94%B5%E5%8A%A8%E5%8A%BF%E4%B8%8E%E5%88%86%E5%B8%83%E7%B3%BB%E6%95%B0"><span class="toc-number">2.4.</span> <span class="toc-text">线圈组电动势与分布系数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B8%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="toc-number">2.5.</span> <span class="toc-text">相电动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%90%E6%B3%A2%E7%94%B5%E5%8A%A8%E5%8A%BF"><span class="toc-number">2.6.</span> <span class="toc-text">谐波电动势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%A4%E6%B5%81%E7%BB%95%E7%BB%84%E7%9A%84%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.</span> <span class="toc-text">交流绕组的磁动势</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E7%9B%B8%E7%BB%95%E7%BB%84%E7%9A%84%E8%84%89%E6%8C%AF%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.1.</span> <span class="toc-text">单相绕组的脉振磁动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E7%BB%95%E7%BB%84%E7%9A%84%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.2.</span> <span class="toc-text">分布绕组的磁动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E5%B1%82%E7%9F%AD%E8%B7%9D%E5%88%86%E5%B8%83%E7%BB%95%E7%BB%84%E7%9A%84%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.3.</span> <span class="toc-text">双层短距分布绕组的磁动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%9B%B8%E7%BB%95%E7%BB%84%E5%90%88%E6%88%90%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.4.</span> <span class="toc-text">三相绕组合成磁动势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%86%E5%BD%A2%E5%92%8C%E6%A4%AD%E5%9C%86%E5%BD%A2%E6%97%8B%E8%BD%AC%E7%A3%81%E5%8A%A8%E5%8A%BF"><span class="toc-number">3.5.</span> <span class="toc-text">圆形和椭圆形旋转磁动势</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E7%9A%84%E5%8F%91%E7%83%AD%E4%B8%8E%E6%B8%A9%E5%8D%87"><span class="toc-number">4.</span> <span class="toc-text">电机的发热与温升</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%A9%E5%8D%87%E4%B8%8E%E6%B8%A9%E5%8D%87%E9%99%90%E5%80%BC"><span class="toc-number">4.1.</span> <span class="toc-text">温升与温升限值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E7%9A%84%E5%8F%91%E7%83%AD%E4%B8%8E%E5%86%B7%E5%8D%B4%E8%BF%87%E7%A8%8B"><span class="toc-number">4.2.</span> <span class="toc-text">电机的发热与冷却过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%88%B6"><span class="toc-number">4.3.</span> <span class="toc-text">电机的工作制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%9C%BA%E7%9A%84%E5%86%B7%E5%8D%B4%E6%96%B9%E5%BC%8F"><span class="toc-number">4.4.</span> <span class="toc-text">电机的冷却方式</span></a></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>为进一步掌握电机相关原理概念整理的电机学笔记。<br />
+根据视频<a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1cx411Z76w">电机学（哈尔滨理工大学）p22-p29</a>整理，若有错误敬请指正。</p>
+<h2 id="交流电机绕组基本理论">交流电机绕组基本理论</h2>
+<p>注：本节内容来自于电机设计教学视频p10,p11（定子绕组设计）。</p>
+<h3 id="定子绕组分类">定子绕组分类</h3>
+<p>(1)按绕组排列分：分布式、集中式<br />
+(2)按相带分：120°、60°、30°（相带是电机每一项所占的角度大小）<br />
+(3)按每极每相槽数<span
+class="math inline">\(q\)</span>分：整数槽绕组、分数槽绕组<br />
+(4)按绕组层数：单层绕组、双层绕组</p>
+<h3 id="绕组设计基本要求">绕组设计基本要求</h3>
+<p>(1)对称：相间对称（三相绕组的基波电动势大小相等，相位互差120°）、并联支路对称<br />
+(2)基波尽可能大，谐波尽可能小。（电动势尽可能接近正弦波）</p>
+<h3 id="单层绕组的设计">单层绕组的设计</h3>
+<p>适用场景：中心高160mm，功率10kW以下的电机。<br />
+优点：无层间绝缘，槽利用率高；不存在相间击穿，可靠性高；线圈少，工艺上容易实现，下线方便。<br />
+缺点：与双层绕组相比不能短距，磁势的谐波含量更高。<br />
+最划算的连接方式：<br />
+同心式：<span class="math inline">\(2p=2\)</span>，<span
+class="math inline">\(q\)</span>为偶数<br />
+链式：<span class="math inline">\(2p \geqslant 4\)</span>，<span
+class="math inline">\(q\)</span>为偶数<br />
+交叉式：<span class="math inline">\(q\)</span>为奇数</p>
+以<span class="math inline">\(Z=36,2p=4,m=3\)</span>为例<br />
+<span class="math inline">\(\Rightarrow q=\frac{Z}{2pm}=3\)</span><br />
+电机槽号排列表如下：<br />
+
+<center>
+<span class="caption">表1 电机槽号排列表</span>
+</center>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">Z</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">X</th>
+<th style="text-align: center;">C</th>
+<th style="text-align: center;">Y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1,2,3</td>
+<td style="text-align: center;">4,5,6</td>
+<td style="text-align: center;">7,8,9</td>
+<td style="text-align: center;">10,11,12</td>
+<td style="text-align: center;">13,14,15</td>
+<td style="text-align: center;">16,17,18</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">19,20,21</td>
+<td style="text-align: center;">22,23,24</td>
+<td style="text-align: center;">25,26,27</td>
+<td style="text-align: center;">28,29,30</td>
+<td style="text-align: center;">31,32,33</td>
+<td style="text-align: center;">34,35,36</td>
+</tr>
+</tbody>
+</table>
+按照同心式连接，如下图所示：<br />
+
+<center>
+<img src="1 单层同心式连接.png" width=400/><span class="caption">图1
+单层同心式连接</span>
+</center>
+同心式的物理节距<span
+class="math inline">\(y_1=11,y_2=9,y_3=7\)</span><br />
+按照交叉式连接，如下图所示：<br />
+
+<center>
+<img src="2 单层交叉式连接.png" width=300/><span class="caption">图2
+单层交叉式连接</span>
+</center>
+交叉式的物理节距<span
+class="math inline">\(y_1=8,y_2=8,y_3=7\)</span><br />
+按照链式（叠绕组）连接，如下图所示：<br />
+
+<center>
+<img src="3 单层叠绕组.png" width=400/><span class="caption">图3
+单层叠绕组(a=1)</span>
+</center>
+<p>叠绕组物理节距<span
+class="math inline">\(y_1=y_2=y_3=9\)</span><br />
+综上，可以看出交叉式的节距和最小，这意味着交叉式接法最节省材料。</p>
+图3所示的单层叠绕组将一相绕组串联为一个支路，即并联支路数<span
+class="math inline">\(a=1\)</span>。<br />
+这一相绕组也可以并联为两个支路<span
+class="math inline">\((a=2)\)</span>，如下图所示。<br />
+
+<center>
+<img src="4 单层叠绕组(a=2).png" width=400/><span class="caption">图4
+单层叠绕组(a=2)</span>
+</center>
+<p>对于单层绕组，每相最大并联支路数等于极对数<span
+class="math inline">\((a_{max}=p)\)</span>。</p>
+<h3 id="双层绕组的设计">双层绕组的设计</h3>
+<p>适用场景：10kW以上的电机。<br />
+本节主要讲解双层叠绕组，其优点是可以短距排列。<br />
+除了双层叠绕组之外，双层绕组还包括单双层绕组、低谐波绕组（双层同心不等匝绕组，<span
+class="math inline">\(2p=2\)</span>，<span
+class="math inline">\(q\)</span>比较大时适用）、不等匝绕组。</p>
+<p>绕组节距的选择：从最能消除电机有害谐波的角度选取<br />
+对于单层绕组，<span class="math inline">\(y=\tau\)</span><br />
+式中<span
+class="math inline">\(\tau\)</span>为极距，是每个主磁极在电枢表面占据的距离<br />
+其与电枢直径<span class="math inline">\(D\)</span>的关系式为<span
+class="math inline">\(\tau=\frac{\pi
+D}{2p}\)</span>，在这里使用的关系式为<span
+class="math inline">\(\tau=\frac{Z}{2p}=mq\)</span><br />
+对于<span class="math inline">\(2p \geqslant
+4\)</span>的双层绕组，取节距<span
+class="math inline">\(y=\frac{5\tau}{6}\)</span>，以削弱5、7次谐波<br />
+对于<span class="math inline">\(2p = 2\)</span>的双层绕组，取节距<span
+class="math inline">\(y=\frac{2\tau}{3}\)</span>，避免端部连接过长</p>
+以<span
+class="math inline">\(Z=36,2p=4,m=3\)</span>为例，按照双层叠绕组连接：<br />
+此时<span class="math inline">\(\tau=\frac{Z}{2p}=9 \quad
+q=\frac{Z}{2pm}=3\)</span>，电机槽号排列表同前面单层绕组的表1。<br />
+
+<center>
+<img src="5 双层叠绕组.png" width=400/><span class="caption">图5
+双层叠绕组(a=2)</span>
+</center>
+为改善电动势与磁动势波形，双层绕组一般采用短距线圈（极距小于节距），这里取<span
+class="math inline">\(y_1=7\)</span>。<br />
+上图一相绕组并联了两个支路，即并联支路数<span
+class="math inline">\(a=2\)</span>，也可以并联1个或4个支路，其连接方法如下图所示：
+<center>
+<img src="6 双层叠绕组线圈连接示意图.png" width=500/><span
+class="caption">图6 双层叠绕组线圈连接示意图</span>
+</center>
+<p>注：对于双层波绕组，可以取第一节距（同一元件两个元件边的距离）<span
+class="math inline">\(y_1=8\)</span>，合成节距（两个相串联元件对应边的距离）<span
+class="math inline">\(y=18\)</span>。<br />
+有关波绕组即电枢绕组的一些知识参见<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/" title="直流电机">直流电机</a>，这里不再赘述。</p>
+<h2 id="交流绕组的感应电动势">交流绕组的感应电动势</h2>
+<h3 id="槽电动势星形图">槽电动势星形图</h3>
+槽距角<span
+class="math inline">\(\alpha\)</span>为相邻两槽间的机械角度，<span
+class="math inline">\(\alpha=\frac{360^\circ}{Z}\)</span>，上文中电机的槽距角<span
+class="math inline">\(\alpha=10^\circ\)</span>。<br />
+槽距电角<span
+class="math inline">\(\alpha_1\)</span>为相邻两槽间导体感应电动势的相位差，取一对极的范围内的感应电动势的相位差为<span
+class="math inline">\(360^\circ\)</span>，因此<span
+class="math inline">\(\alpha_1=\frac{p\times
+360^\circ}{Z}=p\alpha\)</span>，上文中电机的槽距电角<span
+class="math inline">\(\alpha_1=20^\circ\)</span>。<br />
+各槽导体感应电动势大小相等，相邻槽导体电动势相位差相同。将各槽导体电动势相量画在一起，组成一个星形，称为槽电动势星形图。<br />
+
+<center>
+<img src="7 星形图与相带.png" width=500/><span class="caption">图7
+星形图与相带</br>(a)120°相带；(b)60°相带</span>
+</center>
+<p>为确保三相绕组对称，可以将星形图圆周分为三等份，每份120°，称为120°相带，并将每个相带内的导体电动势串联起来，得到相电动势。但120°相带的各相量比较分散，这使得其相量和较小。<br />
+为了得到更大的合成感应电动势，通常采用60°相带。其中A、B、C相带正向串联，X、Y、Z相带反向串联，A与X、B与Y、C与Z互差180°，分别得到电动势相量<span
+class="math inline">\(\dot E_A\)</span>、<span
+class="math inline">\(\dot E_B\)</span>、<span
+class="math inline">\(\dot
+E_C\)</span>，它们的相量分布更为集中，可以得到更大的感应电动势。</p>
+<h3 id="导体电动势">导体电动势</h3>
+<center>
+<img src="8 槽内导体沿定子圆周的分布情况.png" width=200/><span
+class="caption">图8 槽内导体沿定子圆周的分布情况</span>
+</center>
+<center>
+<img src="9 正弦分布的主极磁场.png" width=300/><span class="caption">图9
+正弦分布的主极磁场</span>
+</center>
+<p>图8所示为一台交流发电机定子槽内导体沿圆周分布的情况，励磁磁极由原动机拖动以转速<span
+class="math inline">\(n_1\)</span>逆时针旋转。<br />
+图9为该发电机的气隙中的磁感应强度分布曲线，若磁极形状合理，则呈正弦分布，即<span
+class="math inline">\(B(\theta)=B_m cos\theta\)</span><br />
+旋转磁极在定子导体中的感应电动势<span
+class="math inline">\(e_c=B(\theta)lv=B_m lv cos\theta=B_m lv cos\omega
+t\)</span><br />
+式中<span class="math inline">\(l\)</span>为导体有效长度，<span
+class="math inline">\(v\)</span>为磁极产生的磁场切割导体的线速度，单位m/s。<br />
+<span class="math inline">\(\omega=2\pi f=2\pi \frac{pn_1}{60} \quad
+\theta=\omega t\)</span><br />
+感应电动势有效值<span class="math inline">\(E_{c1}=\frac{1}{\sqrt
+2}B_{m1}lv \quad v=2p\tau \frac{n_1}{60}\)</span><br />
+式中<span
+class="math inline">\(B_{m1}\)</span>为磁感应强度基波幅值，单位Wb/㎡；<span
+class="math inline">\(\tau=\frac{\pi
+D}{2p}\)</span>是以长度记的极距，单位为m；<span
+class="math inline">\(n_1\)</span>为转子转速，单位r/min。<br />
+<mark>注：可以推导出感应电动势频率公式<span
+class="math inline">\(f=\frac{pn_1}{60}\)</span></mark></p>
+<p>对于正弦波磁感应强度，其每极磁通（<mark>磁感应强度每半个周波面积</mark>）<br />
+<span class="math inline">\(\Phi_1=\frac{2}{\pi}B_{m1}\tau l \Rightarrow
+B_{m1}=\frac{\pi}{2}\frac{\Phi_1}{\tau l}\)</span><br />
+整理上述式子可得<span class="math inline">\(E_{c1}=\frac{\pi}{\sqrt
+2}f\Phi_1=2.22f\Phi_1\)</span><br />
+导体中感应电动势有效值与每极磁通量与频率得乘积成正比。</p>
+<h3 id="匝电动势与短距系数">匝电动势与短距系数</h3>
+<center>
+<img src="10 匝电动势与短距系数.png" width=300/><span
+class="caption">图10 匝电动势与短距系数</span>
+</center>
+<p>线圈的基波电动势<span class="math inline">\(E_{y1}=2 N_c E_{c1}
+k_{p}=4.44N_c k_p f\Phi_1\)</span><br />
+式中匝数为<span class="math inline">\(N_c\)</span><br />
+短距系数<span
+class="math inline">\(k_p=sin(\frac{y_1}{\tau}\frac{\pi}{2})\)</span>，对于整距线圈<span
+class="math inline">\(k_p=1\)</span></p>
+<h3 id="线圈组电动势与分布系数">线圈组电动势与分布系数</h3>
+<center>
+<img src="11 线圈组电动势与分布系数.png" width=150/><span
+class="caption">图11 线圈组电动势与分布系数</span>
+</center>
+<p>线圈组的基波电动势<span class="math inline">\({E_{q1}} =
+q{E_{y1}}\frac{ {\sin \frac{ {q{\alpha _1}}}{2}}}{ {q\sin \frac{ {
+{\alpha _1}}}{2}}} = q{E_{y1}}{k_d}=4.44 q N_c
+k_{dp}f\Phi_1\)</span><br />
+式中<span class="math inline">\(q\)</span>为线圈个数，<span
+class="math inline">\(k_{dp}=k_d k_p\)</span>为基波绕组系数<br />
+分布系数<span class="math inline">\(k_d=\frac{ {\sin \frac{ {q{\alpha
+_1}}}{2}}}{ {q\sin \frac{ { {\alpha
+_1}}}{2}}}\)</span>，对于集中绕组<span
+class="math inline">\(q=1,k_d=1\)</span></p>
+<h3 id="相电动势">相电动势</h3>
+<p>相电动势<span class="math inline">\(E_{\Phi 1}=4.44N k_{dp}
+f\Phi\)</span><br />
+<span
+class="math inline">\(N\)</span>为一相绕组串联总匝数。若为单层绕组，则<span
+class="math inline">\(N=\frac{pqN_c}{a}\)</span>；若为双层绕组，则<span
+class="math inline">\(N=\frac{2pqN_c}{a}\)</span>。</p>
+<h3 id="谐波电动势">谐波电动势</h3>
+实际电机中的气隙磁场空间分布非正弦波，这使得定子绕组内的感应电动势也非正弦波，可以分解为基波和一系列谐波。<br />
+
+<center>
+<img src="12 主磁极产生的气隙磁场波形及其分解.png" width=300/><span
+class="caption">图12 主磁极产生的气隙磁场波形及其分解</span>
+</center>
+<p>图中展示了基波、3次谐波与5次谐波。<br />
+对于<span class="math inline">\(v\)</span>次谐波磁场，其极对数<span
+class="math inline">\(p_v=vp\)</span>，极距<span
+class="math inline">\(\tau_v=\frac{\tau}{v}\)</span>，转速<span
+class="math inline">\(n_v=n_1\)</span>。<br />
+<span class="math inline">\(v\)</span>次谐波电动势频率<span
+class="math inline">\({f_v } = \frac{ { {p_v }{n_v }}}{ {60}} = \frac{
+{v p{n_1}}}{ {60}} = vf\)</span><br />
+<span class="math inline">\(v\)</span>次谐波电动势有效值<span
+class="math inline">\({E_{\Phi v }} = \sqrt 2 {\pi}N{k_{Nv }}{f_v
+}{\Phi_v } = 4.44N{k_{Nv }}{f_v }{\Phi_v}\)</span><br />
+<span class="math inline">\({k_{pv }} = \sin (v \frac{ { {y_1}}}{\tau
+}\frac{\pi}{2})\quad {k_{dv }} = \frac{ {\sin \frac{ {qv
+{\alpha_1}}}{2}}}{ {q\sin \frac{ {v {\alpha_1}}}{2}}}\quad {k_{dpv }} =
+{k_{dv }}{k_{pv }}\)</span><br />
+当算出基波和各次谐波电动势的有效值后，可得出相电动势的有效值为<br />
+<span class="math inline">\({E_\Phi } = \sqrt {E_{\Phi 1}^2 + E_{\Phi
+3}^2 + E_{\Phi 5}^2 + E_{\Phi 7}^2...}\)</span></p>
+<p>削弱谐波电动势的方法：<br />
+(1)使气隙中磁场分布尽可能接近正弦波；<br />
+(2)采用对称的三相绕组，消除线电动势中3及3的倍数次谐波；<br />
+(3)采用短距绕组，节距<span class="math inline">\({y_1} = \tau -
+\frac{\tau }{v}\)</span>的绕组可以消除<span
+class="math inline">\(v\)</span>次谐波；<br />
+（通常选节距<span
+class="math inline">\(y=\frac{5\tau}{6}\)</span>，可以削弱5、7次谐波）<br />
+(4)采用分布绕组。（<span class="math inline">\(q\)</span>通常取<span
+class="math inline">\(2 \sim 6\)</span>）</p>
+<h2 id="交流绕组的磁动势">交流绕组的磁动势</h2>
+<p>首先做出如下假设：<br />
+(1)槽内导体集中于槽中心处；<br />
+(2)线圈中电流为正弦波（忽略谐波）；<br />
+(3)铁芯不饱和，磁动势全部在气隙上。<br />
+（假设铁磁材料磁导率为无限大<span
+class="math inline">\(\mu_{Fe}=\infty\)</span>，这使得铁芯上的磁阻近似为零）</p>
+<h3 id="单相绕组的脉振磁动势">单相绕组的脉振磁动势</h3>
+<center>
+<img src="13 单相绕组磁动势.png" width=400/><span class="caption">图13
+单相绕组磁动势</span>
+</center>
+<p>对于上图所示的三相单层绕组<span
+class="math inline">\(Z=6\)</span>，<span
+class="math inline">\(p=1\)</span>。<br />
+<span
+class="math inline">\(q=1\)</span>，相当于集中绕组，每相只有1个整距线圈。<br />
+A相通交流电流<span
+class="math inline">\(i\)</span>后，将产生一个2极磁场。每根磁力线所构成的磁通闭合回路的磁动势均为<span
+class="math inline">\(iN_c\)</span>。略去定、转子铁心中的磁阻，该磁动势消耗在两个气隙中，每个气隙中消耗的磁动势<span
+class="math inline">\(F=\frac{iN_c}{2}\)</span>。<br />
+将气隙圆周展开，得到磁动势沿圆周的空间分布波形。气隙圆周某点的磁动势表示由该定子磁动势所产生的气隙磁通通过该点气隙的磁压降。<br />
+磁动势波形为<mark>矩形波</mark>。当线圈电流<span
+class="math inline">\(i\)</span>随时间按正弦规律交变时，矩形波的高度为<br />
+<span class="math inline">\(F_y=\frac{\sqrt 2}{2}N_c I_c sin\omega
+t\)</span><br />
+（即矩形波随着时间变化上下振动，变化的快慢取决于电流的频率）</p>
+将坐标原点取在线圈AX的中心线上，利用傅里叶级数将该磁动势波形展开为如下级数形式：<br />
+
+<center>
+<img src="14 磁动势基波及各次谐波.png" width=200/><span
+class="caption">图14 磁动势基波及各次谐波</span>
+</center>
+<p>基波<span class="math inline">\(v=1\)</span>及<span
+class="math inline">\(v\)</span>次谐波值为：<br />
+<span class="math inline">\({F_{yv }} = \frac{2\sqrt 2}{\pi}\frac{N_c
+I_c}{v}\sin(v\frac{\pi}{2})sin\omega t = 0.9\frac{N_c
+I_c}{v}\sin(v\frac{\pi}{2})sin\omega t\)</span><br />
+<mark>注：<span class="math inline">\(\frac{2\sqrt 2}{\pi} \approx
+0.9\)</span></mark><br />
+在空间的任何一点，磁动势的大小随时间按正弦规律变化。这种空间位置固定不动，但波幅的大小和正负随时间变化的磁动势称为脉振磁动势。</p>
+<h3 id="分布绕组的磁动势">分布绕组的磁动势</h3>
+<center>
+<img src="15 分布绕组的磁动势.png" width=400/><span class="caption">图15
+分布绕组的磁动势</span>
+</center>
+对于上图所示的三相单层绕组<span
+class="math inline">\(Z=18\)</span>，<span
+class="math inline">\(p=1\)</span>。<br />
+<span
+class="math inline">\(q=3\)</span>，每相有1个线圈组，每个线圈组有3个整距线圈。<br />
+<span class="math inline">\(A_1 X_1\)</span>、<span
+class="math inline">\(A_2 X_2\)</span>、<span class="math inline">\(A_3
+X_3\)</span>串联成一个线圈组，构成A相绕组。A相通交流电流<span
+class="math inline">\(i\)</span>后，产生一个2极磁场。<br />
+采用磁动势迭加原理，三个线圈分别产生矩形波磁动势。磁动势波形一样，依次位移槽距电角<span
+class="math inline">\(\alpha_1\)</span>度。<br />
+各线圈磁动势的基波分量为空间分布正弦波，和时间相量相似，可以用空间矢量来表示。<br />
+磁动势空间矢量的长度代表幅值的大小，矢量的位置代表幅值所处的空间位置。
+<center>
+<img src="16 分布绕组的合成磁动势.png" width=400/><span
+class="caption">图16 分布绕组的合成磁动势</span>
+</center>
+<p>将三个矩形波叠加起来，得到分布绕组磁动势波形为阶梯波。<br />
+合成磁动势为脉振磁动势。合成磁动势基波幅值位于线圈组的中心线上。<br />
+将坐标原点取在线圈组的中心线上，基波磁动势波表达式为<span
+class="math inline">\({f_{q1}}(t,\theta)={F_{q1}}\cos\theta\)</span><br />
+将各线圈的基波磁动势矢量相加得到分布相绕组磁动势基波矢量。
+考虑到一般情况，对于<span
+class="math inline">\(q\)</span>个线圈构成的线圈组，与线圈组电动势的推导相似，可推导出单层分布相绕组合成磁动势基波幅值为：</p>
+<p><span class="math inline">\({F_{q1}} =
+q{F_{y1}}k_{d1}=0.9q{N_c}{k_{d1}}{I_c}\sin \omega t\)</span><br />
+其中<span class="math inline">\(k_{d1}=\frac{ {\sin \frac{
+{q{\alpha_1}}}{2}}}{ {q\sin \frac{ { {\alpha_1}}}{2}}}\)</span><br />
+式中<span
+class="math inline">\(k_{d1}\)</span>为基波磁动势的分布系数，同电动势的分布系数具有相同的物理意义。</p>
+<h3 id="双层短距分布绕组的磁动势">双层短距分布绕组的磁动势</h3>
+<center>
+<img src="17 双层短距分布绕组的磁动势.jpg" width=500/><span
+class="caption">图17 双层短距分布绕组的磁动势</span>
+</center>
+以<span class="math inline">\(Z=18\)</span>，<span
+class="math inline">\(p=1\)</span>，<span
+class="math inline">\(y_1=7\)</span>的三相双层绕组为例。<br />
+每相有2个线圈组，<span
+class="math inline">\(q=3\)</span>，每个线圈组有3个短距线圈。<br />
+线圈<span class="math inline">\(A_1 X_1\)</span>、<span
+class="math inline">\(A_2 X_2\)</span>、<span class="math inline">\(A_3
+X_3\)</span>成一个线圈组，线圈<span class="math inline">\(A_4
+X_4\)</span>、<span class="math inline">\(A_5 X_5\)</span>、<span
+class="math inline">\(A_6 X_6\)</span>构成一另个线圈组。
+A相通交流电流<span
+class="math inline">\(i\)</span>后，产生一个2极磁场。<br />
+采用磁动势迭加原理，<span class="math inline">\(A_1 \sim
+A_6\)</span>中电流单独作用，将<span class="math inline">\(A_1
+A_4\)</span>、<span class="math inline">\(A_2 A_5\)</span>、<span
+class="math inline">\(A_3
+A_6\)</span>分别看成是一个线圈，形成了一个单层整距分布绕组；<br />
+<span class="math inline">\(X_1 \sim X_6\)</span>中电流单独作用，将<span
+class="math inline">\(X_1 X_4\)</span>、<span class="math inline">\(X_2
+X_5\)</span>、<span class="math inline">\(X_3
+X_6\)</span>分别看成是一个线圈，形成另一个单层整距分布绕组。<br />
+<mark style="background-color:cyan">（交叉重组？？？）</mark><br />
+两个单层分布绕组产生的磁动势如图17所示，均为阶梯波。两个阶梯波合成即得相绕组磁动势仍为阶梯波。<br />
+
+<center>
+<img src="18 双层短距分布绕组的合成磁动势.png" width=500/><span
+class="caption">图18 双层短距分布绕组的合成磁动势</span>
+</center>
+<p>将两个单层整距分布绕组的基波磁动势矢量相加得到相绕组磁动势基波矢量。<br />
+<span class="math inline">\({F_{\Phi 1}}=2{F_{q1}}{k_{p1}}=2{F_{q1}}\sin
+(\frac{y_1}{\tau}\frac{\pi}{2})\)</span><br />
+<span
+class="math inline">\(k_{p1}\)</span>为基波磁动势的短距系数，同电动势的短距系数具有相同的物理意义。</p>
+<p>可以进而推出：<br />
+<span class="math inline">\(F_{\Phi 1}=2{F_{q1}}{k_{p1}}=2
+\left[0.9q{N_c}{k_{d1}}{I_c}\sin \omega t \right]{k_{p1}}\)</span><br />
+<span class="math inline">\(=0.9 \frac{ {\frac{ {2pq{N_c}}}{a}
+{k_{p1}}{k_{d1}}\left( {a{I_c}} \right)}}{p}\sin \omega t =0.9 \frac{
+{N{k_{N1}}I}}{p}\sin \omega t = {F_{m\Phi 1}}\sin \omega
+t\)</span><br />
+式中<span
+class="math inline">\(k_{N1}={k_{p1}}{k_{d1}}\)</span>为基波磁动势绕组系数；<span
+class="math inline">\(I=aI_c\)</span>为相电流有效值；<span
+class="math inline">\(N\)</span>为双层绕组每相串联匝数，其公式与电动势中的每相串联匝数相同。<br />
+<span class="math inline">\(F_{m\Phi 1}=0.9 \frac{
+{N{k_{N1}}I}}{p}\)</span>称为相绕组脉振磁动势的振幅，它表示相绕组脉振磁动势幅值的最大值。</p>
+<center>
+<img src="19 相绕组基波磁动势.png" width=500/><span class="caption">图19
+相绕组基波磁动势</span>
+</center>
+<p>将坐标原点取在相绕组轴线（即线圈组中心线）上，从而得到相绕组磁动势基波的表达式为<br />
+<span class="math inline">\({f_{\Phi 1}}(t,\theta) = {F_{\Phi 1}}cos
+\theta = {F_{m\Phi 1}}\sin \omega t cos \theta\)</span><br />
+<mark style="background-color:cyan">既与时间有关，又与空间有关。</mark></p>
+<p>相绕组磁动势<span
+class="math inline">\(v\)</span>次谐波的表达式为<br />
+<span class="math inline">\({f_{\Phi v}}(t,\theta)={F_{m\Phi v}}\sin
+\omega t\cos v\theta\)</span><br />
+<span class="math inline">\(F_{m\Phi
+v}=0.9\frac{N{k_{Nv}}I}{vp}\)</span></p>
+<p>单相绕组磁动势特点：<br />
+(1)单相绕组磁动势的性质是脉振磁动势，它既是时间的函数又是空间角度函数；<br />
+(2)基波、谐波的波幅必在相绕组的轴线上；<br />
+(3)<span class="math inline">\(ν\)</span>次谐波磁动势幅值与<span
+class="math inline">\(k_{Nν}\)</span>成正比，与<span
+class="math inline">\(ν\)</span>成反比，因此，可以采用短距和分布绕组来削弱高次谐波。</p>
+<h3 id="三相绕组合成磁动势">三相绕组合成磁动势</h3>
+A、B、C三相对称绕组流过三相电流对称电流，设三相电流瞬时值表达式如下<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}} {i_A =
+\sqrt 2 Isin\omega t} \\ {i_B = \sqrt 2 Isin(\omega t - 120^\circ ) } \\
+{i_C = \sqrt 2 Isin(\omega t - 240^\circ)} \end{array}}
+\right.\)</span><br />
+A、B、C每相绕组产生的磁动势均为脉振磁动势，其基波的幅值位于各相绕组轴线上。<br />
+三相绕组轴线在空间相差120°电角度，各相绕组磁动势基波空间相位差为120°电角度。将空间坐标原点取在A相绕组的轴线上，于是三相绕组脉振磁动势基波的表达式分别为：<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}}
+f_{A1}(t,\theta) = F_{m\Phi 1}sin\omega t cos\theta \\ f_{B1}(t,\theta)
+= F_{m\Phi 1}sin(\omega t - 120^\circ) cos(\theta - 120^\circ) \\
+f_{C1}(t,\theta) = F_{m\Phi 1}sin(\omega t - 240^\circ) cos(\theta -
+240^\circ) \end{array}} \right.\)</span><br />
+
+<center>
+<img src="20 三相绕组基波磁动势.png" width=700/><span
+class="caption">图20 三相绕组基波磁动势</span>
+</center>
+<p><span class="math inline">\(\omega
+t=90^\circ\)</span>时的三相绕组基波磁动势如上图所示，代入前面的表达式得：<br />
+<span class="math inline">\(\left\{ {\begin{array}{*{20}{c}}
+f_{A1}(\theta) = F_{m\Phi 1}cos\theta \\ f_{B1}(\theta) = -0.5F_{m\Phi
+1}cos(\theta - 120^\circ) \\ f_{C1}(\theta) = -0.5F_{m\Phi 1}cos(\theta
+- 240^\circ) \end{array}} \right.\)</span><br />
+可以看到此时A相电流最大，合成磁动势与A相绕组的轴线重合。</p>
+<p>三相合成基波表达式：<br />
+<span
+class="math inline">\(f_1(t,\theta)=f_{A1}(t,\theta)+f_{B1}(t,\theta)+f_{C1}(t,\theta)\)</span><br />
+<span class="math inline">\(=\frac{3}{2}F_{m\Phi 1}sin(\omega
+t-\theta)=F_1sin(\omega t-\theta)\)</span><br />
+式中三相合成磁动势基波的幅值<span
+class="math inline">\(F_1=\frac{3}{2}F_{m\Phi
+1}=1.35\frac{N{k_{N1}}I}{p}\)</span><br />
+三相合成磁动势基波在空间旋转，波幅不变（行波）。<br />
+三相合成磁动势基波旋转的电角速度<span
+class="math inline">\(\omega_1=2\pi f\)</span>，单位为<span
+class="math inline">\(rad/s\)</span>；转速<span
+class="math inline">\(n_1=\frac{60}{2\pi}\frac{\omega_1}{p}=\frac{60f}{p}\)</span>，单位<span
+class="math inline">\(r/min\)</span>。<br />
+<mark>某相电流达到正最大值时，合成磁动势与该相绕组的轴线重合。</mark>旋转磁动势的转向与三相电流的相序有关。改变电流的相序可以改变旋转磁动势的转向。</p>
+<p>三相绕组合成磁动势基波的特点：<br />
+(1)三相对称绕组通入三相对称电流产生的三相合成磁动势基波是一个波幅恒定不变的旋转磁动势，其幅值等于每相脉振磁势振幅<span
+class="math inline">\(F_{m\Phi 1}\)</span>的<span
+class="math inline">\(\frac{3}{2}\)</span>倍；<br />
+(2)合成磁动势基波的转速<span
+class="math inline">\(n_1\)</span>与三相电流的频率和绕组的极对数有关；<br />
+(3)当某相电流达到最大值时，合成磁动势的波幅刚好转到该相绕组的轴线上；<br />
+(4)电流在时间上经过多少角度，合成磁动势在空间上转过相同的电角度；<br />
+(5)<mark>旋转磁动势由超前相电流所在的相绕组轴线转向滞后相电流所在的相绕组轴线</mark>（图中顺序为A→B→C）。改变电流的相序，则旋转磁动势改变转向。</p>
+<p>三相绕组合成磁动势谐波：<br />
+<span
+class="math inline">\(f_3(t,\theta)=f_{A3}(t,\theta)+f_{B3}(t,\theta)+f_{C3}(t,\theta)=0\)</span><br />
+<span class="math inline">\(f_5(t,\theta)=\frac{3}{2}F_{m\Phi
+5}sin(\omega t+5\theta)\)</span><br />
+<span class="math inline">\(f_7(t,\theta)=\frac{3}{2}F_{m\Phi
+5}sin(\omega t-7\theta)\)</span><br />
+在三相对称绕组中，合成磁动势不存在3次及3的倍数次谐波，即不存在<span
+class="math inline">\(3,9,15,\cdots\)</span>次谐波。<br />
+三相5次谐波的合成磁动势是一个幅值恒定的旋转波，其转速是基波转速的<span
+class="math inline">\(\frac{1}{5}\)</span>，即<span
+class="math inline">\(n_5=\frac{n_1}{5}\)</span>，转向与基波磁动势转向相反。<br />
+三相7次谐波的合成磁动势也是一个幅值恒定的旋转波，其转速是基波转速的<span
+class="math inline">\(\frac{1}{7}\)</span>，即<span
+class="math inline">\(n_7=\frac{n_1}{7}\)</span>，转向与基波磁动势转向相同。<br />
+普遍讲，当<span class="math inline">\(v=6k-1\quad
+(k=1,2,\cdots)\)</span>时，三相合成与基波转向相反；当<span
+class="math inline">\(v=6k+1\quad
+(k=1,2,\cdots)\)</span>时，三相合成谐波磁动势与基波转向相同。<br />
+合成<span
+class="math inline">\(ν\)</span>次谐波磁动势的转速是基波转速的<span
+class="math inline">\(\frac{1}{v}\)</span>，即<span
+class="math inline">\(n_v=\frac{n_1}{v}\)</span>。</p>
+<h3 id="圆形和椭圆形旋转磁动势">圆形和椭圆形旋转磁动势</h3>
+在对称的三相绕组中流过对称的三相电流时，气隙中的合成磁动势是一个幅值恒定、转速恒定的旋转磁动势，其波幅的轨迹是一个圆，故这种磁动势称为圆形旋转磁动势，相应的磁场称为圆形旋转磁场。<br />
+当三相电流不对称时，可以利用对称分量法，将它们分解成为正序分量和负序分量以及零序分量。<br />
+三相零序电流产生的合成磁动势为零。正序电流将产生正向旋转磁动势<span
+class="math inline">\(F_+\)</span>，而负序电流将产生反向旋转的磁动势<span
+class="math inline">\(F_-\)</span>。<br />
+
+<center>
+<img src="21 不对称电流产生的椭圆形旋转磁动势.png" width=250/><span
+class="caption">图21 不对称电流产生的椭圆形旋转磁动势</span>
+</center>
+<p>交流绕组磁动势的通用表达式为：<br />
+<span class="math inline">\(f(t,\theta) = F_+\cos(\omega t-\theta) +
+F_-\cos(\omega t+\theta)\)</span><br />
+当<span class="math inline">\(F_+=0\)</span>或<span
+class="math inline">\(F_-=0\)</span>时，就得到圆形旋转磁动势；<br />
+当<span class="math inline">\(F_+\)</span>和<span
+class="math inline">\(F_-\)</span>都存在、且<span
+class="math inline">\(F_+ \ne
+F_-\)</span>时，便是椭圆形旋转磁动势；<br />
+当<span
+class="math inline">\(F_+=F_-\)</span>时，便得到脉振磁动势<mark>（一条不断伸缩的线段）</mark>。<br />
+一个脉振磁动势可分解成两个旋转磁动势。</p>
+<h2 id="电机的发热与温升">电机的发热与温升</h2>
+<h3 id="温升与温升限值">温升与温升限值</h3>
+电机的温度限制主要取决于绝缘材料，温度过高会使绝缘材料加速老化，影响电机的使用寿命。<br />
+电机中常用的绝缘材料，按照耐热能力可分为A、E、B、F、H、C等级，如下表所示。<br />
+
+<center>
+<span class="caption">表2 绝缘等级与温度限值</span>
+</center>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">绝缘等级</th>
+<th style="text-align: center;">A</th>
+<th style="text-align: center;">E</th>
+<th style="text-align: center;">B</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">H</th>
+<th style="text-align: center;">C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">温度限值/℃</td>
+<td style="text-align: center;">105</td>
+<td style="text-align: center;">120</td>
+<td style="text-align: center;">130</td>
+<td style="text-align: center;">155</td>
+<td style="text-align: center;">180</td>
+<td style="text-align: center;">&gt;180</td>
+</tr>
+</tbody>
+</table>
+<p>一般电机多用E级与B级绝缘。<br />
+电机工作温度与周围环境温度之差被称作温升，它反映电机的发热与散热情况。<br />
+温升限值取决与环境温度与温度限值，一般会留有一定裕量，使温升限值小于环境温度与温度限值的差值。<br />
+国家规定环境温升取40℃，在此基础上，可以确定E级与B级绝缘材料的温升限值为75℃与80℃，其他绝缘材料同理。</p>
+<h3 id="电机的发热与冷却过程">电机的发热与冷却过程</h3>
+将电机近似为一个均值等温体（物体各点温度相同，表面各处散热能力一致），假设均值等温体在时刻<span
+class="math inline">\(t\)</span>的温升为<span
+class="math inline">\(\tau\)</span>，则温度变化的方程为（解方程过程略）：<br />
+<span class="math inline">\(\tau=\tau_\infty(1-e^{-\frac{t}{T}})+\tau_0
+e^{-\frac{t}{T}}\)</span><br />
+式中<span
+class="math inline">\(\tau_\infty\)</span>为稳态温升（此时产生的热量与散发的热量保持相等，温度不再上升），<span
+class="math inline">\(\tau_0\)</span>为初始温升，<span
+class="math inline">\(T\)</span>为时间常数。<br />
+若物体的初始温度与环境温度相等，即<span
+class="math inline">\(\tau_0=0\)</span>，则有发热过程曲线：<br />
+<span
+class="math inline">\(\tau=\tau_\infty(1-e^{-\frac{t}{T}})\)</span><br />
+若物体最终的温度与环境温度相等，即<span
+class="math inline">\(\tau_\infty=0\)</span>，则有冷却过程曲线：<br />
+<span class="math inline">\(\tau=\tau_0 e^{-\frac{t}{T}}\)</span><br />
+这两个曲线皆为指数曲线，如下图所示。
+<center>
+<img src="22 均值等温体的发热与冷却曲线.png" width=500/><span
+class="caption">图21 不对称电流产生的椭圆形旋转磁动势</span>
+</center>
+<h3 id="电机的工作制">电机的工作制</h3>
+<p>(1)连续工作制<br />
+(2)短时工作制<br />
+我国规定有15min、30min、45min、60min四种短时工作制。<br />
+(3)断续周期工作制<br />
+我国规定周期为10min，负载工作持续率有15%、25%、45%、60%四种。</p>
+<h3 id="电机的冷却方式">电机的冷却方式</h3>
+<p>按冷却介质是否进入导体内部，分为表面冷却与内部冷却两种。<br />
+中小型电机常采用表面冷却，大型同步发电机多采用内部冷却。</p>
+<p>表面冷却分为自然冷却、自扇冷却、它扇冷却与管道通风冷却四种方式。<br />
+自扇冷却分为内部自扇冷却与外部自扇冷却。<br />
+内部自扇冷却分为径向通风与轴向通风两种。</p>
+<p>内部冷却时冷却介质采用氢气或纯净水。常采用空心导体，使得冷却介质通入导体内部。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机学03-变压器（下）</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

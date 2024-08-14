@@ -25,12 +25,12 @@
         <meta name="keywords" content="Maxwell,课题笔记,开关磁阻电机" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 01 开关磁阻电机设计思路引入，02全正向设计思路流程的工程实例3KW1500rpm初始设计，03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解，04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算。 参数设置 从磁路开始。打开软件，点击Desktop菜单里的Maxwell图标，点击RMxprt（电机本体快速设计工具），界面中De">
+    <meta name="description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 参考视频01 开关磁阻电机设计思路引入，02全正向设计思路流程的工程实例3KW1500rpm初始设计，03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解，04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算。 参数设置 从磁路开始。打开软件，点击Desktop菜单里的Maxwell图标，点击RMxprt（电机本体快速设计工具），界">
 <meta property="og:type" content="article">
 <meta property="og:title" content="开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析">
 <meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="RenAhahWiki">
-<meta property="og:description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 01 开关磁阻电机设计思路引入，02全正向设计思路流程的工程实例3KW1500rpm初始设计，03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解，04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算。 参数设置 从磁路开始。打开软件，点击Desktop菜单里的Maxwell图标，点击RMxprt（电机本体快速设计工具），界面中De">
+<meta property="og:description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 参考视频01 开关磁阻电机设计思路引入，02全正向设计思路流程的工程实例3KW1500rpm初始设计，03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解，04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算。 参数设置 从磁路开始。打开软件，点击Desktop菜单里的Maxwell图标，点击RMxprt（电机本体快速设计工具），界">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/1%20开关磁阻电机模型.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/2%20相电压.png">
@@ -47,7 +47,7 @@
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/13%20三相电流曲线.png">
 <meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/14%20转矩曲线.png">
 <meta property="article:published_time" content="2024-06-27T08:22:18.000Z">
-<meta property="article:modified_time" content="2024-07-01T12:02:51.717Z">
+<meta property="article:modified_time" content="2024-07-17T11:02:20.950Z">
 <meta property="article:author" content="RenAhah">
 <meta property="article:tag" content="Maxwell">
 <meta property="article:tag" content="课题笔记">
@@ -229,7 +229,7 @@
                             &nbsp;
                             Maxwell
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -274,7 +274,7 @@
                             &nbsp;
                             电机设计
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -337,7 +337,7 @@
                             &nbsp;
                             开关磁阻电机
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -502,7 +502,7 @@
         
         
             <p>基于视频<code>新型开关磁阻电机电磁设计教学视频</code>整理的学习笔记。<br />
-<code>01 开关磁阻电机设计思路引入</code>，<code>02全正向设计思路流程的工程实例3KW1500rpm初始设计</code>，<code>03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解</code>，<code>04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算</code>。</p>
+参考视频<code>01 开关磁阻电机设计思路引入</code>，<code>02全正向设计思路流程的工程实例3KW1500rpm初始设计</code>，<code>03开关磁阻电机的电磁仿真后处理各类输出特性曲线详解</code>，<code>04磁阻电机有限元瞬态仿真额定输出时损耗分析和效率计算</code>。</p>
 <h2 id="参数设置">参数设置</h2>
 <p>从磁路开始。打开软件，点击Desktop菜单里的Maxwell图标，点击RMxprt（电机本体快速设计工具），界面中Design
 Flow选择Generate RMxprt Solutions，Machine
@@ -516,6 +516,7 @@ Type（驱动电路）有三个选择，选择第一个Full-Voltage（不对称�
 Manager中的RMxprtDesign1-&gt;Machine-&gt;Stator，开始对定子进行设置。<br />
 参考与之相似的感应电机进行设置，3kW1500rpm对应的感应电机型号为Y100。<br />
 设置Outer Diameter（外径）为160mm，Inner Diameter（内径）为80mm。<br />
+<mark>对于6/4开关磁阻电机，内径与外径之比为0.5；对于8/6开关磁阻电机，内径与外径之比为0.53。</mark><br />
 Length为120mm，Stacking
 Factor（叠压系数，指电机中含有磁性材料部分的实际体积与铁心总体积的比值）为0.97，Steel
 Type选择DW465_50。<br />
@@ -536,21 +537,22 @@ Manager中的RMxprtDesign1-&gt;Machine-&gt;Rotor，开始对转子进行设置�
 设置Outer Diameter（转子外径）为79.2mm（气隙为0.4mm），Inner
 Diameter（转子内径）为28mm。<br />
 Length为120mm，Stacking Factor为0.97，Steel Type选择DW465_50。<br />
-Embarce（极弧系数），要小于等于定子的极弧系数，这里设置为0.42。<br />
+Number of Poles设为4。<br />
+Embarce（极弧系数），<mark>要小于等于定子的极弧系数</mark>，这里设置为0.42。<br />
 Yoke Thickness（轭厚度），这里设置为15mm。</p>
 经过上述设置，得到的电机模型如下图所示：
 <center>
 <img src="1 开关磁阻电机模型.png"/ width=400><span class="caption">图1
 开关磁阻电机模型</span>
 </center>
-<p>气隙是转子外侧到定子内侧间的举例，第二气隙是转子轭部到定子内侧的距离，如上图所示。<br />
+<p>气隙是转子外侧到定子内侧间的距离，第二气隙是转子轭部到定子内侧的距离，如上图所示。<br />
 规定第二气隙的厚度要达到气隙的20倍以上。<br />
 这里的气隙厚度为0.4mm，这意味着第二气隙至少要有8mm。图中第二气隙的厚度为11mm，符合要求。</p>
 <p>上述参数中，气隙、轭部厚度、极弧系数比较重要。</p>
 <p>双击Project
 Manager中的RMxprtDesign1-&gt;Machine-&gt;Circuit，开始对电流属性进行设置。<br />
 Lead Angle of Trigger（超前角）设置为20°，Trigger Pulse
-Width（脉冲电流宽度）设置为110°，</p>
+Width（脉冲电流宽度）设置为110°。</p>
 <h2 id="模型求解">模型求解</h2>
 <p>右键Project Manager中的Analysis-&gt;Add Solution
 Setup，进入求解设置界面。<br />
@@ -563,8 +565,8 @@ Speed（恒定转速）</mark>。<br />
 <h2 id="参数调整">参数调整</h2>
 <p>查看STATOR COIL DATA中的Slot Fill
 Factor（槽满率），对于开关磁阻电机，槽满率要求为<span
-class="math inline">\(30% \sim
-50%\)</span>，实验结果为64.1185%，槽满率不达标，因此需要调整参数。<br />
+class="math inline">\(30\% \sim
+50\%\)</span>，实验结果为64.1185%，槽满率不达标，因此需要调整参数。<br />
 接下来查看FULL-LOAD OPERATION DATA中的Input DC Current
 (A):25.1401、Output Power (W):5483.81、Efficiency (%):83.8961。<br />
 功率过高（远超过3000W）。<br />
@@ -599,7 +601,9 @@ Phase Voltage（相电压）波形如下图所示：<br />
 气隙电感</span>
 </center>
 <p>Airgap Inductance（气隙电感）波形如上图所示。<br />
-定子齿对准转子轭部时电感较小，定子齿对准转子凸极时电感较大。</p>
+定子齿对准转子轭部时电感较小，定子齿对准转子凸极时电感较大。<br />
+<mark>定子与转子轴线重合时电感大，磁阻最小，此时给相应相定子励磁只产生径向磁吸力，无切向磁拉力，无法使转子转动；<br />
+定子与转子轴线不重合时电感较小，磁阻较大，此时给相应相定子励磁可以产生切向磁拉力，从而使转子转动。</mark></p>
 <center>
 <img src="4 磁链.png"/ width=600><span class="caption">图4 磁链</span>
 </center>
@@ -659,7 +663,7 @@ Fields，保留场计算结果。（界面不一样了，视频版本为Maxwell
 Step，Start设为0s，End设为0.01s，Step Size为0.005s</mark></p>
 <p>开始仿真，首先观察0时刻。0时刻A相定子绕组对准的是第二气隙（转子轭部），因此此时电感最小。<br />
 <mark>查看电感矩阵：菜单Maxwell 2D-&gt;Design Settings，选择Matrix
-Computation选项卡，可以计算电感矩阵，获取自感与互感信息。<br />
+Computation选项卡，勾选Enable，选择Apparent。可以计算电感矩阵，获取自感与互感信息。<br />
 要有强大的自感，同时尽量削弱互感。</mark></p>
 仿真会进行较长的一段时间，仿真完成后，右键Project
 Manager中的Result-&gt;Creat Transient Report-&gt;Rectangular
@@ -713,7 +717,7 @@ class="math inline">\(T=\frac{P}{\Omega}=9.54\frac{P}{n_N}\)</span><br />
 铜耗与铁耗之和约为691W<br />
 最终得到效率为3171÷(3171+691)=82%</p>
 <h2 id="总结">总结</h2>
-<p>首先通过RMxprt建立开关磁阻电机仿真模型，然后根据电机满槽率、效率、体积等要求不断调整电机参数，完成电机的正向设计。<br />
+<p>首先通过RMxprt建立开关磁阻电机仿真模型，然后根据电机槽满率、效率、体积等要求不断调整电机参数，完成电机的正向设计。<br />
 然后RMxprt模型转换为Maxwell二维有限元模型，修改网格设置优化仿真效果，通过仿真得到电机的铁耗、三相电流、转矩波形曲线，计算电机的铁耗、铜耗以及输出功率，进而得到电机的效率。</p>
 <p>本次仿真的问题体现在得到的铁耗曲线不正确，与视频中的样子大相径庭，这可能是因为：<br />
 (1)网格设置不正确；<br />
@@ -735,6 +739,15 @@ class="math inline">\(T=\frac{P}{\Omega}=9.54\frac{P}{n_N}\)</span><br />
 
     
 <nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    开关磁阻电机02-开关磁阻电机原理
+                
+            </div>
+        </a>
     
     
         <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/" id="article-nav-older" class="article-nav-link-wrap">

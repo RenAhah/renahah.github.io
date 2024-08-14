@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>开关磁阻电机02-开关磁阻电机原理 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题笔记,开关磁阻电机" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 参考视频05基于磁阻电机基本电磁方程的运动机理理解，06开关磁阻电机的空载负载电感特性对电机性能的影响以及仿真分析，07磁阻电机的转矩控制，08开关磁阻电机的驱动方式，09开关磁阻电机电感曲线特性和极弧系数的选取图形化分析，10满足极弧系数选取约束条件的开关磁阻电机性能优化，11基于参数化扫描的转矩波动优化，12不同槽极配合的电磁方案优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开关磁阻电机02-开关磁阻电机原理">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="基于视频新型开关磁阻电机电磁设计教学视频整理的学习笔记。 参考视频05基于磁阻电机基本电磁方程的运动机理理解，06开关磁阻电机的空载负载电感特性对电机性能的影响以及仿真分析，07磁阻电机的转矩控制，08开关磁阻电机的驱动方式，09开关磁阻电机电感曲线特性和极弧系数的选取图形化分析，10满足极弧系数选取约束条件的开关磁阻电机性能优化，11基于参数化扫描的转矩波动优化，12不同槽极配合的电磁方案优化">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/1%20开关磁阻电机结构（画出其中一相绕组及其主电路）.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/2%20相电感简化线性模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/3%20m相开关磁阻电机二端口网络示意图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/4%20不对称半桥.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/5%20角度位置控制方式相电流波形（基于线性模型）.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/6%20角度位置控制方式电感与电流曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/7%20电流斩波控制波形示意图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/8%20电流斩波控制方式电感与电流曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/9%20开关磁阻电动机调速控制特性.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/10%20电压PWM控制波形示意图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/10%20定、转子极弧取值.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/11%20转矩曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/12%20参数化扫描转矩曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/13%20磁通随电流变化曲线.png">
+<meta property="article:published_time" content="2024-07-10T03:30:24.000Z">
+<meta property="article:modified_time" content="2024-07-26T11:34:52.852Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题笔记">
+<meta property="article:tag" content="开关磁阻电机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/1%20开关磁阻电机结构（画出其中一相绕组及其主电路）.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/开关磁阻电机/开关磁阻电机02-开关磁阻电机原理" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/" rel="tag">开关磁阻电机</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/" rel="tag">课题笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">
+            <time datetime="2024-07-10T03:30:24.000Z" itemprop="datePublished">2024-07-10</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            开关磁阻电机02-开关磁阻电机原理
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">开关磁阻电机原理概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%9F%BA%E6%9C%AC%E6%96%B9%E7%A8%8B%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">开关磁阻电机基本方程式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E7%9A%84%E8%B0%83%E9%80%9F%E6%8E%A7%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">开关磁阻电机的调速控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%AF%B9%E7%A7%B0%E5%8D%8A%E6%A1%A5"><span class="toc-number">3.1.</span> <span class="toc-text">不对称半桥</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%92%E5%BA%A6%E4%BD%8D%E7%BD%AE%E6%8E%A7%E5%88%B6"><span class="toc-number">3.2.</span> <span class="toc-text">角度位置控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E6%B5%81%E6%96%A9%E6%B3%A2%E6%8E%A7%E5%88%B6"><span class="toc-number">3.3.</span> <span class="toc-text">电流斩波控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E9%80%9F%E6%8E%A7%E5%88%B6%E7%89%B9%E6%80%A7"><span class="toc-number">3.4.</span> <span class="toc-text">调速控制特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8E%8Bpwm%E6%8E%A7%E5%88%B6"><span class="toc-number">3.5.</span> <span class="toc-text">电压PWM控制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%81%E5%BC%A7%E7%B3%BB%E6%95%B0%E7%9A%84%E9%80%89%E5%8F%96"><span class="toc-number">4.</span> <span class="toc-text">极弧系数的选取</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1"><span class="toc-number">5.</span> <span class="toc-text">8&#x2F;6开关磁阻电机设计</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>基于视频<code>新型开关磁阻电机电磁设计教学视频</code>整理的学习笔记。<br />
+参考视频<code>05基于磁阻电机基本电磁方程的运动机理理解</code>，<code>06开关磁阻电机的空载负载电感特性对电机性能的影响以及仿真分析</code>，<code>07磁阻电机的转矩控制</code>，<code>08开关磁阻电机的驱动方式</code>，<code>09开关磁阻电机电感曲线特性和极弧系数的选取图形化分析</code>，<code>10满足极弧系数选取约束条件的开关磁阻电机性能优化</code>，<code>11基于参数化扫描的转矩波动优化</code>，<code>12不同槽极配合的电磁方案优化对比分析</code>。</p>
+<h2 id="开关磁阻电机原理概述">开关磁阻电机原理概述</h2>
+<p>开关磁阻电机（Switched Reluctance
+Motor，SRM）为双凸极结构，定、转子凸极均由具有高磁导率的硅钢片叠成，转子上既无绕组也无永磁体，定子上嵌有集中绕组。<br />
+<mark>注：凸极电机具有不均匀的气隙，交轴电感与直轴电感不相等。</mark></p>
+<p>开关磁阻电机的运行遵循着“磁阻最小原理”。<br />
+利用磁阻的不相等，磁通会沿着磁阻最小的路径闭合，通电的定子以磁力吸引转子，产生磁力的切向分力，进而产生对磁阻的电磁转矩。<br />
+开关磁阻电机工作过程中，由<mark>转子位置传感器</mark>检测当前转子的位置，其中最有利于对转子产生前向转矩的一相定子会通电，随着转子的转动，不断变换通电的定子绕组相序，从而实现转子的持续转动。<br />
+具有一定形状的转子铁心在移动到最小磁阻位置时，其主轴线会与磁场的轴线重合，若给定子绕组按照一定的顺序依次供电，转子将沿着逆励磁次序的方向旋转。</p>
+<p>开关磁阻电机按照定、转子极数与相数可以分为多种结构，当前使用较为广泛的结构有<mark>三相6/4、三相9/6、三相12/8、四相8/6结构</mark>。<br />
+开关磁阻电机的相数与转子极数越多，步距角就越小，这对于抑制转矩脉动很有利；但同时开关管元件数目会变多，电路结构会更复杂，使得制造成本更高。<br />
+下图以四相8/6（定子8极，转子6极）结构为例具体讲解开关磁阻电机工作原理。</p>
+<center>
+<img src="1 开关磁阻电机结构（画出其中一相绕组及其主电路）.png" width=400/><span
+class="caption">图1
+开关磁阻电机结构（画出其中一相绕组及其主电路）</span>
+</center>
+<p>径向相对的两个定子绕组正向串联构成一相，相绕组通电后在铁心内形成两极型的磁场。<br />
+开关磁阻电机的转矩由磁路选择最小磁阻结构的趋势有关。<br />
+上图D相定子凸极轴线D-D'与转子凸极轴线3-3'重合，此时D相磁路<mark>磁阻最小，电感最大</mark>，若此时继续给D相励磁，由于磁力线已处于“拉直”状态，转子将<mark>只受到径向磁吸力而无切向磁拉力</mark>，无法维持转子的转动。<br />
+若给A相励磁，由于此时磁力线被扭曲，将会产生切向磁拉力，使转子旋转到定子凸极轴线A-A'与转子凸极轴线1-1'重合之处，使A相的磁路磁阻最小，电感最大。<br />
+若上图为定转子位置的初始状态，按照A-&gt;B-&gt;C-&gt;D顺序给定子绕组通电，则转子将沿着逆励磁顺序以逆时针方向转动；若按照C-&gt;B-&gt;A-&gt;D顺序给定子绕组通电，则转子按顺时针方向转动。<br />
+开关磁阻电机的旋转方向与相电流方向无关，仅与相绕组励磁顺序有关。</p>
+<p>由上图可知，当主开关器件<span
+class="math inline">\(S_1,S_2\)</span>导通时，D相绕组从直流电源<span
+class="math inline">\(U_s\)</span>吸收电能；当<span
+class="math inline">\(S_1,S_2\)</span>关断时，相电流经续流二极管<span
+class="math inline">\(VD_1,VD_2\)</span>回馈电源<span
+class="math inline">\(U_s\)</span>，引入回馈环节可以有效利用能量，提高开关磁阻电机调速系统的工作效率。</p>
+<p>定义每切换一次通电的定子绕组时，转子转过的角度为步距角<span
+class="math inline">\(\theta_{step}\)</span>，可得：<br />
+<span
+class="math inline">\(\theta_{step}=\frac{\tau_t}{m}=\frac{360°}{mN_r}\)</span><br />
+其<span class="math inline">\(N_r\)</span>为转子凸极个数，m为相数，<span
+class="math inline">\(\tau_t\)</span>为转子的极距角。<br />
+<mark>上图中电机的步距角为15°</mark></p>
+<p>设开关磁阻电动机转速为<span
+class="math inline">\(n\)</span>(r/min)，则相电流脉冲频率<span
+class="math inline">\(f=\frac{nN_r}{60}\)</span><br />
+<mark>这里的转子凸极个数<span
+class="math inline">\(N_r\)</span>可以看作普通电机中的极对数<span
+class="math inline">\(p\)</span>。</mark><br />
+开关磁阻电动机中的气隙磁场不是直流电机中的恒定磁场，也不是异步电机（感应电机）的旋转磁场，而是步进磁场。<br />
+电动机转速与由<span
+class="math inline">\(f\)</span>决定的步进磁场平均转速保持同步关系，可以将开关磁阻电动机视作同步电动机。</p>
+<p><mark style="background-color:cyan">相电流为非正弦的脉冲波以及铁心磁路的高饱和</mark>是开关磁阻电机的运行特点。<br />
+考虑磁路饱和带来的非线性，根据磁共能计算开关磁阻电机的电磁转矩<br />
+<span class="math inline">\({\left. {T(\theta ,i) = \frac{ {\partial
+W&#39;(\theta ,i)} }{ {\partial \theta } } } \right|_{i =
+const}}\)</span><br />
+式中<span class="math inline">\(\theta\)</span>为转子位置角，<span
+class="math inline">\(i\)</span>为相电流。</p>
+在对开关磁阻电机作定性分析时，若忽略磁路饱和，即假定相电感仅与转子位置有关而与相电流无关，得到的相电感简化线性模型如下图所示。<br />
+
+<center>
+<img src="2 相电感简化线性模型.png" width=300/><span class="caption">图2
+相电感简化线性模型</span>
+</center>
+<p><span
+class="math inline">\(L_{max}\)</span>对应定、转子凸极轴线重合之时，即磁阻最小位置处，此时相电感最大；<br />
+<span
+class="math inline">\(L_{min}\)</span>对应定子凸极轴线与转子槽中心线重合之时，即磁阻最大位置处，此时相电感最小。<br />
+可以将式子简化为：<br />
+<mark style="background-color:cyan"><span
+class="math inline">\(T(\theta,i) = \frac{ { {i^2}}}{2}\frac{\partial
+L}{\partial \theta} =\frac{ { {i^2}}}{2}\frac{ {\text{d}}L}{
+{\text{d}}\theta}\)</span></mark><br />
+该式中电磁转矩方向仅取决于相电感随转子位置角的变化，与相电流无关。<br />
+若<span class="math inline">\(\frac{ {\text{d}}L}{
+{\text{d}}\theta}&gt;0\)</span>，则产生电动转矩；若<span
+class="math inline">\(\frac{ {\text{d}}L}{
+{\text{d}}\theta}&lt;0\)</span>，则产生制动转矩。<br />
+因此可以通过控制相电流脉冲幅值，开通角<span
+class="math inline">\(\theta_{on}\)</span>与关断角<span
+class="math inline">\(\theta_{off}\)</span>的方式控制开关磁阻电动机的转矩大小与方向，实现调速控制。</p>
+<h2 id="开关磁阻电机基本方程式">开关磁阻电机基本方程式</h2>
+对于m相开关磁阻电机，不计铁耗及相绕组间的互感时，其机电能量转换示意图如下图所示：<br />
+
+<center>
+<img src="3 m相开关磁阻电机二端口网络示意图.png" width=350/><span
+class="caption">图3 m相开关磁阻电机二端口网络示意图</span>
+</center>
+<p>图中<span class="math inline">\(T_e\)</span>为电磁转矩、<span
+class="math inline">\(T_L\)</span>为负载转矩、<span
+class="math inline">\(D\)</span>为粘性摩擦系数、<span
+class="math inline">\(J\)</span>为转子及负载的转动惯量；<br />
+<span class="math inline">\(U_k\)</span>、<span
+class="math inline">\(R_K\)</span>、<span
+class="math inline">\(i_k\)</span>、<span
+class="math inline">\(e_k\)</span>为<span
+class="math inline">\(k\)</span>相绕组<span
+class="math inline">\((k=a,b,\cdots,m)\)</span>外加电压、电阻、电流、感应电动势；<br />
+<span class="math inline">\(\Psi_k(\theta,i_k)\)</span>为<span
+class="math inline">\(k\)</span>相绕组的磁链，<span
+class="math inline">\(\theta\)</span>为转子位置角。</p>
+<p><span
+class="math inline">\(k\)</span>相绕组的电压平衡方程式为：<br />
+<span class="math inline">\(U_k=R_k i_k-e_k=R_k i_k +
+\frac{d\Psi_k}{dt}\)</span></p>
+<p>相绕组磁链<span
+class="math inline">\(\Psi_k\)</span>可以表示为电感<span
+class="math inline">\(L_k\)</span>与电流<span
+class="math inline">\(i_k\)</span>的乘积<br />
+<span
+class="math inline">\(\Psi_k(\theta,i_k)=L_k(\theta,i_k)i_k\)</span><br />
+<span class="math inline">\(\frac{d\Psi_k}{dt}=\frac{\partial
+\Psi_k}{\partial i_k}\frac{d i_k}{dt}+\frac{\partial \Psi_k}{\partial
+\theta}\frac{d \theta}{dt}=(L_k + i_k\frac{\partial L_k}{\partial
+i_k})\frac{d i_k}{dt}+i_k\frac{\partial L_k}{\partial
+\theta}\omega=e_t+e_m\)</span><br />
+<span class="math inline">\(\Rightarrow U_k=R_k i_k +
+\frac{d\Psi_k}{dt}=R_k i_k+e_t+e_m\)</span><br />
+式中<span
+class="math inline">\(\omega=\frac{d\theta}{dt}\)</span>为机械角速度。<br />
+由上式可知电源两端电压是电路中各模块分压之和。<br />
+其中<span class="math inline">\(R_k i_k\)</span>为第<span
+class="math inline">\(k\)</span>相回路的电阻压降；<br />
+<span
+class="math inline">\(e_t\)</span>为变压器电动势，是由电流变化引起磁链变化而感应的电动势；<br />
+<span
+class="math inline">\(e_m\)</span>为运动电动势，是由转子位置改变引起绕组中磁链变化而感应的电动势，与机电能量转换直接相关。</p>
+<p>下面列出转子机械运动方程式：<br />
+<span class="math inline">\(T_e=J\frac{d^2
+\theta}{dt}+D\frac{d\theta}{dt}+T_L\)</span></p>
+<h2 id="开关磁阻电机的调速控制">开关磁阻电机的调速控制</h2>
+<h3 id="不对称半桥">不对称半桥</h3>
+<center>
+<img src="4 不对称半桥.png" width=250/><span class="caption">图4
+不对称半桥</span>
+</center>
+<p>开关磁阻电机电流的通断通过不对称半桥实现，其示意图如上图所示。<br />
+不对称半桥两端连接到定子绕组的两端。当开关<span
+class="math inline">\(S_1,S_2\)</span>闭合时，绕组通电，绕组从电源吸收电能，电流迅速上升，电感中存储一定能量；开关<span
+class="math inline">\(S_1,S_2\)</span>断开时，由于电感的电流方向不会突变，电流将经经续流二极管<span
+class="math inline">\(D_1,D_2\)</span>回馈到电源<span
+class="math inline">\(U_s\)</span>，绕组电流迅速下降。</p>
+<h3 id="角度位置控制">角度位置控制</h3>
+<center>
+<img src="5 角度位置控制方式相电流波形（基于线性模型）.png" width=400/><span
+class="caption">图5 角度位置控制方式相电流波形（基于线性模型）</span>
+</center>
+<p>若在电感上升区域<span
+class="math inline">\(\theta_2\sim\theta_3\)</span>内绕组通电，旋转电动势为正，产生电动转矩，电源提供的电能一部分转换为机械能输出，另一部分则以磁能的形式储存在绕组中；<br />
+若通电绕组在<span
+class="math inline">\(\theta_2\sim\theta_3\)</span>内断电，储存的磁能一部分转换为机械能，另一部分则回馈给电源，这时转轴上获得的仍是电动转矩。<br />
+在相电感保持为最大电感的<span
+class="math inline">\(\theta_3\sim\theta_4\)</span>区，旋转电动势为零，如有相电流继续流动，绕组储能则仅回馈给电源，转轴上并无电磁转矩；<br />
+若相电流在电感下降区<span
+class="math inline">\(\theta_4\sim\theta_5\)</span>内流动，因旋转电动势为负，产生制动转矩，这时回馈给电源的能量既有绕组释放的磁能，也有制动转矩产生的机械能，此时开关磁阻电动机运行在发电状态。</p>
+<p>为了得到较大的转矩，一方面应尽量避免制动转矩，即在相电感开始随转子位置减小时，尽快使相电流衰减到零，因此关断角<span
+class="math inline">\(\theta_{off}\)</span>通常设计在最大电感达到之前。<br />
+<mark>（通常将<span class="math inline">\(\theta_{off}\)</span>取在<span
+class="math inline">\(\theta_2\)</span>与<span
+class="math inline">\(\theta_3\)</span>的中点）</mark><br />
+<mark>相应的公式为：<span
+class="math inline">\(\theta_{off}=\frac{1}{2}(\frac{2\pi}{N_r}-\beta_r)+\theta_{on}\)</span>，式中<span
+class="math inline">\(N_r\)</span>为转子凸极个数、<span
+class="math inline">\(\beta_r\)</span>为转子极弧。</mark><br />
+另一方面，应尽量提高电动转矩，即在相电感随转子位置上升区域应尽量流过较大的电流。</p>
+<p>开关磁阻电动机电动运行的重要条件是绕组在某一超前于电感上升区域
+（<span
+class="math inline">\(θ_{on}\)</span>处）接通主电源，这样定子电路起始的电感为<span
+class="math inline">\(L_{min}\)</span>，从而允许相电流迅速建立起来，当转子转至<span
+class="math inline">\(\theta_2\)</span>处时，电流增长到最大值，随后因电感的上升及旋转电动势的出现，电流一般不再上升。<mark>因此<span
+class="math inline">\(\theta_{on}\)</span>需要取在<span
+class="math inline">\(\theta_2\)</span>之前</mark>。</p>
+这种通过控制开通角<span
+class="math inline">\(\theta_{on}\)</span>和关断角<span
+class="math inline">\(\theta_{off}\)</span>实现电磁转矩调节的方法被称作角度位置控制方式。<br />
+采用Ansys Maxwell得到的电感与电流仿真曲线如下图所示：<br />
+（右键Project Manager中的Result-&gt;Creat Transient
+Report-&gt;Rectangular
+Plot，Category选择Winding，Quantity选择L(PhaseB,PhaseB)与Current(PhaseB)，点击New
+Report即可生成仿真曲线）
+<center>
+<img src="6 角度位置控制方式电感与电流曲线.png" width=500/><span
+class="caption">图6 角度位置控制方式电感与电流曲线</span>
+</center>
+<p><mark>注：需要在仿真前点击菜单Maxwell 2D-&gt;Design
+Settings，选择Matrix
+Computation选项卡，勾选Enable，选择Apparent。这样才能得到电感曲线。</mark><br />
+可以看到电流波形不是方波。<mark style="background-color:cyan">这是因为电流的增加使得磁通随之增加，磁通增加导致铁芯饱和，铁芯饱和使得电感下降，也就是电抗下降，电流就会上升形成尖峰。</mark><br />
+角度位置控制方式的缺点体现在电流峰值过大，过大的电流会减少开关器件的使用寿命。</p>
+<h3 id="电流斩波控制">电流斩波控制</h3>
+为了限制电流，可以采用电流斩波控制，其波形示意图如下图所示：
+<center>
+<img src="7 电流斩波控制波形示意图.png" width=400/><span
+class="caption">图7 电流斩波控制波形示意图</span>
+</center>
+<p>电流斩波控制方式不仅要设置开通角<span
+class="math inline">\(\theta_{on}\)</span>和关断角<span
+class="math inline">\(\theta_{off}\)</span>，还要设置电流的上下限幅值<span
+class="math inline">\(i_H\)</span>与<span
+class="math inline">\(i_L\)</span>来将电流限制在一定范围之内。<br />
+若电流上升到<span
+class="math inline">\(i_H\)</span>，则开关器件关断，电流下降；若电流下降到<span
+class="math inline">\(i_L\)</span>，则开关器件重新导通，电流回升。<br />
+电流斩波控制方式下的相电流波形近似为 “平顶波”。</p>
+下面进行Ansys Maxwell仿真，首先双击Project
+Manager中的RMxprtDesign1-&gt;Machine，将Control Type改为CCC（Chopped
+Current Control，电流斩波控制）。<br />
+再双击Project
+Manager中的RMxprtDesign1-&gt;Machine-&gt;Circuit，可以看到多出了两栏分别是Maximum
+Current与Minimum Current，是电流的限幅值，分别设为28A与26A。<br />
+右键Analysis-&gt;Setup1-&gt;Analyze，进行求解。<br />
+右键Analysis-&gt;Setup1-&gt;Create Maxwell Design，选择Maxwell 2D
+Design。得到二维仿真模型。<br />
+得到模型后，按照前文所诉的方法进行仿真，得到对应的电感与电流仿真曲线如下图所示：
+<center>
+<img src="8 电流斩波控制方式电感与电流曲线.png" width=500/><span
+class="caption">图8 电流斩波控制方式电感与电流曲线</span>
+</center>
+<p>可以看到图中5ms至6ms时刻的电感相较于波形示意图所展示的理想值要小。<mark style="background-color:cyan">这是因为此时有电流存在，电流产生磁场，使铁芯进入饱和状态，进而电感相对较小。<mark></p>
+<p>电流斩波控制通常适用于电机中低速运行的情况，在电机高速运行的情况下，转子周期较短，电流变化率小，更适合采取角度位置控制策略。</p>
+<h3 id="调速控制特性">调速控制特性</h3>
+开关磁阻电动机调速控制特性如下图所示：
+<center>
+<img src="9 开关磁阻电动机调速控制特性.png" width=400/><span
+class="caption">图9 开关磁阻电动机调速控制特性</span>
+</center>
+<p>在基速<span
+class="math inline">\(\omega_b\)</span>以下，采用电流斩波控制（Chopped
+Current Control，CCC），输出特性为恒转矩特性。<br />
+<span class="math inline">\(\theta_{on}\)</span>、<span
+class="math inline">\(\theta_{off}\)</span>不变，改变相绕组的励磁电压来实现调速。<br />
+在基速<span
+class="math inline">\(\omega_b\)</span>以上，采用角度位置控制 （Angular
+Position Control，
+APC），输出特性为恒功率特性<mark>（转距与角速度成反比）</mark>。<br />
+通过改变导通角<span
+class="math inline">\(\theta_c=\theta_{off}-\theta_{on}\)</span>实现调速（通常使关断角<span
+class="math inline">\(\theta_{off}\)</span>不变，改变开通角<span
+class="math inline">\(\theta_{on}\)</span>）。<mark>导通角越小转矩越小，转速越大</mark>。<br />
+<mark>导通角不能无限调大，其最大值<span
+class="math inline">\(\theta_{max}=\frac{\tau_r}{2}=\frac{\pi}{N_r}\)</span>，对应的角速度为<span
+class="math inline">\(\omega_{sc}\)</span>。</mark><br />
+若此时降低电流，则转矩会进一步下降，转速进一步上升<mark>（转距与角速度的平方成反比）</mark>，此时呈串励特性运行。通常不会使电机工作在这一状态。<br />
+<mark style="background-color:cyan">注：导通角减小到底是提高转速还是降低转速？视频中的答案提高，书上的答案似乎是降低，论文对此含糊其辞，只说APC是通过改变导通角来调速。可以确定的是导通角减小一定是降低了转矩。上述论述暂时以视频为准。</mark></p>
+<h3 id="电压pwm控制">电压PWM控制</h3>
+除了上文提高的角度位置控制与电流斩波控制，开关磁阻电机的另一种控制策略是电压PWM控制（Chopped
+Voltage
+Control，CVC）。电压PWM控制通过调节脉冲占空比来调节相电压，其开通角<span
+class="math inline">\(\theta_{on}\)</span>与关断角<span
+class="math inline">\(\theta_{off}\)</span>不变。通过调节脉冲占空比，也就是改变开关管的导通时间的方法间接控制电流幅值，进而实现对电机的转速调节。
+<center>
+<img src="10 电压PWM控制波形示意图.png" width=400/><span
+class="caption">图10 电压PWM控制波形示意图</span>
+</center>
+<p>电压PWM控制适用于SRM低速和高速运行条件，其优点是抗干扰能力强、响应速度快、系统动态特性好，可控性灵活（可以调节PWM占空比与PWM频率）；<br />
+缺点是开关管的频繁开启和关断会导致额外的损耗以及更高的处理器运算速度要求。并且在高速运行时开关管带来的死区效应会引起绕组的高频谐波，带来控制性能的下降和额外损耗。</p>
+<h2 id="极弧系数的选取">极弧系数的选取</h2>
+<p>定、转子极弧是指定子或转子凸极所占的范围，用角度表示。<br />
+极弧系数是定子或转子凸极所占的比例，是一个系数。<br />
+二者关系式为：<span
+class="math inline">\(\frac{2\pi}{N}\alpha=\beta\)</span><br />
+举个例子，若定子极弧系数<span
+class="math inline">\(\alpha_s=0.45\)</span>，定子凸极个数为6。<br />
+则可得到定子极弧<span
+class="math inline">\(\beta_s=\frac{2\pi}{N_s}\alpha_s=\frac{2\pi}{6}\times
+0.45=27^\circ\)</span></p>
+定、转子极弧的确定，应保证对任何转子位置，开关磁阻电机均具有正、反方向的自起动能力。<br />
+要求当某一相定、转子极处于极对极时，相邻相定、转子极必须要有一定的重叠。即要求两相邻电感曲线上升期具有一定的重叠。<br />
+对于定、转子极弧的要求如下：<br />
+<span class="math inline">\(min(\beta_s,\beta_r) \geqslant
+\frac{2\pi}{qN_r}\)</span><br />
+<span class="math inline">\(\beta_s+\beta_r \leqslant
+\frac{2\pi}{N_r}\)</span><br />
+根据上述式子，可以将定、转子极弧限制在下图所示的区间。<br />
+
+<center>
+<img src="10 定、转子极弧取值.png" width=250/><span class="caption">图11
+定、转子极弧取值</span>
+</center>
+<p>对于上节所设计并仿真的3KW1500转开关磁阻电机，其定子极弧系数为0.45，转子极弧系数为0.42。该电机定子凸极个数为6，其对应的定子极弧为27°。<br />
+而按照上文公式，其定子极弧应当大于等于30°。也就是说，定子极弧需要提高，这里先将定子极弧系数设为0.5，此时对应的定子极弧为30°。<br />
+再检查以下转子极弧系数，其对应的转子极弧为37.8°，符合要求。<br />
+定子极弧与转子极弧之和为67.8°，小于规定的<span
+class="math inline">\(\frac{2\pi}{N_r}=90^\circ\)</span>，符合要求。</p>
+<p>定、转子极弧系数的取值会影响电机的运行性能：<br />
+定、转子极弧系数越大，不同相的电感曲线的重叠程度越大，适当的极弧系数可以降低电机的转矩脉动（转矩峰值减小、脉冲变宽），但若极弧系数过大，转矩脉动会回升。<br />
+定、转子极弧系数越小，电感曲线处于波谷的范围越大，处于波峰（平顶波）的范围越小。这样更有利于接通电源后电流的上升（因为电感低的时间更长）。<mark>恒功率运行范围会变大</mark>。这种做法相当于<mark style="background-color:cyan">永磁同步电机中的降低空载反电动势</mark>。</p>
+<p>下面保持转子极弧系数为0.42不变，调整定子极弧系数，观察其对电机运行的影响。<br />
+先将定子极弧系数由0.5调整至0.4，转速设置为3000r/min，可以观察到其输出功率从约1300W提升至约1900W。定子极弧系数设为0.35时，输出功率为约2200W。这说明较小的定子极弧系数的恒功率运行能力更强。</p>
+<p>下面保持定子极弧系数为0.5不变，不断调整转子极弧系数，观察其对电机运行的影响。<br />
+将定子极弧系数调回0.5，转子极弧系数由0.42调整至0.38，可以观察到其输出功率从约1300W提升至约1600W。定子极弧系数设为0.33时，输出功率为约1900W。这说明较小的转子极弧系数也可以提高电机的恒功率运行能力。</p>
+<p>为获得更大的恒功率运行范围，通常取<span
+class="math inline">\(\beta_s=\beta_r=\frac{2\pi}{qN_r}\)</span>。<br />
+可以取定子极弧系数为0.5，转子极弧系数为0.33。可以确保定子与转子刚好有符合要求的重合区域，同时具有较大的恒功率运行范围。</p>
+下面保持定子极弧系数为0.5不变，接着调整转子极弧系数，观察其对转矩脉动影响。<br />
+转子极弧系数由0.33调整至0.4和0.45，分别对应导出二维仿真模型。<br />
+进行仿真，仿真过程略，得到的转矩波形如图所示。<br />
+
+<center>
+<img src="11 转矩曲线.png" width=500/><span class="caption">图12
+转矩曲线（转子极弧系数为0.33）</span>
+</center>
+<p>转子极弧系数为0.33时，测得转矩最大值为34.41N·m，转矩最小值为1.83N·m，转矩平均值为16.25N·m。<br />
+计算得到转矩脉动系数为(34.41-1.83)/16.25=2.00；<br />
+同理，转子极弧系数为0.4时，测得转矩最大值为34.15N·m，转矩最小值为1.73N·m，转矩平均值为18.17N·m，算得转矩脉动系数为1.78；<br />
+转子极弧系数为0.45时，测得转矩最大值为32N·m，转矩最小值为1.635N·m，转矩平均值为17.92N·m，算得转矩脉动系数为1.69。<br />
+可以观察到转子极弧系数较小时，定子与转子的重叠度小，电流上升快，转矩峰值高，转矩脉冲窄。<br />
+转子极弧系数较大时转矩峰值减小，转矩脉冲变宽，转矩脉动得到抑制，<mark>但恒功率运行范围变小，输出功率会随之降低</mark>。</p>
+<p><mark style="background-color:cyan">实质上，定子极弧系数增加对于转矩脉动的减小更明显。</mark><br />
+下面采用<mark>参数化扫描</mark>的方式，研究定子极弧系数对电机转矩脉动的影响。<br />
+首先右键Analysis-&gt;Setup1-&gt;Create Maxwell Design，选择Maxwell 2D
+Design。得到二维仿真模型。<br />
+双击模型中的Stator-&gt;CreateUserDefinedPart，将Embrace设置为一个变量，这里输入beta，弹出Add
+Variable窗口点击确定即可。<br />
+这个变量可以在菜单栏Maxwell 2D-&gt;Design Properties中找到。<br />
+Project
+Manager右键Optimetrics-&gt;Add-&gt;Parametric，点击右侧的Add按钮，弹出的窗口中Variable选择之前设置的变量beta，Start输入0.4，Stop输入0.55，Steps（间隔、步长）输入0.05，点击窗口中部的Add后点击OK即可。<br />
+打开Table选项卡可以看到变量beta所包含的各个值，依次是0.4、0.45、0.5、0.55。<br />
+右键Optimetrics-&gt;ParametricSetup1，点击Analyze就会开始仿真分析。</p>
+首先观察转矩曲线，如下图所示：
+<center>
+<img src="12 参数化扫描转矩曲线.png" width=600/><span
+class="caption">图13 参数化扫描转矩曲线</span>
+</center>
+<p>可以得知随着定子极弧的增加，转矩峰值不断降低，转矩脉冲变宽，转矩脉动因而降低。但是平均转矩不断下降，输出功率降低。<br />
+注：若转矩曲线只有一条，则Project
+Manager中的转矩曲线进入设置界面，选择Families选项卡，点beta那一行右侧的三个小点，点击Select
+All选中所有的数值，再重新生成一个曲线图。<br />
+<mark style="background-color:cyan">注：上图为视频中的画面，我也进行了仿真，仿真结果与视频的相同之处是转矩脉冲也随定子极弧的增加而变宽，不同之处是转矩峰值由0.45到0.5时明显升高，而不是降低，但考虑到极弧系数过大时转矩脉动确实会变大，因此这样的结果可能也是合理的。</mark></p>
+<p>综上所诉，极弧系数的选取需要适中，兼顾各种因素。<br />
+对于6/4开关磁阻电机，一个得到公认的比较合适的定、转子极弧配比为：<br />
+<mark>定子极弧32°（定子极弧系数0.53）；转子极弧30°（转子极弧系数0.33）</mark></p>
+<h2 id="开关磁阻电机设计">8/6开关磁阻电机设计</h2>
+<p>6/4开关磁阻电机具有结构简单、开关器件少的优点，但是其转矩脉动比较大，恒功率运行范围不高。<br />
+对于需要兼顾抑制转矩脉动与恒功率运行范围的情况，通常可以采用8/6开关磁阻电机，下面介绍8/6开关磁阻电机的设计方法。</p>
+<p>首先，与上一节的步骤一样，打开RMxprt，选择Switched Reluctance
+Motor建一个开关磁阻电机模型。<br />
+各个参数的设置参考6/4开关磁阻电机，最大程度地保持一致。</p>
+<p>对于8/6开关磁阻电机，一个得到公认的比较合适的定、转子极弧配比为：<br />
+<mark>定子极弧21°（定子极弧系数0.46）；转子极弧23°（转子极弧系数0.38）</mark><br />
+相较于6/4开关磁阻电机，其定子极弧系数更小，恒功率范围更宽。</p>
+<p>(1)Machine（电机属性）设置：<br />
+Reference Speed设定为1500rpm，Control Type为CCC。</p>
+<p>(2)Stator（定子）设置：<br />
+Outer Diameter设定为160mm，Inner Diameter为84.8mm。<br />
+<mark>8/6开关磁阻电机内外径之比为0.53</mark><br />
+Length为100mm，Stacking Factor为0.97，Steel Type为DW465_50。<br />
+Number of Poles设为8，Embrace设为0.46，Yoke Thickness为9mm。</p>
+<p>(3)Winding（绕组）设置：<br />
+Insulation Thickness为1mm，End Adjustment为12mm，Parallel
+Branches为1，Turns per Pole为50，Wire Wrap设置为0.1mm，Wire
+Size选择1.537mm。<br />
+Number of Strands不设置，由系统自动计算。<br />
+<mark>注：Wire Wrap由Wire Size乘以0.07获得</mark></p>
+<p>(4)Rotor（转子）设置：<br />
+Outer Diameter为84m（气隙为0.4mm），Inner Diameter为28mm。<br />
+Length为100mm，Stacking Factor为0.97，Steel Type选择DW465_50。<br />
+Number of Poles为6，Embarce为0.38，Yoke Thickness为15mm。<br />
+<mark>注：视频中转子的Stacking
+Factor被错误设置为0.87，但这不影响后续的仿真调试结果。</mark></p>
+<p>(5)Circuit（电流）设置：<br />
+Lead Angle of Trigger为20°，Trigger Pulse Width为110°。<br />
+Maximum Current与Minimum Current分别设为24A与20A。</p>
+<p>(6)Add Solution Setup（求解）设置：<br />
+Rated Output Power为3kW，Rated Voltage为260V，Rated Speed为1500rpm，Load
+Type为Const Speed。</p>
+<p>设置好各项参数后，开始仿真调试。<br />
+<mark style="background-color:cyan">调试过程中发现输出功率过高，效率过低，槽满率偏高。<br />
+FULL-LOAD OPERATION DATA中的Stator-Pole Flux
+Density（定子磁极磁密）偏高（约1.9T），Stator-Yoke Flux
+Density（定子轭部磁密）适中（约1.6T）。</mark><br />
+<mark style="background-color:cyan">注：调高匝数可以降低输出功率，提高效率，但是槽满率会变大；降低线径可以降低槽满率。<br />
+定子磁极磁密与定子轭部磁密的高低不清楚是怎么判定的。</mark><br />
+调整后匝数Turns per Pole为95，Wire Size由1.537mm降低到1.29mm。<br />
+调整后功率为3125W，效率为85%，槽满率为49.7%，符合要求。</p>
+<center>
+<img src="13 磁通随电流变化曲线.png" width=400/><span
+class="caption">图14 磁通随电流变化曲线</span>
+</center>
+<p>这是Flux Linkage vs Current at Various
+Positions曲线。其横轴为电流，单位为A；纵轴为磁通，单位为Wb。<br />
+可以视作不同转子角度下的磁化曲线<mark>（由电机学原理可知，Φ-i特性可以视作B-H基本磁化曲线）</mark>。<br />
+角度为0°时对应图像最下方的曲线，此时定子凸极对准转子轭部，电感最小，磁阻最大，磁化曲线近乎近似为一条直线。<br />
+角度增加后磁导随之增加，会产生更多的磁通。<br />
+随着角度的继续增加，铁芯开始饱和，曲线弯曲程度加大。</p>
+<p>接下来使用这个RMxprt模型建立Maxwell
+2D仿真模型，观察转矩脉动与三相电流曲线。<br />
+由相应图像（图略）可以观察到相较于6/4开关磁阻电机，8/6开关磁阻电机的转矩脉动更小，三相电流曲线的重合度更高，恒功率范围更宽。<br />
+但开关器件更多，制造成本更高。进行电机设计时，要根据实际需求来做出选择。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电机设计02-定子与转子设计
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

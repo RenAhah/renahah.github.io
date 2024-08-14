@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机设计02-定子与转子设计 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课程笔记,电机设计" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="为进一步掌握电机设计相关相关原理与方法整理的笔记。 根据教材电机设计（第2版）以及电机设计教学视频p9-p16整理，若有错误敬请指正。 定子绕组与冲片设计 定子槽数的确定 每极每相槽数\(q&#x3D;\frac{Z}{2pm}\)，\(Z\)为定子槽数 \(q\)选大的影响： (1)电机开槽多，谐波含量下降，附加损耗下降。谐波漏抗减小。（使磁势波形更接近于正弦波） (2)每槽导体数下降，槽漏">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机设计02-定子与转子设计">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="为进一步掌握电机设计相关相关原理与方法整理的笔记。 根据教材电机设计（第2版）以及电机设计教学视频p9-p16整理，若有错误敬请指正。 定子绕组与冲片设计 定子槽数的确定 每极每相槽数\(q&#x3D;\frac{Z}{2pm}\)，\(Z\)为定子槽数 \(q\)选大的影响： (1)电机开槽多，谐波含量下降，附加损耗下降。谐波漏抗减小。（使磁势波形更接近于正弦波） (2)每槽导体数下降，槽漏">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/1%20梨形槽设计.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/2%20定子齿与定子轭.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/3%20双层绕组定子槽.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/4%20硬线圈开口槽.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/5%20硬线圈开口槽.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/6%20产生不良后果的槽配合.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/7%20感应电动机笼型转子常用槽形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/8%20转子齿与转子轭.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/9%20端环及端环电流矢量图.png">
+<meta property="article:published_time" content="2024-07-15T05:38:59.000Z">
+<meta property="article:modified_time" content="2024-08-14T11:36:23.836Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课程笔记">
+<meta property="article:tag" content="电机设计">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/1%20梨形槽设计.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file active"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课程笔记/电机设计/电机设计02-定子与转子设计" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/">课程笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/">电机设计</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/" rel="tag">电机设计</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" rel="tag">课程笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">
+            <time datetime="2024-07-15T05:38:59.000Z" itemprop="datePublished">2024-07-15</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机设计02-定子与转子设计
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E5%AD%90%E7%BB%95%E7%BB%84%E4%B8%8E%E5%86%B2%E7%89%87%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">定子绕组与冲片设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%AD%90%E6%A7%BD%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A"><span class="toc-number">1.1.</span> <span class="toc-text">定子槽数的确定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%AD%90%E7%BB%95%E7%BB%84%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.2.</span> <span class="toc-text">定子绕组的设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9A%E5%AD%90%E6%A7%BD%E5%BD%A2%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.</span> <span class="toc-text">定子槽形设计</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A2%A8%E5%BD%A2%E6%A7%BD%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.1.</span> <span class="toc-text">梨形槽的设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A7%BD%E6%BB%A1%E7%8E%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">槽满率</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AC%E7%BA%BF%E5%9C%88%E7%9A%84%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.3.</span> <span class="toc-text">硬线圈的设计</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AC%E5%AD%90%E7%BB%95%E7%BB%84%E4%B8%8E%E9%93%81%E5%BF%83%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">转子绕组与铁心设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E5%AD%90%E6%A7%BD%E6%95%B0%E7%9A%84%E7%A1%AE%E5%AE%9A"><span class="toc-number">2.1.</span> <span class="toc-text">转子槽数的确定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AC%E5%AD%90%E6%A7%BD%E5%BD%A2%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">2.2.</span> <span class="toc-text">转子槽形的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A7%BD%E5%BD%A2%E5%B0%BA%E5%AF%B8%E7%9A%84%E7%A1%AE%E5%AE%9A"><span class="toc-number">2.3.</span> <span class="toc-text">槽形尺寸的确定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AB%AF%E7%8E%AF%E5%B0%BA%E5%AF%B8%E7%9A%84%E7%A1%AE%E5%AE%9A"><span class="toc-number">2.4.</span> <span class="toc-text">端环尺寸的确定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">3.</span> <span class="toc-text">参考资料</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>为进一步掌握电机设计相关相关原理与方法整理的笔记。<br />
+根据教材<a
+target="_blank" rel="noopener" href="http://www.cmpedu.com/books/book/2063408.htm">电机设计（第2版）</a>以及电机设计教学视频p9-p16整理，若有错误敬请指正。</p>
+<h2 id="定子绕组与冲片设计">定子绕组与冲片设计</h2>
+<h3 id="定子槽数的确定">定子槽数的确定</h3>
+<p>每极每相槽数<span
+class="math inline">\(q=\frac{Z}{2pm}\)</span>，<span
+class="math inline">\(Z\)</span>为定子槽数<br />
+<span class="math inline">\(q\)</span>选大的影响：<br />
+(1)电机开槽多，谐波含量下降，附加损耗下降。谐波漏抗减小。（使磁势波形更接近于正弦波）<br />
+(2)每槽导体数下降，槽漏抗减小，电机转矩增大。<br />
+(3)槽中线圈边的总散热面积增加，有利于散热，温升下降。<br />
+(4)工艺难度增加，绝缘材料用量增加，槽的利用率下降，下线困难。</p>
+<p>综合考虑，<span class="math inline">\(q\)</span>通常取<span
+class="math inline">\(2 \sim 6\)</span>，尽量取整数。<br />
+极数少功率大时<span
+class="math inline">\(q\)</span>可以选大些，极数多时<span
+class="math inline">\(q\)</span>选小些。</p>
+<h3 id="定子绕组的设计">定子绕组的设计</h3>
+<p>参见<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/" title="电机学04-交流电机理论的共同问题">电机学04-交流电机理论的共同问题</a></p>
+<p>绕组的接法：<br />
+Y接：适用于<span class="math inline">\(P_N \leq
+4kW\)</span>的小型电机，为了限制电流。<br />
+Δ接：适用于功率较大的电机。<br />
+Y-Δ混合接法（正弦绕组）：里面Δ接，外面Y接；或里面Δ接，外面Y接。该方法可有效抑制谐波。</p>
+<p><mark style="background-color:cyan">每相串联导体数<span
+class="math inline">\(N_\Phi\)</span></mark>：<br />
+由感应电机额定功率<span class="math inline">\(P_N=mUI\eta
+cos\varphi\)</span>，以及线负荷<span
+class="math inline">\(A=\frac{2mNI}{\pi D}=\frac{mN_\Phi I}{\pi
+D}\)</span><br />
+引入功电流<span
+class="math inline">\(I_{kW}=\frac{P_N}{mU}\)</span><br />
+得到每相串联导体数<span class="math inline">\(N_\Phi=\frac{\eta
+cos\varphi \pi D A}{mI_{kW}}\)</span><br />
+<mark>注：匝有一圈的意思，每一圈所穿越的磁场都有两条边，每一条穿越磁场的边可称为一根导体。故每相串联导体数<span
+class="math inline">\(N_\Phi\)</span>是每相串联匝数<span
+class="math inline">\(N\)</span>的二倍。</mark></p>
+<p><mark style="background-color:cyan">每槽导体数<span
+class="math inline">\(N_{s1}\)</span></mark>：<br />
+若绕组并联支路数为<span class="math inline">\(a_1\)</span><br />
+则每槽导体数<span
+class="math inline">\(N_{s1}=\frac{2mNa_1}{Z_1}=\frac{m a_1 N_{\Phi
+1}}{Z_1}\)</span><br />
+对于单层绕组，<span
+class="math inline">\(N_{s1}\)</span>取整数，每线圈匝数<span
+class="math inline">\(N_{c1}=N_{s1}\)</span><br />
+对于双层绕组，<span
+class="math inline">\(N_{s1}\)</span>取偶数，每线圈匝数<span
+class="math inline">\(N_{c1}=\frac{N_{s1}}{2}\)</span></p>
+<h3 id="定子槽形设计">定子槽形设计</h3>
+<p>常用的感应电机的定子槽形有梨形槽、梯形槽、半开口槽、开口槽四种（见教材P237）。<br />
+其中梨形槽与梯形槽右被称作半闭口槽，常用于小型低压电机（功率100kW以下，电压500V以下）。其中梨形槽的槽面积利用率更高，冲模寿命长，槽绝缘的弯曲程度小，不易损伤，目前得到了广泛的应用。<br />
+中型低压电机常采用半开口槽，中型高压（3000V以上）电机常采用开口槽。</p>
+<h4 id="梨形槽的设计">梨形槽的设计</h4>
+<p>本节将介绍<mark>软线圈散下线</mark>的梨形槽的定子槽形设计方法。</p>
+<p><mark>注：电机线圈按其结构和制造工艺的不同，可分为成型线圈（即硬绕组）和散嵌线圈（即软绕组、散下线），小型电机大多数采用软绕组，大型电机多采用硬绕组。<br />
+成型线圈一般为绝缘扁铜线制成的，较容易保持一定形状。常用的电磁线有漆包扁线、丝包扁线和云母扁线等，不同的电压等级应选择不同绝缘等级的电磁线。<br />
+软绕组一般为散嵌绕组，用圆电磁线单匝绕制或多匝并绕绕制而成。常用的电磁线以漆包线为主。</mark></p>
+<center>
+<img src="1 梨形槽设计.png" width=250/><span class="caption">图1
+梨形槽设计</span>
+</center>
+梨形槽示意图如上图所示，其中：<br />
+<span class="math inline">\(b_{01}\)</span>槽口宽度，能下线就行；<br />
+<span
+class="math inline">\(h_{s0}\)</span>槽口高度，保证有一定的机械强度即可；<br />
+<span class="math inline">\(\alpha_1\)</span>斜肩角，规定<span
+class="math inline">\(\alpha_1=30^\circ\)</span>；<br />
+需要重点考虑的参数为<span class="math inline">\(b_{s1}\)</span>、<span
+class="math inline">\(h_{s2}\)</span>、<span
+class="math inline">\(r_s\)</span>，<span
+class="math inline">\(h_{s1}\)</span>可以根据<span
+class="math inline">\(b_{s1}\)</span>、<span
+class="math inline">\(b_{01}\)</span>、<span
+class="math inline">\(\alpha_1\)</span>由几何关系求得。<br />
+
+<center>
+<img src="2 定子齿与定子轭.png" width=400/><span class="caption">图2
+定子齿与定子轭</span>
+</center>
+<p>两个定子槽之间的部分形似牙齿，称作定子齿；在定子槽底部之外，“牙齿”的根部被称作定子轭。<br />
+定子齿是气隙磁通穿过的路径（硅钢片是导磁材料，定子齿的磁导率很高，而定子槽的材料磁导率很低）。<br />
+通常将齿的两边（图中左定子槽的右侧边与右定子槽的左侧边）设计成平行的。使得磁通在定子齿部平行穿过，然后在轭部分流。<br />
+两个槽中心线之间的圆周距离，称作齿距，<span
+class="math inline">\(t_1=\frac{\pi D_{i1}}{Z_1}\)</span>，式中<span
+class="math inline">\(D_{i1}\)</span>为定子内径。<br />
+以平行齿为例设计槽形尺寸，一般情况下定子齿磁密<span
+class="math inline">\(B_{t1}=1.55 \sim 1.65T\)</span>，定子轭磁密<span
+class="math inline">\(B_{j1}=1.4 \sim 1.5T\)</span>。</p>
+<p>在一个齿距内，气隙磁通满足等式：<span class="math inline">\(B_\delta
+t_1 l_{ef}=B_{t1}b_{t1}l_t K_{Fe}\)</span><br />
+式中<span
+class="math inline">\(K_{Fe}\)</span>为铁心的叠压系数，对于0.5mm铁心，涂漆时的系数为0.92，不涂漆时的系数为0.95。<br />
+气隙磁密有效长度<span
+class="math inline">\(l_{ef}\)</span>与铁心长度<span
+class="math inline">\(l_t\)</span>相接近，可近似看作二者相等。<br />
+可以求出齿宽<span class="math inline">\(b_{t1}=\frac{B_\delta
+t_1}{B_{t1}K_{Fe}}\)</span></p>
+<p>在一个极距内，满足等式：<span
+class="math inline">\(\frac{1}{2}\alpha_p&#39; B_\delta \tau
+l_{ef}=B_{j1} h_{j1}l_t K_{Fe}\)</span><br />
+可以求出轭部计算高度<span class="math inline">\(h_{j1}=\frac{\tau
+\alpha_p&#39; B_\delta}{2B_{j1} K_{Fe}}\)</span></p>
+<p>弧线<span class="math inline">\(AA&#39;\)</span>的长度<span
+class="math inline">\(\frac{\pi[D_{i1}+2h_{s0}+2h_{s1}]}{Z_1}=b_{s1}+b_{t1}\)</span><br />
+其中<span class="math inline">\(h_{s1}=\frac{b_{s1}-b_{01}}{2}
+tan\alpha_1\)</span><br />
+可以根据上述两式求出<span class="math inline">\(b_{s1}\)</span>与<span
+class="math inline">\(h_{s1}\)</span>。</p>
+<p>弧线<span class="math inline">\(BB&#39;\)</span>的长度<span
+class="math inline">\(\frac{\pi[D_{i1}+2(h_{s0}+h_{s1}+h_{s2})]}{Z_1}=2r_s+b_{t1}\)</span><br />
+定子外径与内径之差的一半<span
+class="math inline">\(\frac{D_1-D_{i1}}{2}=h_{s0}+h_{s1}+h_{s2}+h_{j1}+\frac{2}{3}r_s\)</span><br />
+注：轭部计算高度<span
+class="math inline">\(h_{j1}\)</span>比实际的轭部高度要大一些，一般情况下比轭部高度多出槽底半圆半径的三分之一。<br />
+可以根据上述两式求出<span class="math inline">\(h_{s2}\)</span>与<span
+class="math inline">\(r_s\)</span>。</p>
+<h4 id="槽满率">槽满率</h4>
+槽的边界需要留出一定区域用于绝缘，对于双层绕组，绕组在定子槽内分为上下两个边，两边之间也需要绝缘，如下图所示：<br />
+
+<center>
+<img src="3 双层绕组定子槽.png" width=250/><span class="caption">图3
+双层绕组定子槽</span>
+</center>
+<p>图中<span class="math inline">\(h\)</span>为槽楔厚度，<span
+class="math inline">\(\Delta_i\)</span>为槽绝缘厚度。<br />
+槽面积<span class="math inline">\(A_s=0.5\pi
+r_s^2+0.5(b_{s1}+2r_s)(h_{s1}+h_{s2}-s)\)</span><br />
+对于单层绕组，槽绝缘面积<span class="math inline">\(A_i=[\pi
+r_s+2(h_{s1}+h_{s2})]\times \Delta_i\)</span><br />
+对于双层绕组，槽绝缘面积<span class="math inline">\(A_i=[\pi
+r_s+2(h_{s1}+h_{s2})]\times \Delta_i+(b_{s1}+2r_s)\times
+\Delta_i\)</span><br />
+这里将槽斜边与槽楔高度处的横边的长度近似看作<span
+class="math inline">\(2(h_{s1}+h_{s2})\)</span>，双层绕组上下边边界长度近似看作<span
+class="math inline">\(0.5(b_{s1}+2r_s)\)</span>，为确保绝缘性在此基础上乘二计算槽绝缘面积。<br />
+槽有效面积<span class="math inline">\(A_e=A_s-A_i\)</span><br />
+绕组所占的面积<span class="math inline">\(A_r=N_{s1}(n_1 d_1&#39;^2+n_2
+d_2&#39;^2)\)</span><br />
+式中<span
+class="math inline">\(N_{s1}\)</span>为每槽导体数，每一个导体对应<span
+class="math inline">\(n_1\)</span>个与<span
+class="math inline">\(n_2\)</span>个包裹绝缘线后直径为<span
+class="math inline">\(d_1&#39;\)</span>与<span
+class="math inline">\(d_2&#39;\)</span>的导线。<br />
+导线面积不使用圆的面积来计算，是因为它们实际上占用的是正方形的区域。各个圆之间存在空隙，这一部分面积无法得到利用。<br />
+槽满率<span class="math inline">\(S_f=\frac{A_r}{A_e}\)</span></p>
+<p>槽满率的取值范围为<span class="math inline">\(75\% \sim
+78\%\)</span>。<br />
+若槽满率过大，则绕组会下不到槽里去；若槽满率过小，槽利用率过低，不利于绕组散热（绕组与铁心的接触不充分，绕组散热主要靠绕组与铁心的热传导）。</p>
+<p>总结：通过电负荷选线规，通过磁负荷开槽，通过槽满率校验选线和开槽是否合适。</p>
+<h4 id="硬线圈的设计">硬线圈的设计</h4>
+硬线圈对应定子槽形有半开口槽与开口槽，本节将介绍硬线圈开口槽定子槽形设计方法。<br />
+线规的选择见教材P397，其中a和b对应单个线圈的长边和短边，根据a与b的值查表得到线圈过流面积S。<br />
+过流面积S略小于a与b的乘积，这是因为线圈不是标准的矩形，棱上有倒角。<br />
+
+<center>
+<img src="4 硬线圈开口槽.png" width=250/><span class="caption">图4
+硬线圈开口槽</span>
+</center>
+若设计出来的过流面积过大，可以考虑<mark style="background-color:cyan">并绕（横向或纵向并绕）</mark>。<br />
+图中红色部分为槽绝缘，绿色部分为匝间绝缘，蓝色部分为层间垫片。<br />
+对于图中的硬线圈开口槽，设匝间绝缘厚为c，层间绝缘厚为d，松散量为e，则有：<br />
+槽宽<span class="math inline">\(b_{s1}=2a+2\Delta_i+4c+e\)</span><br />
+槽高<span class="math inline">\(h_{s2}=8b+2\Delta_i+4c+d+e\)</span>
+<center>
+<img src="5 硬线圈开口槽.png" width=250/><span class="caption">图5
+硬线圈开口槽</span>
+</center>
+<p>确定好槽宽和槽高后，需要代入公式计算定子齿磁密<span
+class="math inline">\(B_{t1}\)</span>与定子轭部磁密<span
+class="math inline">\(B_{j1}\)</span>，判断槽宽和槽高是否符合要求。<br />
+图中设计出来的不是平行齿，<mark>通常认定定子齿最窄处与最宽处之间，靠近最窄处距离为二者<span
+class="math inline">\(\frac{1}{3}\)</span>的位置的宽度为齿宽</mark>。<br />
+在计算时，也可以直接将定子齿最窄处的宽度认定为齿宽。<br />
+<mark style="background-color:cyan">视频中未提及齿宽计算公式，个人感觉可以用定子齿距与槽宽大致确定齿宽<span
+class="math inline">\(b_{t1}=t_1-b_{s1}\)</span></mark><br />
+在一个齿距内求定子齿磁密<span
+class="math inline">\(B_{t1}\)</span>：<br />
+<span class="math inline">\(B_\delta t_1 l_{ef}=B_{t1}b_{t1}l_t
+K_{Fe}\)</span><br />
+在一个极距内求定子轭部磁密<span
+class="math inline">\(B_{t1}\)</span>：<br />
+<span class="math inline">\(\frac{1}{2}\alpha_p&#39; B_\delta \tau
+l_{ef}=B_{j1} h_{j1}l_t K_{Fe}\)</span><br />
+<mark style="background-color:cyan">视频中<span
+class="math inline">\(\alpha_p&#39;\)</span>前无系数<span
+class="math inline">\(\frac{1}{2}\)</span>，我不清楚哪种正确，我认为软线圈与硬线圈的计算公式应该是一致的。</mark><br />
+若二者值偏大或偏小，可以通过调整a和b的方式调整<span
+class="math inline">\(b_{s1}\)</span>与<span
+class="math inline">\(h_{s2}\)</span>，进而使<span
+class="math inline">\(b_{t1}\)</span>与<span
+class="math inline">\(h_{j1}\)</span>改变。</p>
+<p>总结：通过电负荷选线规和开槽，通过磁负荷校验开槽是否合适。</p>
+<h2 id="转子绕组与铁心设计">转子绕组与铁心设计</h2>
+<h3 id="转子槽数的确定">转子槽数的确定</h3>
+<p>转子槽数的选取要与所选的定子槽数相配合，若槽配合选择不当，则可能导致电机无法起动、震动噪声大、产生附加损耗和附加转矩。具体详见教材P240-P245。</p>
+确定转子槽数关键点：<br />
+①减小附加损耗和附加转矩：选择近槽配合（转子槽数略少于定子槽数）。<br />
+②减小噪声：选择远槽配合。<br />
+③减小异步寄生转矩：<span class="math inline">\(Z_2 \leqslant
+1.25(Z_1+p)\)</span>，式中<span
+class="math inline">\(Z_2\)</span>为转子槽数。<br />
+④减小同步寄生转矩：见教材P245表10-7。<br />
+⑤减小振动和噪声：见教材P245表10-7。
+<center>
+<img src="6 产生不良后果的槽配合.png" width=800/><span
+class="caption">图6 产生不良后果的槽配合</span>
+</center>
+<p>其中①与②不可兼得，设计时需考虑具体情况。③④⑤尽量都要遵守。<br />
+成熟的槽配合见教材P245表10-8与表10-9。</p>
+<h3 id="转子槽形的选择">转子槽形的选择</h3>
+<center>
+<img src="7 感应电动机笼型转子常用槽形.png" width=600/><span
+class="caption">图7 感应电动机笼型转子常用槽形</span>
+</center>
+<p>(a)与(b)是平行齿槽形，二者电气性能基本相似。其中(a)的槽形齿部截面逐渐变化，强度较高，主要用于功率较大的电机；(b)的槽形冲模制造更容易，主要用于小功率电机。<br />
+(c)与(d)是平行槽，二者集肤效应比平行齿显著，利于改善起动性能，主要用于功率较小的两级电机。<br />
+(e)为凸形槽，(f)为刀形槽，优点是集肤效应显著，起动性能好，缺点是形状复杂，冲模加工困难，刀形槽冲模相对容易。应用在对起动要求高的电机上。<br />
+(g)与(h)是闭口槽。可以减少电机的附加损耗，缺点是增加了转子的槽漏抗。<br />
+(i)为双笼转子槽形，(j)为深槽形（梯形槽）。双笼转子槽的上笼为起动笼，可以有效提高起动转矩；下笼为运行笼，可以减小转子损耗。深槽形同理，起动时转子电流频率较高，电流集中在上侧，上侧槽截面积小使得槽电阻大（转子电阻大），使起动转矩变大；稳态运行时转子电流频率很小（异步电机转差率很小），电流集中在下侧，下侧截面积大，转子电阻小，可以减小转子损耗。</p>
+<h3 id="槽形尺寸的确定">槽形尺寸的确定</h3>
+<p>推算转子导条电流：<br />
+<span class="math inline">\(I_2=k_I I_1\frac{m_1 N_{\Phi 1}k_{dp1}}{m_2
+N_{\Phi 2}k_{dp2}}\)</span><br />
+式中<span class="math inline">\(m_1\)</span>为定子相数，<span
+class="math inline">\(N_{\Phi 1}\)</span>为定子每相串联匝数，<span
+class="math inline">\(k_{dp1}\)</span>为定子基波绕组系数。<br />
+<span class="math inline">\(m_2\)</span>为转子相数，<span
+class="math inline">\(N_{\Phi 2}\)</span>为转子每相串联匝数，<span
+class="math inline">\(k_{dp2}\)</span>为转子基波绕组系数。<br />
+对于三相笼型感应电机，<span
+class="math inline">\(m_2=z_2\)</span>，<span
+class="math inline">\(N_{\Phi 2}=1\)</span>，<span
+class="math inline">\(k_{dp2}=1\)</span>（既不分布也不短距）<br />
+<span class="math inline">\(I_2=3k_I I_1\frac{N_{\Phi
+1}k_{dp1}}{Z_1}\)</span><br />
+选择导条电流密度<span class="math inline">\(J_B\)</span>：<br />
+为保证足够的起动转矩，电流密度不能太小，电流密度太大会使转差率变大，转子电阻损耗增加，效率降低，发热增加。<br />
+对于普通中小型感应电机，铸铝转子取<span class="math inline">\(J_B=2 \sim
+4.5A/mm^2\)</span>。<br />
+推算出转子导条导电面积<span
+class="math inline">\(S_2&#39;=\frac{I_2}{J_B}\)</span></p>
+<center>
+<img src="8 转子齿与转子轭.png" width=400/><span class="caption">图8
+转子齿与转子轭</span>
+</center>
+<p>这里按照平行齿进行设计，因为平行齿形状简单，容易设计。<br />
+①确定转子齿磁密<span
+class="math inline">\(B_{t2}\)</span>，通常比定子齿磁密略小。<br />
+根据设定的转子齿磁密及下述公式得到齿距<span
+class="math inline">\(b_{t2}\)</span><br />
+<span class="math inline">\(B_\delta t_2 l_{ef}=B_{t2}b_{t2}l_t
+K_{Fe}\)</span><br />
+②确定转子轭部磁密<span class="math inline">\(B_{j2}\)</span><br />
+可以推算出轭部计算高度<span
+class="math inline">\(h_{j2&#39;}\)</span><br />
+<span class="math inline">\(\frac{1}{2}\alpha_p&#39; B_\delta \tau
+l_{ef}=B_{j2} h_{j2&#39;}l_t K_{Fe}\)</span><br />
+③根据弧线<span class="math inline">\(AA&#39;\)</span>几何关系求出<span
+class="math inline">\(b_{12}\)</span>和<span
+class="math inline">\(h_{21}\)</span><br />
+④根据弧线<span class="math inline">\(BB&#39;\)</span>几何关系求出<span
+class="math inline">\(r_{12}\)</span>和<span
+class="math inline">\(h_{22}\)</span><br />
+⑤根据上述求得的尺寸计算出转子槽型面积<span
+class="math inline">\(S_2\)</span>，将之与<span
+class="math inline">\(S_2&#39;\)</span>比较，若差距较大，则需要重新设计。</p>
+<p>对于形状复杂的槽形，常采用面积等效法。<br />
+先按平行齿设计出一个槽形，再将其调整为其他槽形，需要确保二者的槽型面积一致。</p>
+<h3 id="端环尺寸的确定">端环尺寸的确定</h3>
+<center>
+<img src="9 端环及端环电流矢量图.png" width=400/><span
+class="caption">图9 端环及端环电流矢量图</span>
+</center>
+<p>①推算端环电流<span class="math inline">\(I_R\)</span><br />
+<span class="math inline">\(\frac{I_B}{2}=I_R
+sin\frac{\alpha}{2}\)</span><br />
+式中<span class="math inline">\(I_B\)</span>为转子导条电流<br />
+②选择端环电密<br />
+端环电密需要小于导条电密，以便于导条散热。<br />
+通常取端环电密<span class="math inline">\(J_R=(0.45 \sim
+0.8)J_B\)</span>。<br />
+定子绕组、转子导条、端环的电流密度大小关系：<span
+class="math inline">\(J_1&gt;J_B&gt;J_R\)</span><br />
+③求出端环截面积<span
+class="math inline">\(S_R=\frac{I_R}{J_R}\)</span><br />
+④端环高<span class="math inline">\(b_R\)</span>近似等于转子槽高<br />
+端环宽<span class="math inline">\(a_R=\frac{S_R}{b_R}\)</span></p>
+<h2 id="参考资料">参考资料</h2>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="http://www.nanyangdj.cn/news/djcs/3027.html">高压电机线圈的成型与散嵌绕组</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    Maxwell教程00-1055报错解决方案
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">开关磁阻电机02-开关磁阻电机原理</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2024 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

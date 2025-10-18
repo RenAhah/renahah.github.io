@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>《大学》 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="国学" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="经文  大学之道，在明明德，在亲民，在止于至善。  大学与小学相对，小学指的是“洒扫应对进退、礼乐射御书数”等文化基础知识和礼节。大学指的是伦理、政治、哲学等“穷理正心，修己治人”的学问。 明明德，前一个明为动词，意思是“显明、弘扬”；后一个明为形容词，明德指人生来具备的善良光明的美德。 “亲”通“新”，革新。新民就是让人们革除旧的恶习，劝人向善。 止于至善，就是达到最完善的境界。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《大学》">
+<meta property="og:url" content="https://renahah.github.io/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="经文  大学之道，在明明德，在亲民，在止于至善。  大学与小学相对，小学指的是“洒扫应对进退、礼乐射御书数”等文化基础知识和礼节。大学指的是伦理、政治、哲学等“穷理正心，修己治人”的学问。 明明德，前一个明为动词，意思是“显明、弘扬”；后一个明为形容词，明德指人生来具备的善良光明的美德。 “亲”通“新”，革新。新民就是让人们革除旧的恶习，劝人向善。 止于至善，就是达到最完善的境界。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-14T01:00:04.000Z">
+<meta property="article:modified_time" content="2025-07-22T03:18:06.878Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="国学">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-国学/《大学》" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%9B%BD%E5%AD%A6/">国学</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%9B%BD%E5%AD%A6/" rel="tag">国学</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">
+            <time datetime="2025-07-14T01:00:04.000Z" itemprop="datePublished">2025-07-14</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            《大学》
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%8F%E6%96%87"><span class="toc-number">1.</span> <span class="toc-text">经文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%8E%E6%98%8E%E5%BE%B7"><span class="toc-number">2.</span> <span class="toc-text">明明德</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E6%B0%91"><span class="toc-number">3.</span> <span class="toc-text">新民</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A2%E4%BA%8E%E8%87%B3%E5%96%84"><span class="toc-number">4.</span> <span class="toc-text">止于至善</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%9C%AB"><span class="toc-number">5.</span> <span class="toc-text">本末</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%BC%E7%89%A9%E8%87%B4%E7%9F%A5"><span class="toc-number">6.</span> <span class="toc-text">格物致知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%9A%E6%84%8F"><span class="toc-number">7.</span> <span class="toc-text">诚意</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%BF%83%E4%B8%8E%E4%BF%AE%E8%BA%AB"><span class="toc-number">8.</span> <span class="toc-text">正心与修身</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E8%BA%AB%E4%B8%8E%E9%BD%90%E5%AE%B6"><span class="toc-number">9.</span> <span class="toc-text">修身与齐家</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%BD%90%E5%AE%B6%E4%B8%8E%E6%B2%BB%E5%9B%BD"><span class="toc-number">10.</span> <span class="toc-text">齐家与治国</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B2%BB%E5%9B%BD%E4%B8%8E%E5%B9%B3%E5%A4%A9%E4%B8%8B"><span class="toc-number">11.</span> <span class="toc-text">治国与平天下</span></a></li></ol>
+                </div>
+            
+        
+        
+            <h2 id="经文">经文</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+大学之道，在明明德，在亲民，在止于至善。
+</div>
+<p>大学与小学相对，小学指的是“洒扫应对进退、礼乐射御书数”等文化基础知识和礼节。大学指的是伦理、政治、哲学等“穷理正心，修己治人”的学问。<br />
+明明德，前一个明为动词，意思是“显明、弘扬”；后一个明为形容词，明德指人生来具备的善良光明的美德。<br />
+“亲”通“新”，革新。新民就是让人们革除旧的恶习，劝人向善。<br />
+止于至善，就是达到最完善的境界。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+知止而后在定，定而后能静，静而后能安，安而后能虑，虑而后能得。
+</div>
+<p>“止”，名词，指所止之地。“定”，确定，坚定。<br />
+知道应达到的境界才能坚定自己的志向；有坚定的志向才能有宁静且不躁动的意念；意念宁静才能心境安适；心境安适才能考虑问题周到；考虑问题周到才能有所收获。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+物有本末，事有终始。知所先后，则近道矣。
+</div>
+<p>知道事情的先后次序，就接近“大学”的道理了。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+古之欲明明德于天下者，先治其国。欲治其国者，先齐其家，欲齐其家者，先修其身。欲修其身者，先正其心。欲正其心者，先诚其意。欲诚其意者，先致其知。致知在格物。<br />
+物格而后知至，知至而后意诚，意诚而后心正，心正而后身修，身修而后家齐，家齐而后国治，国治而后天下平。
+</div>
+<p>治其国，指的是治理自己所在的邦国；齐其家，指的是整顿自己的家族。<br />
+修其身，正其心，诚其意，指的是修养自己的品德，端正自己的心思，使自己的意念真诚。<br />
+致其知，指的是获得认识事物的方法。格物，格有明辨，领悟之意，物指的是事物的道理。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+自天子以至于庶人，壹是皆以修身为本。<br />
+其本乱而末治者，否矣；其所厚者薄，而其所薄者厚，未之有也。
+</div>
+<p>要把修养自己的品德作为根本，不存在根本混乱而细枝末节治理的很好的人。<br />
+厚与薄指的的尊重与轻蔑。他尊重的人却对他轻蔑，他轻蔑的人却对他尊重，这样的事是没有的。</p>
+<p>【注】三纲：明明德、亲民、止于至善。三纲是大学之道的主要目标。<br />
+八目：格物、致知、诚意、正心、修身、齐家、治国、平天下。八目是达成三纲的手段。</p>
+<h2 id="明明德">明明德</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《康诰》曰：“克明德。”《<ruby>大<rt>tài</rt></ruby>甲》曰：“顾諟天之明命。”《帝典》曰：“克明峻德。”皆自明也。
+</div>
+<p>克，能够。能够弘扬光明的品德。<br />
+顾，思念。諟，通“是”，此。明命，光明的秉性。时刻记着这上天所赋予你的光明的德性。<br />
+峻，通“俊”，高大，崇高。<br />
+这些说的都是自己弘扬光明的品德。</p>
+<h2 id="新民">新民</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+汤之《盘铭》曰：“苟日新，日日新，又日新。”《康诰》曰：“作新民。”《诗》曰：“周虽旧邦，其命维新。”是故，君子无所不用其极。
+</div>
+<p>《盘铭》，指商汤在洗澡盆上镌刻的箴言。<br />
+新，本指洗涤身上的污垢，这里指提高自身修养，去恶从善实现品行上的焕然一新。<br />
+假如一天可以通过洗澡来去除污垢，那就应该天天洗澡清洗身体，一天比一天干净。这里指应当每天坚持改善自己的品行，摒弃恶行。<br />
+作，激励，振作。<br />
+维是语气助词。周朝虽然是古老的国家，但它所秉承的天命却在不断自我更新，指周文王不断坚持改进自己的德行。</p>
+<h2 id="止于至善">止于至善</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诗云，“邦<ruby>畿<rt>jī</rt></ruby>千里，惟民所止。”
+</div>
+<p>邦畿，都城及其周围的地区。止，停留，居住。国度附近地区都是民众向往的地方。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诗云，“<ruby>缗<rt>mín</rt></ruby>蛮黄鸟，止于丘<ruby>隅<rt></rt></ruby>。”子曰：“于止，知其所止，可以人而不如鸟乎？”
+</div>
+<p>缗蛮，黄鸟的叫声。丘隅，山边弯曲之处。<br />
+鸟都知道要在哪里栖息，人怎么能不如鸟呢？暗指人应当找准自己的位置。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诗云，“穆穆文王，<ruby>於<rt>wū</rt></ruby>缉熙敬止。”为人君，止于仁；为人臣，止于敬；为人子，止于孝；为人父，止于慈；与国人交，止于信。
+</div>
+<p>穆穆，庄重深远的样子。於，赞叹的语气词，相当于“啊”。辑，继续。熙，光明。敬止，能端庄恭敬而安于所止之地。这里指周文王平能够发扬光明的美德，恭敬地达到所止的至善境界。<br />
+后一句具体解释作为国君、臣子、长辈、晚辈、朋友时“止于至善”的要求。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诗云，“瞻彼淇<ruby>澳<rt>yù</rt></ruby>，<ruby>菉<rt>lù</rt></ruby>竹<ruby>猗<rt>yī</rt></ruby>猗。有<ruby>斐<rt>fěi</rt></ruby>君子。如切如磋，如琢如磨。瑟兮<ruby>僩<rt>xiàn</rt></ruby>兮，赫兮喧兮。有斐君子，终不可<ruby>諠<rt>xuān</rt></ruby>兮。”“如切如磋”者，道学也；“如琢如磨”者，自修也；“瑟兮僩兮”者，<ruby>恂栗<rt>xún
+lì</rt></ruby>也；“赫兮喧兮”者，威仪也；“有斐君子，终不可諠兮”者，道盛德至善，民之不能忘也。
+</div>
+<p>瞻，远望。淇，淇水，是卫国境内的河流。澳，河岸转弯处。菉，原文为“绿”。猗猗，形容植物长得光泽而茂盛的样子。<br />
+斐，文质彬彬的样子。切、磋、琢、磨，用打磨玉器的动作比喻君子修身治学的精益求精。<br />
+瑟，严肃庄重的样子。僩，威武刚毅的样子。赫，显耀，盛大。喧，通“煊”，显著，光明。諠，忘记。<br />
+恂栗，诚惶诚恐的样子，这里指恭敬而谨慎。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诗云，“<ruby>於戏<rt>wū
+hū</rt></ruby>，前王不忘！”君子贤其贤，而亲其亲。小人乐其乐，而利其利。此以<ruby>没<rt>mò</rt></ruby>世不忘也。
+</div>
+<p>於戏，“呜呼”，感叹词。前王不忘，指的是前代的圣贤君主的恩泽不会被后人遗忘。<br />
+贤其贤，第一个“贤”字是动词，尊重，以之为贤的意思；第二个“贤”字是名词，指有德才的贤人。<br />
+亲其亲，第一个“亲”字是动词，亲近，与之相亲的意思；第二个“亲”字是名词，指亲人。<br />
+小人，这里指平民，不是道德卑劣之人。<br />
+乐其乐而利其利，享受（前王创造的）欢乐并获得（前王遗留的）利益。</p>
+<h2 id="本末">本末</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“听讼，吾犹人也，必也使无讼乎！”无情者，不得尽其辞，大畏民志，此谓知本。
+</div>
+<p>在审理案件方面，我与别人没什么区别。但我的最终目的是使案子不再发生。<br />
+审理案件只是手段，属于“末”。而使隐瞒实情的人不能够花言巧语，使人心畏服，这才是“本”。</p>
+<h2 id="格物致知">格物致知</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+此谓知本。此谓知之至也。<br />
+传之五章，盖释格物、致知之义，而今亡矣。间尝窃取程子之意以补之曰：所谓致知在格物者，言欲致吾之知，在即物而穷其理也。盖人心之灵，莫不有知；而天下之物，莫不有理。惟于理有未穷，故其知有不尽也。是以大学始教，必使学者即凡天下之物，莫不因其已知之理而益穷之，以求至乎其极。至于用力之久，而一旦豁然贯通焉，则众物之表、里、精、粗无不到，而吾心之全体大用无不明矣。此谓物格，此谓知之至也。
+</div>
+<p>经文所说的“达到明确认识的关键是探究事物的道理”，意思是说，要想让我们达到有明确的认识，就需要接触外界的事物并且极力探究其中的规律。<br />
+每个人都具备认识事物的能力，万事万物都存在一定的道理。只是这些道理没有被人们完全认识，也就是人们对事物的认识不到位。<br />
+人们对于天下的事物，都要根据已经知道的道理进一步探究它，尽可能达到认知的极限。<br />
+长期探究事物道理之后，终有一天会豁然开朗，融会贯通，事物的表象与实质、细节与全局都被完全掌握，对于事物本体的作用都明明白白，了然于心。这就叫作事物的道理都被探索，这就是对事物的认识达到了最完善的程度。<br />
+体：本体。用：作用。“体”和“用”是中国哲学的一对重要范畴。</p>
+<h2 id="诚意">诚意</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所谓诚其意者，毋自欺也，如<ruby>恶<rt>wù</rt></ruby>恶<ruby>臭<rt>xiù</rt></ruby>，如<ruby>好<rt>hào</rt></ruby>好色，此之谓自<ruby>谦<rt>qiè</rt></ruby>，故君子必慎其独也！
+</div>
+<p>意念真诚指的是不自欺欺人。<br />
+要像厌恶那难闻的气味一样（憎恨邪恶的事物），像喜爱美丽的容貌一样（喜爱美好的事物）。<br />
+自谦(qiè)，自求快意的满足。谦，同“慊”，满足，惬意。<br />
+慎其独，指独处的时候仍要一丝不苟，严格要求自己。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+小人闲居为不善，无所不至，见君子而后<ruby>厌<rt>yā</rt></ruby>然，掩其不善，而著其善。人之视己，如见其肺肝然，则何益矣？此谓诚于中，形于外，故君子必慎其独也。
+</div>
+<p>厌（yā）然，躲藏掩饰的神态。<br />
+小人在私底下干坏事，在君子面前就伪装起来，但人们可以像看见心肺肝脏一样认清小人的真面目，掩盖有什么好处呢？<br />
+内在的德行都会通过外在的形象表现出现，所以君子在独处时也小心谨慎。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+曾子曰：“十目所视，十手所指，其严乎！”富润屋，德润身，心广体<ruby>胖<rt>pán</rt></ruby>，故君子必诚其意。
+</div>
+<p>独处时要时刻小心谨慎，就好像有许多双眼晴在注视着自己，许多只手在指点着自己一样。<br />
+心广体胖，如果一个人心胸开阔，身体自然会舒适安泰。</p>
+<h2 id="正心与修身">正心与修身</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所谓修身在正其心者，身在所忿<ruby>懥<rt>zhì</rt></ruby>，则不得其正；有所恐惧，则不得其正；有所好乐，则不得其正；有所忧患，则不得其正。<br />
+心不在焉，视而不见，听而不闻，食而不知其味。此谓修身在正其心。
+</div>
+<p>忿懥（zhì）：愤怒。</p>
+<h2 id="修身与齐家">修身与齐家</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所谓齐其家在修其身者，人之其所亲爱而辟焉，之其所贱恶而辟焉，之其所畏敬而辟焉，之其所哀矜而辟焉，之其所敖惰而辟焉。故好而知其恶，恶而知其美者，天下鲜矣！故谚有之曰：“人莫知其子之恶，莫知其苗之硕。”此谓身不修不可以齐其家。
+</div>
+<p>辟，偏向，这里指受到原有印象影响更加偏爱/厌恶/敬畏/同情/轻视他人。<br />
+哀矜，同情，怜悯。敖惰，傲视和怠慢。<br />
+知道偏爱的人的缺点与厌恶的人的优点是难得可贵的。<br />
+溺爱子女的人往往不知道孩子的坏毛病，贪得无厌的农夫不认为自己的庄稼已经长得很壮。<br />
+因此，管理好家庭之前需要先提高自身修养，做到没有偏见。</p>
+<h2 id="齐家与治国">齐家与治国</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所谓治国必先齐其家者，其家不可教，而能教人者，无之。故君子不出家而成教于国：孝者，所以事君也；<ruby>弟<rt>tì</rt></ruby>者，所以事长也；慈者，所以使众也。<br />
+《康诰》曰：“如保赤子。”心诚求之，虽不中，不远矣。未有学养子而后嫁者也。
+</div>
+<p>弟，通“悌”，指对兄长应有的尊敬态度。<br />
+能够把家庭治理好的君子，即使不出家门也算是受到了治理国家方面的教育。<br />
+能孝顺好父母就能很好地侍奉君主；能恭敬地对待兄长就能侍奉好上级官员；能慈爱子女就能对人民施行仁治。<br />
+赤子，指婴儿。保护人民要像母亲保护初生的婴儿一样，内心真诚地去追求，即使达不到目标，也不会相差太远。<br />
+没有先学会如何养孩子再去出嫁的人。出嫁后之所以能养育好孩子，完全是出于母爱的一片真诚。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+一家仁，一国兴仁；一家让，一国兴让；一人贪<ruby>戾<rt>lì</rt></ruby>，一国作乱。其机如此。此谓一言<ruby>偾<rt>fèn</rt></ruby>事，一人定国。<br />
+尧、舜帅天下以仁，而民从之；桀、纣帅天下以暴，而民从之；其所令，反其所好，而民不从。是故君子有诸己而后求诸人，无诸己而后非诸人。所藏乎身不恕，而能喻诸人者，未之有也。故治国在齐其家。
+</div>
+<p>让，谦恭礼让。戾，专横暴虐。机，弓弩上的发射机关，这里引申为“关键”。偾，败坏。<br />
+统治者的命令与自己的实际做法相反，老百姓是不会服从的。<br />
+诸，之于。君子想让别人去做什么时，首先自己去做；君子想让别人不做什么时，首先自己不做。<br />
+恕，儒家的恕道，是推己及人，将心比己的品德。意为自己不愿意别人做的，也不去对别人做。喻，使明白。<br />
+自己不践行恕道，却能使他人实行恕道，是不可能的。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“桃之夭夭，其叶<ruby>蓁<rt>zhēn<rt></ruby>蓁。之子于归，宜其家人。”宜其家人，而后可以教国人。<br />
+《诗》云：“宜兄宜弟。”宜兄宜弟，而后可以教国人。<br />
+《诗》云：“其仪不<ruby>忒<rt>tè</rt></ruby>，正是四国。”其为父子兄弟足法，而后民法之也。<br />
+此谓治国在齐其家。
+</div>
+<p>夭夭，鲜嫩，艳丽。蓁蓁，树叶茂盛的样子。之，这个。子，女子。归，出嫁。宜，使和睦。自己家族的人和睦相处之后，才可以教化全国的人民和睦相处。<br />
+仪，仪表，威仪。这里指人的言行举止。忒，差错。四国，四方各国。</p>
+<h2 id="治国与平天下">治国与平天下</h2>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所谓平天下在治其国者：上老老，而民兴孝；上长长，而民兴弟；上恤孤，而民不倍。是以君子有<ruby>絜<rt>xié</rt></ruby>矩之道也。
+</div>
+<p>前一个“老”为动词，指尊敬老人，后一个“老”是名词。<br />
+前一个“长”为动词，指尊敬长辈，后一个“长”是名词。弟通“悌”。<br />
+倍，通“背”，违背，背弃。<br />
+絜矩之道，儒家的一种处理人际关系的法则，以推己度人为标尺，以求人际关系的协调平衡。絜是量度，矩是画方形的工具，引申为法度。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+所恶于上，毋以使下；所恶于下，毋以事上；所恶于前，毋以先后；所恶于后，毋以从前；所恶于右，毋以交于左；所恶于左，毋以交于右：此之谓絜矩之道。
+</div>
+<n><br />
+具体解释“絜矩之道”，就是说若别人干的事令自己感到厌恶，就不要对其他人做这件令人厌恶的事。<br />
+
+<div style="font-family:KaiTi;">
+反面例子就是别人不让你好的同时，你也以同样的态度对待他人，既然自己已经不舒服了，那就让所有人都同样不舒服。这样做虽然最初会让人感觉很解气，有一种大仇得报的爽感，或者说实现了某种意义上的“平等”，大家都一样难受了。但这对于建立良好的人际关系没有一点好处。
+</div>
+<p><n></p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“乐只君子，民之父母。”民之所好，好之；民之所恶，恶之。此之谓民之父母。
+</div>
+<p>和善快乐的君子（其喜好与厌恶的事情与人民喜好与厌恶的事情相同），犹如人民的父母。只，语气助词。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“节彼南山，维石岩岩。赫赫师尹，民具尔瞻。”有国者不可以不慎。辟，则为天下<ruby>僇<rt>lù</rt></ruby>矣。
+</div>
+<p>节，高大险峻的样子。维，语气词。岩岩，山石矗立高峻的样子。<br />
+赫赫，势位显盛的样子。师，太师。尹，太师的姓。具，通“俱”。尔，你。瞻，看。<br />
+辟，邪僻，这里指偏离儒家的道德规范。僇，通“戮”，杀戮，这里指推翻。<br />
+作为治国者，时时刻刻都会受到天下人民的监视，因此一定要小心谨慎，若违背道德，则会被天下人民推翻。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“殷之未丧师，克配上帝。仪监于殷，峻命不易。”道得众则得国，失众则失国。是故君子先慎乎德。
+</div>
+<p>丧师，失去民心。师，民众。克配上帝，能够配得上祭祀上帝，意指接受“天命”做天子。<br />
+仪监，原文“宜鉴”，宜以……为借鉴。峻命，天命。峻，大。不易，不容易。<br />
+殷商没有丧失民心的时候，有接受天命的资格。后来失去民心，被周武王推翻。后世的君王应以此为鉴，毕竟天命的维持并不容易。国家的维持依靠的是人民的拥护，君王应当注重修养自己的品德。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+有德此有人，有人此有土，有土此有财，有财此有用。德者，本也；财者，末也。外本内末，争民施夺。是故财聚则民散，财散则民聚。是故言悖而出者，亦悖而入；货悖而入者，亦悖而出。
+</div>
+<p>外，表面化的。本，指德。内，实质性的。末，指财。<br />
+拥有好的品德，才能得到人民拥护，进而得到土地和财富。表面上注重品德实质上却重视财富，那就是与民争利。<br />
+聚集财富会失去人心，还财于民会凝聚人心。君主违背常理而发出的命令，人民也会违背命令作为回应；违背常理收集财富，财富最终也会违背常理地失去。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《康诰》曰：“惟命不于常。”道善则得之，不善则失之矣。
+</div>
+<p>惟，句首语气词。命，天命。常，始终如一。天命不会（在不行善时）始终存在。<br />
+行善就能得到天命，不行善就会失去天命。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《楚书》曰：“楚国无以为宝，惟善以为宝。”舅犯曰：“亡人无以为宝，仁亲以为宝。”
+</div>
+<p>楚昭王派王孙圉出使晋国。晋国赵简子问楚国的珍宝白珩所值几何。王孙圉答道：楚国没有把美玉当作珍宝，只把行善积德当成珍宝。<br />
+舅犯是晋国公子重耳的舅舅，曾追随重耳流亡在外十九年，辅助重耳复国即位。他说：逃亡在外的人没有什么可以当作珍宝，只有把以仁爱之心当作珍宝。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《秦誓》曰：“若有一个臣，断断兮，无他技，其心休休焉，其如有容焉。人之有技，若己有之；人之彦圣，其心好之。不<ruby>啻<rt>chì</rt></ruby>若自其口出，<ruby>寔<rt>shí</rt></ruby>能容之，以能保我子孙黎民，尚亦有利哉。人之有技，<ruby>媢<rt>mào</rt></ruby>疾以恶之；人之彦圣，而违之<ruby>俾<rt>bǐ</rt></ruby>不通。寔不能容，以不能保我子孙黎民，亦曰殆哉！”唯仁人放流之，<ruby>迸<rt>bǐnɡ</rt></ruby>诸四夷，不与同中国。此谓唯仁人为能爱人，能恶人。
+</div>
+<p>断断，真诚不二的样子。休休，平易宽广、善良敦厚的样子。彦，俊美。圣，聪明。彦圣，指德才兼美的人。不啻，不但。寔，“实”的异体字，实在。<br />
+假如有这样一个臣子，很忠诚老实，没有什么其他特长，但他的心地宽厚善良，很有容人之量。他看到别人有特长，就像他自己拥有一样；别人有美好的德行，他发自内心的佩服他。不只是口头上随便说说，而是确实能容下他人，这样的人能够保护我的子孙和百姓，对我也是有利的。<br />
+媢，原文作“冒”。疾，通“嫉”。媢疾，妒忌。违，阻碍，反对。俾，使。通，原文作“达”。殆，危险。迸，通“摒”，驱逐。<br />
+假如还有这样一个人，看到别人有能力，就心怀妒忌地厌恶他；别人有美好的德行，就打压他使之不能上达于国君。这样的人实在是不能包容别人，因而不能保护我的子孙和百姓，也可以说是很危险了。<br />
+只有具备仁德的人才能做到爱憎分明。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+见贤而不能举，举而不能先，命也；见不善而不能退，退而不能远，过也。好人之所恶，恶人之所好，是谓拂人之性，灾必逮<ruby>夫<rt>fú</rt></ruby>身。是故君子有大道，必忠信以得之，骄泰以失之。
+</div>
+<p>命，这里指“慢”，怠慢。拂，违背。逮，及，到。夫，助词，此。<br />
+发现贤能的人而不加以举荐，即使举荐了也不重用，这是对贤能的人的怠慢；发现不善的人不能加以罢免，即使罢免了也不放逐到边远的地方去，这是犯了过分宽纵的错误。这叫做违背人性，灾祸一定会降临到他身上。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+生财有大道：生之者众，食之者寡；为之者疾，用之者舒，则财恒足矣。
+</div>
+<p>生产财富的人要多，消耗财富的人要少；管理财富的人要勤快，使用财富的人要节俭。这样财富便会长久地保持充裕了。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+仁者以财发身，不仁者以身发财。未有上好仁，而下不好义者也；未有好义，其事不终者也；未有府库财，非其财者也。
+</div>
+<p>仁爱的人仗义疏财以修养自身的德行，不仁的人不惜以生命为代价去敛钱发财。<br />
+没有处于上位的人喜好仁德，而下位的人不喜好道义的；没有喜好道义而做事却半途而废的；没有府库中（用仁义得来）的财物，最终不属于自己所有的。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+孟献子曰：“畜马<ruby>乘<rt>shènɡ</rt></ruby>，不察于鸡豚；伐冰之家，不畜牛羊；百乘之家，不畜聚敛之臣，与其有聚敛之臣，宁有盗臣。”此谓国不以利为利，以义为利也。
+</div>
+<p>畜马乘，指大夫之家。畜，豢养，这里是“有”的意思。乘，四匹马拉的车子。察，关注。豚，猪。<br />
+伐冰之家，丧祭时有条件用冰保鲜的家族，指公卿之家。<br />
+百乘之家，拥有一百辆车乘的家族，指有封邑采地的大家族。聚敛之臣，搜括钱财的家臣。聚，聚集。敛，征收。<br />
+养得起四匹马拉车的大夫之家，就不应该图谋喂鸡养猪的利益；丧祭时具有用冰保鲜条件的公卿之家，就不应该图谋饲养牛羊的利益；官做到拥有百辆车乘地位的家族，就不应该豢养聚敛财富的家臣，与其有聚敛财富的家臣，宁可有盗窃主人财物的家臣。<br />
+一个国家不应该以物质财富作为利益，应该以仁义作为利益。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+长国家而务财用者，必自小人矣。彼为善之，小人之使为国家，灾害并至。虽有善者，亦无如之何矣！此谓国不以利为利，以义为利也。
+</div>
+<p>君主如果专门注重积聚货财，这一定是受小人的误导了。君主若还以为这种小人是好人，并任用小人来治理国家，那么灾难祸害都将到来。即使有善人也已无法挽救了。</p>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://book.douban.com/subject/30406945/">四书五经——中华书局</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://book.douban.com/subject/5346709/">四书五经译注（套装全九册）——上海古籍出版社</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    《中庸》
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机控制算法综述01-1-PID控制器的Matlab仿真实现</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

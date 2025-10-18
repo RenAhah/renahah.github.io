@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机控制器算法综述02-1-蚁群算法 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将介绍群智能算法中的蚁群算法，它是历史最悠久的群智能算法之一。 本文首先结合旅行商问题介绍蚁群算法的原理，然后将蚁群算法应用于电机转速环PID控制器的参数优化。 蚁群算法概述 蚁群算法（Ant Colony Optimization, ACO）是一种模拟蚂蚁群体觅食行为的群智能优化算法，该算法采用的分布式并行计算机制，易于与其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机控制器算法综述02-1-蚁群算法">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将介绍群智能算法中的蚁群算法，它是历史最悠久的群智能算法之一。 本文首先结合旅行商问题介绍蚁群算法的原理，然后将蚁群算法应用于电机转速环PID控制器的参数优化。 蚁群算法概述 蚁群算法（Ant Colony Optimization, ACO）是一种模拟蚂蚁群体觅食行为的群智能优化算法，该算法采用的分布式并行计算机制，易于与其">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/0%20旅行商问题图示.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/1%20优化后的路径.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/2%20适应度进化曲线.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/3%20基于蚁群算法优化PID控制参数图示.png">
+<meta property="article:published_time" content="2025-03-10T13:46:56.000Z">
+<meta property="article:modified_time" content="2025-09-14T04:17:15.176Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/0%20旅行商问题图示.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/电机控制器算法综述/电机控制器算法综述02-1-蚁群算法" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98/" rel="tag">课题</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">
+            <time datetime="2025-03-10T13:46:56.000Z" itemprop="datePublished">2025-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机控制器算法综述02-1-蚁群算法
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">蚁群算法概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%BA%8E%E6%97%85%E8%A1%8C%E5%95%86%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">蚁群算法应用于旅行商问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95%E5%BA%94%E7%94%A8%E4%BA%8Epid%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">蚁群算法应用于PID控制器参数优化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E6%94%B9%E8%BF%9B%E6%96%B9%E5%90%91"><span class="toc-number">4.</span> <span class="toc-text">蚁群算法的改进方向</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。<br />
+本文将介绍群智能算法中的蚁群算法，它是历史最悠久的群智能算法之一。<br />
+本文首先结合旅行商问题介绍蚁群算法的原理，然后将蚁群算法应用于电机转速环PID控制器的参数优化。</p>
+<h2 id="蚁群算法概述">蚁群算法概述</h2>
+<p>蚁群算法（Ant Colony Optimization,
+ACO）是一种模拟蚂蚁群体觅食行为的群智能优化算法，该算法采用的分布式并行计算机制，易于与其它方法结合，具有较强的鲁棒性，适用于组合优化问题的求解。</p>
+<p>首先简单总结一下蚁群觅食的现象：</p>
+<ul>
+<li>蚂蚁在运动时，会在路径上释放出一种称为<strong>信息素</strong>(Pheromone)的物质，并且能够感知这种物质的存在及其强弱，并根据信息素的浓度指导运动的方向。<br />
+</li>
+<li>当遇到没有走过的路口时，蚂蚁会<strong>随机</strong>挑选一个方向前进。<br />
+</li>
+<li>蚂蚁走的路径越长则在该路径上的单位长度上的信息素越小。<br />
+</li>
+<li>当后来的蚂蚁再次遇到这个路口时，选择信息素强度高的方向的概率就会增加，这样就形成了一个<strong>正反馈机制</strong>。<br />
+</li>
+<li>最短路径上的信息素的强度越来越大，而其它路径上的信息素的强度随时间的流逝而逐渐消失。最终寻找到最短的路径。<br />
+</li>
+<li>当原先的最短路径上出现障碍物时，蚂蚁能够重新寻找另外一条最短路径，这体现了蚂蚁对外部环境的适应性（鲁棒性）。</li>
+</ul>
+列举完这些现象后，结合公式进行进一步的阐述，并将蚁群算法应用于旅行商问题：<br />
+<strong>旅行商问题</strong>(Travelling Salesman Problem，TSP)：<br />
+假设地图上有n个城市，n个城市间均有道路连接，不同城市间的道路长度不同，这使得不同城市间的交通成本不同。<br />
+一个商人需要从某个城市出发，按照一定的顺序访问这n个城市，且每个城市恰好访问一次，最终回到出发城市。<br />
+目标是求出一个最优的访问顺序，使得总交通成本最低。
+<center>
+<img src="0 旅行商问题图示.png" width=300/><span class="caption">图0
+旅行商问题图示</span>
+</center>
+<p><strong>节点与路径</strong>：假设蚂蚁由起点S出发，中途经过节点A、B、C，最后到达终点D，那么在这一过程中的SA、AB、BC、CD均为所经过的路径（路径是相邻两点之间构成的线段）。<br />
+在旅行商问题中，各个城市是节点，城市间的道路是路径。<br />
+<strong>信息素</strong>：蚂蚁在经过路径之时，会在路径上留下信息素，信息素浓度越高，意味着蚂蚁越愿意选择这一路径（形成正反馈）。<br />
+可以用<span class="math inline">\(\tau_{ij}\)</span>表示节点<span
+class="math inline">\(i\)</span>到节点<span
+class="math inline">\(j\)</span>之间的信息素。<br />
+<strong>信息素的更新</strong>：每一轮迭代后都会更新信息素，其表达式为：
+<span class="math display">\[\tau_{ij}(t+1)=(1-\rho)\tau_{ij}(t)+\Delta
+\tau_{ij}\]</span> 式中<span class="math inline">\(\rho \in
+(0,1)\)</span>为信息素的挥发系数，这意味着若没有新的蚂蚁走过此路径，则该路径上的信息素浓度会不断降低。<br />
+<span class="math inline">\(\Delta \tau_{ij}=\sum\limits_{k = 1}^m
+\Delta
+\tau_{ij}^k\)</span>，为信息素在本次迭代的增量，是各个蚂蚁在本次迭代中释放的信息素之和。<br />
+<strong>单个蚂蚁释放的信息素</strong>：主要分为三种模型。<br />
+首先是ant-cycle模型，其公式为<span class="math inline">\(\Delta
+\tau_{ij}^k = \left\{ {\begin{array}{*{20}{c}} \frac{Q}{L_k} &amp;&amp;
+若第k只蚂蚁在本次迭代经过了路径ij \\ 0 &amp;&amp; 其他 \end{array}}
+\right.\)</span><br />
+式中<span
+class="math inline">\(Q\)</span>是一个正数，代表信息素的浓度，<span
+class="math inline">\(L_k\)</span>为第<span
+class="math inline">\(k\)</span>只蚂蚁在本轮迭代所经过<mark>路径的总长度</mark>。<br />
+(总长度越低，意味着这条路越好走，释放的信息素就越多）<br />
+将<span class="math inline">\(\frac{Q}{L_k}\)</span>换成<span
+class="math inline">\(\frac{Q}{d_{ij}}\)</span>就是ant-quantity模型（<span
+class="math inline">\(d_{ij}\)</span>是路径<span
+class="math inline">\(ij\)</span>的长度），再换成<span
+class="math inline">\(Q\)</span>就是ant-density模型。<br />
+ant-cycle模型利用全局信息更新路径上的信息素量，其优化性能要好于采用局部信息的ant-quantity模型与ant-density模型。<br />
+<strong>状态转移概率公式</strong>：在第<span
+class="math inline">\(t\)</span>次迭代，蚂蚁位于<span
+class="math inline">\(i\)</span>节点时，选择<span
+class="math inline">\(j\)</span>节点的概率如下 <span
+class="math display">\[p_{ij}^k(t)= \left\{
+{\begin{array}{*{20}{c}}  \frac{[\tau_{ij}(t)]^\alpha \cdot
+[\eta_{ij}(t)]^\beta}{\sum\limits_{s\in J_k(i)}[\tau_{is}]^\alpha \cdot
+[\eta_{is}]^\beta} &amp;&amp;  当j \in J_k(i)时 \\ 0 &amp;&amp;
+其他  \end{array}} \right.\]</span> 式中<span
+class="math inline">\(J_k(i)\)</span>表示蚂蚁下一步可以选择的所有节点，在程序运行过程中，需要定义一个禁忌表<span
+class="math inline">\(tabu_k\)</span>，该表存储当前蚂蚁已经走过的节点，<span
+class="math inline">\(J_k(i)\)</span>是所有节点去除<span
+class="math inline">\(tabu_k\)</span>后剩余的部分。<br />
+<span class="math inline">\(\eta_{ij}\)</span>是启发式因子，通常取<span
+class="math inline">\(\eta_{ij}=\frac{1}{d_{ij}}\)</span>。<br />
+<span class="math inline">\(\alpha\)</span>与<span
+class="math inline">\(\beta\)</span>是信息素与启发式因子的权重系数，体现了信息素和启发式因子的相对重要程度。<br />
+该公式采用的是<strong>轮盘赌算法</strong>，分子对应单个节点，分母对应所有节点的和。路径上信息素浓度越大或路径越短时，节点被选中的概率越大。</p>
+<h2 id="蚁群算法应用于旅行商问题">蚁群算法应用于旅行商问题</h2>
+<p>下面是将蚁群算法应用于解决旅行商问题的matlab实例，代码来自<a
+target="_blank" rel="noopener" href="https://github.com/cgm-free/-MATLAB-2-">智能优化算法及其MATLAB实例(第2版)例5.1</a>。
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%蚁群算法解决TSP问题%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%初始化%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">clear all;                <span class="comment">%清除所有变量</span></span><br><span class="line">close all;                <span class="comment">%清图</span></span><br><span class="line">clc;                      <span class="comment">%清屏</span></span><br><span class="line">m=<span class="number">50</span>;                     <span class="comment">%蚂蚁个数</span></span><br><span class="line">Alpha=<span class="number">1</span>;                  <span class="comment">%信息素重要程度参数              </span></span><br><span class="line">Beta=<span class="number">5</span>;                   <span class="comment">%启发式因子重要程度参数</span></span><br><span class="line">Rho=<span class="number">0.1</span>;                  <span class="comment">%信息素蒸发系数</span></span><br><span class="line">G_max=<span class="number">200</span>;                <span class="comment">%最大迭代次数</span></span><br><span class="line">Q=<span class="number">100</span>;                    <span class="comment">%信息素增加强度系数</span></span><br><span class="line">C=[<span class="number">1304</span> <span class="number">2312</span>;<span class="number">3639</span> <span class="number">1315</span>;<span class="number">4177</span> <span class="number">2244</span>;<span class="number">3712</span> <span class="number">1399</span>;<span class="number">3488</span> <span class="number">1535</span>;<span class="number">3326</span> <span class="number">1556</span>;...</span><br><span class="line">    <span class="number">3238</span> <span class="number">1229</span>;<span class="number">4196</span> <span class="number">1044</span>;<span class="number">4312</span>  <span class="number">790</span>;<span class="number">4386</span>  <span class="number">570</span>;<span class="number">3007</span> <span class="number">1970</span>;<span class="number">2562</span> <span class="number">1756</span>;...</span><br><span class="line">    <span class="number">2788</span> <span class="number">1491</span>;<span class="number">2381</span> <span class="number">1676</span>;<span class="number">1332</span>  <span class="number">695</span>;<span class="number">3715</span> <span class="number">1678</span>;<span class="number">3918</span> <span class="number">2179</span>;<span class="number">4061</span> <span class="number">2370</span>;...</span><br><span class="line">    <span class="number">3780</span> <span class="number">2212</span>;<span class="number">3676</span> <span class="number">2578</span>;<span class="number">4029</span> <span class="number">2838</span>;<span class="number">4263</span> <span class="number">2931</span>;<span class="number">3429</span> <span class="number">1908</span>;<span class="number">3507</span> <span class="number">2376</span>;...</span><br><span class="line">    <span class="number">3394</span> <span class="number">2643</span>;<span class="number">3439</span> <span class="number">3201</span>;<span class="number">2935</span> <span class="number">3240</span>;<span class="number">3140</span> <span class="number">3550</span>;<span class="number">2545</span> <span class="number">2357</span>;<span class="number">2778</span> <span class="number">2826</span>;...</span><br><span class="line">    <span class="number">2370</span> <span class="number">2975</span>];                 <span class="comment">%31个省会城市坐标</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%第一步：变量初始化%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">n=<span class="built_in">size</span>(C,<span class="number">1</span>);              <span class="comment">%n表示问题的规模（城市个数）</span></span><br><span class="line">D=<span class="built_in">zeros</span>(n,n);             <span class="comment">%D表示两个城市距离间隔矩阵</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:n</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:n</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">i</span>~=<span class="built_in">j</span></span><br><span class="line">            D(<span class="built_in">i</span>,<span class="built_in">j</span>)=((C(<span class="built_in">i</span>,<span class="number">1</span>)-C(<span class="built_in">j</span>,<span class="number">1</span>))^<span class="number">2</span>+(C(<span class="built_in">i</span>,<span class="number">2</span>)-C(<span class="built_in">j</span>,<span class="number">2</span>))^<span class="number">2</span>)^<span class="number">0.5</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            D(<span class="built_in">i</span>,<span class="built_in">j</span>)=<span class="built_in">eps</span>;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        D(<span class="built_in">j</span>,<span class="built_in">i</span>)=D(<span class="built_in">i</span>,<span class="built_in">j</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">Eta=<span class="number">1.</span>/D;                    <span class="comment">%Eta为启发因子，这里设为距离的倒数</span></span><br><span class="line">Tau=<span class="built_in">ones</span>(n,n);               <span class="comment">%Tau为信息素矩阵</span></span><br><span class="line">Tabu=<span class="built_in">zeros</span>(m,n);             <span class="comment">%存储并记录路径的生成</span></span><br><span class="line">NC=<span class="number">1</span>;                        <span class="comment">%迭代计数器</span></span><br><span class="line">R_best=<span class="built_in">zeros</span>(G_max,n);       <span class="comment">%各代最佳路线</span></span><br><span class="line">L_best=<span class="built_in">inf</span>.*<span class="built_in">ones</span>(G_max,<span class="number">1</span>);   <span class="comment">%各代最佳路线的长度</span></span><br><span class="line"><span class="built_in">figure</span>(<span class="number">1</span>);<span class="comment">%优化解</span></span><br><span class="line"><span class="keyword">while</span> NC&lt;=G_max            </span><br><span class="line">    <span class="comment">%%%%%%%%%%%%%%%%%%第二步：将m只蚂蚁放到n个城市上%%%%%%%%%%%%%%%%</span></span><br><span class="line">    Randpos=[];</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:(<span class="built_in">ceil</span>(m/n))</span><br><span class="line">        Randpos=[Randpos,randperm(n)];</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    Tabu(:,<span class="number">1</span>)=(Randpos(<span class="number">1</span>,<span class="number">1</span>:m))&#x27;; </span><br><span class="line">    <span class="comment">%%%%%第三步：m只蚂蚁按概率函数选择下一座城市，完成各自的周游%%%%%%</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">2</span>:n</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">            visited=Tabu(<span class="built_in">i</span>,<span class="number">1</span>:(<span class="built_in">j</span><span class="number">-1</span>));  <span class="comment">%已访问的城市</span></span><br><span class="line">            J=<span class="built_in">zeros</span>(<span class="number">1</span>,(n-<span class="built_in">j</span>+<span class="number">1</span>));       <span class="comment">%待访问的城市</span></span><br><span class="line">            P=J;                      <span class="comment">%待访问城市的选择概率分布</span></span><br><span class="line">            Jc=<span class="number">1</span>;</span><br><span class="line">            <span class="keyword">for</span> k=<span class="number">1</span>:n</span><br><span class="line">                <span class="keyword">if</span> <span class="built_in">length</span>(<span class="built_in">find</span>(visited==k))==<span class="number">0</span></span><br><span class="line">                    J(Jc)=k;</span><br><span class="line">                    Jc=Jc+<span class="number">1</span>;</span><br><span class="line">                <span class="keyword">end</span></span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            <span class="comment">%%%%%%%%%%%%%%%%%%计算待选城市的概率分布%%%%%%%%%%%%%%%%</span></span><br><span class="line">            <span class="keyword">for</span> k=<span class="number">1</span>:<span class="built_in">length</span>(J)</span><br><span class="line">                P(k)=(Tau(visited(<span class="keyword">end</span>),J(k))^Alpha)...</span><br><span class="line">                    *(Eta(visited(<span class="keyword">end</span>),J(k))^Beta);</span><br><span class="line">            <span class="keyword">end</span></span><br><span class="line">            P=P/(sum(P));</span><br><span class="line">            <span class="comment">%%%%%%%%%%%%%%%%按概率原则选取下一个城市%%%%%%%%%%%%%%%%</span></span><br><span class="line">            Pcum=cumsum(P);</span><br><span class="line">            Select=<span class="built_in">find</span>(Pcum&gt;=<span class="built_in">rand</span>);</span><br><span class="line">            to_visit=J(Select(<span class="number">1</span>));</span><br><span class="line">            Tabu(<span class="built_in">i</span>,<span class="built_in">j</span>)=to_visit;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">if</span> NC&gt;=<span class="number">2</span></span><br><span class="line">        Tabu(<span class="number">1</span>,:)=R_best(NC<span class="number">-1</span>,:);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="comment">%%%%%%%%%%%%%%%%%%%第四步：记录本次迭代最佳路线%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">    L=<span class="built_in">zeros</span>(m,<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">        R=Tabu(<span class="built_in">i</span>,:);</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:(n<span class="number">-1</span>)</span><br><span class="line">            L(<span class="built_in">i</span>)=L(<span class="built_in">i</span>)+D(R(<span class="built_in">j</span>),R(<span class="built_in">j</span>+<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        L(<span class="built_in">i</span>)=L(<span class="built_in">i</span>)+D(R(<span class="number">1</span>),R(n));</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    [L_best(NC),pos]=<span class="built_in">min</span>(L);</span><br><span class="line">    R_best(NC,:)=Tabu(pos(<span class="number">1</span>),:);</span><br><span class="line">    <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%第五步：更新信息素%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">    Delta_Tau=<span class="built_in">zeros</span>(n,n);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:(n<span class="number">-1</span>)</span><br><span class="line">            Delta_Tau(Tabu(<span class="built_in">i</span>,<span class="built_in">j</span>),Tabu(<span class="built_in">i</span>,<span class="built_in">j</span>+<span class="number">1</span>))=...</span><br><span class="line">                Delta_Tau(Tabu(<span class="built_in">i</span>,<span class="built_in">j</span>),Tabu(<span class="built_in">i</span>,<span class="built_in">j</span>+<span class="number">1</span>))+Q/L(<span class="built_in">i</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        Delta_Tau(Tabu(<span class="built_in">i</span>,n),Tabu(<span class="built_in">i</span>,<span class="number">1</span>))=...</span><br><span class="line">            Delta_Tau(Tabu(<span class="built_in">i</span>,n),Tabu(<span class="built_in">i</span>,<span class="number">1</span>))+Q/L(<span class="built_in">i</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    Tau=(<span class="number">1</span>-Rho).*Tau+Delta_Tau;</span><br><span class="line">    <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%第六步：禁忌表清零%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">    Tabu=<span class="built_in">zeros</span>(m,n);</span><br><span class="line">    <span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%历代最优路线%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:n<span class="number">-1</span></span><br><span class="line">        <span class="built_in">plot</span>([ C(R_best(NC,<span class="built_in">i</span>),<span class="number">1</span>), C(R_best(NC,<span class="built_in">i</span>+<span class="number">1</span>),<span class="number">1</span>)],...</span><br><span class="line">            [C(R_best(NC,<span class="built_in">i</span>),<span class="number">2</span>), C(R_best(NC,<span class="built_in">i</span>+<span class="number">1</span>),<span class="number">2</span>)],<span class="string">&#x27;bo-&#x27;</span>);</span><br><span class="line">        <span class="built_in">hold</span> on;</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    <span class="built_in">plot</span>([C(R_best(NC,n),<span class="number">1</span>), C(R_best(NC,<span class="number">1</span>),<span class="number">1</span>)],...</span><br><span class="line">        [C(R_best(NC,n),<span class="number">2</span>), C(R_best(NC,<span class="number">1</span>),<span class="number">2</span>)],<span class="string">&#x27;ro-&#x27;</span>);  </span><br><span class="line">    title([<span class="string">&#x27;优化最短距离:&#x27;</span>,num2str(L_best(NC))]);</span><br><span class="line">    <span class="built_in">hold</span> off;</span><br><span class="line">    pause(<span class="number">0.005</span>);</span><br><span class="line">    NC=NC+<span class="number">1</span>;    </span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%第七步：输出结果%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line">Pos=<span class="built_in">find</span>(L_best==<span class="built_in">min</span>(L_best));</span><br><span class="line">Shortest_Route=R_best(Pos(<span class="number">1</span>),:);            <span class="comment">%最佳路线</span></span><br><span class="line">Shortest_Length=L_best(Pos(<span class="number">1</span>));             <span class="comment">%最佳路线长度</span></span><br><span class="line"><span class="built_in">figure</span>(<span class="number">2</span>),</span><br><span class="line"><span class="built_in">plot</span>(L_best)</span><br><span class="line">xlabel(<span class="string">&#x27;迭代次数&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;目标函数值&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;适应度进化曲线&#x27;</span>)</span><br></pre></td></tr></table></figure>
+程序要解决的问题可以归纳为：已知二维平面上31个节点（城市）的坐标，需要从某一节点出发，不重复的沿直线依次经过所有节点，最后还要回到出发节点，求距离最短的走法。</p>
+<p><strong>参数初始化</strong>：<br />
+定义蚁群个体数量<span class="math inline">\(m=50\)</span>，迭代次数<span
+class="math inline">\(G_{max}=200\)</span>（迭代的循环变量是<code>NC</code>）。<br />
+定义单个蚂蚁释放信息素多少相关的<span
+class="math inline">\(Q\)</span>，状态转移概率公式中的信息素与启发式因子的权重系数<span
+class="math inline">\(\alpha\)</span>与<span
+class="math inline">\(\beta\)</span>，信息素更新公式中的挥发系数<span
+class="math inline">\(\rho\)</span>。<br />
+<span class="math inline">\(C\)</span>是一个<span
+class="math inline">\(31 \times
+2\)</span>矩阵，用于存储平面上所有节点的坐标。</p>
+<p><code>n=size(C,1);</code>将矩阵<span
+class="math inline">\(C\)</span>的行数赋值给变量<span
+class="math inline">\(n\)</span>，<span
+class="math inline">\(n\)</span>表示节点（城市）的数量。<br />
+接下来建立了一个<span class="math inline">\(31 \times
+31\)</span>的矩阵<span
+class="math inline">\(D\)</span>来存储节点之间所构成的路径的距离，用到了距离公式<span
+class="math inline">\(d=\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}\)</span>。<br />
+这里使用<code>eps</code>来定义同一个节点间的距离（<span
+class="math inline">\(i=j\)</span>时的<span
+class="math inline">\(D(i,j)\)</span>），这是个matlab函数，返回值为一个很小的正数，其值为<span
+class="math inline">\(2^{-52}\)</span>。<br />
+另外定义<span
+class="math inline">\(D(j,i)=D(i,j)\)</span>，说明这是一个对称的TSP问题，两个节点在两个方向（从<span
+class="math inline">\(i\)</span>到<span
+class="math inline">\(j\)</span>与从<span
+class="math inline">\(j\)</span>到<span
+class="math inline">\(i\)</span>）的距离相等。若是非对称TSP问题，则会有<span
+class="math inline">\(D(j,i) \ne D(i,j)\)</span>。</p>
+<p>定义启发因子<span
+class="math inline">\(\eta_{ij}=\frac{1}{d_{ij}}\)</span>。<br />
+定义矩阵<span class="math inline">\(\tau_{n \times
+n}\)</span>，存储各个路径的信息素。<br />
+定义矩阵<span class="math inline">\(tabu_{m \times
+n}\)</span>，也就是禁忌表，存储一次迭代过程中<span
+class="math inline">\(m\)</span>只蚂蚁各自所选择的路线（经过节点的顺序）。<br />
+定义矩阵<span
+class="math inline">\(R_{best}\)</span>，储存各次迭代的最优路线。<br />
+定义矩阵<span
+class="math inline">\(L_{best}\)</span>，储存各次迭代最优线路的总长度。定义中用到了<code>inf</code>函数，使得其默认值为无穷大。<br />
+自此初始化工作全部结束，下面进行的是循环迭代过程。</p>
+<p><strong>将m只蚂蚁放到n个城市上</strong>：<br />
+首先确定蚂蚁的初始位置，定义<code>Randpos</code>用于储存随机生成的数据，该数组的元素个数并不固定，因此默认设为空。<br />
+然后进入一个for循环，<code>cell</code>函数是向上取整，这里<span
+class="math inline">\(m=50,n=31\)</span>，因此循环次数为2。<br />
+<code>randperm(n)</code>函数会返回一个包含从1到<span
+class="math inline">\(n\)</span>的随机序列，根据代码所写，每次循环都会使<code>Randpos</code>增加<span
+class="math inline">\(n\)</span>个互不相同的元素。<br />
+对于本程序，<code>Randpos</code>的最终会有62个元素，前31个互不相同，后31个也互不相同。<br />
+最后<code>Randpos</code>中的前<span
+class="math inline">\(m\)</span>个元素会赋值给禁忌表<span
+class="math inline">\(tabu\)</span>的第一列。<br />
+相较于直接生成1到<span
+class="math inline">\(n\)</span>之间的随机数，这样可以确保当<span
+class="math inline">\(m \ge n\)</span>时，每个城市上至少有一只蚂蚁。</p>
+<p><strong>蚂蚁按照状态转移概率公式经过各个节点</strong>：<br />
+外循环<span class="math inline">\(j\)</span>从2到<span
+class="math inline">\(n\)</span>，共<span
+class="math inline">\((n-1)\)</span>次，每次循环对应一次节点的选择，对应起点之外的另外<span
+class="math inline">\((n-1)\)</span>个节点。<br />
+内循环<span class="math inline">\(i\)</span>对应每一只蚂蚁。<br />
+首先将这个蚂蚁已经走过的节点存储于数组<code>visited</code>中，共有<span
+class="math inline">\((j-1)\)</span>个节点。<br />
+剩下的<span
+class="math inline">\((n-j+1)\)</span>个节点就是未走过的节点，建立一个长度为<span
+class="math inline">\((n-j+1)\)</span>的全零数组<span
+class="math inline">\(J\)</span>，用于存储这些节点。<br />
+然后将<span class="math inline">\(J\)</span>赋值给<span
+class="math inline">\(P\)</span>（使二者拥有相同的元素个数），这个<span
+class="math inline">\(P\)</span>在后面将用于存储蚂蚁下一步要走的各个节点的概率。</p>
+<p>接下来又进入一个循环<span
+class="math inline">\(k\)</span>，这个循环用于将所有未走过的节点填充到数组<span
+class="math inline">\(J\)</span>中。<br />
+这里根据matlab给出的提示，将原文<code>if(length(find(visited==k))==0)</code>修改为<code>if(isempty(find(visited==k, 1)))</code>，以提高代码运行效率。<br />
+这个循环依次对各个节点进行判断，<code>find(visited==k, 1)</code>会返回<code>visited</code>数组中值为<span
+class="math inline">\(k\)</span>（代表第<span
+class="math inline">\(k\)</span>个节点）的第1个元素的元素下标<mark>（这个下标是几并不重要，重要的是能不能找到这个元素）</mark>。<br />
+<code>find</code>函数的返回值是数组，若<code>visited</code>数组中找不到值为<span
+class="math inline">\(k\)</span>的元素，则会返回一个空数组，<code>isempty</code>的返回值为1（真）。若找到了，<code>isempty</code>的返回值为0（假）。<br />
+所以说，这个循环的作用是依次判断蚂蚁是否经过第<span
+class="math inline">\(k\)</span>个节点，若未经过，则将这个节点存储到数组<span
+class="math inline">\(J\)</span>中。</p>
+<p>跳出这个小循环后，进入另一个小循环，该循环的变量也是<span
+class="math inline">\(k\)</span>。这个循环按照<strong>状态转移概率公式</strong>得到蚂蚁下一步要走的各个节点的概率，最后储存于数组<span
+class="math inline">\(P\)</span>。</p>
+<p>最后一部分代码用于确定要去的下一个节点，<code>cumsum</code>是累计求和函数，所返回的数组与输入的数组具有相同的元素个数，返回数组的第1个元素与输入相同，第2个元素是输入的前2个之和，第3个元素的输入的前3个之和，以此类推，最后一个元素是输入数组的所有元素值之和。<br />
+所以得到的数组<span
+class="math inline">\(P_{cum}\)</span>的值会单调递增，最后一个元素的值为1。<br />
+<code>rand</code>函数会生成一个在0到1之间的随机数，正好可以与<span
+class="math inline">\(P_{cum}\)</span>的范围重合。<br />
+接下来的<code>find(Pcum&gt;=rand)</code>会寻找<span
+class="math inline">\(P_{cum}\)</span>数组中大于0到1之间的随机数的所有元素，存储于数组<span
+class="math inline">\(Select\)</span>中，而<span
+class="math inline">\(Select\)</span>的第一个元素就是下一次迭代要经过的节点。<br />
+这里举一个例子，假设还剩下3个待走过的节点，根据状态转移概率公式计算得到的概率<span
+class="math inline">\(P=[0.1,0.3,0.6]\)</span>，那么通过累计求和后得到<span
+class="math inline">\(P_{cum}=[0.1,0.4,1]\)</span>。<br />
+若<span class="math inline">\(0 &lt; rand \le 0.1\)</span>，则数组<span
+class="math inline">\(Select\)</span>将存储全部三个节点，最后要去的就是第一个节点；若<span
+class="math inline">\(0.1 &lt;rand \le 0.4\)</span>，则数组<span
+class="math inline">\(Select\)</span>将存储第二个与第三个节点，最后要去的是第二个节点；若<span
+class="math inline">\(0.4 &lt;rand &lt; 1\)</span>，则数组<span
+class="math inline">\(Select\)</span>只存储第三个节点，最后要去的就是第三个节点。</p>
+<p>接下来是一个判断，只有迭代到第二轮及以后才执行下一行代码。下一行代码将上一次迭代得到的最优路径赋值给禁忌表的第一行。<br />
+（这样写意味着从第二轮开始，蚁群中的1号蚂蚁的路径会一直被上一轮迭代产生的最优路径所替代）<br />
+在接下来的路径对比中，这个最优路径会与蚁群迭代产生的新路径进行对比，若新路径的总距离均大于这个最优路径，则这个最优路径依旧是最优路径；若新路径的总距离有小于这个最优路径的，新路径就会取代它成为新的最优路径。</p>
+<p><strong>记录本次迭代最佳路线</strong>： 列向量<span
+class="math inline">\(L\)</span>存储本次迭代各个蚂蚁走过的总距离。<br />
+代码比较好理解，调用的是禁忌表<span
+class="math inline">\(tabu\)</span>的数据，首先计算第一个节点到第二个节点，第二个节点到第三个节点，一直到最后一个节点间的距离，然后还要加上最后一个节点到第一个节点的距离（题目要求最后回到出发节点）。<br />
+然后将<span class="math inline">\(L\)</span>中的最小值幅值给<span
+class="math inline">\(L_{best}\)</span>，作为这一次迭代蚂蚁走过总距离的最小值，并获得最小值对应的下标。<br />
+（这里将原文<code>L_best(NC)=min(L);pos=find(L==L_best(NC));</code>修改为<code>[L_best(NC),pos]=min(L);</code>）<br />
+最后将总距离最小的那只蚂蚁的路径赋值给<span
+class="math inline">\(R_{best}\)</span>，作为这一轮迭代的最优路径。</p>
+<p><strong>更新信息素</strong>：<br />
+按照上文所述公式更新路径间的信息素。<br />
+首先求单个蚂蚁释放的信息素，采用的是ant-cycle模型，外循环对应<span
+class="math inline">\(m\)</span>个蚂蚁，内循环对应一只蚂蚁在本次迭代所经过的路径。<br />
+然后将其代入到信息素更新公式。</p>
+<p>然后将禁忌表清零，为下一轮迭代做准备。</p>
+代码的最后一部分就不必多说了，绘制迭代过程中的图形，求出最优路径与最小的总距离，得到最小总距离随迭代次数变化的曲线，如下图所示。
+<center>
+<img src="1 优化后的路径.png" width=500/><span class="caption">图1
+优化后的路径</span>
+</center>
+<center>
+<img src="2 适应度进化曲线.png" width=500/><span class="caption">图2
+适应度进化曲线</span>
+</center>
+<h2
+id="蚁群算法应用于pid控制器参数优化">蚁群算法应用于PID控制器参数优化</h2>
+为了使得蚁群算法应用于PID控制器的参数优化，需要对算法本身进行一定的调整。<br />
+对于旅行商问题，优化的目的是找到一条最短的路径以经过所有的节点。而对于电机PID控制器，其优化目标是寻找出一组最优的<span
+class="math inline">\(K_p,K_i,K_d\)</span>参数，使得电机的控制性能最好。<br />
+信息素并不释放在路径上，而是在节点上，而节点就是待优化的<span
+class="math inline">\(K_p,K_i,K_d\)</span>参数。<br />
+另外，需要定义与电机控制性能相关的<mark>评价函数</mark>，这相当于旅行商问题中的路径长度。<br />
+
+<center>
+<img src="3 基于蚁群算法优化PID控制参数图示.png" width=300/><span
+class="caption">图3 基于蚁群算法优化PID控制参数图示</span>
+</center>
+<p>蚁群算法优化PID控制参数的路径图如上图所示，每一只蚂蚁需要依次经过<span
+class="math inline">\(K_p,K_i,K_d\)</span>这三组节点，每一组节点选择其中的一个节点经过，最后迭代得到最优的一组<span
+class="math inline">\(K_p,K_i,K_d\)</span>参数。</p>
+<p>下面简要介绍所编写程序的思路：<br />
+首先是节点的取值，三个参数各有100个元素，构成的是等差数列。初步确定<span
+class="math inline">\(K_p\)</span>为1:1:100，<span
+class="math inline">\(K_i\)</span>为0.1:0.1:10，<span
+class="math inline">\(K_p\)</span>为10:10:1000（首项：等差：末项）。<br />
+然后是信息素矩阵，由于信息素释放在节点上，因此可以定义一个<span
+class="math inline">\(100 \times 3\)</span>矩阵。<br />
+为确保初始蚁群能够经过所有的节点，蚁群个体数量<span
+class="math inline">\(m=100\)</span>，初始蚁群的<span
+class="math inline">\(K_p,K_i,K_d\)</span>均用<code>randperm(m)</code>生成。<br />
+也就是说，在程序中节点取值个数与蚂蚁个数相等。<br />
+此外，该代码对状态转移概率公式做出调整，公式中只含<span
+class="math inline">\(\alpha\)</span>项，没有<span
+class="math inline">\(\beta\)</span>项，这是因为信息素全部在节点上，节点之间没有信息素。</p>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%蚁群算法优化PID控制器参数</span></span><br><span class="line"><span class="comment">%%初始化</span></span><br><span class="line">close all;                <span class="comment">%清图</span></span><br><span class="line">clc;                      <span class="comment">%清屏</span></span><br><span class="line">m=<span class="number">100</span>;                    <span class="comment">%蚂蚁个数=每个节点的离散取值个数</span></span><br><span class="line">n=<span class="number">3</span>;                      <span class="comment">%节点个数，这里是Kp,Ki,Kd三个</span></span><br><span class="line">Alpha=<span class="number">1</span>;                  <span class="comment">%信息素重要程度参数              </span></span><br><span class="line">Rho=<span class="number">0.1</span>;                  <span class="comment">%信息素蒸发系数</span></span><br><span class="line">G_max=<span class="number">200</span>;                 <span class="comment">%最大迭代次数</span></span><br><span class="line">Q=<span class="number">1</span>;                    <span class="comment">%信息素增加强度系数</span></span><br><span class="line"></span><br><span class="line">Kp_list = <span class="number">1</span>:<span class="number">1</span>:<span class="number">100</span>;        <span class="comment">%Kp离散值(与蚂蚁个数相等)</span></span><br><span class="line">Ki_list = <span class="number">0.1</span>:<span class="number">0.1</span>:<span class="number">10</span>;     <span class="comment">%Ki离散值</span></span><br><span class="line">Kd_list = <span class="number">1</span>:<span class="number">10</span>:<span class="number">1000</span>;      <span class="comment">%Kd离散值</span></span><br><span class="line"></span><br><span class="line">Tau=<span class="built_in">ones</span>(m,n);            <span class="comment">%初始信息素矩阵，三列分别为Kp,Ki,Kd</span></span><br><span class="line">NC=<span class="number">1</span>;                     <span class="comment">%迭代计数</span></span><br><span class="line">Ants=<span class="built_in">ones</span>(m,n);           <span class="comment">%记录每个蚂蚁的位置（节点，还没有转化为Kp,Ki,Kd值）</span></span><br><span class="line">L=<span class="built_in">zeros</span>(m,<span class="number">1</span>);             <span class="comment">%各个蚂蚁的适应度值</span></span><br><span class="line">Ants_best=<span class="built_in">zeros</span>(G_max+<span class="number">1</span>,n); <span class="comment">%初始蚁群与各代最佳Kp,Ki,Kd参数</span></span><br><span class="line">L_best=<span class="built_in">zeros</span>(G_max+<span class="number">1</span>,<span class="number">1</span>);    <span class="comment">%初始蚁群与各代最佳适应度值</span></span><br><span class="line"><span class="comment">%% 初始蚁群</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:n</span><br><span class="line">    Ants(:,<span class="built_in">i</span>)=randperm(m);<span class="comment">%确保每个节点的每个离散取值上均有蚂蚁</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">    L(<span class="built_in">i</span>)=evaluatePID(Kp_list(Ants(<span class="built_in">i</span>,<span class="number">1</span>)),Ki_list(Ants(<span class="built_in">i</span>,<span class="number">2</span>)),Kd_list(Ants(<span class="built_in">i</span>,<span class="number">3</span>)));</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">[L_best(<span class="number">1</span>),pos]=<span class="built_in">min</span>(L);</span><br><span class="line">Ants_best(<span class="number">1</span>,:)=[Kp_list(Ants(pos,<span class="number">1</span>)),Ki_list(Ants(pos,<span class="number">2</span>)),Kd_list(Ants(pos,<span class="number">3</span>))];</span><br><span class="line">fprintf(<span class="string">&#x27;初始蚁群最优适应度=%.4f 最优参数：%.4f,%.4f,%.4f\n&#x27;</span>,L_best(<span class="number">1</span>),Ants_best(<span class="number">1</span>,<span class="number">1</span>),Ants_best(<span class="number">1</span>,<span class="number">2</span>),Ants_best(<span class="number">1</span>,<span class="number">3</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> NC&lt;=G_max</span><br><span class="line"><span class="comment">%% 更新信息素</span></span><br><span class="line">    Delta_Tau=<span class="built_in">zeros</span>(m,n);<span class="comment">%信息素增量</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">        <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:n</span><br><span class="line">            Delta_Tau(Ants(<span class="built_in">i</span>,<span class="built_in">j</span>),<span class="built_in">j</span>)=Delta_Tau(Ants(<span class="built_in">i</span>,<span class="built_in">j</span>),<span class="built_in">j</span>)+Q/L(<span class="built_in">i</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    Tau=(<span class="number">1</span>-Rho).*Tau+Delta_Tau;</span><br><span class="line"><span class="comment">%% 按照状态转移概率公式确定下一轮迭代的蚁群位置</span></span><br><span class="line">    P=<span class="built_in">zeros</span>(m);</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">j</span>=<span class="number">1</span>:n</span><br><span class="line">        <span class="keyword">for</span> k=<span class="number">1</span>:m</span><br><span class="line">            P(k)=(Tau(k,<span class="built_in">j</span>))^Alpha;</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">        P=P/(sum(P));</span><br><span class="line">        Pcum=cumsum(P);</span><br><span class="line">        <span class="keyword">for</span> k=<span class="number">1</span>:m</span><br><span class="line">            Select=<span class="built_in">find</span>(Pcum&gt;<span class="built_in">rand</span>);</span><br><span class="line">            Ants(k,<span class="built_in">j</span>)=Select(<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="comment">%% 得到蚁群适应度，更新最优蚁群与适应度数据</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:m</span><br><span class="line">        L(<span class="built_in">i</span>)=evaluatePID(Kp_list(Ants(<span class="built_in">i</span>,<span class="number">1</span>)),Ki_list(Ants(<span class="built_in">i</span>,<span class="number">2</span>)),Kd_list(Ants(<span class="built_in">i</span>,<span class="number">3</span>)));</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    [Lbest,pos]=<span class="built_in">min</span>(L);</span><br><span class="line">    <span class="keyword">if</span>(Lbest&lt;L_best(NC))</span><br><span class="line">        Ants_best(NC+<span class="number">1</span>,:)=[Kp_list(Ants(pos,<span class="number">1</span>)),Ki_list(Ants(pos,<span class="number">2</span>)),Kd_list(Ants(pos,<span class="number">3</span>))];</span><br><span class="line">        L_best(NC+<span class="number">1</span>)=Lbest;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        Ants_best(NC+<span class="number">1</span>,:)=Ants_best(NC,:);</span><br><span class="line">        L_best(NC+<span class="number">1</span>)=L_best(NC);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">    fprintf(<span class="string">&#x27;第%d次迭代蚁群最优适应度=%.4f 最优参数：%.4f,%.4f,%.4f\n&#x27;</span>,NC,L_best(NC+<span class="number">1</span>),Ants_best(NC+<span class="number">1</span>,<span class="number">1</span>),Ants_best(NC+<span class="number">1</span>,<span class="number">2</span>),Ants_best(NC+<span class="number">1</span>,<span class="number">3</span>));</span><br><span class="line">    NC=NC+<span class="number">1</span>;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">%% 绘制曲线</span></span><br><span class="line"><span class="built_in">plot</span>(L_best)</span><br><span class="line">xlabel(<span class="string">&#x27;迭代次数&#x27;</span>)</span><br><span class="line">ylabel(<span class="string">&#x27;目标函数值&#x27;</span>)</span><br><span class="line">title(<span class="string">&#x27;适应度进化曲线&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">%% 适应度评估函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">itae</span> = <span class="title">evaluatePID</span><span class="params">(Kp, Ki, Kd)</span>    </span></span><br><span class="line">    controller = pid(Kp, Ki, Kd);       <span class="comment">%创建PID控制器      </span></span><br><span class="line">    s = tf(<span class="string">&#x27;s&#x27;</span>);                        <span class="comment">%电机模型（示例为直流电机模型）</span></span><br><span class="line">    motor = <span class="number">1</span> / ((<span class="number">1</span>+<span class="number">20</span>*s)*(<span class="number">1</span>+<span class="number">10</span>*s));    <span class="comment">%假设是一个二阶系统    </span></span><br><span class="line">    sys = feedback(controller*motor, <span class="number">1</span>);<span class="comment">%建立闭环系统 </span></span><br><span class="line">    t = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">10</span>;</span><br><span class="line">    y = step(sys, t);                   <span class="comment">%阶跃响应</span></span><br><span class="line">    error = <span class="number">1</span> - y;                      <span class="comment">%目标转速为1（标幺值）</span></span><br><span class="line">    itae = sum(t(:).*<span class="built_in">abs</span>(error(:)));    <span class="comment">%ITAE性能指标（积分时间绝对误差）</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="蚁群算法的改进方向">蚁群算法的改进方向</h2>
+<p>该程序接下来的改进思路如下：<br />
+1.对于群智能算法，通常在迭代初期需要有尽可能大的搜索范围，避免陷入局部最优解；而迭代后期则需要减小搜索范围，以获得尽可能精确的解。可以根据迭代次数调整信息素浓度<span
+class="math inline">\(Q\)</span>，使之先大后小。或者限制信息素<span
+class="math inline">\(\tau\)</span>的最大值与最小值。<br />
+2.增加信息素对周围节点的影响，目前信息素仅释放在蚂蚁走过的节点上，可以将释放的范围扩大至临近节点。比如蚂蚁走过<span
+class="math inline">\(K_p=50\)</span>对应的节点时，同时将信息素释放到<span
+class="math inline">\(K_p=47 \sim
+53\)</span>范围内的其余节点，释放的量随距离的增大而减小。<br />
+3.PID参数是连续性的参数，而蚁群算法主要针对离散参数的优化，因此这里将PID参数离散化成等差数列，这样就降低了参数优化的精确性。</p>
+<p><code>To Be Countinued未完待续......</code></p>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://github.com/cgm-free/-MATLAB-2-">智能优化算法及其MATLAB实例(第2版)</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电机控制算法综述01-2-模糊PID控制器的Matlab仿真
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机控制算法综述03-滑模控制</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

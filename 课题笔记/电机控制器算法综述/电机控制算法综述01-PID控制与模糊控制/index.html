@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机控制算法综述01-PID控制与模糊控制 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将介绍PID控制与模糊控制。 PID控制 PID控制又称比例-积分-微分(Proportional-Integral-Derivative)控制，它将控制系统偏差的比例、积分、微分环节通过一定的线性组合得到控制量，实现对被控变量的闭环控制。PID控制算法简单，只需调整好比例、积分、微分这三个参数，就可以得到较好的控制效果，PID控">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机控制算法综述01-PID控制与模糊控制">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将介绍PID控制与模糊控制。 PID控制 PID控制又称比例-积分-微分(Proportional-Integral-Derivative)控制，它将控制系统偏差的比例、积分、微分环节通过一定的线性组合得到控制量，实现对被控变量的闭环控制。PID控制算法简单，只需调整好比例、积分、微分这三个参数，就可以得到较好的控制效果，PID控">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/1%20PID.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/2%20模糊PID.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/3%20隶属度函数.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/4%20ΔKp模糊规则表.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/5%20ΔKi模糊规则表.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/6%20ΔKd模糊规则表.png">
+<meta property="article:published_time" content="2024-09-03T12:18:13.000Z">
+<meta property="article:modified_time" content="2025-09-14T04:17:36.364Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/1%20PID.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/电机控制器算法综述/电机控制算法综述01-PID控制与模糊控制" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98/" rel="tag">课题</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">
+            <time datetime="2024-09-03T12:18:13.000Z" itemprop="datePublished">2024-09-03</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机控制算法综述01-PID控制与模糊控制
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#pid%E6%8E%A7%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">PID控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">模糊控制</span></a></li></ol>
+                </div>
+            
+        
+        
+            <p>这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。<br />
+本文将介绍PID控制与模糊控制。</p>
+<h3 id="pid控制">PID控制</h3>
+<p>PID控制又称比例-积分-微分(Proportional-Integral-Derivative)控制，它将控制系统偏差的比例、积分、微分环节通过一定的线性组合得到控制量，实现对被控变量的闭环控制。PID控制算法简单，只需调整好比例、积分、微分这三个参数，就可以得到较好的控制效果，PID控制在各行各业中得到了广泛的应用。<br />
+<span id="more"></span></p>
+<center>
+<img src="1 PID.png" width=500/><span class="caption">图1
+PID控制框图</span>
+</center>
+<p>PID控制系统框图如上图所示，其中<span
+class="math inline">\(r(t)\)</span>为输入，<span
+class="math inline">\(e(t)\)</span>为误差，<span
+class="math inline">\(u(t)\)</span>为经过运算所得的控制量，<span
+class="math inline">\(y(t)\)</span>实际的输出量（如转速、电流等）。输出与输入所得的偏差经过比例、积分、微分运算处理后求和得到控制量，进而得到新的输出值，如此循环往复，使得实际值（输出量）接近并稳定在设定值（输入量）附近，当输入量发生变化时，输出也会跟踪输入。</p>
+<p>PID控制的运算公式如下：<br />
+<span class="math inline">\(u(t)=K_p[e(t)+\frac{1}{T_i}\int_0^t
+e(t)dt+T_d\frac{de(t)}{dt}]\)</span><br />
+<span class="math inline">\(=K_p e(t)+K_i \int_0^t
+e(t)dt+K_d\frac{de(t)}{dt}]\)</span>①<br />
+式中<span class="math inline">\(K_p\)</span>为比例系数，<span
+class="math inline">\(K_i=\frac{K_p}{T_i}\)</span>为积分系数，<span
+class="math inline">\(T_i\)</span>为积分时间常数，<span
+class="math inline">\(K_d=\frac{K_p}{T_d}\)</span>为微分系数，<span
+class="math inline">\(T_i\)</span>为微分时间常数。</p>
+<p>比例系数<span
+class="math inline">\(K_p\)</span>会影响系统的响应速度。在其他参数不变的情况下，增大比例系数，可以在相同误差量下产生更大的输出。适当的比例系数可以使系统有更快的响应速度，提高系统的调节精度。比例系数过大更容易导致系统超调量过大，使系统不稳定；比例系数过小会使系统对设定值改变的反应速度变慢，影响控制效果。<br />
+积分系数<span
+class="math inline">\(K_i\)</span>针对系统历史产生的误差，用于消除采用比例环节时系统可能产生的稳态误差，选取合适的积分系数，可以有效去除系统的稳态误差，且积分系数越大，消除效果越显著。但过大的积分系数，会在系统运行初期产生过饱和现象，使系统不稳定。<br />
+微分系数<span
+class="math inline">\(K_d\)</span>主要通过对系统未来误差的预测，以削弱任何来自于偏差产生方向的变化，选取合适的微分系数，可以有效改善系统的动态性能。微分系数过大会则会延长系统反应扰动的时间，降低系统的抵抗扰动的能力。</p>
+<p>早期的PID控制通过模拟电路实现，其运算公式如①所示，随着数字电子技术与微处理器的发展，现代的电机控制主要采用数字PID控制方式。数字PID主要分为位置式与增量式。<br />
+位置式PID公式如下：<br />
+<span class="math inline">\(u(k)=K_p[e(k)+\frac{T}{T_i}\sum_{j=0}^k
+e(j)+\frac{T_d}{T}(e(k)-e(k-1))]\)</span><br />
+<span class="math inline">\(=K_p e(k)+K_i \sum_{j=0}^k
+e(j)+K_d(e(k)-e(k-1))\)</span>②<br />
+该公式以<span
+class="math inline">\(T\)</span>为采样周期，将连续运算转化为离散运算。计算得到的控制量<span
+class="math inline">\(u_(k)\)</span>对应被控对象的实际位置，与每个时刻的偏差值<span
+class="math inline">\(e(k)\)</span>皆有关，若系统出现故障，检测得到的值与实际值不符，则公式的积分部分会累计出较大的偏差，造成积分饱和，使系统处于开环状态。可以通过积分限幅和输出值限幅的方式限制过度的积分饱和所造成的系统失控。</p>
+<p>首先根据式②得到<span
+class="math inline">\(k-1\)</span>时刻的位置式PID公式为：<br />
+<span class="math inline">\(u(k-1)=K_p e(k-1)+K_i \sum_{j=0}^{k-1}
+e(j)+K_d(e(k-1)-e(k-2))\)</span>③<br />
+式②减去式③，得到增量式PID公式如下：<br />
+<span class="math inline">\(\Delta u(k)=K_p[e(k)-e(k-1)]+K_i
+e(k)+K_d[e(k)-2e(k-1)+e(k-2)]\)</span>④<br />
+该公式计算的是控制量的改变量，仅仅需要三个时刻的<span
+class="math inline">\(e(k)\)</span>值，若系统出现故障，检测得到的值与实际值不符，仍能保持原来的控制量输出。增量式PID只需做输出值限幅，不用做积分限幅。<br />
+增量式PID的缺点体现在积分截断效应（将基准积分点分解为有限多个离散的积分点所产生的误差）较大，存在稳态误差。</p>
+<p>PID控制的关键在于找到一组合适的<span
+class="math inline">\(K_p,K_i,K_d\)</span>参数，以实现更好的控制效果，尽可能地提高控制性能，这个寻找参数的过程被称作参数整定。传统的参数整定方法又称工程整定方法，主要包括Z-N整定与衰减曲线方法，它通过大量的实验获取控制经验，需要根据实际情况与控制需求做出反复的调整。但随着科技的进步及生产力的发展，传统PID整定方法渐渐难以满足针对越来越复杂的被控对象的控制需求及越来越高的控制性能要求。因此需要将PID控制与模糊控制、智能优化算法、神经网络算法、滑模控制等新型控制方法相结合，改善PID控制参数整定效果及控制性能。</p>
+<h3 id="模糊控制">模糊控制</h3>
+<p>本节主要介绍模糊PID控制方法。传统PID控制的三个参数在电机运行过程中保持不变，不能很好的适应复杂环境与扰动下的电机控制需求。模糊PID控制采用了模糊算法，可以根据系统的性能对PID的比例、积分、微分参数做实时调整，有效提高系统的动态性能、稳态性能及鲁棒性。</p>
+<center>
+<img src="2 模糊PID.png" width=500/><span class="caption">图2
+模糊PID控制框图</span>
+</center>
+模糊PID控制系统框图如上图所示，其中e是误差（<mark>设定值减去实际值</mark>）、ec是误差变化量，这两个量是模糊控制器的输入值。<br />
+首先，对e和ec做模糊化，将这两者由精确的数值转化为模糊量E与EC。<br />
+设定e和ec的<strong>论域</strong>，论域是输入值的上下限。再设定模糊量E和EC的<strong>模糊集</strong>，模糊集中的元素通常用两个字母表示，如模糊集{NB、NM、NS、ZO、PS、PM、PB}，这七个子集的含义分别是负大(Negative
+Big)、负中(Negative Medium)、负小(Negative
+Small)、零(Zero)、正小(Positive Small)、正中(Positive
+Medium)、正大(Positive Big)。<br />
+将数值用模糊值来表示，比如设论域为{-240,240}，模糊集为{NB、NM、NS、ZO、PS、PM、PB}，那么模糊集中的七个子集就可以对应论域中的-180,-120,-60,0,60,120,180。<br />
+输入值显然不太可能正好是这几个值，所以需要引入<strong>隶属度</strong>与<strong>隶属度函数</strong>这两个概念。<br />
+隶属度体现了论域中某个数值隶属于某个模糊子集的程度，隶属度函数反映了数值与各个模糊子集的隶属度的关系。<br />
+隶属度函数有很多种形式，如梯形、三角形、高斯型、Z型、S型。这里采用最常用的梯形与三角形为例构造隶属度函数，其中NB与PB采用梯形构造，其余子集采用三角形构造。<br />
+
+<center>
+<img src="3 隶属度函数.png" width=500/><span class="caption">图3
+隶属度函数</span>
+</center>
+<p>各个子集的隶属度函数如上图所示，以e=175为例，此时E同时属于NB与NM两个子集，其中对NB的隶属度为0.75，对NM的隶属度为0.25，对其他子集的隶属度为0。</p>
+<p>同理，确定PID控制器中三个参数的变化量（<span
+class="math inline">\(\Delta K_p,\Delta K_i,\Delta
+K_d\)</span>）的论域与模糊集，为接下来的模糊推理与解模糊做准备，最大值及模糊集的划分需要考虑系统实际情况及电机控制需求加以确定。</p>
+<p>模糊推理是指根据专家经验建立模糊规则表进行推理的过程，规则表确定了输入值E与EC在属于不同的模糊子集的情况下对应<span
+class="math inline">\(\Delta K_p,\Delta K_i,\Delta
+K_d\)</span>所处的模糊子集。下面是列举一个<span
+class="math inline">\(\Delta K_p,\Delta K_i,\Delta
+K_d\)</span>模糊规则表的例子，它未必适用于某个特定条件下的控制，需要结合被控对象的实际情况及电机控制需求对该规则表加以调整。</p>
+<center>
+<img src="4 ΔKp模糊规则表.png" width=600/><span class="caption">图4
+ΔKp模糊规则表</span>
+</center>
+<p><span
+class="math inline">\(K_p\)</span>值影响系统的响应速度。增大<span
+class="math inline">\(K_p\)</span>能提高响应速度，减小稳态偏差，但<span
+class="math inline">\(K_p\)</span>过大会产生较大的超调，使系统不稳定；减小<span
+class="math inline">\(K_p\)</span>可以减小超调，提高稳定性，但<span
+class="math inline">\(K_p\)</span>过小会减慢响应速度，延长调节时间。<br />
+调节初期，应适当取较大的<span
+class="math inline">\(K_p\)</span>值以提高响应速度；<br />
+调节中期，<span
+class="math inline">\(K_p\)</span>应取较小值，使系统具有较小的超调并保证一定的响应速度；<br />
+调节后期，需要将<span
+class="math inline">\(K_p\)</span>值调到较大值来减小静差，以提高控制精度。</p>
+<center>
+<img src="5 ΔKi模糊规则表.png" width=600/><span class="caption">图5
+ΔKi模糊规则表</span>
+</center>
+<p>积分控制主要是用来消除系统的稳态偏差。由于某些原因(如饱和非线性等)，积分过程有可能在调节过程的初期产生积分饱和，从而引起调节过程的较大超调。<br />
+调节初期，为防止积分饱和，其积分作用应当弱一些，甚至可以取零；<br />
+调节中期，为了避免影响稳定性，其积分作用应该比较适中；<br />
+调节后期，应增强积分作用，以减小调节静差。</p>
+<center>
+<img src="6 ΔKd模糊规则表.png" width=600/><span class="caption">图6
+ΔKd模糊规则表</span>
+</center>
+<p><span
+class="math inline">\(K_d\)</span>值的选取对调节动态特性影响很大。<span
+class="math inline">\(K_d\)</span>值过大，调节过程制动就会超前，致使调节时间过长；<span
+class="math inline">\(K_d\)</span>值过小，调节过程制动就会落后，从而导致超调增加。<br />
+调节初期，应加大微分作用，这样可得到较小甚至避免超调；<br />
+调节中期，由于调节特性对<span
+class="math inline">\(K_d\)</span>值的变化比较敏感，因此，<span
+class="math inline">\(K_d\)</span>值应适当小一些并应保持固定不变；<br />
+调节后期，<span
+class="math inline">\(K_d\)</span>值应减小，以减小被控过程的制动作用，进而补偿在调节过程初期由于<span
+class="math inline">\(K_d\)</span>值较大所造成的调节过程的时间延长。</p>
+<p>根据模糊化处理所得的偏差E与偏差变化量EC，以及<span
+class="math inline">\(\Delta K_p,\Delta K_i,\Delta
+K_d\)</span>的模糊规则表，可以得到<span class="math inline">\(\Delta
+K_p,\Delta K_i,\Delta
+K_d\)</span>所属的模糊子集，接下来要进行的是<strong>解模糊</strong>，将模糊值还原为准确数值。</p>
+<p>重心法是最为常用的解模糊算法，它取的是加权平均值，其公式如下：<br />
+<span class="math display">\[y=\frac{\sum_{i=1}^n f_i y_i}{\sum_{i=1}^n
+y_i}\]</span>
+式中n是模糊子集的个数，f为模糊子集对应的量化值（隶属度为1时的对应值）。<br />
+将所得数值乘以一个比例系数<span
+class="math inline">\(\alpha\)</span>，就可以得到变化量<span
+class="math inline">\(\Delta
+K\)</span>，进而得到n时刻的PID控制器参数值为：<br />
+<span class="math display">\[K(n)=K(n-1)+\Delta K = K(n-1) +
+y*\alpha\]</span></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    电机控制器算法综述02-粒子群算法
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>《中庸》 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="国学" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="一  天命之谓性，率性之谓道，脩道之谓教。  天命，人的本性。率性，遵循人的本性。道，人类社会的发展规律。脩，通“修”。教，教育、教化。  道也者，不可须臾离也，可离非道也。是故君子戒慎乎其所不睹，恐惧乎其所不闻。莫见xiàn乎隐，莫显乎微。故君子慎其独也。  君子在没人看见的地方也保持谨慎，在没人听见的地方也心怀恐惧。 在隐蔽和细节之处更容易表现出本色。 所以君子更加小心谨慎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《中庸》">
+<meta property="og:url" content="https://renahah.github.io/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="一  天命之谓性，率性之谓道，脩道之谓教。  天命，人的本性。率性，遵循人的本性。道，人类社会的发展规律。脩，通“修”。教，教育、教化。  道也者，不可须臾离也，可离非道也。是故君子戒慎乎其所不睹，恐惧乎其所不闻。莫见xiàn乎隐，莫显乎微。故君子慎其独也。  君子在没人看见的地方也保持谨慎，在没人听见的地方也心怀恐惧。 在隐蔽和细节之处更容易表现出本色。 所以君子更加小心谨慎">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-07-18T05:01:49.000Z">
+<meta property="article:modified_time" content="2025-08-18T06:59:03.662Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="国学">
+<meta name="twitter:card" content="summary">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file active"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-国学/《中庸》" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%9B%BD%E5%AD%A6/">国学</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E5%9B%BD%E5%AD%A6/" rel="tag">国学</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">
+            <time datetime="2025-07-18T05:01:49.000Z" itemprop="datePublished">2025-07-18</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            《中庸》
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80"><span class="toc-number">1.</span> <span class="toc-text">一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text">二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89"><span class="toc-number">3.</span> <span class="toc-text">三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B"><span class="toc-number">4.</span> <span class="toc-text">四</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%94"><span class="toc-number">5.</span> <span class="toc-text">五</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AD"><span class="toc-number">6.</span> <span class="toc-text">六</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%83"><span class="toc-number">7.</span> <span class="toc-text">七</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AB"><span class="toc-number">8.</span> <span class="toc-text">八</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B9%9D"><span class="toc-number">9.</span> <span class="toc-text">九</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81"><span class="toc-number">10.</span> <span class="toc-text">十</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%80"><span class="toc-number">11.</span> <span class="toc-text">十一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%BA%8C"><span class="toc-number">12.</span> <span class="toc-text">十二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%89"><span class="toc-number">13.</span> <span class="toc-text">十三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%9B%9B"><span class="toc-number">14.</span> <span class="toc-text">十四</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%BA%94"><span class="toc-number">15.</span> <span class="toc-text">十五</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AD"><span class="toc-number">16.</span> <span class="toc-text">十六</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B8%83"><span class="toc-number">17.</span> <span class="toc-text">十七</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E5%85%AB"><span class="toc-number">18.</span> <span class="toc-text">十八</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%81%E4%B9%9D"><span class="toc-number">19.</span> <span class="toc-text">十九</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81"><span class="toc-number">20.</span> <span class="toc-text">二十</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%B8%80"><span class="toc-number">21.</span> <span class="toc-text">二十一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%BA%8C"><span class="toc-number">22.</span> <span class="toc-text">二十二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%B8%89"><span class="toc-number">23.</span> <span class="toc-text">二十三</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E5%9B%9B"><span class="toc-number">24.</span> <span class="toc-text">二十四</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%BA%94"><span class="toc-number">25.</span> <span class="toc-text">二十五</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E5%85%AD"><span class="toc-number">26.</span> <span class="toc-text">二十六</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%B8%83"><span class="toc-number">27.</span> <span class="toc-text">二十七</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E5%85%AB"><span class="toc-number">28.</span> <span class="toc-text">二十八</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E5%8D%81%E4%B9%9D"><span class="toc-number">29.</span> <span class="toc-text">二十九</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8D%81"><span class="toc-number">30.</span> <span class="toc-text">三十</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8D%81%E4%B8%80"><span class="toc-number">31.</span> <span class="toc-text">三十一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8D%81%E4%BA%8C"><span class="toc-number">32.</span> <span class="toc-text">三十二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E5%8D%81%E4%B8%89"><span class="toc-number">33.</span> <span class="toc-text">三十三</span></a></li></ol>
+                </div>
+            
+        
+        
+            <h3 id="一">一</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+天命之谓性，率性之谓道，脩道之谓教。
+</div>
+<p>天命，人的本性。率性，遵循人的本性。道，人类社会的发展规律。脩，通“修”。教，教育、教化。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+道也者，不可须臾离也，可离非道也。是故君子戒慎乎其所不睹，恐惧乎其所不闻。莫<ruby>见<rt>xiàn</rt></ruby>乎隐，莫显乎微。故君子慎其独也。
+</div>
+<p>君子在没人看见的地方也保持谨慎，在没人听见的地方也心怀恐惧。<br />
+在隐蔽和细节之处更容易表现出本色。
+所以君子更加小心谨慎地对待一人独处的时候。<br />
+慎，慎重，谨慎。独，一人独处之时。慎独，儒家的一种“内求”的道德修养方法。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+喜怒哀乐之未发，谓之中；发而皆<ruby>中<rt>zhònɡ</rt></ruby>节，谓之和。中也者，天下之大本也；和也者，天下之达道也。致中和，天地位焉，万物育焉。
+</div>
+<p>中，意为不偏不倚，无过无不及，指处理事情达到恰如其分的适中状态。<br />
+中（zhònɡ）节，符合人的本性，即符合常理，符合道德规范。中，符合。节，节度。<br />
+和，多种事物的协调统一。<br />
+达道，一切事物遵循的普遍规律，这里指人们共同遵行的原则。位，这里用作动词，各在其位的意思。<br />
+喜怒哀乐没有表现出来的时候，叫做“中”；表现出来以后符合节度，叫做“和”。<br />
+“中”是天下一切道理的最大根本所在，“和”是天下一切事物最普遍的规律。<br />
+达到“中和”的境界，天地就各安其位了，万物便随性发育了。</p>
+<h3 id="二">二</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+仲尼曰：“君子中庸，小人反中庸。君子之中庸也，君子而时中；小人之反中庸也，小人而无忌惮也。”
+</div>
+<p>时，时时，经常。<br />
+君子之所以符合中庸之道，是因为他们随时能保持恰如其分的适中状态；小人之所以违背中庸，是因为他们肆无忌惮。</p>
+<h3 id="三">三</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“中庸其至矣乎！民鲜能久矣。”
+</div>
+<p>其，语气词，恐怕、大概的意思。至，至高无上。<br />
+中庸之道可以说是至高无上的道德标准了吧！很少有人能够长久坚持中庸之道了（很少有人能做到，这种情况持续很久了）。</p>
+<h3 id="四">四</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“道之不行也，我知之矣：<ruby>知<rt>zhì</rt></ruby>者过之，愚者不及也；道之不明也，我知之矣：贤者过之，不<ruby>肖<rt>xiào</rt></ruby>者不及也。人莫不饮食也，鲜能知味也。”
+</div>
+<p>知（zhì）者，聪明的人。知，通“智”。<br />
+对于中庸之道，聪明的人认识过头了，愚笨的人认识不到，贤能的人做的过头，不贤的人做的不够。<br />
+就像人们每天都要吃饭，但却很少有人能够真正品尝滋味（仔细品尝确定具体的咸淡程度）。<br />
+味，滋味，引申为中庸之道所蕴含的精华。</p>
+<h3 id="五">五</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“道其不行矣<ruby>夫<rt>fú</rt></ruby>！”
+</div>
+<p>矣夫，表示感叹的语气助词。<br />
+中庸之道大概是不能够实行了啊！</p>
+<h3 id="六">六</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“舜其大<ruby>知<rt>zhì</rt></ruby>也<ruby>与<rt>yú</rt></ruby>！舜<ruby>好<rt>hào</rt></ruby>问而好察<ruby>迩<rt>ěr</rt></ruby>言，隐恶而扬善，执其两端，用其中于民，其斯以为舜乎！”
+</div>
+<p>迩，意为近，浅近。迩言，指老百姓说的通俗易懂的话。<br />
+舜喜欢向别人请教，善于分析浅显话语的含义。能够包容别人的短处，宣扬别人的长处。他能把握认识上的‘过’和‘不及’这两个方面，采用适中的办法治理百姓。</p>
+<h3 id="七">七</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“人皆曰予<ruby>知<rt>zhì</rt></ruby>，驱而纳诸<ruby>罟擭<rt>ɡǔ
+huò</rt></ruby>陷阱之中，而莫之知<ruby>辟<rt>bì</rt></ruby>也；人皆曰予知，择乎中庸而不能<ruby>期<rt>jī</rt></ruby>月守也。”
+</div>
+<p>罟，罗网的总称。擭，装有机关的捕获野兽的木笼。罟擭，泛指捕捉野兽的器具。<br />
+辟，通“避”，回避，躲避。<br />
+期月，一整月，这里比喻时间不长。<br />
+人人都说自己聪明，可是（在利欲的驱使下）却像野兽一样陷入罗网陷阱中却不知躲避，选择了中庸之道后却连一个月时间也不能坚持（好胜心难以满足，欲壑难填）。</p>
+<h3 id="八">八</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“回之为人也，择乎中庸，得一善，则拳拳服膺，而弗失之矣。”
+</div>
+拳拳服膺，牢牢记在心里。拳拳，牢握不舍的意思，引申为很恳切的意思。服膺，紧贴胸前，表示牢记在心，真诚信服之意。服，着，放置。膺，胸怀。<br />
+颜回选择了中庸之道，每得到一点好处，就牢牢地记在心里，再也不把它失去。<br />
+
+<div style="font-family:KaiTi;">
+虽说中庸之道难于做到，但只要努力了，就一定会进步。
+</div>
+<h3 id="九">九</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“天下国家可均也，爵禄可辞也，白刃可蹈也，中庸不可能也。”
+</div>
+<p>均：平定，公平治理。<br />
+中庸之道是非常难以坚持做到的。</p>
+<h3 id="十">十</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子路问强。子曰：“南方之强<ruby>与<rt>yú</rt></ruby>？北方之强<ruby>与<rt>yú</rt></ruby>？抑而强<ruby>与<rt>yú</rt></ruby>？宽柔以教，不报无道，南方之强也，君子居之。<ruby>衽<rt>rèn</rt></ruby>金革，死而不厌，北方之强也，而强者居之。故君子和而不流，强哉<ruby>矫<rt>qiáo</rt></ruby>！中立而不倚，强哉矫！国有道，不变塞焉，强哉矫！国无道，至死不变，强哉矫！”
+</div>
+强：坚强，势力过人。与，同“欤”，疑问语气词。而，第二人称代词，相当于“尔”。<br />
+你问的是南方人的强，还是北方人的强，还是你的强？<br />
+宽柔，宽厚柔弱，以忍胜人。报，报复。无道，残暴无礼。<br />
+衽金革，枕着武器睡觉，意为随时准备战斗。厌，后悔。<br />
+和而不流，性格平和而不随波逐流。和，待人温和。流，迁就别人，随大流。矫，强悍刚毅的样子。<br />
+国有道，国家政治清明，统治者治国遵从礼制与德治。不变塞，不改变（穷困潦倒时）的志向。<br />
+君子与人平和相处而不随波逐流，保持中立而不偏不倚，国家政治清明时不改变穷困潦倒时的志向（不被功名利禄所腐蚀），国家政治黑暗时坚持操守，宁死不变，才是真的强。
+<div style="font-family:KaiTi;">
+孔子勉励子路在“北方之强”的基础之上吸取“南方之强”的长处，坚守中庸之道。
+</div>
+<h3 id="十一">十一</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“素隐行怪，后世有述焉，吾弗为之矣。君子遵道而行，半途而废，吾弗能已矣。君子依乎中庸，遁世不见知而不悔，唯圣者能之。”
+</div>
+<p>素，应为“索”字，探索，寻求。隐，隐僻。索隐行怪，寻求隐僻的道理，专做怪诞的事情（以欺世盗名）。已，停止。遁世，逃避世俗，指隐居。见知，被了解，被任用。<br />
+有的人探索隐僻的道理，专做怪异的事情，后世虽然也有人为他著述立传，但我绝对不会这样做。君子应遵循正道行事，有的人却半途而废了，但我绝对不会中途停止。<br />
+君子凡事都依中庸之道去做，即便避世隐居，不被理解，也绝不悔恨，这只有圣人才能做到。</p>
+<h3 id="十二">十二</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+君子之道，费而隐。夫妇之愚，可以<ruby>与<rt>yù</rt></ruby>知焉，及其至也，虽圣人亦有所不知焉；夫妇之不<ruby>肖<rt>xiào</rt></ruby>，可以能行焉，及其至也，虽圣人亦有所不能焉。
+</div>
+<p>费而隐，广大而精微。费，广泛、广大。隐，隐蔽、微妙。夫妇，匹夫匹妇，普通男女百姓。与（yù），通“预”，参与。不肖，不贤，这里指普通的无所作为的。<br />
+中庸之道既广泛又深入。老百姓虽然愚昧，也可以知道一些道理；但其最高深精妙的部分，即便是圣人也有不知道的地方。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+天地之大也，人犹有所憾。故君子语大，天下莫能载焉；语小，天下莫能破焉。
+</div>
+<p>憾，这里指思想上有不满足的地方。破，解析，剖析。<br />
+天地这么大，人们仍对它不满足。从中庸的宏观方面而言，天下没有人能够承担它；从中庸的微观方面而言，天下没有人能够剖析它。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“鸢飞<ruby>戾<rt>lì</rt></ruby>天，鱼跃于渊。”言其上下察也。君子之道，造端乎夫妇，及其至也，察乎天地。
+</div>
+<p>鸢，一种鹰类的凶猛的鸟。戾，至，到达。察，洞察，观察。造端，开始，开端。乎，于。<br />
+引用诗经语句说明中庸之道的应用场景十分广泛。<br />
+中庸之道从老百姓都懂的浅显道理开始，达到其最高深精妙境界时，就可以洞察天下一切事物的道理了。</p>
+<h3 id="十三">十三</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“道不远人；人之为道而远人，不可以为道。《诗》云：‘伐柯伐柯，其则不远。’执柯以伐柯，<ruby>睨<rt>nì</rt></ruby>而视之，犹以为远。故君子以人治人，改而止。忠恕违道不远，施诸己而不愿，亦勿施于人。
+</div>
+<p><n></p>
+中庸之道并不远离于人，若有人修道时故作高深，以致道远离了人，那就不可以称为修中庸之道了。<br />
+伐，砍伐。柯，斧柄。则，法则，样式，这里指做斧柄的样板。睨，斜着眼睛看。<br />
+砍伐树木做斧柄，斧柄的样式就在眼前，手握着斧柄样式砍伐树木做斧柄，眼睛直视时看不出什么差异，但如果你斜眼一看，还是会发现差异很大。<br />
+忠，尽己之心。恕，推己及人。诸，“之于”二字的合音。<br />
+君子按照<mark>人的道理</mark>来治理人，别人如果有过错，改正了也就可以了。如果能做到忠和恕，那么就离中庸之道不远了。己所不欲，勿施于人。
+<div style="font-family:KaiTi;">
+“以人治人”，存在两种解释，其一是按照人所共有的道理来治理人；其二是根据不同人的情况采取不同的办法治理。
+</div>
+<p><n></p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“君子之道四，丘未能一焉：所求乎子以事父，未能也；所求乎臣以事君，未能也；所求乎弟以事兄，未能也；所求乎朋友先施之，未能也。庸德之行，庸言之谨，有所不足，不敢不勉；有余，不敢尽。言顾行，行顾言，君子胡不<ruby>慥<rt>zào</rt></ruby>慥尔！”
+</div>
+<p>君子之道四，孝（子事父）、忠（臣事君）、悌（弟事兄）、信（对朋友讲信用）。<br />
+庸德，平凡的德行。胡，怎么，为什么。慥慥尔，忠厚诚实的样子。<br />
+孔子谦虚地认为自己还不够孝、忠、悌、信，因此对自己的品德与言行做出了严格要求。<br />
+所作的若还不够，不敢不加倍努力；所说的若还有没做到的，就不敢把话说尽。<br />
+言顾行，行顾言，做到言行一致。</p>
+<h3 id="十四">十四</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+君子素其位而行，不愿乎其外。素富贵，行乎富贵；素贫贱，行乎贫贱；素夷狄，行乎夷狄；素患难，行乎患难。君子无入而不自得焉。
+</div>
+<p>素其位而行，安于平时所处的位置，做自己应该做的事。素来，向来。愿，羡慕。外，等级名分之外。<br />
+讲求中庸之道的君子，安心地处于所处的位置上做自己应该做的事，不羡慕本分以外的名利。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+在上位，不陵下；在下位，不援上。正己而不求于人，则无怨。上不怨天，下不尤人。故君子居易以<ruby>俟<rt>sì</rt></ruby>命，小人行险以<ruby>徼<rt>jiǎo</rt></ruby>幸。
+</div>
+<p>陵，通“凌”，欺凌。援，攀附，巴结。尤，抱怨。<br />
+处于上位时，不欺压在下位的人；处于下位时，不攀附在上位的人。端正自己而不苛求别人，这样就不会有什么抱怨了。<br />
+居易，处于平易而安全的境地。俟，等待。行险，铤而走险。徼，通“侥”。徼幸，企图因偶然的机会而获得成功。<br />
+讲求中庸之道的君子安居现状以等待时机，小人却铤而走险企图侥幸获得成功。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“射有似乎君子，失诸<ruby>正鹄<rt>zhēnɡ
+ɡǔ</rt></ruby>，反求诸其身。”
+</div>
+<p>正鹄，“正”和“鹄”是两种鸟名，古人在布做成的箭靶子中心画上正的图案，在皮革做成的箭靶子中心画上鹄的图案，作为箭靶子中心的代称。<br />
+射箭的道理，与君子立身处世之道有相似之处。如果箭没有射中靶心，就应该回过头来从自己身上寻找原因。</p>
+<h3 id="十五">十五</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+君子之道，辟如行远，必自<ruby>迩<rt>ěr</rt></ruby>；辟如登高，必自卑。
+</div>
+<p><n></p>
+辟：通“譬”。迩，近。卑，低处。<br />
+中庸之道，就像走远路一样，一定是从近处出发；就像登高山一样，一定得从低处起步。<br />
+
+<div style="font-family:KaiTi;">
+由浅入深，循序渐进，不可好高骛远。
+</div>
+<p><n></p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》曰：“妻子好合，如鼓瑟琴。兄弟既<ruby>翕<rt>xì</rt></ruby>，和乐且<ruby>耽<rt>chén</rt></ruby>。宜尔室家，乐尔妻<ruby>帑<rt>nú</rt></ruby>。”子曰：“父母其顺矣乎！”
+</div>
+<p><n></p>
+翕，聚合，这里指关系融洽。耽，快乐的样子，原文作“湛”，深厚的意思。<br />
+宜，适宜，使人和睦。妻帑，妻子儿女的统称。帑，同“孥”，指子孙。<br />
+妻子儿女感情和睦，就像弹琴鼓瑟一样。兄弟关系融洽，和顺又快乐。使你的家庭美满，使你的妻儿幸福。这样父母也就称心如意了吧。<br />
+
+<div style="font-family:KaiTi;">
+践行中庸之道首先着眼于身边切近的地方，从“齐家”做起。
+</div>
+<p><n></p>
+<h3 id="十六">十六</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“鬼神之为德，其盛矣乎！视之而弗见，听之而弗闻，体物而不可遗。使天下之人，<ruby>齐<rt>zhāi</rt></ruby>明盛服，以承祭祀。洋洋乎如在其上，如在其左右。《诗》曰：‘神之格思，不可<ruby>度<rt>duó</rt></ruby>思，<ruby>矧<rt>shěn</rt></ruby>可<ruby>射<rt>yì</rt></ruby>思？’夫微之显，诚之不可<ruby>揜<rt>yǎn</rt></ruby>如此夫！”
+</div>
+<p><n></p>
+体物，体现在事物之中。齐（zhāi），通“斋”，斋戒，在祭祀之前沐浴，以表示诚心。明，洁净。盛服，华美庄重的祭服，意为穿戴整齐。洋洋乎，形容鬼神盛大而飘忽的样子。<br />
+格，降临。思，句尾语气助词。度（duó），揣度、猜测。矧（shěn），况且，怎么可以。射（yì），因厌恶而怠慢不敬。<br />
+微之显，鬼神之事既隐微虚无，又昭明显现。揜（yǎn），通“掩”，掩盖。夫，感叹词“啊”。<br />
+
+<div style="font-family:KaiTi;">
+用鬼神之德比喻中庸之道的无处不在，既广泛又精妙。
+</div>
+<p><n></p>
+<h3 id="十七">十七</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“舜其大孝也与！德为圣人，尊为天子，富有四海之内，宗庙<ruby>飨<rt>xiǎnɡ</rt></ruby>之，子孙保之。故大德必得其位，必得其禄，必得其名，必得其寿。故天之生物，必因其材而笃焉。故栽者培之，倾者覆之。《诗》曰：‘嘉乐君子，宪宪令德。宜民宜人，受禄于天。保佑命之，自天申之。’故大德者必受命。”
+</div>
+<p>飨，用酒食款待人，这里指用祭品供奉祖先。子孙保之，子孙后代保持不断。<br />
+因，依，顺着。材，资质，本性。笃，厚待，这里指精心培养。倾者，歪斜不正，不能成材的人。覆，毁坏，毁灭。<br />
+上天生养万物，必定根据其资质来判断是否应该精心培养它。能成材的就好好培养，不能成才的就放任其走向毁灭。<br />
+嘉乐，和善而安乐。宪宪，原文作“显显”，光明。令德，美好的德行。民，民众。人，百官。申，陈述、说明。<br />
+和善而安乐的君子，有光明美好的德行，让人民安居乐业，享受上天赐予的福禄。上天保佑他，任用他，给他以重大的使命。所以说有大德的人必能秉承天命。</p>
+<h3 id="十八">十八</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“无忧者，其惟文王乎！以王季为父，以武王为子，父作之，子述之。
+</div>
+<p>王季，周文王的父亲，名季历，商朝末期的西方诸侯，号称西伯，周成王时追谥为“王季”。作，开创。述，继承。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“武王<ruby>缵<rt>zuǎn</rt></ruby><ruby>大<rt>tài</rt></ruby>王、王季、文王之绪，壹戎衣而有天下，身不失天下之显名，尊为天子，富有四海之内，宗庙飨之，子孙保之。
+</div>
+<p>缵，继承。大（tài）王，季历的父亲古公亶（dǎn）父，商朝后期在西部兴起，号称西伯，奠定了周朝王业的基础。绪，功业。<br />
+壹，通“一”，戎衣，战袍。壹戎衣而有天下，一披上战袍就拥有了整个天下，指周武王推翻商朝获取天下之迅速。显名，赫赫威名。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“武王末受命，周公成文武之德，追<ruby>王<rt>wànɡ</rt></ruby>大王、王季，上祀先公以天子之礼。斯礼也，达乎诸侯、大夫及士、庶人。父为大夫，子为士，葬以大夫，祭以士；父为士，子为大夫，葬以士，祭以大夫。<ruby>期<rt>jī</rt></ruby>之丧，达乎大夫；三年之丧，达乎天子。父母之丧，无贵贱，一也。”
+</div>
+<p>末，末年，晚年。受命，接受天命，这里指做天子。追王，死后追谥为王。王，用作动词，尊为君王的意思。祀，祭祀。先公，指古公亶父以上的周朝的历代祖宗。<br />
+如果父亲是大夫，儿子是士，父亲死后用大夫的礼制安葬，儿子祭祀时则用士的礼制；如果父亲是士，儿子是大夫，父亲死后用士的礼制安葬，儿子祭祀时则用大夫的礼制。<br />
+期，一周年。期之丧，又称期服，指服丧一年的服制。<br />
+为旁亲服一年齐衰（zīcuī）丧的礼制，从庶人实行到大夫为止；为父母亲服三年斩衰丧的礼制，一直实行到天子。<br />
+为父母服丧，则没有贵与贱的区别，无论天子抑或庶人都是一样的。</p>
+<h3 id="十九">十九</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“武王、周公，其达孝矣乎！夫孝者，善继人之志，善述人之事者也。春秋修其祖庙，陈其宗器，设其<ruby>裳<rt>chánɡ</rt></ruby>衣，荐其时食。
+</div>
+<p>所谓孝道，就是善于继承先人的志向，善于传承先人未竟的事业。<br />
+春秋，泛指四季，这里指祭祀祖先的时节。裳，遮蔽下体的衣裙。衣，上衣。裳衣，祖先生前穿过的衣服。荐，进献。时食，四季应时的食品。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“宗庙之礼，所以序昭穆也；序爵，所以辨贵贱也；序事，所以辨贤也；旅酬下为上，所以逮贱也；燕毛，所以序齿也。践其位，行其礼，奏其乐，敬其所尊，爱其所亲，事死如事生，事亡如事存，孝之至也。
+</div>
+<p>所以...也，是用来做...的。序，用作动词，指排列次序。昭穆，宗庙里牌位的次序。按照周代宗法制度规定的次序，始祖牌位居于中央，始祖以下，二世、四世、六世等（偶数世）的牌位放置在始祖牌位的左方，称为“昭”；三世、五世、七世等（奇数世）的牌位放置在始祖牌位的右方，称为“穆”。<br />
+事，职事，这里指祭祀进献祭品时所担任的职务。旅酬，古代一种众人同饮的礼节，一般在祭礼尾声时进行。旅，指众人；酬，指敬酒。下为上，位卑年幼的人向位尊年长的人敬酒。逮贱，先祖的恩惠下达到卑贱者。逮，到。燕，通“宴”，祭祀完成后举行的宴会。毛，即须发，这里指按年龄（须发的颜色）排定座次。<br />
+践，登上。事，侍奉，服侍。事死如事生，侍奉已去世的祖先就像他还活着的时候那样。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“郊社之礼，所以事上帝也；宗庙之礼，所以祀乎其先也。明乎郊社之礼，<ruby>禘<rt>dì</rt></ruby>尝之义，治国其如示诸掌乎？”
+</div>
+<p>郊社，冬至日在都城的南郊举行祭天仪式，称为“郊”；夏至日在都城的北郊举行祭地仪式，称作“社”。禘，一种只有天子才能举行的极为隆重的祭祀祖先的大祭，五年一次在宗庙里举行。尝，天子、诸侯在秋天举行的宗庙祭祀（春曰礿yuè，夏曰禘dì，秋曰尝，冬曰烝zhēng），这里借指四季的祭祀之礼。示，通“置”，放置。<br />
+如果能明白祭祀的礼节和意义，那么治理国家就像把放在手掌上的东西指给别人看一样容易了。</p>
+<h3 id="二十">二十</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+哀公问政。子曰：“文武之政，布在方策。其人存，则其政举；其人亡，则其政息。人道敏政，地道敏树。夫政也者，蒲卢也。故为政在人，取人以身，修身以道，修道以仁。
+</div>
+<p>文武之政，周文王和周武王所制定的政治制度和治国措施。布，散布，流传，这里指记载。方策，指典籍。方，书写用的木。策，编起来的竹简。<br />
+敏，奋勉，努力从事。治人之道在于努力搞好政事，就像经营土地的道理就在于努力搞好种植一样。<br />
+蒲卢，芦苇，比喻贤人为政容易取得成效（芦苇容易成活而且生长迅速）。<br />
+国君想要治理好国家，关键在于有贤人的辅佐；想要得到贤人的辅佐，首先必须修养好自身的品德；想要修养好自身的品德，就在于要遵循中庸之道；想要准确地把握中庸之道，就在于是否理解仁的道理。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“仁者，人也，亲亲为大；义者，宜也，尊贤为大。亲亲之<ruby>杀<rt>shài</rt></ruby>，尊贤之等，礼所生也。故君子不可以不修身；思修身，不可以不事亲；思事亲，不可以不知人；思知人，不可以不知天。
+</div>
+<p>第一个“亲”是动词，亲爱；第二个“亲”是名词，亲族。<br />
+所谓仁就是做人的道理，亲爱自己的亲族是做人的头等大事；所谓义就是做事要合宜得当，尊敬贤能是做事的头等大事。<br />
+杀（shài），减少，降等。亲爱亲族要分远近亲疏，尊敬贤能要分品德才能的高下，这就是礼所产生的原因。<br />
+想要成为君子，不可以不修养自己的品德、尽心地侍奉亲族、了解人性、知晓天理。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“天下之达道五，所以行之者三，曰：君臣也，父子也，夫妇也，昆弟也，朋友之交也，五者天下之达道也；<ruby>知<rt>zhì</rt></ruby>、仁、勇三者，天下之达德也；所以行之者一也。
+</div>
+<p>达道，共同遵循的普遍道理。昆弟，兄弟。<br />
+天下人都要遵循的大道有五条：君臣之道、父子之道、夫妇之道、兄弟之道、朋友的交往之道。实行这五条大道所要具备的基本品德有三项：智慧、仁爱、勇敢。确保这三项基本品德的前提只有一个（下文要讲的“诚”）。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“或生而知之，或学而知之，或困而知之，及其知之，一也；或安而行之，或利而行之，或勉强而行之，及其成功，一也。
+</div>
+<p>有的人天生知道，有的人通过学习知道，有的人经历困苦后才知道，只要最终都知道了，结果就是一样的了。<br />
+有的人自愿去实行大道，有的人为了利益去实行大道，还有的人勉强着实行大道，只要他们都实行了，结果就是一样的了。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“好学近乎<ruby>知<rt>zhì</rt></ruby>，力行近乎仁，知耻近乎勇。知斯三者，则知所以修身；知所以修身，则知所以治人；知所以治人，则知所以治天下国家矣。
+</div>
+<p>爱好学习，就接近智慧了；努力行善，就接近仁爱了；懂得耻辱，就接近勇敢了。<br />
+知道了这三点，也就知道了应该如何修养自身的品德，进而知道如何管理他人、治理国家。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“凡为天下国家有九经，曰：修身也，尊贤也，亲亲也，敬大臣也，体群臣也，子庶民也，来百工也，柔远人也，怀诸侯也。
+</div>
+<p><n></p>
+体，体察，体恤。子庶民，像爱护子女那样爱护百姓，子用作动词。来，招来。百工，各种工匠。柔，怀柔，安抚。怀，安抚。<br />
+治理天下国家的九条大纲有：修养自身品德、尊重贤能之人、亲爱亲近之人、敬重上级大臣、体恤下级群臣、爱民如同爱子、招揽各类工匠、优待边远族人、安抚四方诸侯。
+<div style="font-family:KaiTi;">
+其中修身、尊贤是根本，亲亲是齐家之道，敬大臣、体群臣、子庶民、来百工是治国之道，柔远人、怀诸侯是平天下之道。
+</div>
+<p><n></p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“修身则道立，尊贤则不惑，亲亲则诸父昆弟不怨，敬大臣则不眩，体群臣则士之报礼重，子庶民则百姓劝，来百工则财用足，柔远人则四方归之，怀诸侯则天下畏之。
+</div>
+<p>诸父，叔父和伯父。昆弟，兄和弟，也包括堂兄堂弟。眩，迷惑、糊涂。劝，受到勉励。畏，敬服。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“<ruby>齐<rt>zhāi</rt></ruby>明盛服，非礼不动，所以修身也；去谗远色，贱货而贵德，所以劝贤也；尊其位，重其禄，同其好恶，所以劝亲亲也；官盛任使，所以劝大臣也；忠信重禄，所以劝士也；时使薄敛，所以劝百姓也；日<ruby>省<rt>xǐnɡ</rt></ruby>月试，既廪<ruby>称<rt>chèn</rt></ruby>事，所以劝百工也；送往迎来，嘉善而<ruby>矜<rt>jīn</rt></ruby>不能，所以柔远人也；继绝世，举废国，治乱持危，朝聘以时，厚往而薄来，所以怀诸侯也。
+</div>
+<p><n></p>
+齐，通“斋”，斋戒。明，洁净。非礼不动，不合乎礼的事不做。<br />
+官盛任使，设置足够多的属官以供差遣任用。<br />
+时使，适时役使，指应在农闲时才使百姓服劳役，避免耽误农时。薄敛，减轻赋税。<br />
+省，检查，察看。试，考核，测试。日省月试，经常检查考核。既廪称事，发给的薪水粮食要与其工作业绩相符。既廪，即“饩（xì）廪”，“饩”是赠送食物之意，“廪”是粮仓，这里指代粮食。称，适合、相符的意思。<br />
+矜，怜悯，同情。嘉善而矜不能，能力强就嘉奖，能力不足就同情和救济。<br />
+继绝世，让中断俸禄的世家继续享受俸禄。举废国，恢复被灭掉的国家。治乱持危，平定祸乱并扶持危局。<br />
+朝聘以时，严格按照周礼规定的时间向天子恭行朝聘之礼。朝，诸侯直接朝见天子。聘，诸侯派卿大夫去向天子进贡。
+<div style="font-family:KaiTi;">
+具体说明修身、尊贤、亲亲、敬大臣、体群臣（劝大臣与劝士）、子庶民、来百工、柔远人、怀诸侯的具体方法。
+</div>
+<p><n></p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“凡为天下国家有九经，所以行之者一也。
+</div>
+<p>治理天下国家有以上九条纲要，而用来实行上述纲要的前提却只有一个（引出下文所要讲的“诚”）。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“凡事豫则立，不豫则废。言前定则不<ruby>跲<rt>jiá</rt></ruby>，事前定则不困，行前定则不疚，道前定则不穷。
+</div>
+<p>豫，通“预”，预先有准备。跲（jiá），绊倒，这里指说话结巴。疚，感到惭愧。<br />
+凡是预先做好准备就能成功，不做好准备就会失败。说话前考虑好就不会结巴，做事前计划好就不会遇到困难，修养德行前确定好目标就不会感到愧疚，行路前确定好路线，就不会走投无路。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“在下位不获乎上，民不可得而治矣；获乎上有道，不信乎朋友，不获乎上矣；信乎朋友有道，不顺乎亲，不信乎朋友矣；顺乎亲有道，反诸身不诚，不顺乎亲矣；诚身有道，不明乎善，不诚乎身矣。
+</div>
+<p>诚，一种真诚笃实的道德信念，是实行智、仁、勇等的基础。<br />
+在下位的人，如果得不到在上位的人信任，就不可能治理好平民百姓。想要得到上位的人的信任，首先要得到朋友的信任；想要得到朋友的信任，首先要使父母亲顺适称心；想要使父母亲顺适称心，首先要使自身真诚；想要使自身真诚，首先要明白什么是善。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“诚者，天之道也；诚之者，人之道也。诚者，不勉而<ruby>中<rt>zhònɡ</rt></ruby>，不思而得，从容中道，圣人也；诚之者，择善而固执之者也。
+</div>
+<p>诚者，前者是天然赋予的真诚，后者是天生就真诚的人。诚之者，前者指（通过努力修养）使之达到诚的地步，后者指努力修养真诚品德的人。中（zhònɡ），符合。<br />
+天生就真诚的人，不用勉强就能符合道德规范，不用思考就能得到道理，能够从容地遵循中庸之道，这样的人就是圣人；努力修养使自己达到真诚品德的人，就选择至善的道德，坚持不懈去达到它。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+“博学之，审问之，慎思之，明辨之，笃行之。有弗学，学之弗能，弗措也；有弗问，问之弗知，弗措也；有弗思，思之弗得，弗措也；有弗辨，辨之弗明，弗措也；有弗行，行之弗笃，弗措也。人一能之，己百之；人十能之，己千之。果能此道矣，虽愚必明，虽柔必强。”
+</div>
+<p>笃，切实。<br />
+广泛地学习，审慎地询问，慎重地思考，明确地辨析，切实地履行。<br />
+弗，不。措，停下，搁置。弗措，不停，不放弃。<br />
+假如学习了却没有学会，就不能半途而废，否则就不如一开始就不学。询问、思考、辨析、履行同理。<br />
+别人用一分功夫能做到的，自己就下一百分的功夫；别人用十分功夫能做到的，自己就下一千分的功夫。如果真能用这样的毅力追求中庸之道，即使愚笨也一定可以聪明起来，即使柔弱也一定可以刚强起来。</p>
+<h3 id="二十一">二十一</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+自诚明，谓之性；自明诚，谓之教。诚则明矣，明则诚矣。
+</div>
+<p>由真诚而自然明白什么是善，这叫做天性；由明白什么是善后做到真诚，这叫做教化。真诚了自然就会明白什么是善，明白什么是善后也就会做到真诚。</p>
+<h3 id="二十二">二十二</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+唯天下至诚，为能尽其性。能尽其性，则能尽人之性；能尽人之性，则能尽物之性；能尽物之性，则可以赞天地之化育；可以赞天地之化育，则可以与天地<ruby>参<rt>sān</rt></ruby>矣。
+</div>
+<p>至诚，最诚的人，也就是“自诚明”者，圣人。赞，帮助，协助。参，通“叁”，这里指天地人并列为三。<br />
+只有天下最真诚的人，才能充分发挥自身的本性，进而充分发挥众人和万物的本性，帮助天地造化养育万物，与天地并列为三了。</p>
+<h3 id="二十三">二十三</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+其次致曲，曲能有诚。诚则形，形则著，著则明，明则动，动则变，变则化。唯天下至诚为能化。
+</div>
+<p>其次，次于“自诚明”者的“自明诚”者，贤人。曲，局部，一个方面。致曲，致力于某一方面。<br />
+形，显露。动，感动。化，感化。<br />
+“自明诚”者专注于某个方面也能达到真诚。达到真诚就会表现出来，渐渐显著，彰显光辉，感动他人，转变人心，化育万物。只有天下至诚之人，才能做到化育万物。</p>
+<h3 id="二十四">二十四</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+至诚之道，可以前知。国家将兴，必有祯祥；国家将亡，必有妖孽。<ruby>见<rt>xiàn</rt></ruby>乎<ruby>蓍<rt>shī</rt></ruby>龟，动乎四体。祸福将至，善，必先知之；不善，必先知之。故至诚如神。
+</div>
+<p>前知，预知未来。祯祥，吉祥的征兆。蓍龟，用蓍草和龟甲做成的占卜用品。动乎四体，表现在身体动作上。四体，四肢，泛指身体。如神，如神灵那样灵验微妙，无法用言语形容。</p>
+<h3 id="二十五">二十五</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+诚者，自成也；而道，自<ruby>道<rt>dǎo</rt></ruby>也。诚者，物之终始，不诚无物。是故君子诚之为贵。诚者，非自成己而已也，所以成物也。成己，仁也；成物，知也。性之德也，合外内之道也。故时措之宜也。
+</div>
+<p>自成，自我成全，自我完善。自道，自我引导。道，通“导”，引导。<br />
+真诚是自我完善的基础，中庸之道是自我引导的准则。<br />
+真诚贯穿于事物的始终，没有真诚就没有万事万物。<br />
+成己，让自己有所成就。<br />
+真诚并不是达到自我完善就够了，还要完善万事万物。<br />
+真诚是人性当中固有的品德，是把外在的事物和内在的德性融合为一的基本原则。所以任何时候施行都是适宜的。</p>
+<h3 id="二十六">二十六</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+故至诚无息。不息则久，久则征，征则悠远，悠远则博厚，博厚则高明。
+</div>
+<p>无息，没有间断。征，征验，显露于外。高明，高大光明。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+博厚，所以载物也；高明，所以覆物也；悠久，所以成物也。博厚配地，高明配天，悠久无疆。如此者，不<ruby>见<rt>xiàn</rt></ruby>而章，不动而变，无为而成。
+</div>
+<p>广博而深厚，是用以承载万物的；高大而光明，是用以涵盖万物的；悠久而长远，是用以成就万物的。广博而深厚，可以与地相匹配；高大而光明，可以与天相匹配；悠久而长远，则是永无边际的。<br />
+见，通“现”，表现。章，通“彰”，显著。<br />
+达到这种境界，不表现出来也能自然彰明，不去变动也会自然变化，无所作为也可以自然成就万物。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+天地之道，可一言而尽也：其为物不贰，则其生物不测。天地之道：博也，厚也，高也，明也，悠也，久也。
+</div>
+<p>不贰，专诚如一，没有二心。不测，不可测量，无法估计。<br />
+天地之道用一个字来概括（那就是“诚”）。意思就是“诚”本身专一不二，其演化出的万物多得没法估计。<br />
+天地之道，就在于广博、深厚、高大、光明、悠远、长久。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+今<ruby>夫<rt>fú</rt></ruby>天，斯昭昭之多，及其无穷也，日月星辰系焉，万物覆焉；今夫地，一撮土之多，及其广厚，载华岳而不重，振河海而不泄，万物载焉；今夫山，一卷石之多，及其广大，草木生之，禽兽居之，宝藏兴焉；今夫水，一勺之多，及其不测，<ruby>鼋<rt>yuán</rt></ruby><ruby>鼍<rt>tuó</rt></ruby>、鲛龙、鱼鳖生焉，货财殖焉。
+</div>
+<p>今夫，句首语气词。斯，这。昭昭，光明的样子。振，接纳，汇聚。一卷石，如拳头般大的一小块石头。卷，通“拳”。<br />
+鼋，如乌龟一类的水生爬行动物，背甲近圆形，暗绿色，俗称团鱼。鼍，子鳄，是鳄鱼的一种。鲛，鲨鱼。鳖，甲鱼。<br />
+天不过是由星星点点的光亮组成，但其无穷无尽，使得太阳、月亮、星辰都悬挂在它的上面，世上的万物都被它覆盖着；地不过是由一撮撮泥土构成，但其宽广博厚，承载华岳不觉得重，汇聚江河湖海而不会泄露，世间万物都承载其上；山不过是由一块块石头构成，但其广阔高大，草木生长于此，飞禽走兽栖息于此，矿藏也可以从中开发出来；水不过是一勺一勺地积聚而成，但其深不可测，各种海洋生物都可以在那里生存，各种海洋资源也可以开发出来。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“维天之命，<ruby>於<rt>wū</rt></ruby>穆不已！”盖曰天之所以为天也。“於乎<ruby>不<rt>pī</rt></ruby>显，文王之德之纯！”盖曰文王之所以为文也，纯亦不已。
+</div>
+<p>於，句首语气词，感叹。穆，深远。於乎，通“呜呼”，感叹。不（pī）：意为“岂不”；一说，不通“丕”，大的意思。显：显著，光明。纯，纯洁无瑕。<br />
+上天的道理十分深远。周文王之所以被尊谥为“文”，就在于他的德行无止境的纯粹吧。</p>
+<h3 id="二十七">二十七</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+大哉，圣人之道！洋洋乎，发育万物，峻极于天。优优大哉！礼仪三百，威仪三千，待其人而后行。故曰：苟不至德，至道不凝焉。故君子尊德性而道问学，致广大而尽精微，极高明而道中庸，温故而知新，敦厚以崇礼。是故居上不骄，为下不倍。国有道，其言足以兴；国无道，其默足以容。《诗》曰：“既明且哲，以保其身。”其此之谓与！
+</div>
+<p>洋洋乎，浩浩荡荡，广大、丰富、充沛的样子。优优，宽裕充足的样子。<br />
+礼仪三百，威仪三千，指的是西周时制定的礼仪大纲三百六十项，礼仪细则三千余条。
+其人，这里指后面所说的“至德”之人。<br />
+如果不是具有至高德行的人，至高的大道也就不会凝聚在他的身上。<br />
+道，追求、致力于。敦厚，朴实忠厚。<br />
+君子既要尊崇道德修养，又要致力于学问，既要广泛涉猎又要深入钻研，既要掌握高明的道理又要追求中庸之道，温习旧知识的同时学习新知识，朴实忠厚的同时还要崇尚修养礼仪。<br />
+倍，通“背”，违背。默，沉默。容，为避免遭受祸端的容身之处。<br />
+这样君子身居上位时不会骄傲，身居下位时不会背叛。国家政治清明的时候，他进言使国家兴盛；国家政治昏乱的时候，他能沉默不语足以容身自保。<br />
+明智且通达事理，可以保全自身，大概说的就是这个意思。</p>
+<h3 id="二十八">二十八</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“愚而好自用，贱而好自专，生乎今之世，反古之道，如此者，<ruby>烖<rt>zāi</rt></ruby>及其身者也。”
+</div>
+<p>自用，刚愎自用，全凭主观意愿行事。自专，独断专横。烖，通“灾”。<br />
+生活在当今时代却要恢复古代礼制的人，灾祸一定会降临到他的身上。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+非天子，不议礼，不制度，不考文。今天下车同轨，书同文，行同伦。虽有其位，苟无其德，不敢作礼乐焉；虽有其德，苟无其位，亦不敢作礼乐焉。
+</div>
+<p>议礼，议定礼制。制度，创制法度。考文，考订文字规范。<br />
+即使有天子的地位，倘若没有圣人的品德，是不敢制定礼乐制度的；即使有圣人的品德，倘若没有天子的地位，也是不敢制定礼乐制度的。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+子曰：“吾说夏礼，杞不足征也；吾学殷礼，有宋存焉；吾学周礼，今用之，吾从周。”
+</div>
+<p><n></p>
+我探讨夏代的礼制，但在夏的后裔杞国那里已找不到充分的验证；我学习殷代的礼制，在殷的后裔宋国那里还保存了一些，可供考证；我学习周代的礼制，当今社会正在实行着，所以我主张遵从周礼。<n><br />
+
+<div style="font-family:KaiTi;">
+孔子把夏、商之礼只当作学术研究的对象进行探讨，而自己在实际生活中所遵守的则是当代的周礼。
+</div>
+<p><n></p>
+<h3 id="二十九">二十九</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+<ruby>王<rt>wànɡ</rt></ruby>天下有三重焉，其寡过矣乎！上焉者，虽善无征，无征不信，不信民弗从；下焉者，虽善不尊，不尊不信，不信民弗从。故君子之道，本诸身，征诸庶民，考诸三王而不缪，建诸天地而不悖，质诸鬼神而无疑，百世以俟圣人而不惑。
+</div>
+<p>王，用作动词，称王于天下。三重，三件重要的事（议礼、制度、考文）。其，大概。寡过，减少过错。<br />
+上焉者，在上位的人，君王。下焉者，在下位的人，臣子。<br />
+上位者所制定的礼制虽然完善美好，但得不到验证就不会被民众信任和服从。下位者所制定的礼制虽然完善美好，但没有尊贵的地位，也不会被民众信任和服从。<br />
+君子治理天下要从自身德行做起，从百姓那里得到验证，考察夏、商、周三代先王的做法而没有谬误，在天地之间实施而没有违背，卜筮于鬼神而没有疑问，等到百世以后再有圣人出现也不会对此感到迷惑。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+质诸鬼神而无疑，知天也；百世以俟圣人而不惑，知人也。是故君子动而世为天下道，行而世为天下法，言而世为天下则。远之则有望，近之则不厌。
+</div>
+<p>卜筮于鬼神而没有疑问，这是懂得了天道；百世以后的圣人不对此感到迷惑，这是懂得了人道。<br />
+因此君子的举止、行为、言论能成为世世代代天下人的准则。<br />
+离他远的人怀有仰慕之心，离他近的人不感到厌恶。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》曰：“在彼无<ruby>恶<rt>wù</rt></ruby>，在此无<ruby>射<rt>yì</rt></ruby>。庶几夙夜，以永终誉。”君子未有不如此而<ruby>蚤<rt>zǎo</rt></ruby>有誉于天下者也。
+</div>
+<p><n></p>
+恶，憎恶，怨恨。射，原文作“斁”，讨厌，厌恶。庶几，将近，几乎，差不多。终誉，将美好的声誉保持到底。蚤，通“早”。<br />
+（杞、宋二国君主）在其本国没有人憎恶，在周朝这里也没有人讨厌。几乎从早到晚勤于政事，用以永远保持美好的名誉。<br />
+君子没有不这样做而很早就美名传扬天下的。
+<div style="font-family:KaiTi;">
+周王欢迎夏、商二王的后代杞、宋二国前来周朝助祭之诗。
+</div>
+<h3 id="三十">三十</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+仲尼祖述尧、舜，宪章文、武；上律天时，下袭水土。辟如天地之无不持载，无不覆<ruby>帱<rt>dào</rt></ruby>；辟如四时之错行，如日月之代明。万物并育而不相害，道并行而不相悖。小德川流，大德敦化。此天地之所以为大也。
+</div>
+<p><n></p>
+祖述，宗奉前人之道并加以传述。宪章，效法。律，遵循。袭，因袭，符合。<br />
+辟，通“譬”，比如。持载，扶持承载。帱，覆盖。错行，交替运行。代，轮流。明，照耀。敦化，敦厚而变化无穷。<br />
+
+<div style="font-family:KaiTi;">
+歌颂孔子所推崇的中庸之道，远宗尧舜，近法文武，并能根据天地之间一切事物的客观规律而揭示其本质，故而可以与天地并立，可以化育万物。
+</div>
+<h3 id="三十一">三十一</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+唯天下至圣，为能聪明睿<ruby>知<rt>zhì</rt></ruby>，足以有临也；宽裕温柔，足以有容也；发强刚毅，足以有执也；<ruby>齐<rt>zhāi</rt></ruby>庄中正，足以有敬也；文理密察，足以有别也。
+</div>
+<p>睿知，通达明智，才识深远。临，居高临下，治理人民。宽裕，指胸怀宽广豁达。容，包容。发强，奋发图强。有执，有决断与操守。齐，斋戒，这里指恭敬。<br />
+文理密察，足以有别也。指的是至圣之人的文章有条理，思想缜密明察，足以辨别是非。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+<ruby>溥<rt>pǔ</rt></ruby>博渊泉，而时出之。溥博如天，渊泉如渊。<ruby>见<rt>xiàn</rt></ruby>而民莫不敬，言而民莫不信，行而民莫不<ruby>说<rt>yuè</rt></ruby>。是以声名洋溢乎中国，<ruby>施<rt>yì</rt></ruby>及蛮<ruby>貊<rt>mò</rt></ruby>。舟车所至，人力所通，天之所覆，地之所载，日月所照，霜露所<ruby>队<rt>zhuì</rt></ruby>，凡有血气者，莫不尊亲，故曰配天。
+</div>
+<p>溥，普遍，辽阔。博，广大。<br />
+至圣之人的道德广博且精微深远，如同深渊中的泉水般，任何时候都不断涌出来；如同无边无际的天空，精微深远好像那幽邃的深渊。<br />
+见（xiàn），通“现”，显现，表现于外。说（yuè），通“悦”，喜悦。<br />
+洋溢，广泛传播。施（yì），延伸，播扬。蛮貊，南蛮北貊，泛指边远之地的少数民族。队，通“坠”，降落。有血气者，具有血性和刚正之气的人。配天，与天相匹配。</p>
+<h3 id="三十二">三十二</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+唯天下至诚，为能经纶天下之大经，立天下之大本，知天地之化育。夫焉有所倚？<ruby>肫<rt>zhūn</rt></ruby>肫其仁，渊渊其渊，浩浩其天！苟不固聪明圣知达天德者，其孰能知之？
+</div>
+<p>经纶，本义纺织前整理丝缕，这里指规划、治理。大经，治理天下的大纲。大本，根本原则。<br />
+夫焉有所倚，除了“诚”之外，还能倚靠什么呢？<br />
+肫肫，通“忳忳”，诚恳的样子。渊渊，水深不可测，这里指深邃渊博的聪明才智。浩浩，广阔无际的样子。<br />
+固，实在。天德，天然赋予的美德。<br />
+如果不是实在具有聪明智慧通达天赋美德的人，还有谁能够懂得天地至道呢？</p>
+<h3 id="三十三">三十三</h3>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》曰：“衣锦尚<ruby>絧<rt>jiǒnɡ</rt></ruby>。”<ruby>恶<rt>wù</rt></ruby>其文之著也。故君子之道，<ruby>闇<rt>àn</rt></ruby>然而日章；小人之道，<ruby>的<rt>dí</rt></ruby>然而日亡。君子之道，淡而不厌，简而文，温而理，知远之近，知风之自，知微之显，可与入德矣。
+</div>
+<p>衣，穿。锦，有彩色花纹的丝织品，这里指锦绣衣裳。尚，加在上面，这里指套在外面。絧，粗麻制成的罩衣。恶，讨厌。文，花纹。著，明显。<br />
+内穿锦绣制成的衣服，外面却套着粗麻罩衣。这是嫌锦衣的彩色花纹太显眼了。<br />
+闇然，隐藏不露。章，通“彰”，彰显。的（dí）然，鲜明、表露出来的意思。<br />
+君子之道虽然隐藏不露但会日益显著，小人之道虽然外表风光但会日益消亡。<br />
+君子之道，平淡而不令人厌烦，简洁而有文采，温和而有条理，由近知远，由风知源，由微知显，可以进入道德的境界了。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“潜虽伏矣，亦孔之昭！”故君子内省不疚，无恶于志。君子之所不可及者，其唯人之所不见乎！《诗》云：“相在尔室，尚不愧于屋漏。”故君子不动而敬，不言而信。
+</div>
+<p>孔，很。昭，明显，彰明，原文为“炤（zhào）”。<br />
+（鱼儿在水中）虽然潜伏得很深，但还是可以看得很清楚的。所以君子经常自我反省，以做到无所愧疚，心志之中没有恶念。君子为一般人所达不到的地方，大概就在这些别人看不见的地方了。<br />
+相，看，注视。尔，你。屋漏，指古代室内西北角设小帐的地方。相传是神明所在，这里以屋漏代指神明。不愧屋漏喻指心地光明，不在暗中做坏事，起坏念头。<br />
+看你独自在室内的时候，是不是能无愧于神明。君子在没有做事的时候也是恭敬的，在没有对人许诺的时候也是恪守诚信的。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》曰：“奏<ruby>假<rt>ɡé</rt></ruby>无言，时<ruby>靡<rt>mǐ</rt></ruby>有争。”是故君子不赏而民劝，不怒而民威于<ruby>鈇<rt>fū</rt></ruby>钺。《诗》曰：“<ruby>不<rt>pī</rt></ruby>显惟德，百辟其刑之。”是故君子笃恭而天下平。
+</div>
+<p>奏，进奉，假（ɡé），通“格”，指诚心能与鬼神相感应。靡，没有。鈇钺，斧子，引申为刑法。<br />
+默默无言的祷告，感通神灵，就不会有争执。君子不用奖赏，就会使人们受到鼓励，不用发怒，人们就会比看见刑具还要敬畏。<br />
+不（pī），通“丕”，大。百辟，诸侯。刑，通“型”，效法。<br />
+（天子）大显德行，诸侯们都效法他。君子敦厚恭敬就会使天下太平。</p>
+<div style="font-family:Simsun;font-size:larger;font-weight:bold;">
+《诗》云：“予怀明德，不大声以色。”子曰：“声色之于以化民，末也。”《诗》曰：“德<ruby>輶<rt>yóu</rt></ruby>如毛。”毛犹有伦。“上天之载，无声无<ruby>臭<rt>xiù</rt></ruby>。”至矣！
+</div>
+<p>予，我。以，与、和。化，教化，训导。末，树梢，次要的东西。<br />
+我怀有光明的品德，因此不会厉声厉色的教化人民。厉声厉色的教化人民，是末流的手段。<br />
+輶，古代一种轻便的车子，这里是轻的意思。伦，类，比较。载，通“栽”，这里指培植生长。臭，气味。<br />
+用德行感化人民，轻而易举如同毫毛。毫毛虽轻，但还有东西可以和它比较。<br />
+上天在无声无息之中化育万物，达到了最高的境界。</p>
+<blockquote>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://book.douban.com/subject/30406945/">四书五经——中华书局</a></li>
+<li><a
+target="_blank" rel="noopener" href="https://book.douban.com/subject/5346709/">四书五经译注（套装全九册）——上海古籍出版社</a></li>
+</ul>
+</blockquote>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    《论语》（一）
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">《大学》</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

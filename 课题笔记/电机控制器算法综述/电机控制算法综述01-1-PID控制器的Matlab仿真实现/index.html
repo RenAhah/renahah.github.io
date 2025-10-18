@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>电机控制算法综述01-1-PID控制器的Matlab仿真实现 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将总结各个PID控制器实现方法（纯matlab代码、Simulink自带模块、S函数），被控对象的不同建模方法（传递函数、微分方程、Simulink自带离散或连续模块），分析各个方法在不同方面的优劣。 后面的文章将结合《先进PID控制MATLAB仿真》书籍相关内容，对PID控制器参数的传统整定方法（Ziegler-Nichols方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电机控制算法综述01-1-PID控制器的Matlab仿真实现">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。 本文将总结各个PID控制器实现方法（纯matlab代码、Simulink自带模块、S函数），被控对象的不同建模方法（传递函数、微分方程、Simulink自带离散或连续模块），分析各个方法在不同方面的优劣。 后面的文章将结合《先进PID控制MATLAB仿真》书籍相关内容，对PID控制器参数的传统整定方法（Ziegler-Nichols方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/1%20最简单的控制系统.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/2%20离散PID控制仿真波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/3%20离散PID电机控制仿真波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/4%20连续与离散系统波形对比.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/5%20微分方程形式电机PI控制仿真波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/6%20Simulink搭建PID控制系统.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/7%20Simulink内置PID模块.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/8%20采用S函数搭建电机PID控制器.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/9%20S函数模块参数与封装配置.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/10%20电压与转速波形.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/11%20e、sum_e、ec随时间变化波形.png">
+<meta property="article:published_time" content="2025-04-08T07:06:17.000Z">
+<meta property="article:modified_time" content="2025-09-14T04:17:29.608Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/1%20最简单的控制系统.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/电机控制器算法综述/电机控制算法综述01-1-PID控制器的Matlab仿真实现" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98/" rel="tag">课题</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">
+            <time datetime="2025-04-08T07:06:17.000Z" itemprop="datePublished">2025-04-08</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            电机控制算法综述01-1-PID控制器的Matlab仿真实现
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#matlab%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0pid%E6%8E%A7%E5%88%B6"><span class="toc-number">1.</span> <span class="toc-text">matlab代码实现PID控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%BB%BA%E7%A6%BB%E6%95%A3pid%E5%87%BD%E6%95%B0%E9%85%8D%E5%90%88%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%BD%A2%E5%BC%8F%E7%9A%84%E8%A2%AB%E6%8E%A7%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.1.</span> <span class="toc-text">自建离散PID函数，配合差分方程形式的被控对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%BB%BA%E7%A6%BB%E6%95%A3pid%E5%87%BD%E6%95%B0%E9%85%8D%E5%90%88%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%BD%A2%E5%BC%8F%E7%9A%84%E7%94%B5%E6%9C%BA%E8%A2%AB%E6%8E%A7%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.2.</span> <span class="toc-text">自建离散PID函数，配合差分方程形式的电机被控对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#matlab%E5%86%85%E7%BD%AEpid%E5%87%BD%E6%95%B0%E9%85%8D%E5%90%88%E4%BC%A0%E9%80%92%E5%87%BD%E6%95%B0%E5%BD%A2%E5%BC%8F%E7%9A%84%E8%A2%AB%E6%8E%A7%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.3.</span> <span class="toc-text">matlab内置PID函数，配合传递函数形式的被控对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#matlab%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0ode45%E9%85%8D%E5%90%88%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E5%BD%A2%E5%BC%8F%E7%9A%84%E7%94%B5%E6%9C%BA%E8%A2%AB%E6%8E%A7%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.4.</span> <span class="toc-text">matlab内置函数ode45，配合微分方程形式的电机被控对象</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#simulink%E5%AE%9E%E7%8E%B0pid%E6%8E%A7%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">Simulink实现PID控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%87%E7%94%A8%E6%9C%80%E5%9F%BA%E6%9C%AC%E7%9A%84%E6%A8%A1%E5%9D%97%E6%9E%84%E5%BB%BApid%E6%A8%A1%E5%9D%97"><span class="toc-number">2.1.</span> <span class="toc-text">采用最基本的模块构建PID模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#simulink%E8%87%AA%E5%B8%A6pid%E6%A8%A1%E5%9D%97"><span class="toc-number">2.2.</span> <span class="toc-text">Simulink自带PID模块</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#s-function%E5%BB%BA%E7%AB%8Bpid%E6%A8%A1%E5%9D%97"><span class="toc-number">2.3.</span> <span class="toc-text">S-function建立PID模块</span></a></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>这一专栏将介绍电机控制算法，为接下来的课题研究提供参考。<br />
+本文将总结各个PID控制器实现方法（纯matlab代码、Simulink自带模块、S函数），被控对象的不同建模方法（传递函数、微分方程、Simulink自带离散或连续模块），分析各个方法在不同方面的优劣。<br />
+后面的文章将结合《先进PID控制MATLAB仿真》书籍相关内容，对PID控制器参数的传统整定方法（Ziegler-Nichols方法等）进行介绍。</p>
+<h2 id="matlab代码实现pid控制">matlab代码实现PID控制</h2>
+<h3
+id="自建离散pid函数配合差分方程形式的被控对象">自建离散PID函数，配合差分方程形式的被控对象</h3>
+<p>这一章节采用单个matlab脚本文件，编写针对差分方程形式的被控对象进行离散PID控制的matlab程序，不涉及Simulink仿真和S函数。<br />
+文中程序改编自<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" title="RBF神经网络PID控制器的设计与仿真">RBF神经网络PID控制器的设计与仿真</a><br />
+对于任何一个控制系统仿真实验，无论用的是什么软件，进行的是什么仿真，第一个要考虑的问题就是仿真步长和仿真时间。<br />
+这里取步长（采样时间）Ts=0.01s，仿真时间T=1s。与此同时，就可以计算出程序运行的总步数N=T/Ts=100。<br />
+接下来构建被控对象，该系统的核心公式为：<br />
+<span class="math inline">\(y(k+1) = a_1 \cdot y(k) + a_2 \cdot y(k-1) +
+b_1 \cdot u(k) + b_2 \cdot u(k-1)\)</span><br />
+这是一个二阶离散系统，式中y(k+1)就是下一时刻被控对象的<mark>输出量</mark>，如果被控对象是电机，那么y可以是转速；u(k)是PID<mark>控制器输出量</mark>（被控对象的输入量），如果被控对象是电机，u的物理意义根据控制系统实际情况会有所不同，可能是电压、电流、转矩等。<br />
+该系统的传递函数为<span
+class="math inline">\(G(z)=\frac{Y(z)}{U(z)}=\frac{b_1 z^{-1}+b_2
+z^{-2}}{1-a_1 z^{-1}-a_2 z^{-2}}\)</span></p>
+<p>接下来是PID控制器设计，采用的是<mark>位置式PID</mark>，其核心公式为：<br />
+<span class="math inline">\(u(k)=K_p \cdot e(k) + K_i \cdot \sum e(k) +
+K_d \cdot ec(k)\)</span><br />
+与PID参数相乘的三项分别是误差、误差累积和与误差变化量，它们的计算公式为：<br />
+<span class="math inline">\(\left\{ \begin{gathered} e(k)=r(k)-y(k) \\
+\sum e(k) = \sum e(k-1) + T_s \\ ec(k)=e(k)-e(k-1) \end{gathered}
+\right.\)</span><br />
+<mark>注：一些文献中的误差变化量公式为<span
+class="math inline">\(ec(k)=\frac{e(k)-e(k-1)}{T_s}\)</span></mark><br />
+然后采用max与min函数将控制量u限幅至-10至10之间：<br />
+<span class="math inline">\(u(k)=\max(\min(u(k), 10), -10)\)</span></p>
+<details>
+<summary style="color:blue;text-decoration:underline;">
+离散被控对象+离散PID的matlab仿真代码(点击展开或收起)
+</summary>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 自建离散PID函数，配合差分方程形式的被控对象</span></span><br><span class="line">clc;clear;close all;</span><br><span class="line"><span class="comment">% 仿真参数</span></span><br><span class="line">Ts=<span class="number">0.01</span>;T=<span class="number">1</span>;N=T/Ts;         </span><br><span class="line"><span class="comment">% 被控对象（二阶离散系统）</span></span><br><span class="line">a1 = <span class="number">1.5</span>; a2 = <span class="number">-0.7</span>; b1 = <span class="number">0.2</span>; b2 = <span class="number">0.1</span>;</span><br><span class="line"><span class="comment">% PID参数</span></span><br><span class="line">Kp = <span class="number">0.2</span>;Ki = <span class="number">30</span>;Kd = <span class="number">1</span>;</span><br><span class="line"><span class="comment">% 初始化系统变量</span></span><br><span class="line">y = <span class="built_in">zeros</span>(<span class="number">1</span>, N+<span class="number">1</span>);  <span class="comment">% 输出    1对应t=0s N对应t=0.99s N+1对应t=1s</span></span><br><span class="line">u = <span class="built_in">zeros</span>(<span class="number">1</span>, N+<span class="number">1</span>);  <span class="comment">% 控制量</span></span><br><span class="line">e = <span class="built_in">zeros</span>(<span class="number">1</span>, N+<span class="number">1</span>);  <span class="comment">% 误差</span></span><br><span class="line">ec = <span class="number">0</span>;</span><br><span class="line">sum_e = <span class="number">0</span>;          <span class="comment">% 误差积分</span></span><br><span class="line"><span class="comment">% 参考信号（阶跃信号）</span></span><br><span class="line">r = <span class="built_in">zeros</span>(<span class="number">1</span>, N+<span class="number">1</span>);</span><br><span class="line">step_time = <span class="number">0.5</span>;                    <span class="comment">% 阶跃时间0.5秒</span></span><br><span class="line">step_index = <span class="built_in">round</span>(step_time / Ts) + <span class="number">1</span>; <span class="comment">% 转换为索引(round为四舍五入函数)</span></span><br><span class="line">r(step_index:<span class="keyword">end</span>) = <span class="number">1</span>;              <span class="comment">% 阶跃信号</span></span><br><span class="line"><span class="comment">% 主循环</span></span><br><span class="line"><span class="keyword">for</span> k = <span class="number">2</span>:N+<span class="number">1</span>   <span class="comment">%2:101共100个数据 T=0.01s到T=1s</span></span><br><span class="line">    <span class="comment">% 计算误差和误差变化率</span></span><br><span class="line">    e(k) = r(k) - y(k);</span><br><span class="line">    ec = e(k) - e(k<span class="number">-1</span>);</span><br><span class="line">    sum_e = sum_e + e(k) * Ts;    </span><br><span class="line">    <span class="comment">% 计算控制量（PID输出）</span></span><br><span class="line">    u(k) = Kp * e(k) + Ki * sum_e + Kd * ec;</span><br><span class="line">    u(k) = <span class="built_in">max</span>(<span class="built_in">min</span>(u(k), <span class="number">10</span>), <span class="number">-10</span>); <span class="comment">% 限幅    </span></span><br><span class="line">    <span class="comment">% 应用控制量到系统</span></span><br><span class="line">    y(k+<span class="number">1</span>) = a1 * y(k) + a2 * y(k<span class="number">-1</span>) + b1 * u(k) + b2 * u(k<span class="number">-1</span>);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"><span class="comment">% 绘制结果</span></span><br><span class="line">t = (<span class="number">1</span>:N) * Ts;   <span class="comment">%T=0.01到T=1s共100个数据</span></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(t, r(<span class="number">2</span>:N+<span class="number">1</span>), <span class="string">&#x27;r--&#x27;</span>, t, y(<span class="number">2</span>:N+<span class="number">1</span>), <span class="string">&#x27;b-&#x27;</span>);<span class="comment">%T=0.01s到T=1s共100个数据</span></span><br><span class="line">xlabel(<span class="string">&#x27;时间 (s)&#x27;</span>);ylabel(<span class="string">&#x27;输出量&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">1</span>]);ylim([<span class="number">0</span> <span class="number">1.2</span>]);</span><br><span class="line"><span class="built_in">legend</span>(<span class="string">&#x27;给定值&#x27;</span>, <span class="string">&#x27;系统输出&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;系统响应&#x27;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="built_in">plot</span>(t, e(<span class="number">2</span>:N+<span class="number">1</span>));</span><br><span class="line">xlabel(<span class="string">&#x27;时间 (s)&#x27;</span>);ylabel(<span class="string">&#x27;误差&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">1</span>]);ylim([<span class="number">-0.05</span> <span class="number">0.05</span>]);</span><br><span class="line">title(<span class="string">&#x27;误差&#x27;</span>);</span><br><span class="line"></span><br><span class="line">subplot(<span class="number">3</span>,<span class="number">1</span>,<span class="number">3</span>);</span><br><span class="line"><span class="built_in">plot</span>(t, u(<span class="number">2</span>:N+<span class="number">1</span>));</span><br><span class="line">xlabel(<span class="string">&#x27;时间 (s)&#x27;</span>);ylabel(<span class="string">&#x27;控制量&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">1</span>]);ylim([<span class="number">0</span> <span class="number">1.5</span>]);</span><br><span class="line">title(<span class="string">&#x27;系统输入&#x27;</span>);</span><br></pre></td></tr></table></figure>
+</details>
+该仿真程序所描述的就是一个最简单的控制系统，如下图所示：
+<center>
+<img src="1 最简单的控制系统.png" width=300/><span class="caption">图1
+最简单的控制系统</span>
+</center>
+程序中取<span
+class="math inline">\(a_1=1.5,a_2=-0.7,b_1=0.2,b_2=0.1\)</span>，系统的输出公式为：
+<span
+class="math inline">\(y(k+1)=1.5y(k)-0.7y(k-1)+0.2u(k)+0.1u(k-1)\)</span><br />
+程序中的给定信号为阶跃信号，在0.5s时给定值为1。<br />
+程序后半部分绘制仿真所得的波形，包括给定值r与系统输出值y、误差量e、控制量u随时间变化波形，如下图所示：
+<center>
+<img src="2 离散PID控制仿真波形.png" width=500/><span
+class="caption">图2 离散PID控制仿真波形</span>
+</center>
+<p>可以观察到给定值出现阶跃后，系统输出值在0.04s后便达到给定值附近。<br />
+而控制量u最终稳定在0.67左右。这是因为当系统稳定时，有y(k+1)=y(k)=y(k-1)=r，u(k)=u(k-1)，带入到前面的系统输出公式可以得到y=1.5y-0.7y+0.2u+0.1u=0.8y+0.3u，解得u=2/3，与实验结果相符。<br />
+<mark>这一现象也说明，系统控制量的稳定值u(∞)只与被控对象有关，与所选取的PID参数无关</mark>，当然若PID参数选取的不好会导致系统不稳定，但如果系统稳定对应的控制量稳定值就是唯一的。</p>
+<h3
+id="自建离散pid函数配合差分方程形式的电机被控对象">自建离散PID函数，配合差分方程形式的电机被控对象</h3>
+<p>上文仿真程序的被控对象是一个二阶离散系统，下面根据电机运动方程建立离散系统模型。<br />
+文中程序改编自<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/" title="电机控制算法综述01-2-模糊PID控制器的Matlab仿真">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a><br />
+电机的运动方程如下：<br />
+<span class="math inline">\(T_e-T_L=J\frac{d^2
+\theta}{dt^2}+B\frac{d\theta}{dt}=J\frac{d
+\omega}{dt}+B\omega\)</span>。<br />
+式中转速<span
+class="math inline">\(\omega=\frac{d\theta}{dt}\)</span>，<span
+class="math inline">\(T_e\)</span>是电磁转矩，<span
+class="math inline">\(T_L\)</span>是负载转矩，<span
+class="math inline">\(J\)</span>为转动惯量，<span
+class="math inline">\(B\)</span>为粘性摩擦系数（有的文献也用<span
+class="math inline">\(D\)</span>表示）。<br />
+运动方程转换为差分方程形式，程序中的代码如下：<br />
+<code>speed = (1 - B*Ts/J)*speed + (Kt*Ts/J)*u;</code><br />
+<span class="math inline">\(y(t+1)=(1-\frac{B\cdot Ts}{J})y(t)+\frac{K_t
+\cdot T_s}{J}u(t)\)</span><br />
+这是一个<mark>一阶离散系统</mark>。其中速度speed就是被控对象的输出量y；u就是控制量，它是PID控制器的输出量，也是被控对象出入量，这里的物理意义就是电压。Ts为采样时间。<br />
+对应的传递函数可以写作：<span
+class="math inline">\(G(z)=\frac{Y(z)}{U(z)}=\frac{K_t \cdot T_s/J
+z^{-1}}{1-(1-B\cdot T_s/J) z^{-1}}\)</span><br />
+该差分方程再转换回运动方程的形式，如下：<br />
+<span class="math inline">\(K_t \cdot u=J\frac{y(t+1)-y(t)}{T_s}+B \cdot
+y(t)\)</span><br />
+对于不同的电机，电压到转矩的转换过程各有不同，这取决于电机的动态特性（与电枢电阻、电感、磁链等相关）以及功率变换器件工作特性，但通常电压与转矩（<mark>这里指电磁转矩与负载转矩之差</mark>）呈正比关系。<br />
+程序中对转换过程进行简化，取<span class="math inline">\(T_e-T_L=K_t
+\cdot u\)</span>，式中<span
+class="math inline">\(K_t\)</span>是转矩常数，也就是电压转换到转矩的比例系数。</p>
+<details>
+<summary style="color:blue;text-decoration:underline;">
+离散电机被控对象+离散PID的matlab仿真代码(点击展开或收起)
+</summary>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 离散PID函数，差分方程形式的电机被控对象</span></span><br><span class="line">clear; clc;</span><br><span class="line">J = <span class="number">0.01</span>;   <span class="comment">% 转动惯量</span></span><br><span class="line">B = <span class="number">0.1</span>;    <span class="comment">% 阻尼系数</span></span><br><span class="line">Kt = <span class="number">0.15</span>;  <span class="comment">% 转矩常数</span></span><br><span class="line">Ts = <span class="number">0.001</span>;  <span class="comment">% 采样时间</span></span><br><span class="line">T = <span class="number">0</span>:Ts:<span class="number">0.1</span>; <span class="comment">% 仿真时间</span></span><br><span class="line">speed = <span class="number">0</span>;target_speed = <span class="number">100</span>; <span class="comment">% 目标转速</span></span><br><span class="line">Kp = <span class="number">100</span>;Ki = <span class="number">40</span>;Kd = <span class="number">0.001</span>;<span class="comment">% PID参数</span></span><br><span class="line">e_prev = <span class="number">0</span>;integral = <span class="number">0</span>;</span><br><span class="line">speed_history = <span class="built_in">zeros</span>(<span class="built_in">size</span>(T));<span class="comment">% 存储结果</span></span><br><span class="line">u_history = <span class="built_in">zeros</span>(<span class="built_in">size</span>(T));</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k = <span class="number">2</span>:<span class="built_in">length</span>(T) <span class="comment">%2:101共100个数据 T=0.001s到T=0.1s</span></span><br><span class="line">    e = target_speed - speed;</span><br><span class="line">    ec = (e - e_prev) / Ts;</span><br><span class="line">    integral = integral + e * Ts;</span><br><span class="line">    u = Kp * e + Ki * integral + Kd * ec;<span class="comment">%计算控制量</span></span><br><span class="line">    u = <span class="built_in">max</span>(<span class="built_in">min</span>(u, <span class="number">220</span>), <span class="number">-220</span>);<span class="comment">%电压限幅    </span></span><br><span class="line">    <span class="comment">% 更新系统状态（简化电机模型）</span></span><br><span class="line">    speed = (<span class="number">1</span> - B*Ts/J)*speed + (Kt*Ts/J)*u;</span><br><span class="line">    speed_history(k) = speed;</span><br><span class="line">    u_history(k) = u;</span><br><span class="line">    e_prev = e;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(T, speed_history, <span class="string">&#x27;b&#x27;</span>, T, target_speed*<span class="built_in">ones</span>(<span class="built_in">size</span>(T)), <span class="string">&#x27;r--&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;转速响应&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;转速(rpm)&#x27;</span>); <span class="built_in">legend</span>(<span class="string">&#x27;实际&#x27;</span>, <span class="string">&#x27;目标&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">120</span>]);</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="built_in">plot</span>(T, u_history, <span class="string">&#x27;g&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;控制量&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;控制电压(V)&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">250</span>]);</span><br></pre></td></tr></table></figure>
+</details>
+离散PID和离散电机被控对象的仿真程序如上所示，设定仿真时长T=0.1s，仿真步长Ts=0.001s，目标转速为100r/min。<br />
+转动惯量J=0.01，摩擦系数B=0.1，转矩常数Kt=0.15。<br />
+PID控制器与前一个程序类似，唯一区别为误差变化量公式为<span
+class="math inline">\(ec(k)=\frac{e(k)-e(k-1)}{T_s}\)</span>。<br />
+控制量限幅设为220，也就是将电压限制在220V以内。<br />
+运行该程序，得到电机转速（被控对象输出）与电压（PID控制器输出，被控对象输入）波形如下图所示。
+<center>
+<img src="3 离散PID电机控制仿真波形.png" width=500/><span
+class="caption">图3 离散PID电机控制仿真波形</span>
+</center>
+<p>可以看到电机在36ms时转速达到给定值100r/min附近。<br />
+电机运行可以分为两个阶段，第一个阶段时恒压升速阶段，电压维持在限幅值220V，转速可近似看作是匀速上升。<br />
+第二个阶段转速达到稳定值，电压也随之下降，最终稳定在66.67V左右。<br />
+这个电压（控制量）稳定值也可以按照之前的方法进行计算。<br />
+稳态下有y(∞)=y(t+1)=y(t)，程序中的差分方程可转化为：<br />
+<span class="math inline">\(y(\infty)=(1-\frac{B\cdot
+Ts}{J})y(\infty)+\frac{K_t \cdot T_s}{J}u(\infty)\)</span><br />
+<span class="math inline">\(\Rightarrow \frac{B\cdot
+Ts}{J}y(\infty)=\frac{K_t \cdot T_s}{J}u(\infty) \Rightarrow
+u(\infty)=\frac{B}{K_t}y(\infty)=\frac{0.1}{0.15}\times 100\approx
+66.67\)</span><br />
+计算值与实验值相符。</p>
+<p>下面进一步研究恒压升速阶段，根据限幅电压与转矩常数，可以计算出这一阶段的电磁转矩与负载转矩之差<span
+class="math inline">\(T_e-T_L=0.15 \times 220=33N \cdot m\)</span><br />
+带回到运动方程公式，可得<span class="math inline">\(K_t \cdot u=33N
+\cdot m=J\frac{y(t+1)-y(t)}{T_s}+B \cdot y(t)\)</span><br />
+当电机刚刚起动时，转速为0，也就是y(t)=0<br />
+此时可计算出<span class="math inline">\(y(t+1)-y(t)=\frac{33\cdot
+T_s}{J}=3.3r/min\)</span><br />
+实验波形中t=0.001s时刻的转速为3.3r/min，与计算值相符。<br />
+当电机转速接近目标转速时，假设转速达到100r/min<br />
+此时可计算出<span class="math inline">\(y(t+1)-y(t)=\frac{(33-B \cdot
+100)\cdot T_s}{J}=2.3r/min\)</span><br />
+实验波形中t=0.034s时刻转速为95.52r/min，t=0.035s时刻转速为97.86r/min，两者转速差为2.34r/min，与计算结果相近。<br />
+可见随着转速升高，转速差由3.3r/min降低至2.3r/min，也就是说转速加速度随着转速升高而降低。<br />
+<mark>这主要是受到了摩擦系数B的影响，相当于是为电机施加了一个额外的负载转矩，且该额外负载转矩大小与转速成正比。</mark><br />
+当转速达到100r/min时，摩擦系数产生的等效额外负载转矩值为10N·m。<br />
+若取摩擦系数B=0，则电机恒压升速阶段的加速度保持恒定。</p>
+<h3
+id="matlab内置pid函数配合传递函数形式的被控对象">matlab内置PID函数，配合传递函数形式的被控对象</h3>
+文中程序改编自<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/" title="电机控制器算法综述02-1-蚁群算法">电机控制器算法综述02-1-蚁群算法</a><br />
+前文采用离散传递函数的被控对象建立了离散PID控制系统程序，接下来利用matlab内置pid函数，编写连续传递函数被控对象的PID控制系统程序。<br />
+为了便于对比，首先将上一个程序中的差分方程形式的电机被控对象传递函数转换为连续传递函数。<br />
+离散传递函数为<span
+class="math inline">\(G(z)=\frac{Y(z)}{U(z)}=\frac{K_t \cdot T_s/J
+z^{-1}}{1-(1-B\cdot T_s/J)
+z^{-1}}=\frac{0.015z^{-1}}{1-0.99z^{-1}}\)</span><br />
+输入以下代码在matlab中建立传递函数模型，tf函数的三个输入分别为分子、分母和采样时间。<br />
+<code>G = tf([0.015],[1 -0.99],0.001)</code><br />
+然后用d2c函数将离散传递函数转换为连续传递函数。<br />
+<code>Gc=d2c(G)</code><br />
+得到的连续传递函数为<span class="math inline">\(G(s)=\frac{15.08}{s +
+10.05}\)</span><br />
+
+<details>
+<summary style="color:blue;text-decoration:underline;">
+连续电机被控对象+matlab内置PID函数的仿真代码(点击展开或收起)
+</summary>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% matlab内置PID函数，传递函数形式的被控对象</span></span><br><span class="line">clear; clc;</span><br><span class="line">Kp = <span class="number">100</span>;Ki = <span class="number">40</span>;Kd = <span class="number">0.001</span>;<span class="comment">% PID参数</span></span><br><span class="line">Tf = <span class="number">0.001</span>; <span class="comment">% 滤波器时间常数</span></span><br><span class="line">controller = pid(Kp, Ki, Kd, Tf); <span class="comment">% 使用带滤波器的PID控制器（PIDF）</span></span><br><span class="line">s = tf(<span class="string">&#x27;s&#x27;</span>);</span><br><span class="line">motor = <span class="number">15.08</span> / (s+<span class="number">10.05</span>);<span class="comment">% 被控对象模型</span></span><br><span class="line">sys_u = controller / (<span class="number">1</span> + controller * motor);<span class="comment">% 从r到u的传递函数</span></span><br><span class="line">sys = feedback(controller * motor, <span class="number">1</span>); <span class="comment">% 闭环系统（从r到y的传递函数）</span></span><br><span class="line">t = <span class="number">0</span>:<span class="number">0.001</span>:<span class="number">0.1</span>; <span class="comment">% 仿真时间</span></span><br><span class="line">y = step(sys, t); <span class="comment">% 系统输出响应</span></span><br><span class="line">u = step(sys_u, t); <span class="comment">% 控制器输出响应</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(t,y);</span><br><span class="line"><span class="built_in">plot</span>(t, y, <span class="string">&#x27;b&#x27;</span>, t, <span class="built_in">ones</span>(<span class="built_in">size</span>(t)), <span class="string">&#x27;r--&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;转速响应&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;转速(rpm)&#x27;</span>);<span class="built_in">legend</span>(<span class="string">&#x27;实际&#x27;</span>, <span class="string">&#x27;目标&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">2</span>]);</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="built_in">plot</span>(t,u);</span><br><span class="line">title(<span class="string">&#x27;控制量&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;控制电压(V)&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">110</span>]);</span><br></pre></td></tr></table></figure>
+</details>
+该程序采用matlab内置的pid函数，其传递函数为<span
+class="math inline">\(C(s)=K_p+\frac{K_i}{s}+\frac{K_d s}{T_f
+s+1}\)</span><br />
+这里的微分项传统PID控制器多了一个滤波器，滤波系数为<span
+class="math inline">\(T_f\)</span>。<br />
+这是因为原微分项<span class="math inline">\(K_d
+s\)</span>物理上不可实现，实际设备需要低通滤波器限制高频增益。<br />
+引入滤波器可以使系统成为真有理传递函数，避免分子阶次高于分母阶次的非因果问题，造成仿真报错。<br />
+feedback函数的作用是计算带有反馈的闭环系统的传递函数，对于文中的闭环系统，从输入r到输出y的传递函数计算公式为：<br />
+<span
+class="math inline">\(Y(s)=\frac{C(s)G(s)}{1+C(s)G(s)}\)</span><br />
+step函数的作用是计算该传递函数的阶跃响应。<br />
+另外，要想查看PID控制器输出量u随时间变化情况，需要得到从输入r到控制器输出u的传递函数，其公式为：<br />
+<span class="math inline">\(U(s)=\frac{C(s)}{1+C(s)G(s)}\)</span><br />
+同样用step函数得到该传递函数的阶跃响应。<br />
+
+<center>
+<img src="4 连续与离散系统波形对比.png" width=800/><span
+class="caption">图4 连续与离散系统波形对比</span>
+</center>
+<p>运行仿真程序，就能得到上图左侧的y与u随时间变化曲线。<br />
+该程序进行的是阶跃响应，相当于目标转速为1r/min，同时没有对控制器输出u进行限幅，对离散PID程序进行同样的调整，得到上图右侧的转速与电压随时间变化曲线。<br />
+可以观察到连续系统的转速与控制量<mark>波动更小，曲线更平滑</mark>。<br />
+电机起动时的控制器输出u最大，随后迅速降低，其峰值约为100。<br />
+经过实验发现该值受到比例系数<span
+class="math inline">\(K_p\)</span>影响，与<span
+class="math inline">\(K_p\)</span>大小呈正比。<br />
+这是因为<mark>在电机起动阶段，转速误差值较大，PID控制器比例部分起主要作用，可以使得转速快速跟踪给定。<br />
+而随着转速误差减小，比例部分的作用也会不断变弱，到转速稳定阶段，积分部分开始起主要作用，用于消除稳态静差。</mark><br />
+连续与离散系统转速稳定阶段的控制器输出u稳定值皆为0.66，这也与理论计算结果相符。</p>
+<h3
+id="matlab内置函数ode45配合微分方程形式的电机被控对象">matlab内置函数ode45，配合微分方程形式的电机被控对象</h3>
+<p>文中程序改编自<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/" title="电机控制算法综述03-滑模控制">电机控制算法综述03-滑模控制</a><br />
+上文采用matlab内置的pid函数建立的连续传递函数被控对象的控制系统存在不能对pid函数进行限幅，只能进行单位阶跃响应的问题，下面采用matlab的微分方程(ordinary
+differential
+equation，ODE)求解器，建立微分方程形式的电机被控对象的PID控制程序。<br />
+为简化程序，考虑到当前电机模型下PID控制中的微分环节的作用不大，因此这里采用的是PI控制。<del>（实际上是DeepSeek生成的程序中没微分项）</del></p>
+<details>
+<summary style="color:blue;text-decoration:underline;">
+微分方程形式的电机电机被控对象PI控制的仿真代码(点击展开或收起)
+</summary>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">J = <span class="number">0.01</span>;      <span class="comment">% 转动惯量 (kg.m^2)</span></span><br><span class="line">b = <span class="number">0.1</span>;       <span class="comment">% 阻尼系数 (N.m.s)</span></span><br><span class="line">K = <span class="number">0.15</span>;      <span class="comment">% 电机转矩常数 (N.m/A)</span></span><br><span class="line">Kp = <span class="number">100</span>;Ki = <span class="number">40</span>;</span><br><span class="line">target_speed = <span class="number">100</span>; <span class="comment">% 目标转速 (rad/s)</span></span><br><span class="line">tspan = [<span class="number">0</span> <span class="number">0.1</span>];  <span class="comment">% 仿真时间范围</span></span><br><span class="line">x0 = [<span class="number">0</span>; <span class="number">0</span>];    <span class="comment">% 初始状态 [转速; 误差积分]</span></span><br><span class="line">[t, x] = ode45(@(t,x) motor_dynamics(t, x, target_speed, J, b, K, Kp, Ki), tspan, x0);</span><br><span class="line"><span class="comment">% 提取状态变量</span></span><br><span class="line">speed = x(:, <span class="number">1</span>);    <span class="comment">% 电机实际转速</span></span><br><span class="line">integral_error = x(:, <span class="number">2</span>); <span class="comment">% 误差积分项 </span></span><br><span class="line"><span class="comment">% 计算控制信号和误差</span></span><br><span class="line">error = target_speed - speed;</span><br><span class="line">control_signal = Kp*error + Ki*integral_error;</span><br><span class="line">control_signal = <span class="built_in">max</span>(<span class="built_in">min</span>(control_signal, <span class="number">220</span>), <span class="number">-220</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">figure</span>;</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line"><span class="built_in">plot</span>(t, speed, <span class="string">&#x27;b&#x27;</span>, t, target_speed*<span class="built_in">ones</span>(<span class="built_in">size</span>(t)), <span class="string">&#x27;r--&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;转速响应&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;转速(rpm)&#x27;</span>);<span class="built_in">legend</span>(<span class="string">&#x27;实际&#x27;</span>, <span class="string">&#x27;目标&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">120</span>]);</span><br><span class="line">subplot(<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"><span class="built_in">plot</span>(t, control_signal, <span class="string">&#x27;g&#x27;</span>);</span><br><span class="line">title(<span class="string">&#x27;控制量&#x27;</span>); xlabel(<span class="string">&#x27;时间(s)&#x27;</span>); ylabel(<span class="string">&#x27;控制电压(V)&#x27;</span>);</span><br><span class="line">xlim([<span class="number">0</span> <span class="number">0.1</span>]);ylim([<span class="number">0</span> <span class="number">250</span>]);</span><br><span class="line"></span><br><span class="line"><span class="comment">% 定义电机动态方程</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dxdt</span> = <span class="title">motor_dynamics</span><span class="params">(t, x, target_speed, J, b, K, Kp, Ki)</span></span></span><br><span class="line">    speed = x(<span class="number">1</span>);         <span class="comment">% 当前转速</span></span><br><span class="line">    integral_error = x(<span class="number">2</span>); <span class="comment">% 误差积分项        </span></span><br><span class="line">    error = target_speed - speed;<span class="comment">% 计算当前误差</span></span><br><span class="line">    u = Kp * error + Ki * integral_error; <span class="comment">% 控制电压</span></span><br><span class="line">    u = <span class="built_in">max</span>(<span class="built_in">min</span>(u, <span class="number">220</span>), <span class="number">-220</span>);<span class="comment">%电压限幅    </span></span><br><span class="line">    dspeed_dt = (K*u - b*speed) / J;<span class="comment">% J*dw/dt = K*u - b*w</span></span><br><span class="line">    dxdt = [dspeed_dt; error];<span class="comment">% 返回状态导数（误差积分的变化率=当前误差）</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+</details>
+<p>obe45使用变步长进行连续求解，该函数标准格式为<code>[t, Xt] = ode45(odefun, tspan, X0)</code><br />
+函数的输入有三个，其中<code>odefun</code>代指所导入的函数，可以是函数句柄、函数文件名、匿名函数句柄或内联函数名。<br />
+在程序中写作<code>@(t,x) motor_dynamics(t, x, target_speed, J, b, K, Kp, Ki)</code>，其中<code>@(t,x)</code>为匿名函数，<code>motor_dynamics</code>是匿名函数所指代的函数。<br />
+<code>tspan</code>为仿真的时间区间，可以连续也可以离散，程序中设为<code>[0 0.1]</code>，表示仿真时长为0.1s。<code>X0</code>为状态变量初始值向量。<br />
+函数的输出有两个，其中<code>t</code>为返回列向量的时间点（由于是变步长，因此各个时间点的间隔不固定），<code>Xt</code>为返回对应<code>t</code>的求解列向量。</p>
+本程序中状态变量<code>x</code>包括转速和误差积分这两项。<br />
+<code>motor_dynamics</code>函数除了必须有的<code>x</code>和<code>t</code>这两个参数外，还带入了另外一些参数，分别是目标转速<code>target_speed</code>、转动惯量<code>J</code>、摩擦系数<code>b</code>、转矩常数<code>K</code>、比例系数<code>Kp</code>与积分系数<code>Ki</code>。<br />
+返回的求解列向量<code>Xt</code>就是状态变量的导数，或者说是微分值。程序中为转速的变化量<code>dspeed_dt</code>和转速误差值<code>error</code>。<br />
+其中转速变化量由运动方程移项获得，即<br />
+<span class="math inline">\(T_e-T_L=K_t u=J\frac{d \omega}{dt}+B\omega
+\Rightarrow \frac{d \omega}{dt}=\frac{K_t u-B\omega}{J}\)</span>
+<center>
+<img src="5 微分方程形式电机PI控制仿真波形.png" width=500/><span
+class="caption">图5 微分方程形式电机PI控制仿真波形</span>
+</center>
+<p>转速与电压波形如上图所示，可见其与图3类似，转速也是在36ms左右达到给定转速附近。<br />
+但转速稳定阶段的电压波动相较于图3更大，这可能是变步长的缘故。</p>
+<h2 id="simulink实现pid控制">Simulink实现PID控制</h2>
+<p>这里介绍采用Simulink搭建电机PID控制系统的方法，主要分为三种，第一种是采用最基本的模块（Commonly
+Used
+Blocks中的Gain、Sum、Delay、Saturation等基础模块），搭建出一个PID控制模块；第二种是采用自带的PID模块；第三种是用S-function建立PID模块。</p>
+<h3 id="采用最基本的模块构建pid模块">采用最基本的模块构建PID模块</h3>
+<center>
+<img src="6 Simulink搭建PID控制系统.png" width=800/><span
+class="caption">图6 Simulink搭建PID控制系统</span>
+</center>
+<p>按照前文所述搭建出的电机PID控制系统如上图所示，其电压与转速波形也与图3相吻合。</p>
+<h3 id="simulink自带pid模块">Simulink自带PID模块</h3>
+Simulink自带的PID模块可以实现连续时间和离散时间的PID控制算法，支持抗饱和、外部重置和信号跟踪等高级功能。<br />
+该模块具体使用方法参见：<a
+target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/simulink/slref/pidcontroller.html">https://ww2.mathworks.cn/help/simulink/slref/pidcontroller.html</a>
+<center>
+<img src="7 Simulink内置PID模块.png" width=300/><span
+class="caption">图7 Simulink内置PID模块</span>
+</center>
+<p>该模块时域可设置为连续时间或离散时间，其中连续时间公式为：<br />
+<span
+class="math inline">\(U(s)=P+I\frac{1}{s}+D\frac{N}{1+N\frac{1}{s}}=P+I\frac{1}{s}+D\frac{s}{\frac{1}{N}s+1}\)</span><br />
+在配置界面中，与I相乘的<span
+class="math inline">\(\frac{1}{s}\)</span>和与D相乘的<span
+class="math inline">\(\frac{N}{1+N\frac{1}{s}}\)</span>分别被称作<mark>积分器</mark>与<mark>滤波器</mark>。<br />
+其中N是滤波器系数，默认值为100，该值与前文matlab内置的PID函数的滤波器系数Tf的关系式为：<br />
+<span class="math inline">\(N=\frac{1}{T_f}\)</span><br />
+时域设置为离散时间的公式如下，式中Ts是采样周期：<br />
+<span class="math inline">\(U(z)=P+I\cdot T_s
+\frac{1}{z-1}+D\frac{N}{1+N\cdot T_s \frac{1}{z-1}}\)</span><br />
+该式中同样包含滤波器系数N，若取消勾选“使用滤波导数”，则公式为：<br />
+<span class="math inline">\(U(z)=P+I\cdot T_s
+\frac{1}{z-1}+D\frac{1}{T_s}\frac{z-1}{z}\)</span><br />
+该公式不含滤波系数，与D相乘的部分被称作<mark>微分器</mark>。<br />
+PID控制器设置为离散形式时，还可以调整<mark>积分器和滤波器方法</mark>（连续函数中积分项与微分项中的s用什么样的含z表达式代替）。<br />
+默认设置为前向欧拉(Forward Euler)：<span
+class="math inline">\(\frac{1}{s}=\frac{T_s}{z-1}\)</span><br />
+这种方法适用于采样时间较小的情况，此时<mark style="background-color:cyan">奈奎斯特极限远大于控制器的带宽</mark>。对于较大的采样时间，使用前向欧拉方法可能会导致不稳定，即使是对一个在连续时间下稳定的系统进行离散化。<br />
+设置为后向欧拉(Backward Euler)时，<span
+class="math inline">\(\frac{1}{s}=\frac{T_s z}{z-1}\)</span><br />
+这种方法对稳定的连续时间系统进行离散化总能得到一个稳定的离散时间结果。<br />
+设置为梯形(Trapezoidal)时，<span
+class="math inline">\(\frac{1}{s}=\frac{T_s}{2}\frac{z+1}{z-1}\)</span><br />
+这种方法对稳定的连续时间系统进行离散化总能得到稳定的离散时间结果。在所有可用的积分方法中，梯形方法在离散化系统的频域特性和相应的连续时间系统之间提供了最接近的匹配。</p>
+<p>打开PID控制器配置界面，可以看到五个选项卡。<br />
+“主要”界面可以设置比例、积分、微分系数和滤波器系数N。<br />
+可以设置源的形式，如果设置为外部源，那么上述参数就不是在配置界面中设置，这时PID控制器会多出四个输入端口，分别输入P、I、D、N。<br />
+另外，还可以选择<mark style="background-color:cyan">自动调节PID参数</mark>的方法，实现PID参数自动整定，调节方法包括基于传递函数与基于频率响应两种。<br />
+参考链接<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42571453/article/details/112978611">（步骤清晰）利用MATLAB工具箱自动整定SIMULINK
+PID参数</a><br />
+最后还有一个选项为“启用过零检测”，<mark>过零检测（Zero Crossing
+Detection）</mark>只有采用变步长求解器时才有用。<br />
+过零检测的原理是根据采样过程中变量的变化率（前后两个采样点的变化量）来动态调整仿真步长，当前后两个采样点的值变化大时，则缩小采样步长；当前后两个采样点的值变化小时，则增大步长。<br />
+这样做可以增大变化率大的时候的采样频率，提高仿真精度；降低变化率小的时候的采样频率，提高仿真速度（效率）。</p>
+<p>第二个选项卡“初始化”，可以设置积分器和滤波器的初始值。<br />
+外部重置（External
+reset）的作用是触发外部信号时将积分器和滤波器重置为前面设置的初始值，可选的外部信号有上升沿、下降沿、任一沿、电平信号。<br />
+<mark style="background-color:cyan">跟踪模式（Tracking
+mode）</mark>，这个没怎么看懂。
+作用是使得模块输出跟随在TR端口提供的跟踪信号。启用跟踪模式后，跟踪信号与模块输出之间的差值通过增益Kt反馈到积分器输入。<br />
+跟踪模式的应用包括<mark style="background-color:cyan">无冲击控制转换（Bumpless
+control transfer）和防止多回路控制结构中的模块饱和</mark>。</p>
+<p>第三个选项卡“饱和”，可以设置PID控制器输出u和积分器的上下限。<br />
+另外还可以设置抗饱和方法，包括<mark>反算（back-calculation）和钳位（clamping）</mark>。<br />
+“反算”是指当模块输出饱和时，将饱和控制输出与未经饱和处理的原控制输出之间的差值加到积分器。反算系数Kb是加到积分器前要乘以的倍数，默认值为1。<br />
+“钳位”又称作有条件积分，当控制器输出超出限制且积分器输出与PID模块输入（误差e）具有相同符号时，积分停止。当控制器输出超出限制且积分器输出与模块输入具有相反符号时，积分恢复。<br />
+钳位适合具有相对较小死区时间的系统，对于具有较大死区时间的系统，瞬态性能会较差。</p>
+<p>后面两个选项卡“数据类型”与“状态属性”与硬件代码生成相关，这里略。</p>
+<h3 id="s-function建立pid模块">S-function建立PID模块</h3>
+S函数(S-function)是System-function系统函数的缩写，是指采用非图形化的方式（计算机语言）描述的一个功能块。<br />
+S函数的模块搭建与程序编写方法可以参考<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" title="单神经元PID控制器的设计与仿真">单神经元PID控制器的设计与仿真</a><br />
+
+<center>
+<img src="8 采用S函数搭建电机PID控制器.png" width=500/><span
+class="caption">图8 采用S函数搭建电机PID控制器</span>
+</center>
+<center>
+<img src="9 S函数模块参数与封装配置.png" width=700/><span
+class="caption">图9 S函数模块参数与封装配置</span>
+</center>
+<p>搭建的控制系统模型如上图所示，S函数一共有四个参数，分别是采样时间T和控制参数Kp,Ki,Kd。<br />
+状态变量x有三个，分别是误差e、误差累计和sum_e和误差变化量ec，这三个状态变量分别与Kp,Ki,Kd相乘得到PID控制器输出量。<br />
+输入量u有两个，分别是设定转速rin与实际转速y。<br />
+输出量除了PID控制器输出量外，还有e、sum_e、ec，连接到示波器上可以观察它们随时间的变化。</p>
+<details>
+<summary style="color:blue;text-decoration:underline;">
+PID模块S函数代码(点击展开或收起)
+</summary>
+<figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[sys,x0,str,ts]</span> = <span class="title">PID_S</span><span class="params">(t,x,u,flag,T,Kp,Ki,Kd)</span></span></span><br><span class="line"><span class="comment">% PID控制器S函数实现</span></span><br><span class="line"><span class="comment">% 输入：u(1)=参考转速, u(2)=实际转速</span></span><br><span class="line"><span class="comment">% 输出：y(1)=控制量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">switch</span> flag</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>          <span class="comment">% 初始化</span></span><br><span class="line">        [sys,x0,str,ts] = mdlInitializeSizes(T);</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>          <span class="comment">% 离散状态更新</span></span><br><span class="line">        sys = mdlUpdate(t,x,u,T);</span><br><span class="line">    <span class="keyword">case</span> <span class="number">3</span>          <span class="comment">% 输出计算</span></span><br><span class="line">        sys = mdlOutputs(t,x,u,T,Kp,Ki,Kd);</span><br><span class="line">    <span class="keyword">case</span> &#123;<span class="number">1</span>,<span class="number">4</span>,<span class="number">9</span>&#125;    <span class="comment">% 未使用flag</span></span><br><span class="line">        sys = [];</span><br><span class="line">    <span class="keyword">otherwise</span></span><br><span class="line">        error([<span class="string">&#x27;未处理的flag = &#x27;</span>,num2str(flag)]);</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%% 初始化函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="params">[sys,x0,str,ts]</span> = <span class="title">mdlInitializeSizes</span><span class="params">(T)</span></span></span><br><span class="line">sizes = simsizes;</span><br><span class="line">sizes.NumContStates  = <span class="number">0</span>;    <span class="comment">% 无连续状态</span></span><br><span class="line">sizes.NumDiscStates  = <span class="number">3</span>;    <span class="comment">% 状态变量x=[e,sum_e,ec]</span></span><br><span class="line">sizes.NumOutputs     = <span class="number">4</span>;    <span class="comment">% 输出量[u,e,sum_e,ec]</span></span><br><span class="line">sizes.NumInputs      = <span class="number">2</span>;    <span class="comment">% 输入量[r, y]</span></span><br><span class="line">sizes.DirFeedthrough = <span class="number">1</span>;    <span class="comment">% 输入直接影响输出</span></span><br><span class="line">sizes.NumSampleTimes = <span class="number">1</span>;</span><br><span class="line">sys = simsizes(sizes);</span><br><span class="line"> </span><br><span class="line"><span class="comment">% 状态变量初始化</span></span><br><span class="line">x0 = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>];</span><br><span class="line">str = [];</span><br><span class="line">ts = [T <span class="number">0</span>];  <span class="comment">% 采样时间</span></span><br><span class="line"></span><br><span class="line"><span class="comment">%% 状态更新函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sys</span> = <span class="title">mdlUpdate</span><span class="params">(t,x,u,T)</span></span></span><br><span class="line">e_prev = x(<span class="number">1</span>);sum_e = x(<span class="number">2</span>);</span><br><span class="line">r = u(<span class="number">1</span>);y = u(<span class="number">2</span>);</span><br><span class="line">e = r - y;</span><br><span class="line">sum_e = sum_e + e*T;</span><br><span class="line"><span class="keyword">if</span> t == <span class="number">0</span></span><br><span class="line">    ec = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    ec = (e - e_prev)/T;</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">sys = [e,sum_e,ec];</span><br><span class="line"></span><br><span class="line"><span class="comment">%% 输出计算函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sys</span> = <span class="title">mdlOutputs</span><span class="params">(~,x,~,~,Kp,Ki,Kd)</span></span></span><br><span class="line">e = x(<span class="number">1</span>);sum_e = x(<span class="number">2</span>);ec = x(<span class="number">3</span>);</span><br><span class="line">u_out = Kp*e + Ki*sum_e + Kd*ec;</span><br><span class="line">sys = [u_out,e,sum_e,ec];</span><br></pre></td></tr></table></figure>
+</details>
+取采样时间为0.001s时，得到的电压与转速波形波动较大。<br />
+因此这里取采样时间T=1e-06s，得到电压与转速波形以及e、sum_e、ec随时间变化波形如下图所示。
+<center>
+<img src="10 电压与转速波形.png" width=400/><span class="caption">图10
+电压与转速波形</span>
+</center>
+<center>
+<img src="11 e、sum_e、ec随时间变化波形.png" width=400/><span
+class="caption">图11 e、sum_e、ec随时间变化波形</span>
+</center>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    《大学》
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <meta charset="utf-8">
+    
+    <script>
+    function switchDarkMode() {
+        if ($('body').hasClass('dark')) {
+        $("#dark").html("🌞");
+        document.body.classList.remove('dark');
+        localStorage.setItem('noDark', '1');
+        localStorage.setItem('dark', '0');
+        } else {
+        $("#dark").html("🌙"); 
+        document.body.classList.add('dark');
+        localStorage.setItem('dark', '1');
+        localStorage.setItem('noDark', '0');
+        }
+    } 
+    </script>
+    
+    <title>永磁同步电机-Simulink仿真模型内部结构与官方仿真例程 | RenAhahWiki</title>
+    
+    
+        <meta name="keywords" content="课题笔记,永磁同步电机" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="本文将结合Simulink模型库中的永磁同步电机模型、电机控制仿真例程、Matlab官方文档，分析仿真模型内部结构与Simulink仿真原理。 参考资料 关于永磁同步电机及其Simulink仿真分析，可以作为参考的文章如下： 【1】永磁同步电机 该文章初步介绍了永磁同步电机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、控制策略等内容。 【2】CSDN—沉沙丶—永磁同步电机矢量控制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="永磁同步电机-Simulink仿真模型内部结构与官方仿真例程">
+<meta property="og:url" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/index.html">
+<meta property="og:site_name" content="RenAhahWiki">
+<meta property="og:description" content="本文将结合Simulink模型库中的永磁同步电机模型、电机控制仿真例程、Matlab官方文档，分析仿真模型内部结构与Simulink仿真原理。 参考资料 关于永磁同步电机及其Simulink仿真分析，可以作为参考的文章如下： 【1】永磁同步电机 该文章初步介绍了永磁同步电机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、控制策略等内容。 【2】CSDN—沉沙丶—永磁同步电机矢量控制">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/0%20永磁同步电机模型.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/1%20二极PMSM简化结构图.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/2%20永磁同步电机模型内部结构.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/3%20电力转换模块.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/4%20abc2qd.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/5%20vdq2idq.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/6%20qd2abc.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/7%20Hall%20effect%20sensor.png">
+<meta property="og:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/8%20机电能量转换模块.png">
+<meta property="article:published_time" content="2025-01-19T13:11:48.000Z">
+<meta property="article:modified_time" content="2025-10-18T15:09:04.182Z">
+<meta property="article:author" content="RenAhah">
+<meta property="article:tag" content="课题笔记">
+<meta property="article:tag" content="永磁同步电机">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://renahah.github.io/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/0%20永磁同步电机模型.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+<body class="">
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">RenAhahWiki</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+
+            <p id="dark" onclick="switchDarkMode();" style="position:absolute;left:190px;top:12px;font-size:16px"></p>
+            <script>    
+            if(localStorage.getItem('dark')==='1')    
+                document.body.classList.add('dark');
+            document.getElementById('dark').innerHTML = document.querySelector("body").classList.contains("dark")?"🌙":"🌞";
+            </script>
+
+                      
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查找什么..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜索" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>分类</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-down fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            国学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E5%A4%A7%E5%AD%A6%E3%80%8B/">《大学》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E4%B8%AD%E5%BA%B8%E3%80%8B/">《中庸》</a></li>  <li class="file"><a href="/%E5%9B%BD%E5%AD%A6/%E3%80%8A%E8%AE%BA%E8%AF%AD%E3%80%8B%EF%BC%88%E4%B8%80%EF%BC%89/">《论语》（一）</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            工业软件
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            Maxwell
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B01-%E8%9E%BA%E7%BA%BF%E7%AE%A12D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程01-螺线管2D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B02-%E8%9E%BA%E7%BA%BF%E7%AE%A13D%E9%9D%99%E7%A3%81%E5%9C%BA%E4%BB%BF%E7%9C%9F/">Maxwell教程02-螺线管3D静磁场仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B03-%E6%B0%B8%E7%A3%81%E4%BD%93%E7%94%B5%E7%A3%81%E5%8A%9B%E4%BB%BF%E7%9C%9F/">Maxwell教程03-永磁体电磁力仿真</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B04-2D%E6%B6%A1%E6%B5%81%E5%9C%BA%E4%BB%BF%E7%9C%9F-%E5%AE%9E%E5%BF%83%E5%AF%BC%E4%BD%93%E7%9A%84%E9%9B%86%E8%82%A4%E6%95%88%E5%BA%94%E6%AC%A7%E5%A7%86%E6%8D%9F%E8%80%97%E5%92%8C%E4%BA%A4%E6%B5%81%E7%94%B5%E9%98%BB/">Maxwell教程04-2D涡流场仿真-实心导体的集肤效应欧姆损耗和交流电阻</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B05-%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E9%9D%99%E6%80%81%E4%BB%BF%E7%9C%9F%E6%A1%88%E4%BE%8B/">Maxwell教程05-永磁同步电机静态及瞬态仿真案例</a></li>  <li class="file"><a href="/%E5%B7%A5%E4%B8%9A%E8%BD%AF%E4%BB%B6/ANSYS/Maxwell%E6%95%99%E7%A8%8B00-1055%E6%8A%A5%E9%94%99%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">Maxwell教程00-1055报错解决方案</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            日记
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%AE%BA%E5%A4%96%E6%98%9F%E4%BA%BA%E5%AD%98%E5%9C%A8%E7%9A%84%E5%8F%AF%E8%83%BD%E6%80%A7/">论外星人存在的可能性</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E8%87%AA%E5%88%B6%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E6%B7%98%E6%AD%8C%E8%BD%AF%E4%BB%B6/">自制网易云音乐淘歌软件</a></li>  <li class="file"><a href="/%E6%97%A5%E8%AE%B0/%E5%8F%82%E8%B5%9B%E7%BB%8F%E5%8E%86%E2%80%94%E2%80%942020%E5%B9%B4TI%E6%9D%AF%E8%BE%BD%E5%AE%81%E7%9C%81%E5%A4%A7%E5%AD%A6%E7%94%9F%E7%94%B5%E5%AD%90%E8%AE%BE%E8%AE%A1%E7%AB%9E%E8%B5%9B/">参赛经历——2020年TI杯辽宁省大学生电子设计竞赛</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            课程笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电力电子技术
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF01-%E7%BB%AA%E8%AE%BA/">电力电子技术01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF/%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF02-%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E5%99%A8%E4%BB%B6/">电力电子技术02-电力电子器件</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机学
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A601-%E5%9F%BA%E7%A1%80%E7%90%86%E8%AE%BA/">电机学01-基础理论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A602-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8A%EF%BC%89/">电机学02-变压器（上）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A603-%E5%8F%98%E5%8E%8B%E5%99%A8%EF%BC%88%E4%B8%8B%EF%BC%89/">电机学03-变压器（下）</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E5%AD%A6/%E7%94%B5%E6%9C%BA%E5%AD%A604-%E4%BA%A4%E6%B5%81%E7%94%B5%E6%9C%BA%E7%90%86%E8%AE%BA%E7%9A%84%E5%85%B1%E5%90%8C%E9%97%AE%E9%A2%98/">电机学04-交流电机理论的共同问题</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机设计
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A101-%E7%94%B5%E6%9C%BA%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">电机设计01-电机的主要参数之间的关系</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1/%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A102-%E5%AE%9A%E5%AD%90%E4%B8%8E%E8%BD%AC%E5%AD%90%E8%AE%BE%E8%AE%A1/">电机设计02-定子与转子设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电磁场数值分析与计算
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9701-%E5%9C%BA%E8%AE%BA/">电磁场数值分析与计算01-场论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9702-Maxwell%E6%96%B9%E7%A8%8B%E7%BB%84/">电磁场数值分析与计算02-Maxwell方程组</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9703-%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E7%9A%84%E5%AE%9A%E8%A7%A3%E9%97%AE%E9%A2%98/">电磁场数值分析与计算03-电磁场数值分析的定解问题</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9704-%E8%BE%B9%E7%95%8C%E6%9D%A1%E4%BB%B6/">电磁场数值分析与计算04-边界条件</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9705-%E6%9C%89%E9%99%90%E5%85%83%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">电磁场数值分析与计算05-有限元方法介绍</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%97/%E7%94%B5%E7%A3%81%E5%9C%BA%E6%95%B0%E5%80%BC%E5%88%86%E6%9E%90%E4%B8%8E%E8%AE%A1%E7%AE%9706-2D%E6%9C%89%E9%99%90%E5%85%83%E5%88%86%E6%9E%90/">电磁场数值分析与计算06-2D有限元分析</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            神经网络原理及应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%AE%97%E6%B3%95%E6%A6%82%E8%BF%B0/">神经网络算法概述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/%E5%8D%95%E7%A5%9E%E7%BB%8F%E5%85%83PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">单神经元PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">BP神经网络PID控制器的设计与仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/">RBF神经网络PID控制器的设计与仿真</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            线性系统理论
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA01-%E7%BB%AA%E8%AE%BA/">线性系统理论01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA02-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%8A%B6%E6%80%81%E7%A9%BA%E9%97%B4%E6%8F%8F%E8%BF%B0/">线性系统理论02-线性系统的状态空间描述</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA03-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%BF%90%E5%8A%A8%E5%88%86%E6%9E%90/">线性系统理论03-线性系统的运动分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA04-%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%83%BD%E6%8E%A7%E6%80%A7%E5%92%8C%E8%83%BD%E8%A7%82%E6%B5%8B%E6%80%A7/">线性系统理论04-线性系统的能控性和能观测性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA05-%E7%B3%BB%E7%BB%9F%E8%BF%90%E5%8A%A8%E7%9A%84%E7%A8%B3%E5%AE%9A%E6%80%A7/">线性系统理论05-系统运动的稳定性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA/%E7%BA%BF%E6%80%A7%E7%B3%BB%E7%BB%9F%E7%90%86%E8%AE%BA06-%E7%BA%BF%E6%80%A7%E5%8F%8D%E9%A6%88%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E9%97%B4%E5%9F%9F%E7%BB%BC%E5%90%88/">线性系统理论06-线性反馈系统的时间域综合</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            运动控制系统
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F01-%E7%BB%AA%E8%AE%BA/">运动控制系统01-绪论</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F02-%E6%99%B6%E9%97%B8%E7%AE%A1%E6%95%B4%E6%B5%81%E5%99%A8%E2%80%94%E2%80%94%E7%9B%B4%E6%B5%81%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统02-晶闸管整流器——直流电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F03-PWM%E5%8F%98%E6%8D%A2%E5%99%A8%E2%80%94%E2%80%94%E7%94%B5%E5%8A%A8%E6%9C%BA%E7%B3%BB%E7%BB%9F/">运动控制系统03-PWM变换器——电动机系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F04-%E7%A8%B3%E6%80%81%E8%B0%83%E9%80%9F%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%E5%92%8C%E5%BC%80%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统04-稳态调速性能指标和开环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F05-%E6%9C%89%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统05-有静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F06-%E6%97%A0%E9%9D%99%E5%B7%AE%E7%9A%84%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F/">运动控制系统06-无静差的转速闭环直流调速系统</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F07-%E8%BD%AC%E9%80%9F%E9%97%AD%E7%8E%AF%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E9%99%90%E6%B5%81%E4%BF%9D%E6%8A%A4/">运动控制系统07-转速闭环直流调速系统的限流保护</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F08-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%BB%84%E6%88%90%E5%8F%8A%E5%85%B6%E9%9D%99%E7%89%B9%E6%80%A7/">运动控制系统08-转速、电流双闭环控制直流调速系统的组成及其静特性</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F09-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%8A%A8%E6%80%81%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">运动控制系统09-转速、电流双闭环控制直流调速系统的数学模型与动态过程分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F/%E8%BF%90%E5%8A%A8%E6%8E%A7%E5%88%B6%E7%B3%BB%E7%BB%9F10-%E8%BD%AC%E9%80%9F%E3%80%81%E7%94%B5%E6%B5%81%E5%8F%8C%E9%97%AD%E7%8E%AF%E6%8E%A7%E5%88%B6%E7%9B%B4%E6%B5%81%E8%B0%83%E9%80%9F%E7%B3%BB%E7%BB%9F%E7%9A%84%E8%AE%BE%E8%AE%A1/">运动控制系统10-转速、电流双闭环控制直流调速系统的设计</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            鲁棒控制理论与应用
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A801-%E7%BB%AA%E8%AE%BA%E5%8F%8A%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">鲁棒控制理论与应用01-绪论及数学基础</a></li>  <li class="file"><a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/">鲁棒控制理论与应用02-H∞控制器设计与仿真</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            课题笔记
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            开关磁阻电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA01-3KW1500%E8%BD%AC%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F%E5%88%86%E6%9E%90/">开关磁阻电机01-3KW1500转开关磁阻电机设计与仿真分析</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA02-%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA%E5%8E%9F%E7%90%86/">开关磁阻电机02-开关磁阻电机原理</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA03-Maxwell-Simplorer-Simulink%E8%81%94%E5%90%88%E4%BB%BF%E7%9C%9F/">开关磁阻电机03-Maxwell-Simplorer-Simulink联合仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA04-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">开关磁阻电机04-Simulink仿真模型搭建</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            永磁同步电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">永磁同步电机-Simulink仿真模型内部结构与官方仿真例程</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%94%B5%E6%9C%BA%E6%A6%82%E8%BF%B0%E5%8F%8A%E5%88%86%E7%B1%BB/">电机概述及分类</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E7%9B%B4%E6%B5%81%E7%94%B5%E6%9C%BA/">直流电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/">基于粒子群算法的电机控制器参数整定研究</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/">开关磁阻电机</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            电机控制器算法综述
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/">电机控制器算法综述</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-PID%E6%8E%A7%E5%88%B6%E4%B8%8E%E6%A8%A1%E7%B3%8A%E6%8E%A7%E5%88%B6/">电机控制算法综述01-PID控制与模糊控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-粒子群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B003-%E6%BB%91%E6%A8%A1%E6%8E%A7%E5%88%B6/">电机控制算法综述03-滑模控制</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B002-1-%E8%9A%81%E7%BE%A4%E7%AE%97%E6%B3%95/">电机控制器算法综述02-1-蚁群算法</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-2-%E6%A8%A1%E7%B3%8APID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F/">电机控制算法综述01-2-模糊PID控制器的Matlab仿真</a></li>  <li class="file"><a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B0/%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E7%BB%BC%E8%BF%B001-1-PID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84Matlab%E4%BB%BF%E7%9C%9F%E5%AE%9E%E7%8E%B0/">电机控制算法综述01-1-PID控制器的Matlab仿真实现</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            音乐
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            乐理
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B001-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/">乐理笔记01-基础知识</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B002-%E7%AE%80%E8%B0%B1/">乐理笔记02-简谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B003-%E8%8A%82%E5%A5%8F/">乐理笔记03-节奏</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B004-%E4%B9%90%E8%B0%B1%E8%AE%B0%E5%8F%B7/">乐理笔记04-乐谱记号</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B005-%E4%BA%94%E7%BA%BF%E8%B0%B1/">乐理笔记05-五线谱</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B006-%E9%9F%B3%E7%A8%8B/">乐理笔记06-音程</a></li>  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%B9%90%E7%90%86/%E4%B9%90%E7%90%86%E7%AC%94%E8%AE%B007-%E5%92%8C%E5%BC%A6/">乐理笔记07-和弦</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            作曲
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2/%E4%BD%9C%E6%9B%B2%E7%AC%94%E8%AE%B001-%E4%BD%BF%E7%94%A8Fl%20Studio%E5%88%B6%E4%BD%9C%E4%B8%80%E9%A6%96Progressive%20House/">作曲笔记01-使用Fl Studio制作一首Melodic Progressive House</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/%E9%9F%B3%E4%B9%90/%E4%BD%9C%E6%9B%B2%E7%A0%94%E7%A9%B6-%E5%BA%8F%E8%A8%80/">作曲研究-序言</a></li>  </ul> 
+                    </li> 
+                     <li class="file"><a href="/hello-world/">使用技巧</a></li>  <li class="file"><a href="/hello-world-1/">建站历程</a></li>  </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-课题笔记/永磁同步电机/永磁同步电机-Simulink仿真模型内部结构与官方仿真例程" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/">课题笔记</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/">永磁同步电机</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/" rel="tag">永磁同步电机</a>, <a class="tag-link-link" href="/tags/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/" rel="tag">课题笔记</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/">
+            <time datetime="2025-01-19T13:11:48.000Z" itemprop="datePublished">2025-01-19</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            永磁同步电机-Simulink仿真模型内部结构与官方仿真例程
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                <div id="toc" class="toc-article">
+                <strong class="toc-title">文章目录</strong>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">永磁同步电机参数设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">永磁同步电机模型内部结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%B5%E5%8A%9B%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.</span> <span class="toc-text">电力转换模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#abc2qd%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.1.</span> <span class="toc-text">abc2qd模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#iqid%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.2.</span> <span class="toc-text">iq,id模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#qd2abc%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.3.</span> <span class="toc-text">qd2abc模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%9C%8D%E5%B0%94%E6%95%88%E5%BA%94%E4%BC%A0%E6%84%9F%E5%99%A8"><span class="toc-number">3.1.4.</span> <span class="toc-text">霍尔效应传感器</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BD%AC%E7%9F%A9%E8%AE%A1%E7%AE%97%E6%A8%A1%E5%9D%97"><span class="toc-number">3.1.5.</span> <span class="toc-text">转矩计算模块</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%BA%E7%94%B5%E8%83%BD%E9%87%8F%E8%BD%AC%E6%8D%A2%E6%A8%A1%E5%9D%97"><span class="toc-number">3.2.</span> <span class="toc-text">机电能量转换模块</span></a></li></ol></li></ol>
+                </div>
+            
+        
+        
+            <p>本文将结合Simulink模型库中的永磁同步电机模型、电机控制仿真例程、Matlab官方文档，分析仿真模型内部结构与Simulink仿真原理。</p>
+<h2 id="参考资料">参考资料</h2>
+<p>关于永磁同步电机及其Simulink仿真分析，可以作为参考的文章如下：<br />
+【1】<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E6%B0%B8%E7%A3%81%E5%90%8C%E6%AD%A5%E7%94%B5%E6%9C%BA/" title="永磁同步电机">永磁同步电机</a><br />
+该文章初步介绍了永磁同步电机的结构、数学模型、空间脉宽矢量调制方法（SVPWM）、控制策略等内容。<br />
+【2】<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/sy243772901/article/details/82108816">CSDN—沉沙丶—永磁同步电机矢量控制系列教程</a><br />
+采用转速电流双闭环PI控制，电流环<span
+class="math inline">\(i_d=0\)</span>控制策略搭建永磁同步电机控制系统仿真模型。文章3、4、5在此基础上对PI控制器进行改进。<br />
+【3】<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A8/%E9%B2%81%E6%A3%92%E6%8E%A7%E5%88%B6%E7%90%86%E8%AE%BA%E4%B8%8E%E5%BA%94%E7%94%A802-H%E2%88%9E%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95/" title="鲁棒控制理论与应用02-H∞控制器的设计方法">鲁棒控制理论与应用02-H∞控制器的设计方法</a><br />
+采用H∞控制策略对转速环与电流环<span
+class="math inline">\(i_q\)</span>进行控制，搭建控制系统仿真模型。<br />
+【4】<a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E7%94%B5%E6%9C%BA/%E5%9F%BA%E4%BA%8E%E7%B2%92%E5%AD%90%E7%BE%A4%E7%AE%97%E6%B3%95%E7%9A%84%E7%94%B5%E6%9C%BA%E6%8E%A7%E5%88%B6%E5%99%A8%E5%8F%82%E6%95%B0%E6%95%B4%E5%AE%9A%E7%A0%94%E7%A9%B6/" title="基于粒子群算法的电机控制器参数整定研究">基于粒子群算法的电机控制器参数整定研究</a><br />
+采用改进粒子群算法对转速环PI控制器进行优化，通过迭代得到最优的PI控制器参数。<br />
+【5】<a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/BP%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" title="BP神经网络PID控制器的设计与仿真">BP神经网络PID控制器的设计与仿真</a><br />
+采用BP神经网络对转速环PI控制器进行优化，在仿真运行过程中实时调整PI控制器参数。<br />
+【6】<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/SKWASU/article/details/121624738">CSDN—SKWASU—simulink电机仿真笔记一</a><br />
+对永磁同步电机Simulink仿真模型内部结构进行了初步分析，并进行公式推导，有一定的参考价值。</p>
+<h2 id="永磁同步电机参数设置">永磁同步电机参数设置</h2>
+本文所用软件为Matlab
+R2023a，首先打开库浏览器，选择Simscape-&gt;Electrical-&gt;Specialized
+Power Systems-&gt;Electrical Machines，就能找到永磁同步电机(Permanent
+Magnet Synchronous
+Machine)的模型，也可以直接在库浏览器中搜索<code>Permanent Magnet Synchronous Machine</code>。<br />
+
+<center>
+<img src="0 永磁同步电机模型.png" width=150/><span class="caption">图0
+永磁同步电机模型</span>
+</center>
+<p>对模型右键打开“帮助(H)”，就可以看到该模型的官方帮助文档，该文档也可以在网页上打开，链接为：<a
+target="_blank" rel="noopener" href="https://ww2.mathworks.cn/help/releases/R2023a/sps/powersys/ref/permanentmagnetsynchronousmachine.html">https://ww2.mathworks.cn/help/releases/R2023a/sps/powersys/ref/permanentmagnetsynchronousmachine.html</a><br />
+该文档介绍了永磁同步电机的数学模型，相电感与角度关系曲线，以及电机模型中可以设置的参数。</p>
+<p>双击该模块进入配置界面，第一个选项卡为Configuration。<br />
+Number of
+Phases为<mark style="background-color:lightgreen;">电机相数</mark>，可以选择3相或5相，这里选择默认的三相。（头一回知道还有五相永磁同步电机）<br />
+Back EMF
+waveform为<mark style="background-color:lightgreen;">反电动势波形</mark>，默认值Sinusoidal为正弦电动势，Trapezoidal为梯形电动势。（这里选择正弦电动势，若选择梯形电动势，则该电机为无刷直流电机）<br />
+Rotor
+Type为<mark style="background-color:lightgreen;">转子类型</mark>，默认值为Round（隐极，此时交轴与直轴电感相等），Salient-pole为凸极，通常交轴电感大于直轴电感<span
+class="math inline">\(L_q&gt;L_d\)</span>。（只有电机相数选择为三相，且反电动势波形为正弦波时会出现该选项）<br />
+Mechanical input是机械输入类型，默认为Torque
+Tm，表示将施加到轴上的扭矩作为机械输入。还可以选择Speed
+w转速作为输入，若选择Mechanical rotational
+port，则可以将机器轴连接到具有机械旋转端口的其他Simscape模块（此时电机模型Tm端不是箭头形状，而是端口）。<br />
+Preset
+model为预设模型，包括一些预设的电气和机械参数，默认值为No，即不使用预设。</p>
+<p>第二个选项卡为Parameters，用于设置电机的电气和机械参数。<br />
+Stator phase resistance
+Rs为<mark style="background-color:lightgreen;">定子相电阻</mark>，默认为<code>0.0485Ω</code>。</p>
+<p>下面设置定子电感：<br />
+若电机相数选择三相，反电动势波形选择梯形波，则设置Stator phase
+inductance
+Ls为<mark style="background-color:lightgreen;">定子相电感</mark>，默认为<code>8.5e-3H</code>。<br />
+若电机相数选择三相，反电动势波形选择正弦波，转子类型为Round，则设置Armature
+inductance为<mark style="background-color:lightgreen;">相电感</mark><span
+class="math inline">\(L=L_d=L_q\)</span>，默认值为<code>0.000395H</code>。<br />
+若电机相数选择三相，反电动势波形选择正弦波，转子类型为Salient-pole，则设置Inductances[Ld(H)
+Lq(H)]为<mark style="background-color:lightgreen;">d轴和q轴电感</mark>，默认值为<code>[8.5e-3,8.5e-3]</code>。（显然需要修改默认值使得两个电感值不相等，否则按照默认值转子就不是凸极而是隐极了）</p>
+<p>下面设置电机常数：<br />
+Specify通过设置一个参数来确定另外两个参数。<br />
+默认值为Flux linkage established by magnets (V.s)，表示永磁体磁链<span
+class="math inline">\(\Psi_f\)</span>，默认值为<code>0.1194Wb</code>。<br />
+Voltage Constant (V_peak L-L /
+krpm)默认值为<code>86.6271V</code>，表示电机作为发电机驱动时每1000r/min下的峰值开路电压。（反电动势常数<span
+class="math inline">\(K_e\)</span>，表示每1000r/min所产生的反电动势峰值大小<span
+class="math inline">\(V_{peak}\)</span>，测量的是电机两相之间的线电压）<br />
+Torque Constant (N·m /
+A_peak)默认值为<code>0.7164N·m</code>，表示每安培对应的电机转矩（转矩常数<span
+class="math inline">\(K_t\)</span>）。<br />
+<mark style="background-color:lightpink;">【思考题1】三个参数之间的换算公式是什么？</mark><br />
+<span class="math inline">\(\Psi_f=\frac{V_{peak}}{\sqrt 3
+\omega_e}\)</span><br />
+<span class="math inline">\(K_e=\frac{V_{peak}}{\omega_{rpm} /
+1000}\)</span><br />
+<span class="math inline">\(K_t=\frac{3}{2}pK_e\)</span><br />
+<span class="math inline">\(\frac{K_e}{\Psi_f}=\frac{\sqrt 3
+\omega_e}{\omega_{rpm} / 1000}=\sqrt 3 \frac{2\pi p}{60}\times 1000
+\approx 181.38p\)</span><br />
+式中<span class="math inline">\(p\)</span>为电机极对数。</p>
+<p>若电机相数选择三相，反电动势波形选择梯形波，则设置Back EMF flat area
+(degrees)电动势半周期内的平顶宽度，默认值为120°。</p>
+<p>下面设置的是机电能量转换常数，Inertia,viscous damping,pole
+pairs,static friction [ J(kg.m^2) F(N.m.s) p()
+Tf(N.m)]分别对应<mark style="background-color:lightgreen;">转动惯量、粘性摩擦系数、极对数、轴静摩擦转矩</mark>。默认值为<code>[0.0027 0.0004924 4 0]</code>。<br />
+Initial conditions[wm(rad/s) thetam(deg)
+ia,ib(A)]为初始条件，分别对应<mark style="background-color:lightgreen;">初始转速，机械角度，A相与B相电流</mark>。默认值为<code>[0,0,0,0]</code><br />
+<mark>注：该仿真模型中定子绕组为Y形连接且无零线，三相电流和为0，可以求出C相电流<span
+class="math inline">\(i_c=-i_a-i_b\)</span>。</mark></p>
+Rotor flux position when theta =
+0这一项选择的是转子磁通方向相对于相位A轴的参考位置。默认为90 degrees
+behind phase A axis (modified Park)，表示电角度<span
+class="math inline">\(\theta_r=0\)</span>时<mark>转子磁通方向</mark>滞后于A相绕组轴线方向90°。如下图所示：<br />
+
+<center>
+<img src="1 二极PMSM简化结构图.png" width=400/><span class="caption">图1
+二极PMSM简化结构图</span>
+</center>
+<p>左图为官方文档提供的示意图，右图来源为《现代永磁电动机交流伺服系统》P65图4-6。<br />
+图中as、bs、cs为定子三相绕组的轴线方向，其建立了一个三相静止坐标系（3s坐标系，固定在定子上）。<br />
+取<mark>永磁体基波磁场的方向<span
+class="math inline">\(F_f\)</span></mark>为d轴，q轴超前于d轴90°电角度。d轴与q轴构建的是两相旋转坐标系（2r坐标系，固定在转子上）。</p>
+<p><mark style="background-color:cyan">官方文档中提到这样选取参考位置可以更便于实现对电机的矢量控制，因为<span
+class="math inline">\(\theta_r=0\)</span>时相电感值最大。</mark></p>
+<p>Advanced选项卡涉及仿真求解器的相关设置，没太搞明白，故不叙述。</p>
+<h2 id="永磁同步电机模型内部结构">永磁同步电机模型内部结构</h2>
+<p>对永磁同步电机模型右键封装-&gt;查看封装内部，就可以看到开关磁阻电机模型的内部结构，如下图所示。</p>
+<center>
+<img src="2 永磁同步电机模型内部结构.png" width=500/><span
+class="caption">图2 永磁同步电机模型内部结构</span>
+</center>
+<p>最上面的模块上写着“SPS internal use,Do not
+delete”，该模块已被加密处理，无法破解，其输入端对应电机的三相绕组（若电机相数设置为五相，则对应五相绕组），该模块可用于获取各相绕组的电压。<br />
+此外，电机模型中定义了一个<mark style="background-color:cyan">名为PM的结构体</mark>，与电机相关的参数包含其中，无法破解。<br />
+下半部分的模块主要包括电力转换模块(Electrical
+model)与机电能量转换模块(Mechanical model)两大部分。<br />
+其中，电力转换模块将各相绕组线电压、电角度、转速等通过一定的数学变换转换为各相定子静止电流、dq轴旋转电流、各相的Hall信号。机电能量转换模块根据电机的机械方程，由电机的电磁转矩、负载转矩计算得到电机的实时电角度与转速。</p>
+<p>Measurements模块将电力转换模块与机电能量转换模块得到的各个数据进行整合，使用Bus
+Creator将其整合为一个输出量m。<br />
+数据依次为三相静止定子电流<span
+class="math inline">\(i_a,i_b,i_c\)</span>，两相旋转定子电流<span
+class="math inline">\(i_q,i_d\)</span>，两相旋转定子电压<span
+class="math inline">\(V_q,V_d\)</span>，三相Hall信号<span
+class="math inline">\(h_a,h_b,h_c\)</span>，电机转速<span
+class="math inline">\(\omega_m\)</span>，转子电角度<span
+class="math inline">\(\theta_m\)</span>与电磁转矩<span
+class="math inline">\(T_e\)</span>。<br />
+该输出量可以用Bus
+Selector模块拆解为单独的各个变量，便于连接示波器查看图像。</p>
+<h3 id="电力转换模块">电力转换模块</h3>
+<center>
+<img src="3 电力转换模块.png" width=600/><span class="caption">图3
+电力转换模块</span>
+</center>
+<h4 id="abc2qd模块">abc2qd模块</h4>
+首先将线电压<span
+class="math inline">\(V_{ab},V_{bc}\)</span>转换为两相旋转定子电压<span
+class="math inline">\(V_q,V_d\)</span>。如下图所示：
+<center>
+<img src="4 abc2qd.png" width=600/><span class="caption">图4
+abc2qd</span>
+</center>
+<p>可以看到两个fcn模块前的Mux总线有四个输入，分别是<span
+class="math inline">\(V_{ab},V_{bc},sin\theta,cos\theta\)</span>，这四个输入量在fcn中分别表示为u(1),u(2),u(3),u(4)。<br />
+两个fcn模块计算出的输出量为<span
+class="math inline">\(V_q,V_d\)</span>。<br />
+下面介绍fcn模块内公式的推导过程：<br />
+<mark>注：该仿真模型三相绕组采用Y形联结且无零线，有关系式<span
+class="math inline">\(V_a+V_b+V_c=0,i_a+i_b+i_c=0\)</span></mark><br />
+<strong>①首先将线电压<span
+class="math inline">\(V_{ab},V_{bc}\)</span>转换为相电压<span
+class="math inline">\(V_a,V_b\)</span>。</strong><br />
+列如下方程式并求解： <span class="math display">\[\left\{
+{\begin{array}{*{20}{c}}{V_{ab} = V_a - V_b} \\ {V_{bc} = V_b - V_c} \\
+{V_a+V_b+V_c=0} \end{array}} \right. \Rightarrow \left\{
+{\begin{array}{*{20}{c}}{V_a=\frac{2}{3}V_{ab}+\frac{1}{3}V_{bc}} \\
+{V_b=-\frac{1}{3}V_{ab}+\frac{1}{3}V_{bc}} \\
+{V_c=-\frac{1}{3}V_{ab}-\frac{2}{3}V_{bc}} \end{array}}
+\right.\]</span><br />
+得到线电压到相电压的变换矩阵：<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}{V_a} \\
+{V_b} \end{array}} \right]=\left[ {\begin{array}{*{20}{c}}
+{\frac{2}{3}}&amp;{\frac{1}{3}} \\ {-\frac{1}{3}}&amp;{\frac{1}{3}}
+\end{array}} \right] \left[ {\begin{array}{*{20}{c}} {V_{ab}} \\
+{V_{bc}} \end{array}} \right]\]</span> <strong>②然后将<span
+class="math inline">\(V_a,V_b\)</span>转换为两相静止定子电压<span
+class="math inline">\(V_\alpha,V_\beta\)</span>，进行的是Clarke变换(3s/2s变换)</strong><br />
+标准Clarke变换公式为：<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}  V_\alpha
+\\ V_\beta \end{array}}\right]=\frac{N_3}{N_2}\left[
+{\begin{array}{*{20}{c}}  1&amp;-\frac{1}{2}&amp;-\frac{1}{2} \\
+0&amp;\frac{\sqrt{3}}{2}&amp;-\frac{\sqrt{3}}{2}
+\end{array}}\right]\left[ {\begin{array}{*{20}{c}}  V_a \\ V_b \\ V_c
+\end{array}}\right]\]</span><br />
+其中<span
+class="math inline">\(\frac{N_3}{N_2}\)</span>为三相绕组与两相绕组的匝数比。<br />
+若要求三相电流与两相的电流幅值相等，则取<span
+class="math inline">\(\frac{N_3}{N_2}=\frac{2}{3}\)</span>；若要求三相与两相的总功率不变，则取<span
+class="math inline">\(\frac{N_3}{N_2}=\sqrt\frac{2}{3}\)</span><br />
+对于本模型，取<span
+class="math inline">\(\frac{N_3}{N_2}=\frac{2}{3}\)</span>，同时将<mark><span
+class="math inline">\(V_a+V_b+V_c=0\)</span></mark>代入到矩阵。<br />
+<span class="math inline">\(V_a+V_b+V_c=0 \Rightarrow
+V_c=-V_a-V_b\)</span><br />
+<span
+class="math inline">\(V_\alpha=\frac{N_3}{N_2}(V_a-\frac{1}{2}V_b-\frac{1}{2}V_c)=\frac{N_3}{N_2}(V_a-\frac{1}{2}V_b+\frac{1}{2}V_a+\frac{1}{2}V_b)=\frac{3}{2}V_a\)</span><br />
+<span class="math inline">\(V_\beta=\frac{N_3}{N_2}(\frac{\sqrt
+3}{2}V_b-\frac{\sqrt 3}{2}V_c)=\frac{N_3}{N_2}(\frac{\sqrt
+3}{2}V_b+\frac{\sqrt 3}{2}V_a+\frac{\sqrt
+3}{2}V_b)=\frac{N_3}{N_2}(\frac{\sqrt 3}{2}V_a+{\sqrt
+3}V_b)\)</span><br />
+最后得到如下Clarke变换公式：<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}  V_\alpha
+\\ V_\beta \end{array}}\right]=\frac{2}{3}\left[
+{\begin{array}{*{20}{c}}  \frac{3}{2}&amp;0 \\
+\frac{\sqrt{3}}{2}&amp;\sqrt{3} \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  V_a \\ V_b \end{array}}\right]=\left[
+{\begin{array}{*{20}{c}}  1&amp;0 \\
+\frac{\sqrt{3}}{3}&amp;\frac{2\sqrt{3}}{3} \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  V_a \\ V_b \end{array}}\right]\]</span><br />
+<mark style="background-color:lightpink;">【思考题2】根据电流幅值相等与总功率不变的两种<span
+class="math inline">\(\frac{N_3}{N_2}\)</span>取法存在什么不同？对仿真会造成怎样的影响？本电机仿真模型为何采取电流幅值相等的原则？</mark></p>
+<p><strong>③最后将两相静止定子电压<span
+class="math inline">\(V_\alpha,V_\beta\)</span>转换为两相旋转定子电压<span
+class="math inline">\(V_q,V_d\)</span>，进行的是Park变换(2s/2r变换)</strong><br />
+标准Park变换公式为：<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}  V_d \\ V_q
+\end{array}}\right]=\left[
+{\begin{array}{*{20}{c}}  cos\theta&amp;sin\theta \\
+-sin\theta&amp;cos\theta \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  V_\alpha \\ V_\beta
+\end{array}}\right]\]</span> 然而，本仿真模型中Park变换中电角度<span
+class="math inline">\(\theta\)</span>相较于标准Park变换滞后了90°，如下所示：<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}  V_d \\ V_q
+\end{array}}\right]=\left[
+{\begin{array}{*{20}{c}}  sin\theta&amp;-cos\theta \\
+cos\theta&amp;sin\theta \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  V_\alpha \\ V_\beta
+\end{array}}\right]\]</span> 换言之，将该Park变换矩阵中的<span
+class="math inline">\(\theta\)</span>加90°之后可以得到标准Park变换矩阵。<br />
+<span class="math display">\[\left[
+{\begin{array}{*{20}{c}}  sin(\theta+\frac{\pi}{2})&amp;-cos(\theta+\frac{\pi}{2})
+\\ cos(\theta+\frac{\pi}{2})&amp;sin(\theta+\frac{\pi}{2})
+\end{array}}\right]=\left[
+{\begin{array}{*{20}{c}}  cos\theta&amp;sin\theta \\
+-sin\theta&amp;cos\theta \end{array}}\right]\]</span>
+那么，差的这90°到哪里去补呢？补在机电能量转换模块里了，到那里再说。<br />
+<mark style="background-color:lightpink;">【扩展阅读】关于电机坐标变换(Clarke变换与Park变换)更详尽的原理性叙述，可以参考《电力拖动自动控制系统—运动控制系统（第5版）》P161-P165与《交流调速系统（第二版）》P177-P183。</mark></p>
+<p>最后的最后，就是将上述矩阵相乘，得到两相旋转定子电压<span
+class="math inline">\(V_d,V_q\)</span>与线电压<span
+class="math inline">\(V_{ab},V_{bc}\)</span>、电角度<span
+class="math inline">\(\theta\)</span>的关系式。 <span
+class="math display">\[\left[ {\begin{array}{*{20}{c}}  V_d \\ V_q
+\end{array}}\right]=\left[
+{\begin{array}{*{20}{c}}  sin\theta&amp;-cos\theta \\
+cos\theta&amp;sin\theta \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  1&amp;0 \\
+\frac{\sqrt{3}}{3}&amp;\frac{2\sqrt{3}}{3} \end{array}}\right]\left[
+{\begin{array}{*{20}{c}} {\frac{2}{3}}&amp;{\frac{1}{3}} \\
+{-\frac{1}{3}}&amp;{\frac{1}{3}} \end{array}} \right]\left[
+{\begin{array}{*{20}{c}} {V_{ab}} \\ {V_{bc}} \end{array}}
+\right]\]</span> <span class="math inline">\(\Rightarrow
+V_d=\frac{1}{3}[2sin\theta V_{ab}+(sin\theta-\sqrt 3
+cos\theta)V_{bc}]=\frac{1}{3}[sin\theta(2V_{ab}+V_{bc})-\sqrt 3
+cos\theta V_{bc}]\)</span><br />
+<span class="math inline">\(\Rightarrow V_q=\frac{1}{3}[2cos\theta
+V_{ab}+(cos\theta+\sqrt 3
+sin\theta)V_{bc}]=\frac{1}{3}[cos\theta(2V_{ab}+V_{bc})+\sqrt 3
+sin\theta V_{bc}]\)</span><br />
+得到的结果与图4中fcn模块中填写的表达式一致，说明上述公式推导的结果正确。<br />
+注：fcn中的表达式包含两个常量，PM.sqrt3是<span
+class="math inline">\(\sqrt 3\)</span>，PM.one_third是<span
+class="math inline">\(\frac{1}{3}\)</span>。</p>
+<h4 id="iqid模块">iq,id模块</h4>
+<center>
+<img src="5 vdq2idq.png" width=700/><span class="caption">图5
+vdq2idq</span>
+</center>
+<p>该模块将两相旋转电压<span
+class="math inline">\(V_q,V_d\)</span>转换为两相旋转电流<span
+class="math inline">\(i_q,i_d\)</span>，其转换基于dq坐标系下的电压方程：<br />
+<span class="math display">\[\left\{
+{\begin{array}{*{20}{c}}  V_d=Ri_d+L_d\frac{ {\text{d}}i_d}{
+{\text{d}}t}-\omega_e L_q i_q \\ V_q=Ri_q+L_q\frac{ {\text{d}}i_q}{
+{\text{d}}t}+\omega_e(L_d i_d+\Psi_f) \end{array}}\right.\]</span>
+式中<span class="math inline">\(L_d,L_q\)</span>为dq轴电感，<span
+class="math inline">\(\omega_e\)</span>为转子电角速度。<br />
+<mark><span
+class="math inline">\(\Psi_f\)</span>为转子永磁磁场对应的磁链，在电机模型中，其值被存储在PM.Flux变量中，该值大小与前文配置界面设定的参数Flux
+linkage established by magnets
+(V.s)相同（可以说是同一个东西）。</mark><br />
+<span class="math inline">\(\omega_e
+\Psi_f\)</span>为永磁体正弦磁场在转速<span
+class="math inline">\(\omega_e\)</span>下q轴绕组产生的感应电动势。</p>
+<p>该电压方程由下面两个方程得到： <span class="math display">\[\left\{
+{\begin{array}{*{20}{c}}  V_d=Ri_d+p\Psi_d-\omega_e \Psi_q \\
+V_q=Ri_q+p\Psi_q+\omega_e \Psi_d \end{array}}\right.\]</span> <span
+class="math display">\[\left\{
+{\begin{array}{*{20}{c}}  \Psi_d=\Psi_f+L_d i_d \\ \Psi_q=L_q i_q
+\end{array}}\right.\]</span>
+式中p为微分算子，该算子对时间t求导，不是电机的极对数。<br />
+<span
+class="math inline">\(\Psi_d\)</span>为定子磁链直轴分量，包括电枢电流直轴分量产生的电枢反应磁场<span
+class="math inline">\(L_d i_d\)</span>与转子永磁磁场<span
+class="math inline">\(\Psi_f\)</span>两部分。<span
+class="math inline">\(\Psi_q\)</span>为定子磁链交轴分量，只包括电枢电流交轴分量产生的电枢反应磁场<span
+class="math inline">\(L_q i_q\)</span>。<br />
+<mark style="background-color:lightpink;">【思考题3】将上述电压方程与磁链方程联立并取<span
+class="math inline">\(p\Psi_f=0\)</span>，就能得到最终仿真模型中用到的方程式，在《现代永磁电动机交流伺服系统》P66中亦取<span
+class="math inline">\(p\Psi_f=0\)</span>。所以为何取<span
+class="math inline">\(p\Psi_f=0\)</span>？<br />
+答：因为这里<span
+class="math inline">\(\Psi_f\)</span>是一个常量，不随时间t变化而变化（导数值为0）。</mark></p>
+<p>最后还有一个细节，就是对于<span
+class="math inline">\(i_d\)</span>与<span
+class="math inline">\(i_q\)</span>计算公式中的离散积分模块，其初始条件（积分初始值）分别为PM.isdo与PM.isqo，前文配置界面中已经设置A相与B相电流均为0，因此这里变换后得到的<span
+class="math inline">\(i_d\)</span>与<span
+class="math inline">\(i_q\)</span>初始值亦为0。</p>
+<h4 id="qd2abc模块">qd2abc模块</h4>
+<center>
+<img src="6 qd2abc.png" width=500/><span class="caption">图6
+qd2abc</span>
+</center>
+<p>将两相旋转电流<span
+class="math inline">\(i_q,i_d\)</span>转换为三相静止电流<span
+class="math inline">\(i_a,i_b,i_c\)</span>。<br />
+首先用Park逆变换转换为两相静止电流<span
+class="math inline">\(i_\alpha,i_\beta\)</span>，再用Clarke逆变换转换为三相静止电流。<br />
+左侧的Mux总线有四个输入，分别为<span
+class="math inline">\(sin\theta,cos\theta,i_q,i_d\)</span>。<br />
+右侧三个输出，首先通过fcn模块输出<span
+class="math inline">\(i_a\)</span>与<span
+class="math inline">\(i_b\)</span>，根据三相电流之和为0这一公式，得到<span
+class="math inline">\(i_c=-i_a-i_b\)</span>。<br />
+<span class="math display">\[\left[ {\begin{array}{*{20}{c}}  i_a \\ i_b
+\end{array}}\right]=\left[ {\begin{array}{*{20}{c}}  1&amp;0 \\
+-\frac{1}{2}&amp;\frac{\sqrt 3}{2} \end{array}}\right]\left[
+{\begin{array}{*{20}{c}}  sin\theta&amp;cos\theta \\
+-cos\theta&amp;sin\theta \end{array}}\right]\left[
+{\begin{array}{*{20}{c}} i_d \\ i_q \end{array}} \right]\]</span> <span
+class="math inline">\(\Rightarrow i_a=i_q cos\theta+i_d
+sin\theta\)</span><br />
+<span class="math inline">\(\Rightarrow
+i_b=\frac{1}{2}[cos\theta(-i_q-\sqrt 3 i_d)+sin\theta(\sqrt 3
+i_q-i_d)]\)</span><br />
+得到的结果与图6中fcn模块中填写的表达式一致，说明上述公式推导的结果正确。<br />
+<mark>运算过程中的矩阵由前文中的Park矩阵与Clarke矩阵做逆运算得到，其中Clarke矩阵先对其乘以<span
+class="math inline">\(\frac{N_3}{N_2}\)</span>后求逆，得到的结果与fcn模块中填写的表达式一致。</mark><br />
+<mark style="background-color:lightpink;">【思考题4】为什么对Clarke矩阵先乘以<span
+class="math inline">\(\frac{N_3}{N_2}\)</span>后求逆？（在一些参考资料中有其他获得逆Clarke矩阵的方法，需要进一步研究分析）</mark></p>
+<h4 id="霍尔效应传感器">霍尔效应传感器</h4>
+<center>
+<img src="7 Hall effect sensor.png" width=600/><span class="caption">图7
+Hall effect sensor</span>
+</center>
+<p>在实际的电机控制系统中，可以通过安装在电机上不同位置的霍尔效应传感器推算转子位置（可以直接获得转子所在区域，结合电机转速与距离上一次变换转子区域所经过的时间可以估算当前转子位置）。<br />
+本仿真模型反其道而行之，根据转子电角度推算要输出的霍尔信号。</p>
+<p>首先将弧度制下的角度转换为-180°~180°范围下的角度。<br />
+输入为弧度制的<span
+class="math inline">\(\theta\)</span>，首先经过三角函数模块输出为<span
+class="math inline">\(sin\theta\)</span>与<span
+class="math inline">\(cos\theta\)</span>，然后进入反正切函数(atan2)模块，得到限制在<span
+class="math inline">\([-\pi,\pi]\)</span>范围内的<span
+class="math inline">\(\theta\)</span>。<br />
+atan2模块的输出公式如下：<br />
+<span class="math display">\[atan2(sin\theta,cos\theta)=\left\{
+{\begin{array}{*{20}{c}}  {arctan(\frac{sin\theta}{cos\theta})}&amp;{cos\theta&gt;0}
+\\ {arctan(\frac{sin\theta}{cos\theta})+\pi}&amp;{sin\theta \ge
+0,cos\theta&lt;0} \\
+{arctan(\frac{sin\theta}{cos\theta})-\pi}&amp;{sin\theta&lt;0,cos\theta&lt;0}
+\\ {\frac{\pi}{2} }&amp;{sin\theta&gt;0,cos\theta=0} \\ {-\frac{\pi}{2}
+}&amp;{sin\theta&lt;0,cos\theta=0} \\ undefined
+&amp;{sin\theta=0,cos\theta=0} \end{array}}\right.\]</span>
+最后将输出值乘以<span
+class="math inline">\(\frac{180}{\pi}\)</span>，实现从弧度到角度的转换，输出量the_deg值域为[-180°,180°]。<br />
+【举例】若输入角度为<span
+class="math inline">\(\frac{7}{6}\pi\)</span><br />
+首先计算<span
+class="math inline">\(sin\frac{7}{6}\pi=-\frac{1}{2},cos\frac{7}{6}\pi=-\frac{\sqrt
+3}{2}\)</span><br />
+然后得到<span
+class="math inline">\(tan\frac{7}{6}\pi=\frac{sin\frac{7}{6}\pi}{cos\frac{7}{6}\pi}=\frac{\sqrt
+3}{3}\)</span><br />
+由于<span
+class="math inline">\(sin\frac{7}{6}\pi&lt;0,cos\frac{7}{6}\pi&lt;0\)</span>，故atan模块输出值为<span
+class="math inline">\(arctan(\frac{\sqrt
+3}{3})=\frac{\pi}{6}-\pi=-\frac{5}{6}\pi\)</span><br />
+最后将该值乘以<span
+class="math inline">\(\frac{180}{\pi}\)</span>得到最终结果-150°<br />
+显然当<span
+class="math inline">\(\theta=\frac{13}{6}\pi,\frac{19}{6}\pi,\frac{25}{6}\pi,\cdots\)</span>时，输出值亦为-150°</p>
+<p>得到角度之后，接下来按照设定好的条件判断输出的霍尔信号值，一共有三路霍尔信号，其输出值为1的区间分别为[-60°,120°]、[-180°,120°]∪[60°,180°]、[-180°,0°]，在上述区间外输出值为0。<br />
+这样就可以根据输出的三路霍尔信号值，将一个周期内的转子电角度划分为[-180°,-120°]、[-120°,-60°]、[-60°,0]、[0°,60°]、[60°,120]、[120°,180°]共六个区间。</p>
+<h4 id="转矩计算模块">转矩计算模块</h4>
+<p>转矩方程为：<br />
+<span
+class="math inline">\(T_e=1.5pi_q[i_d(L_d-L_q)+\Psi_f]\)</span><br />
+<mark>公式中有1.5这个系数，是因为前面按照电流幅值相等的原则进行Clarke变换，若采用恒功率变换，则公式中不用乘以1.5。</mark></p>
+<h3 id="机电能量转换模块">机电能量转换模块</h3>
+<center>
+<img src="8 机电能量转换模块.png" width=600/><span class="caption">图8
+机电能量转换模块</span>
+</center>
+<p>该模块的搭建基于运动方程：<br />
+<span class="math inline">\(J\frac{ {\text{d}}\omega_m}{
+{\text{d}}t}=T_e-T_L-B\omega_m\)</span><br />
+式中<span class="math inline">\(J\)</span>为转动惯量，<span
+class="math inline">\(T_L\)</span>为负载转矩，<span
+class="math inline">\(B\)</span>为粘滞摩擦系数，<span
+class="math inline">\(\omega_m\)</span>为机械角速度。<br />
+电角速度<span
+class="math inline">\(\omega_e=p\omega_m\)</span>（机械角速度乘以极对数为电角速度）<br />
+图中有两个离散积分模块，第一个将<span class="math inline">\(\frac{
+{\text{d}}\omega_m}{ {\text{d}}t}\)</span>转换为<span
+class="math inline">\(\omega_m\)</span>，其积分初始条件为PM.wmo，可以在配置界面中设置，默认为0；第二个将<span
+class="math inline">\(\omega_e\)</span>转换为<span
+class="math inline">\(\theta\)</span>，其积分初始条件为PM.tho+PM.thOffest，其中PM.tho=0，<mark>PM.thOffest用于补偿上文中Park变换滞后的90°，因此是一个常数<span
+class="math inline">\(\frac{\pi}{2}\)</span></mark>。<br />
+粘滞摩擦系数用Coulombic and Viscous
+Friction模块实现，包括库伦摩擦值PM.Tf与粘性摩擦系数PM.F两部分。<br />
+输出we为电角速度，the弧度制的转子总角度，m包括机械角速度、弧度制的总机械角度、电磁转矩。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+<!-- twikoo评论系统 -->
+
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%BA%94%E7%94%A8/RBF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CPID%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E4%BB%BF%E7%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">上一篇</strong>
+            <div class="article-nav-title">
+                
+                    RBF神经网络PID控制器的设计与仿真
+                
+            </div>
+        </a>
+    
+    
+        <a href="/%E8%AF%BE%E9%A2%98%E7%AC%94%E8%AE%B0/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA/%E5%BC%80%E5%85%B3%E7%A3%81%E9%98%BB%E7%94%B5%E6%9C%BA05-Simulink%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9E%8B%E5%86%85%E9%83%A8%E7%BB%93%E6%9E%84%E4%B8%8E%E5%AE%98%E6%96%B9%E4%BB%BF%E7%9C%9F%E4%BE%8B%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">开关磁阻电机05-Simulink仿真模型内部结构与官方仿真例程</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            RenAhah &copy; 2025 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+
+
+    </div>
+
+</body>
+</html>
